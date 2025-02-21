@@ -1,155 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="imagex/png" href="ico.png">
-    <link rel="stylesheet" href="normalize.css">
-    <title>UniCesumar - Validação de Carteirinha Estudantil</title>
-    <style>
-        @font-face {
-            font-family: Studeo Regular;
-            src: url(/studeo-regular.ttf);
-        }
-        body {
-            font-family: Studeo Regular;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: top;
-            height: 90vh;
-            min-height: 90vh;
-            margin: 0;
-        }
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 20px;
-            max-width: 400px;
-            width: 100%;
-            margin: 20px;
-        }
-        img {
-            width: 130px;
-        }
-        .success-icon {
-            width: 30px;
-        }
-        #message {
-            font-size: 16px;
-            color: #005387;
-            margin-top: 10px;
-            display: none;
-        }
-        #cpf {
-            font-size: 16px;
-            color: #005387;
-            margin-top: 10px;
-            display: block;
-        }
-        .error-message {
-            color: #ff0000;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        input#inputcpf {
-            margin-top: 10px;
-            padding: 8px;
-            font-size: 16px;
-            width: 100%;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            margin-top: 10px;
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
-            background-color: #005387;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #codigoValidacao {
-            margin-top: 15px;
-            font-size: 16px;
-            color: #4caf50;
-        }
-        .hint-text {
-            font-size: 10px;
-            color: rgb(155, 195, 240);
-        }
-    </style>
+    <title>Erro 404 - Página Não Encontrada</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <img src="logo.webp" alt="valida">
-        <div id="cpf">
-<!--             <label for="cpf">Digite o CPF do(a) estudante:</label> -->
-<!--             <input type="text" id="inputcpf" maxlength="11" placeholder="Somente números"> -->
-            <button onclick="gerarCodigo()">Validar carteirinha</button>
+        <div class="content">
+            <h1>404</h1>
+            <h2>Oops! Página não encontrada.</h2>
+            <p>A página que você está procurando pode ter sido removida ou não está disponível no momento.</p>
+            <!-- <a href="/" class="btn">Voltar para a página inicial</a> -->
         </div>
-        <div id="message">
-            <img src="https://img.icons8.com/ios-filled/50/4caf50/ok.png" alt="Ícone de Sucesso" class="success-icon">
-            <br>Carteirinha validada com sucesso!<br>
-            <p id="codigoValidacao"></p>
-        </div>
-        <p class="small no-margin pull-left sm-pull-reset"> 
-            <span class="hint-text">© </span>
-            <span id="anoAtual" class="hint-text"></span> 
-            <span class="hint-text">UNICESUMAR. Todos os direitos reservados.</span> 
-        </p>
-    
-    <script>
-        document.getElementById("anoAtual").textContent = new Date().getFullYear();
-
-        // function validarCPF(cpf) {
-        //     cpf = cpf.replace(/\D/g, '');
-        //     if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
-
-        //     for (let i = 9; i <= 10; i++) {
-        //         let soma = 0;
-        //         for (let j = 0; j < i; j++) {
-        //             soma += parseInt(cpf[j]) * ((i + 1) - j);
-        //         }
-        //         const digito = (soma * 10) % 11 % 10;
-        //         if (digito !== parseInt(cpf[i])) return false;
-        //     }
-        //     return true;
-        // }
-
-        function gerarCodigo() {
-            // const cpfInput = document.getElementById("inputcpf").value;
-
-            // if (!validarCPF(cpfInput)) {
-            //     alert("Por favor, insira um CPF válido.");
-            //     return;
-            // }
-
-            // let primeiraParte = "";
-            // for (let i = 0; i < cpfInput.length; i++) {
-            //     primeiraParte += (parseInt(cpfInput[i]) + 3) % 10;
-            // }
-
-            // const ultimosQuatro = cpfInput.slice(-4);
-            // let segundaParte = "";
-            // for (let i = 0; i < 4; i++) {
-            //     segundaParte += (parseInt(ultimosQuatro[i]) + i * 2) % 10;
-            // }
-
-            const codigo = "86355790572-7485";
-            // const codigo = `${primeiraParte}-${segundaParte}`;
-            document.getElementById("cpf").style.display = "none";
-            document.getElementById("codigoValidacao").textContent = `Código de validação: ${codigo} autêntico!`;
-            document.getElementById("message").style.display = "block";
-
-            
-        }
-        gerarCodigo();
-    </script>
+    </div>
 </body>
 </html>
