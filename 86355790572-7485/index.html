@@ -41,11 +41,11 @@
             <div class="input-group">
                 <strong>Código de Validação:</strong>
                 <input class="input-cod" type="text" 
-                        value="86355790572-7485"                        "
-                        placeholder="Ex.: 99999999999-9999" 
-                        pattern="\d{11}-\d{4}"
-                        title="Formato: 10 números, hífen e 4 números"
-                        required>
+                       value="86355790572-7485" 
+                       placeholder="Ex.: 99999999999-9999" 
+                       pattern="\d{11}-\d{4}"
+                       title="Formato: 10 números, hífen e 4 números"
+                       required>
                 <button>Validar</button>
                 <div class="error-message">O campo 'Código de Validação' deve ser preenchido corretamente.</div>
             </div>
@@ -71,14 +71,13 @@
                     <p><strong>RA:</strong> 22321260-5</p>
                     <p><strong>Aluno:</strong> LEONE RIBEIRO SILVA</p>
                     <p><strong>Curso:</strong> SUPERIOR DE TECNOLOGIA EM ANÁLISE E DESENVOLVIMENTO DE SISTEMAS</p>
-                    <p class="validad"><strong>Validade:</strong> 20/12/2025</p>
+                    <p class="validad" id="validade"><strong id="validade-strong">Validade: </strong></p>
                 </div>
                 <div class="photo">
                     <img src="./src/img/pessoa1/pessoa1.png" alt="Foto do aluno">
                 </div>
             </div>
         </div>
-    </div>
     </main>
 
     <footer class="footer">
@@ -141,6 +140,14 @@
             <a href="#" class="back-to-top">Voltar para o topo ↑</a>
         </div>
     </footer>
+    
+    <script>
+        // Captura o ano atual
+        const ano = new Date().getFullYear();
+        
+        // Define o valor do ano no elemento com ID "validade"
+        document.getElementById("validade").innerHTML = `<strong id="validade-strong">Validade:</strong> 31/12/${ano}`;
+    </script>
     
     </html>
     
