@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carteirinha - UniCesumar</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <span><a href="https://www.unicesumar.edu.br/atendimento/"><img class="icon-phone" src="https://www.unicesumar.edu.br/wp-content/themes/unicesumar/templates/assets_header/img/icons/icon-phone.png"> Central de atendimento</a></span>
+            <div class="user-info">
+                <span><a href="https://studeo.unicesumar.edu.br/?_gl=1*120uson*_ga*NzQxMjA3OTg2LjE3MDI2NzI1MzQ.*_ga_QSVQ7NJYBN*MTcyODM5Nzc5Ni4xNS4xLjE3MjgzOTkzODQuMC4wLjA.#!/access/login"><img class="icon-user" src="https://www.unicesumar.edu.br/wp-content/themes/unicesumar/templates/assets_header/img/icons/icon-user.png"> Aluno</a></span>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <img src="https://www.unicesumar.edu.br/wp-content/themes/unicesumar/templates/assets_header/img/logo.webp" alt="Unicesumar">
+            <li><a href="http://unicesumar.edu.br/">Unicesumar ▼</a></li>
+            <li><a href="http://unicesumar.edu.br/">EAD ▼</a></li>
+            <li><a href="http://unicesumar.edu.br/">Presencial ▼</a></li>
+            <li><a href="http://unicesumar.edu.br/">Pesquisa e extensão ▼</a></li>
+            <li><a href="http://unicesumar.edu.br/">Medicina</a></li>
+            <li><a href="http://unicesumar.edu.br/">Blog</a></li>
+            <!-- <button class="inscreva-se" <a href="http://unicesumar.edu.br/">Inscreva-se ▼</a></button> -->
+            <a href="http://unicesumar.edu.br/" class="inscreva-se">Inscreva-se ▼</a>
+
+        </ul>
+    </nav>
+
+    <main>
+        <h1>carteirinha</h1>
+        <div class="alert-info">
+            <p class="alert-text">Para validar a carteirinha de estudante, digite no campo abaixo o código de validação impresso no verso da carteirinha.</p>
+        </div>
+        <div class="validation-box">
+            <div class="input-group">
+                <strong>Código de Validação:</strong>
+                <input class="input-cod" type="text" 
+                       value="80841463553-0466" 
+                       placeholder="Ex.: 99999999999-9999" 
+                       pattern="\d{11}-\d{4}"
+                       title="Formato: 10 números, hífen e 4 números"
+                       required>
+                <button>Validar</button>
+                <div class="error-message">O campo 'Código de Validação' deve ser preenchido corretamente.</div>
+            </div>
+        </div>
+
+        <div class="not-found-error">
+            ⚠️ Carteirinha não localizada, verifique se digitou corretamente os números!
+        </div>
+        
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+        </div>
+
+        <div class="validation-verification">
+        <div class="warning">
+            <span><img src="./src/img/verificado.png"></span>
+            <h2>CARTEIRINHA VÁLIDA</h2>
+        </div>
+
+        <div class="card-info">
+            <div class="card-details">
+                <div class="text-info">
+                    <p><strong>RA:</strong> 15320241-5</p>
+                    <p><strong>Aluno:</strong> PEDRO LUIS FERREIRA GOMES</p>
+                    <p><strong>Curso:</strong> ADMINISTRAÇÃO</p>
+                    <p class="validad" id="validade"><strong id="validade-strong">Validade: </strong></p>
+                </div>
+                <div class="photo">
+                    <img src="./src/img/pessoa1/pessoa1.jpg" alt="Foto do aluno">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-logo">
+            <img src="https://www.unicesumar.edu.br/wp-content/themes/unicesumar/templates/assets_header/img/logo-unicesumar.png">
+        </div>
+        <div class="footer-container">
+            
+            <div class="footer-section">
+                <h3>Institucional</h3>
+                <ul>
+                    <li><a href="http://unicesumar.edu.br/">Conheça a UniCesumar</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Fundação UniCesumar</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Comunidade</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Central de Atendimento</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Imprensa</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Notícias</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Blog</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Consultar Diploma</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Comissão Própria de Avaliação</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Seja nosso fornecedor</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Trabalhe na UniCesumar</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Política de Privacidade</a></li>
+                </ul>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Educação Presencial</h3>
+                <ul>
+                    <li><a href="http://unicesumar.edu.br/">Graduação</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Pós-graduação</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Mestrado e Doutorado</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Pró-Reitoria de Pesquisa</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Processo Seletivo</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Regulamentos</a></li>
+                </ul>
+            </div>
+    
+            <div class="footer-section">
+                <h3>Educação a Distância</h3>
+                <ul>
+                    <li><a href="http://unicesumar.edu.br/">Graduação</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Pós-graduação</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Técnicos</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Regulamentos do EAD</a></li>
+                    <li><a href="http://unicesumar.edu.br/">Unidades e Polos</a></li>
+                </ul>
+            </div>
+    
+            <div class="footer-section-mec">
+                <h3>Consulta e-MEC</h3>
+                <p>Consulte aqui o cadastro da instituição no Sistema e-MEC</p>
+                <img src="./src/img/mec.png" alt="QR Code e-MEC">
+                <!-- <a href="#" class="btn">Acesse Já!</a> -->
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <p>© 2025 - Todos os direitos reservados</p>
+            <a href="#" class="back-to-top">Voltar para o topo ↑</a>
+        </div>
+    </footer>
+    
+    <script>
+        // Captura o ano atual
+        const ano = new Date().getFullYear();
+        
+        // Define o valor do ano no elemento com ID "validade"
+        document.getElementById("validade").innerHTML = `<strong id="validade-strong">Validade:</strong> 31/12/${ano}`;
+    </script>
+    
+    </html>
+    
