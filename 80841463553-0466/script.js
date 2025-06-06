@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Lista de códigos válidos
     const validCodes = [
-        '86355790572-7485',
+        '80841463553-0466',
     ];
 
     const validationButton = document.querySelector('.input-group button');
