@@ -147,15 +147,15 @@
 
     @keyframes shineMove {
       0% {
-        background-position: 0% 50%;
+        background-position: 0% 50%
       }
 
       50% {
-        background-position: 100% 50%;
+        background-position: 100% 50%
       }
 
       100% {
-        background-position: 0% 50%;
+        background-position: 0% 50%
       }
     }
 
@@ -343,7 +343,6 @@
       will-change: transform, opacity;
     }
 
-    /* Respeita usuários que preferem menos movimento */
     @media (prefers-reduced-motion: reduce) {
 
       .animate-msg,
@@ -351,10 +350,140 @@
         animation: none !important;
       }
     }
+
+    /* Botão Spotify */
+    .btn.spotify {
+      background: #1DB954;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn.spotify:hover {
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    .btn.spotify .sp-icon {
+      display: inline-flex;
+    }
+
+    /* ===== Password Gate (overlay) ===== */
+    .gate-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: linear-gradient(-45deg, var(--bg1), var(--bg2), var(--bg3), var(--bg2));
+      background-size: 400% 400%;
+      animation: bgShift 16s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gate-card {
+      width: min(560px, 92vw);
+      background: var(--card);
+      -webkit-backdrop-filter: var(--glass);
+      backdrop-filter: var(--glass);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .20);
+      text-align: center;
+    }
+
+    .gate-title {
+      font-size: clamp(22px, 5vw, 28px);
+      margin: 6px 0 4px;
+    }
+
+    .gate-sub {
+      font-size: clamp(14px, 3.6vw, 16px);
+      opacity: .85;
+      margin: 4px 0 12px;
+    }
+
+    .gate-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, .08);
+      background: rgba(255, 255, 255, .85);
+      font-size: 16px;
+      outline: none;
+    }
+
+    .gate-input::placeholder {
+      opacity: .7;
+    }
+
+    .gate-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .gate-error {
+      margin-top: 10px;
+      color: #b00020;
+      font-size: 14px;
+      min-height: 18px;
+    }
+
+    @keyframes shakeX {
+
+      10%,
+      90% {
+        transform: translateX(-2px)
+      }
+
+      20%,
+      80% {
+        transform: translateX(4px)
+      }
+
+      30%,
+      50%,
+      70% {
+        transform: translateX(-6px)
+      }
+
+      40%,
+      60% {
+        transform: translateX(6px)
+      }
+    }
+
+    .shake {
+      animation: shakeX .45s ease;
+    }
+
+    .hidden {
+      display: none !important;
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- Gate (Password Box) -->
+  <div id="gate" class="gate-backdrop" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+    <div class="gate-card">
+      <div class="chip" style="margin-bottom:12px;"><span>🔒</span><span><b>acesso</b> reservado</span></div>
+      <h2 id="gateTitle" class="gate-title">Qual é a senha?</h2>
+      <p class="gate-sub">Dica: <i>DJ DO MAR (EM LETRAS MAIÚSCULAS)</i></p>
+      <input id="gateInput" class="gate-input" type="password" inputmode="decimal" autocomplete="off"
+        placeholder="Como foi seu dia de 0 a 9.9?" />
+      <div id="gateErr" class="gate-error" aria-live="polite"></div>
+      <div class="gate-actions">
+        <button id="gateEnter" class="btn">Entrar</button>
+        <button id="gateTheme" class="btn ghost">Alternar tema</button>
+      </div>
+    </div>
+  </div>
+
   <div class="floaters" id="floaters" aria-hidden="true"></div>
 
   <main class="card" role="main">
@@ -375,9 +504,13 @@
       <button class="btn secondary" id="toggleTheme">Alternar tema: Doce ⇄ Salgado</button>
       <button class="btn ghost" id="shuffle">Surpresa 🍫🧂</button>
     </div>
-
-    <!-- <footer><span id="hint">Dica: você pode personalizar via URL. Ex.:
-        <code>?msg=Você%20é%20meu%20meio%20termo%20preferido</code></span></footer> -->
+    <footer>
+      <!-- <span id="hint">Dica: você pode personalizar via URL. Ex.:
+        <code>?msg=Você%20é%20meu%20meio%20termo%20preferido</code>
+      </span> -->
+      <span id="hint">Developer: ._.. ...
+      </span>
+    </footer>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -388,6 +521,20 @@
     <p id="modalText">Então vamos lá! Eu ainda tenho mais docinhos & salgadinhos guardados aqui. 😋🧂</p>
     <div class="actions">
       <button class="btn" id="modalPrimary">Continuar</button>
+      <a class="btn spotify" id="spotifyBtn"
+        href="https://open.spotify.com/playlist/1zb2zuXu6dqhsl5ieyXIxa?si=34e6d2bc44184475" target="_blank"
+        rel="noopener" style="display:none">
+        <span class="sp-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 168 168" xmlns="http://www.w3.org/2000/svg">
+            <path d="M84 0a84 84 0 1084 84A84 84 0 0084 0zm38.6 121.2a6 6 0 01-8.3 2
+             c-22.7-13.9-51.2-17-84.7-9.2a6 6 0 01-2.7-11.6c36.7-8.5 68.9-5 94 10.8a6 6 0 012 8zM129 99a7 7 0 01-9.6 2.3
+             c-26-16-65.7-20.7-96.4-11.3a7 7 0 01-4-13.4c34.3-10.2 77-4.8 106.1 13.2A7 7 0 01129 99zm1.5-23.9a8 8 0 01-11 2.6
+             c-29.8-18.2-80.2-19.9-108.9-10.8A8 8 0 017.3 48C39.6 38 94.8 39.9 128.4 60a8 8 0 012.1 15.1z"
+              fill="currentColor" />
+          </svg>
+        </span>
+        <span>Ouvir playlist</span>
+      </a>
     </div>
   </div>
 
@@ -407,14 +554,12 @@
         showToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
       }
 
-
       function retriggerAnim(el, cls) {
         el.classList.remove(cls);
-        // força reflow para reiniciar animação
-        // eslint-disable-next-line no-unused-expressions
-        void el.offsetWidth;
+        void el.offsetWidth; // reflow
         el.classList.add(cls);
       }
+
       // URL params
       let params;
       try { params = new URL(location.href).searchParams; } catch { params = new URLSearchParams(); }
@@ -457,7 +602,7 @@
       const combos = [
         { flair: "🧂", title: "Temperada na medida certa.", msg: "Você adoça os dias e salpica caos nas horas — tudo com a mesma leveza de quem finge que é sem querer.", punch: "Mas tá perdoada, porque o sabor que você deixa não dá pra esquecer." },
         { flair: "🍬", title: "A doçura que dá trabalho pros meus pensamentos.", msg: "Você chega doce, bagunça a calma e ainda finge que não fez nada.", punch: "Difícil mesmo é decidir se quero te abraçar ou reclamar sorrindo." },
-        { flair: "🍫", title: "O meio-termo preferido.", msg: "Entre o carinho que acalma e a provocação que tira o juízo, você domina o clima como quem lê o roteiro.", punch: "Serve quente, frio ou confuso — mas sempre irresistível." },
+        { flair: "🍫", title: "O meio-termo preferido.", msg: "Entre o carinho que acalma e a provocação que tira o juízo, você domina o clima como os ventos no litoral.", punch: "Serve quente, frio ou confuso — mas sempre irresistível." },
         { flair: "🍪", title: "Metade açúcar, metade coragem.", msg: "Você tem esse talento raro de causar bagunça com ternura — derrete o humor e ainda sai com pose de inocente.", punch: "Equilíbrio perfeito entre encanto e loucura (e o caos é meu pedaço favorito)." },
         { flair: "🧁", title: "Receita que o destino acertou na medida.", msg: "Tem gosto de abraço e cheiro de problema bom — daquele que a gente finge que não quer, mas quer.", punch: "E o pior é que um domingo foi o bastante pra me viciar nisso." },
         { flair: "🍯", title: "Sorriso de mel, ironia de mar.", msg: "Você cura com um olhar e desorganiza com outro, como quem sabe que o efeito colateral é viciante.", punch: "E o pior (ou melhor) é que eu fico torcendo pra dose ser alta." },
@@ -465,19 +610,30 @@
         { flair: "🍓", title: "Doce com um toque de tempestade.", msg: "Você chega leve, bagunça o clima e ainda deixa o ar com cheiro de saudade.", punch: "Difícil decidir se quero te abraçar ou te pedir pra voltar mais tarde (mas volta)." },
         { flair: "🍕", title: "Cléia em fatias generosas.", msg: "Tem dias em que você é calmaria, noutros, caos disfarçado de sorriso.", punch: "De todo jeito, eu sempre acabo querendo mais uma fatia." },
         { flair: "🌩️", title: "Tempestade de sabores.", msg: "Você aparece feito chuva: bagunça, refresca e deixa tudo mais vivo — e ainda culpa os outro pelo trovão.", punch: "Conclusão: até o caos fica gostoso quando vem de você." },
-        { flair: "🍋", title: "Ácido na dose certa.", msg: "Você tem aquele azedinho que desperta e o doce que compensa depois.", punch: "E no fim, o gosto que fica é sempre o de querer mais." },
+        { flair: "🍋", title: "Ácido na dose certa.", msg: "Seu jeito tem aquele azedinho que desperta e o doce que compensa depois.", punch: "E no fim, o gosto que fica é sempre o de querer mais." },
         { flair: "🍿", title: "Drama e comédia na mesma pipoca.", msg: "Você faz bagunça, ri de si mesma e ainda me faz achar graça no caos.", punch: "Resultado: filme nenhum te supera." },
-        // { flair: "🥭", title: "Sabor de verão com plot twist.", msg: "Doce no começo, inesperada no meio e impossível de esquecer no fim.", punch: "A previsão? 100% de recaída." },
         { flair: "☕", title: "Amarga o suficiente pra ser interessante.", msg: "Você desperta, provoca e aquece — às vezes queima, mas vicia.", punch: "Sem você, o dia fica muito calmo!" },
         { flair: "🍦", title: "Fria? Só até derreter.", msg: "Você tem o dom de se fingir de gelo e virar abraço em segundos.", punch: "Manual prático de como confundir e encantar ao mesmo tempo." },
         { flair: "🍉", title: "Refresco de sarcasmo e afeto.", msg: "Você mistura doçura e ironia como quem entende de equilíbrio.", punch: "E cada vez que aparece, o calor vira calmaria." },
         { flair: "🍪", title: "Versão recheada de contradições.", msg: "Crocrante quando fala, macia quando ri — receita de confusão boa.", punch: "Se tivesse rótulo, viria escrito: ‘Cuidado! Altamente viciante.’." },
         { flair: "🌶️", title: "Pimenta e mel, tudo junto.", msg: "Você fala doce, mas suas entrelinhas ardem.", punch: "E eu? Tento entender o sabor, mas acabo pedindo repeteco." },
-        // { flair: "🍷", title: "Do tipo que melhora com o tempo.", msg: "Você começa leve e termina intensa — como quem sabe o próprio efeito.", punch: "Cada gole é um erro que vale a pena." },
-        { flair: "🧊", title: "Gelo que esquenta a história.", msg: "Você finge distanciamento, mas seu olhar entrega o incêndio.", punch: "No fundo, é só mais uma forma criativa de queimar." }
+        { flair: "🧊", title: "Gelo que esquenta a história.", msg: "Você finge distanciamento, mas seu olhar entrega o incêndio.", punch: "No fundo, é só mais uma forma criativa de queimar." },
+        {
+          flair: "🔥",
+          title: "O frio que esquenta e o ódio que aperta.",
+          msg: "É saudade vestida de implicância — o tipo de emoção que queima devagar e finge que é só birra.",
+          punch: "Resumo do dia: te culpo sorrindo, te lembro reclamando, e te quero negando.",
+        },
+        {
+          flair: "🩵",
+          title: "Entre o silêncio e o suspiro.",
+          msg: "Há dias em que o frio na barriga é saudade atrasada; noutros, é raiva disfarçada de lembrança.",
+          punch: "E eu fico ali, entre a vontade de esquecer e o impulso de sentir de novo.",
+        },
+        { flair: "💫", title: "Entre o caos e o colo.", msg: "Você é o intervalo entre o arrepio da falta e o consolo do reencontro.", punch: "Você é tipo arrepio em dia quente — irrita, arrepia, e no fim eu ainda acho bom." },
+
       ];
 
-      // Mensagens finais
       const endMessages = [
         "Eita, acabaram-se as surpresas! 😅 Mas não se preocupe, Cléia — até o silêncio aqui é temperado com um restinho de carinho e caos. 🍬🧂",
         "As frases dormem, mas o sentimento segue acordado. 🌙✨",
@@ -499,7 +655,6 @@
         titleEl.textContent = c.title;
         messageEl.textContent = c.msg;
         punchEl.textContent = c.punch;
-        // reanima os textos
         retriggerAnim(messageEl, "animate-msg");
         retriggerAnim(punchEl, "animate-punch");
         showToast("Mensagem atualizada ✨");
@@ -509,6 +664,8 @@
         $("#modalTitle").textContent = title || " ";
         $("#modalText").textContent = body || "";
         $("#modalPrimary").textContent = primaryLabel;
+        const sp = document.getElementById("spotifyBtn"); // escondido por padrão
+        if (sp) sp.style.display = "none";
         $("#modalBackdrop").classList.add("show");
         $("#modalBox").classList.add("show");
       }
@@ -525,6 +682,8 @@
       }
 
       function startEndSequence() {
+        const sp = document.getElementById("spotifyBtn");
+        if (sp) sp.style.display = "none";
         inEndSequence = true;
         endIdx = 0;
         showModal("", endMessages[endIdx], "Continuar");
@@ -535,8 +694,9 @@
         if (endIdx < endMessages.length) {
           showModal("", endMessages[endIdx], "Continuar");
         } else {
-          // Última mensagem concluída -> botão vira "Recomeçar"
-          showModal("", "Acabou o menu especial de surpresas. Quer recomeçar? 💫", "Recomeçar");
+          showModal("", "Acabou o menu especial de surpresas. Quer recomeçar💫 ou ouvir uma playlist🎶? ", "Recomeçar");
+          const sp = document.getElementById("spotifyBtn");
+          if (sp) sp.style.display = "inline-flex";
         }
       }
 
@@ -549,7 +709,7 @@
       }
 
       function nextCombo() {
-        if (inEndSequence) return; // enquanto estiver na sequência final, ignorar cliques de surpresa
+        if (inEndSequence) return;
         if (idx + 1 >= order.length) {
           startEndSequence();
           return;
@@ -564,18 +724,18 @@
       // Botão primário do modal
       $("#modalPrimary")?.addEventListener("click", () => {
         if (inEndSequence) {
-          // Se ainda há mensagens finais para mostrar
           if (endIdx < endMessages.length) {
             advanceEndSequence();
           } else {
-            // Clicar em "Recomeçar"
+            // Recomeçar
             hideModal();
+            const sp = document.getElementById('spotifyBtn');
+            if (sp) sp.style.display = 'none';
             resetCycle();
-            nextCombo(); // opcional: já começa a nova rodada
+            nextCombo();
           }
         } else {
-          // Fluxo do modal da metade
-          hideModal();
+          hideModal(); // metade
         }
       });
 
@@ -600,7 +760,6 @@
       for (let i = 0; i < 18; i++) spawnFloater();
       setInterval(spawnFloater, 900);
 
-      // Tema emoji
       const chip = $("#chip");
       function hintThemeEmoji() {
         const isSalgado = document.body.classList.contains("salgado");
@@ -615,6 +774,61 @@
           if (e.key === "Enter" || e.key === " ") btn.click();
         });
       });
+
+      // animação na carga inicial
+      messageEl.classList.add('animate-msg'); punchEl.classList.add('animate-punch');
+
+      /* ===== Gate Logic (senha) ===== */
+      const GATE_KEY_PARAM = (new URL(location.href).searchParams.get("pass") || "").trim();
+      const ACCESS_CODE = GATE_KEY_PARAM || "SEREIA"; // senha padrão
+      const gate = document.getElementById("gate");
+      const gateInput = document.getElementById("gateInput");
+      const gateEnter = document.getElementById("gateEnter");
+      const gateErr = document.getElementById("gateErr");
+      const gateTheme = document.getElementById("gateTheme");
+
+      function gateHide() {
+        gate.classList.add("hidden");
+        gate.setAttribute("aria-hidden", "true");
+      }
+      function gateShow() {
+        gate.classList.remove("hidden");
+        gate.removeAttribute("aria-hidden");
+        setTimeout(() => gateInput?.focus(), 50);
+      }
+      function gateShake(msg) {
+        if (gateErr) gateErr.textContent = msg || "Senha incorreta 😅";
+        const card = gate.querySelector(".gate-card");
+        card.classList.remove("shake"); void card.offsetWidth; card.classList.add("shake");
+      }
+      function gateCheck() {
+        const v = (gateInput?.value || "").trim();
+        if (v === ACCESS_CODE) {
+          sessionStorage.setItem("doceSalgadoAccess", "ok");
+          gateHide();
+          try { showToast && showToast("Bem-vinda! ✨"); } catch { }
+        } else {
+          gateShake("Ops, foi quase. Tenta de novo?");
+        }
+      }
+
+      // Já liberado nesta aba?
+      if (sessionStorage.getItem("doceSalgadoAccess") === "ok") {
+        gateHide();
+      } else {
+        gateShow();
+      }
+
+      gateEnter?.addEventListener("click", gateCheck);
+      gateInput?.addEventListener("keyup", (e) => { if (e.key === "Enter") gateCheck(); });
+      gateTheme?.addEventListener("click", () => {
+        document.body.classList.toggle("salgado");
+        try { hintThemeEmoji && hintThemeEmoji(); } catch { }
+        const card = gate.querySelector(".gate-card");
+        card.classList.add("shake");
+        setTimeout(() => card.classList.remove("shake"), 400);
+      });
+
     })();</script>
 </body>
 
