@@ -49,6 +49,24 @@
         --ring: 0 0 0 2px rgba(34, 211, 238, 0.28);
       }
 
+      /* Toolbar principal (fica colada no topo, acima da grid) */
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding-bottom: 6px;
+        margin-top: -6px;
+      }
+
+      /* (Opcional) toque sutil quando em tema elétrico */
+      .eletrico .toolbar .btn.ghost {
+        background: rgba(255, 255, 255, 0.16);
+        color: var(--fg);
+      }
+
       * {
         box-sizing: border-box;
       }
@@ -720,6 +738,13 @@
         </div>
       </section>
 
+      <!-- Toolbar principal -->
+      <div class="toolbar" aria-label="ações gerais">
+        <button class="btn ghost" id="toggleThemeMain" type="button">
+          Alternar tema
+        </button>
+      </div>
+
       <!-- ===== Grid de Cards Musicais ===== -->
       <section class="grid" id="grid" aria-label="lista de faixas"></section>
 
@@ -814,6 +839,45 @@ Quem Sabe:
           clearTimeout(showToast._t);
           showToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
         }
+
+        const THEME_KEY = "theme.mode";
+        const themeParam =
+          new URL(location.href).searchParams.get("theme") || "";
+        const storedTheme = localStorage.getItem(THEME_KEY) || "";
+        let currentTheme =
+          themeParam.toLowerCase() === "eletrico"
+            ? "eletrico"
+            : themeParam.toLowerCase() === "acustico"
+            ? "acustico"
+            : storedTheme || "acustico";
+
+        function applyTheme(mode) {
+          document.body.classList.toggle("eletrico", mode === "eletrico");
+          localStorage.setItem(THEME_KEY, mode);
+          currentTheme = mode;
+          // atualiza rótulos (opcional)
+          const label = mode === "eletrico" ? "Tema claro" : "Alternar tema";
+          const label2 = mode === "eletrico" ? "Tema claro" : "Alternar tema";
+          const btn1 = document.getElementById("toggleTheme");
+          const btn2 = document.getElementById("toggleThemeMain");
+          if (btn1) btn1.textContent = "Alternar tema";
+          if (btn2) btn2.textContent = "Alternar tema";
+        }
+
+        function toggleTheme() {
+          applyTheme(currentTheme === "eletrico" ? "acustico" : "eletrico");
+        }
+
+        // aplica ao carregar
+        applyTheme(currentTheme);
+
+        // listeners (player + toolbar principal)
+        document
+          .getElementById("toggleTheme")
+          ?.addEventListener("click", toggleTheme);
+        document
+          .getElementById("toggleThemeMain")
+          ?.addEventListener("click", toggleTheme);
 
         // URL params / inicial
         let params;
