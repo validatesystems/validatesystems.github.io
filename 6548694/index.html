@@ -151,6 +151,29 @@
         font-size: 14px;
         min-height: 18px;
       }
+      /* ===== Correção: evitar flicker no mobile quando o gate abre ===== */
+      body.gate-open {
+        /* trava a página atrás do overlay */
+        overflow: hidden;
+        height: 100vh;
+        position: fixed;
+        inset: 0;
+        width: 100%;
+      }
+
+      /* pausa QUALQUER animação de fundo enquanto o gate está ativo */
+      body.gate-open,
+      body.gate-open .page,
+      body.gate-open .gate-backdrop {
+        animation: none !important;
+      }
+
+      /* o overlay não precisa animar o gradiente; evita repaints no iOS */
+      .gate-backdrop {
+        animation: none !important;
+        background-attachment: fixed; /* reduz “saltos” quando a barra do navegador recolhe */
+        will-change: opacity, transform;
+      }
       @keyframes shakeX {
         10%,
         90% {
@@ -1169,12 +1192,16 @@ Quem Sabe:
         function gateHide() {
           gate.classList.add("hidden");
           gate.setAttribute("aria-hidden", "true");
+          document.body.classList.remove("gate-open"); // libera a página
         }
+
         function gateShow() {
           gate.classList.remove("hidden");
           gate.removeAttribute("aria-hidden");
+          document.body.classList.add("gate-open"); // trava e pausa animações
           setTimeout(() => gateInput?.focus(), 50);
         }
+
         function gateShake(msg) {
           if (gateErr) gateErr.textContent = msg || "Senha incorreta 😅";
           const card = gate.querySelector(".gate-card");
