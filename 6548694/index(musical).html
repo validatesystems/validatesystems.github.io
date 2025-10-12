@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cards Musicais</title>
+    <meta name="color-scheme" content="light dark" />
+    <style>
+      :root {
+        /* Tema Acústico (claro) */
+        --bg1: #f8efff;
+        --bg2: #e7f3ff;
+        --bg3: #ffe9f1;
+        --fg: #17172a;
+        --muted: #6b6b83;
+        --accent: #7c3aed;
+        --accent-2: #06b6d4;
+        --card: rgba(255, 255, 255, 0.78);
+        --glass: blur(10px);
+        --ring: 0 0 0 2px rgba(124, 58, 237, 0.25);
+      }
+
+      /* efeito de brilho ao título do player */
+      .title.flash {
+        animation: glowTitle 1.2s ease;
+      }
+      @keyframes glowTitle {
+        0% {
+          text-shadow: 0 0 0 var(--accent);
+        }
+        50% {
+          text-shadow: 0 0 16px var(--accent), 0 0 32px var(--accent-2);
+        }
+        100% {
+          text-shadow: 0 0 0 var(--accent);
+        }
+      }
+
+      /* Tema Elétrico (escuro) */
+      .eletrico {
+        --bg1: #0b1020;
+        --bg2: #141a39;
+        --bg3: #2a1847;
+        --fg: #eef0ff;
+        --muted: #aab0ff;
+        --accent: #22d3ee;
+        --accent-2: #a78bfa;
+        --card: rgba(20, 20, 40, 1);
+        --ring: 0 0 0 2px rgba(34, 211, 238, 0.28);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji";
+        color: var(--fg);
+        background: linear-gradient(
+          -45deg,
+          var(--bg1),
+          var(--bg2),
+          var(--bg3),
+          var(--bg2)
+        );
+        background-size: 400% 400%;
+        animation: bgShift 16s ease infinite;
+      }
+      @keyframes bgShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .page {
+        min-height: 100dvh;
+        padding: clamp(16px, 4vw, 28px);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 18px;
+      }
+
+      /* ===== Password Gate ===== */
+      .gate-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        background: linear-gradient(
+          -45deg,
+          var(--bg1),
+          var(--bg2),
+          var(--bg3),
+          var(--bg2)
+        );
+        background-size: 400% 400%;
+        animation: bgShift 16s ease infinite;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .gate-card {
+        width: min(560px, 92vw);
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        border-radius: 24px;
+        padding: 22px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        text-align: center;
+      }
+      .gate-title {
+        font-size: clamp(22px, 5vw, 28px);
+        margin: 6px 0 4px;
+      }
+      .gate-sub {
+        font-size: clamp(14px, 3.6vw, 16px);
+        opacity: 0.85;
+        margin: 4px 0 12px;
+      }
+      .gate-input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: rgba(255, 255, 255, 0.9);
+        font-size: 16px;
+        outline: none;
+      }
+      .gate-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+      .gate-error {
+        margin-top: 10px;
+        color: #ff7b7b;
+        font-size: 14px;
+        min-height: 18px;
+      }
+      @keyframes shakeX {
+        10%,
+        90% {
+          transform: translateX(-2px);
+        }
+        20%,
+        80% {
+          transform: translateX(4px);
+        }
+        30%,
+        50%,
+        70% {
+          transform: translateX(-6px);
+        }
+        40%,
+        60% {
+          transform: translateX(6px);
+        }
+      }
+      .shake {
+        animation: shakeX 0.45s ease;
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      /* ===== Player ===== */
+      .player {
+        position: sticky;
+        top: 12px;
+        z-index: 10;
+        border-radius: 22px;
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        box-shadow: 0 10px 38px rgba(0, 0, 0, 0.18);
+        padding: clamp(14px, 3vw, 22px);
+        display: grid;
+        gap: 10px;
+      }
+      .player.reveal {
+        animation: playerIn 0.45s cubic-bezier(0.16, 0.84, 0.44, 1) both;
+      }
+      @keyframes playerIn {
+        0% {
+          opacity: 0;
+          transform: translateY(-8px) scale(0.98);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .player.out {
+        animation: playerOut 0.22s ease both;
+      }
+      @keyframes playerOut {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-6px) scale(0.99);
+        }
+      }
+
+      .player-row {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 14px;
+        align-items: center;
+      }
+      .disc {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 26px;
+        background: radial-gradient(
+          circle at 30% 30%,
+          var(--accent),
+          var(--accent-2)
+        );
+        color: #fff;
+        box-shadow: var(--ring);
+        animation: spinPause 60s linear infinite;
+      }
+      @keyframes spinPause {
+        0% {
+          transform: rotate(0);
+        }
+        40% {
+          transform: rotate(2turn);
+        }
+        100% {
+          transform: rotate(2turn);
+        }
+      }
+      .title {
+        font-size: clamp(18px, 3.2vw, 22px);
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .subtitle {
+        font-size: clamp(14px, 2.6vw, 16px);
+        color: var(--muted);
+      }
+      .controls {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-weight: 700;
+        cursor: pointer;
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        transition: transform 0.08s ease, filter 0.2s ease;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: translateY(0) scale(0.98);
+      }
+      .btn.ghost {
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--fg);
+      }
+      .btn.secondary {
+        background: var(--accent-2);
+      }
+      .lyric {
+        font-size: clamp(15px, 3.2vw, 18px);
+        line-height: 1.6;
+      }
+      .lyric strong {
+        font-weight: 800;
+      }
+      .quote {
+        display: block;
+        font-style: italic;
+        opacity: 0.9;
+        margin-bottom: 4px;
+      }
+      .quote small {
+        opacity: 0.7;
+        font-style: normal;
+      }
+
+      /* ===== Grid ===== */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+      }
+      .track {
+        position: relative;
+        border-radius: 18px;
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        padding: 14px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+        transition: transform 0.12s ease, box-shadow 0.2s ease;
+        overflow: hidden;
+      }
+      .track:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16);
+      }
+      .art {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        font-size: 26px;
+        background: radial-gradient(
+          100% 100% at 30% 30%,
+          var(--accent),
+          var(--accent-2)
+        );
+        color: #fff;
+        box-shadow: var(--ring);
+      }
+      .track-head {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+      .track-title {
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+      .track-sub {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .track-cta {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .pill {
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 12px;
+        background: rgba(0, 0, 0, 0.06);
+        color: var(--fg);
+      }
+      .play {
+        margin-left: auto;
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%) translateY(20px);
+        background: rgba(20, 20, 20, 0.9);
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.25s ease;
+        z-index: 80;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      /* Botão Recomeçar */
+      #restartBtn {
+        display: none;
+        margin: 12px auto 0;
+      }
+
+      footer {
+        text-align: center;
+        font-size: 13px;
+        opacity: 0.72;
+        margin-top: 10px;
+      }
+
+      /* A11y */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      .track.played {
+        display: none;
+      }
+
+      /* ===== Modal de trechos ===== */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.25s ease;
+        z-index: 90;
+      }
+      .modal {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -44%) scale(0.98);
+        width: min(760px, 92vw);
+        border-radius: 20px;
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3);
+        padding: 16px;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.25s ease;
+        z-index: 100;
+      }
+      .modal.show + .modal-backdrop,
+      .modal.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .modal.show {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      .modal h3 {
+        margin: 6px 0 8px;
+        font-size: clamp(18px, 3.4vw, 22px);
+      }
+      .modal p {
+        margin: 6px 0 10px;
+        font-size: 14px;
+        opacity: 0.9;
+      }
+      .modal textarea {
+        width: 100%;
+        min-height: 220px;
+        border-radius: 12px;
+        padding: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        resize: vertical;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      .modal .row {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-top: 10px;
+      }
+
+      /* ===== Alert (Dedicação) — layout aprimorado ===== */
+      .alert-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 980;
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(2px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: 0.25s ease;
+      }
+      .alert-backdrop.show {
+        display: flex;
+        opacity: 1;
+      }
+
+      .alert-box {
+        width: min(760px, 92vw);
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        border-radius: 20px;
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.28);
+        padding: clamp(16px, 2.8vw, 24px);
+        color: var(--fg);
+        transform: translateY(-6px) scale(0.98);
+        animation: alertIn 0.25s ease forwards;
+      }
+      @keyframes alertIn {
+        to {
+          transform: translateY(0) scale(1);
+        }
+      }
+      .disc {
+        animation: discSpin 12s linear infinite;
+      }
+
+      @keyframes discSpin {
+        to {
+          transform: rotate(1turn);
+        }
+      }
+
+      /* Ícones dos cards — estáticos */
+      .art {
+        animation: none !important;
+      }
+
+      /* Acessibilidade: reduzir movimento */
+      @media (prefers-reduced-motion: reduce) {
+        .disc {
+          animation: none !important;
+        }
+      }
+      .alert-box h3 {
+        margin: 4px 0 10px;
+        font-size: clamp(18px, 3.4vw, 22px);
+        font-weight: 800;
+        text-wrap: balance;
+        letter-spacing: -0.01em;
+      }
+      .alert-content {
+        text-align: left;
+        line-height: 1.65;
+        font-size: clamp(14px, 2.8vw, 16px);
+        max-height: min(62vh, 560px);
+        overflow: auto;
+        padding-right: 0.25rem; /* evita texto sob a barra */
+        text-wrap: pretty;
+        hyphens: auto;
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+      .alert-content p {
+        margin: 0;
+      }
+      .alert-content p + p {
+        margin-top: 0.75em;
+      }
+
+      .alert-actions {
+        margin-top: 12px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .alert-backdrop,
+        .alert-box {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===== Gate (Senha) ===== -->
+    <div
+      id="gate"
+      class="gate-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="gateTitle"
+    >
+      <div class="gate-card">
+        <div
+          style="
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
+          "
+        >
+          <span>🔒</span><span><b>acesso</b> reservado</span>
+        </div>
+        <h2 id="gateTitle" class="gate-title">Qual é a senha?</h2>
+        <p class="gate-sub">
+          Dica: <i>Tenho seis letras, mas "eu sou apenas o...🎶"</i>
+        </p>
+        <input
+          id="gateInput"
+          class="gate-input"
+          type="password"
+          inputmode="decimal"
+          autocomplete="off"
+          placeholder="Resposta em letra maiúscula"
+        />
+        <div id="gateErr" class="gate-error" aria-live="polite"></div>
+        <div class="gate-actions">
+          <button id="gateEnter" class="btn">Entrar</button>
+          <button id="gateTheme" class="btn ghost">Alternar tema</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Alert personalizado (Dedicação) ===== -->
+    <div
+      id="alertBackdrop"
+      class="alert-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="alertTitle"
+      aria-describedby="alertText"
+    >
+      <div class="alert-box">
+        <h3 id="alertTitle">🌙✨ Uma dedicatória 🌙✨</h3>
+        <div id="alertText" class="alert-content">
+          Cléia, imagine que conheci alguém exatamente como você. Eu diria a ela
+          que conhecê-la foi como sentir uma brisa qualquer, mas que se tornou
+          mar dentro de mim — serena e infinita.
+        </div>
+        <div id="alertText" class="alert-content">
+          🌊💫 O tipo de presença que chega suave, mas bagunça e transforma tudo
+          ao redor, como a lua faz com as marés.
+        </div>
+        <div id="alertText" class="alert-content">
+          🌕💭 Ela tem algo de encanto e mistério, desses que não se explicam,
+          apenas se sentem. ✨ E, de alguma forma, isso está aqui — em silêncio,
+          mas vivo e contido.
+        </div>
+        <div id="alertText" class="alert-content">
+          É algo lindo que, apesar de eu já ter navegado em vários mares, o dela
+          é impossível de se entender e não sei se quero, pois o encanto está
+          justamente nisso.🌹🌌🫶🏼
+        </div>
+        <div id="alertText" class="alert-content">
+          Espero que ela não se importe com este projeto, que é só um pedaço do
+          que sinto. Ele traz um pouco do caos e do colo que ela provoca em mim.
+        </div>
+        <div id="alertText" class="alert-content">
+          As letras são de músicas que me lembram ela, e o player é um convite
+          para ela se perder e se encontrar nesse caos bom que ela é.
+        </div>
+        <div class="alert-actions">
+          <button id="alertOk" class="btn">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <main class="page" role="main">
+      <!-- ===== Player (inicialmente oculto) ===== -->
+      <section id="player" class="player hidden" aria-label="faixa atual">
+        <div class="player-row">
+          <div class="disc" id="disc" aria-hidden="true">🎵</div>
+          <div>
+            <div class="title" id="title">Entre o caos e o colo… você.</div>
+            <div class="subtitle" id="subtitle"></div>
+          </div>
+          <div class="controls">
+            <button class="btn secondary" id="toggleTheme">
+              Alternar tema
+            </button>
+            <button class="btn ghost" id="copyLink">Copiar link</button>
+          </div>
+        </div>
+        <div class="lyric">
+          <span class="quote" id="quoteLine" style="display: none"></span>
+          <span id="lyricText"
+            >Você tem o dom de bagunçar o eixo e, ainda assim, fazer tudo
+            parecer no lugar. Quando me desequilibra, eu percebo o quanto gosto
+            de cair pra perto de você.</span
+          >
+        </div>
+        <div class="lyric" id="punch">
+          <strong>P.S.:</strong> Se o caos for bom, que seja o seu — nele eu me
+          encontro rindo de mim e te querendo mais.
+        </div>
+      </section>
+
+      <!-- ===== Grid de Cards Musicais ===== -->
+      <section class="grid" id="grid" aria-label="lista de faixas"></section>
+
+      <!-- Botão para recomeçar quando todas as faixas forem tocadas -->
+      <button id="restartBtn" class="btn secondary" aria-label="recomeçar set">
+        Recomeçar set 🔁
+      </button>
+
+      <footer>Developed with 💜 by ._.. ...</footer>
+    </main>
+
+    <!-- Player de Áudio (global) -->
+    <audio id="playerAudio" preload="none"></audio>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Modal de trechos (mantido para uso manual) -->
+    <div
+      class="modal"
+      id="lyricsModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lyricsTitle"
+    >
+      <h3 id="lyricsTitle">Colar trechos de letras (um por linha)</h3>
+      <p>
+        Para cada música, cole <b>trechos curtos</b> (máx. ~90 caracteres). Isso
+        mantém tudo certinho em termos de direitos autorais. 😉
+      </p>
+      <p>
+        <b>Formato:</b> use o título como chave e linhas como trechos. Exemplo:
+      </p>
+      <textarea
+        id="lyricsTextarea"
+        spellcheck="false"
+        placeholder="Bem me queira:
+me queira assim, de qualquer jeito
+...
+
+Fiz esse som pra você:
+...
+
+Pequena Flor:
+...
+
+Dezembro:
+...
+
+Teu cheiro:
+...
+
+Quem Sabe:
+...
+"
+      ></textarea>
+      <div class="row">
+        <button class="btn ghost" id="closeLyrics">Cancelar</button>
+        <button class="btn" id="saveLyrics">Salvar trechos</button>
+      </div>
+    </div>
+    <div class="modal-backdrop" id="lyricsBackdrop"></div>
+
+    <script>
+      (function () {
+        const $ = (s) => document.querySelector(s);
+
+        const grid = $("#grid");
+        const toast = $("#toast");
+        const titleEl = $("#title");
+        const lyricEl = $("#lyricText");
+        const quoteEl = $("#quoteLine");
+        const punchEl = $("#punch");
+        const discEl = $("#disc");
+        const playerEl = $("#player");
+        const audioEl = $("#playerAudio");
+        const restartBtn = $("#restartBtn");
+
+        const lyricsModal = $("#lyricsModal");
+        const lyricsBackdrop = $("#lyricsBackdrop");
+        const lyricsTextarea = $("#lyricsTextarea");
+        const closeLyricsBtn = $("#closeLyrics");
+        const saveLyricsBtn = $("#saveLyrics");
+
+        const alertBackdrop = $("#alertBackdrop");
+        const alertOk = $("#alertOk");
+        const alertTextEl = $("#alertText");
+
+        function showToast(text) {
+          if (!toast) return;
+          toast.textContent = text;
+          toast.classList.add("show");
+          clearTimeout(showToast._t);
+          showToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
+        }
+
+        // URL params / inicial
+        let params;
+        try {
+          params = new URL(location.href).searchParams;
+        } catch {
+          params = new URLSearchParams();
+        }
+        const initial = {
+          title: "Entre o caos e o colo… você.",
+          msg: "Você tem o dom de bagunçar o eixo e, ainda assim, fazer tudo parecer no lugar. Quando me desequilibra, eu percebo o quanto gosto de cair pra perto de você.",
+          punch:
+            "P.S.: Se o caos for bom, que seja o seu — nele eu me encontro rindo de mim e te querendo mais.",
+        };
+        const safe = (v) => (v || "").toString().trim().slice(0, 500);
+        titleEl.textContent = safe(params.get("title")) || initial.title;
+        lyricEl.textContent = safe(params.get("msg")) || initial.msg;
+        const rawPunch = safe(params.get("punch")) || initial.punch;
+        const cleanedPunch = rawPunch.replace(/^P\.?S\.?\:\s*/i, "");
+        punchEl.innerHTML = `<strong>P.S.:</strong> ${cleanedPunch}`;
+
+        // Tema via URL
+        const theme = (params.get("theme") || "").toLowerCase();
+        if (theme === "eletrico") document.body.classList.add("eletrico");
+        $("#toggleTheme")?.addEventListener("click", () => {
+          document.body.classList.toggle("eletrico");
+        });
+
+        // Copiar link
+        $("#copyLink")?.addEventListener("click", async () => {
+          const u = new URL(location.href.split("?")[0]);
+          u.searchParams.set("title", titleEl.textContent);
+          u.searchParams.set("msg", lyricEl.textContent);
+          u.searchParams.set(
+            "punch",
+            punchEl.textContent.replace(/^P\.S\.\:\s*/, "")
+          );
+          if (document.body.classList.contains("eletrico"))
+            u.searchParams.set("theme", "eletrico");
+          try {
+            await navigator.clipboard.writeText(u.toString());
+            showToast("Link copiado! 💌");
+          } catch {
+            showToast("Não foi possível copiar. Toque e selecione o link.");
+            try {
+              prompt("Copie o link:", u.toString());
+            } catch {}
+          }
+        });
+
+        // ===== Faixas =====
+        const tracks = [
+          {
+            key: "Bem me queira",
+            emoji: "💫",
+            title: "Bem me queira",
+            sub: "Pedro Salomão, Gabriel Elias",
+            msg: "Você é o vento que balança o meu caos, sorrindo entre calmarias. Ama o mar porque se reconhece nele — vasto, livre e impossível de segurar.",
+            punch:
+              "Quando você passa, o mundo parece dizer: “bem me queira, mesmo que eu te desarrume um pouco.”",
+            quotes: [
+              "Ela ama o mar porque encontra lá a outra metade da tua imensidão.",
+              "Ela é o vento que balança a própria rede, sorrindo a tarde inteira.",
+              "Ela encontrou no ressoar da natureza seu próprio bem me queira.",
+            ],
+            src: "./audio/bem-me-queira.mp3",
+          },
+          {
+            key: "Fiz esse som pra você",
+            emoji: "🎧",
+            title: "Fiz esse som pra você",
+            sub: "Gabriel Elias, Ralk",
+            msg: "Cada vez que penso em você, é como se o mar inteiro respirasse junto. Entre as ondas do teu cabelo e o som da tua voz, eu me encontro.",
+            punch:
+              "Você é a canção que o mar tenta repetir — e que eu quero ouvir pra sempre.",
+            quotes: [
+              "Fiz esse som pra você ouvir na beira do mar.",
+              "Eu vou dropar nas ondas desse teu cabelo.",
+              "Cada grão de areia simboliza um beijo que na tua boca eu quero dar.",
+            ],
+            src: "./audio/fiz-esse-som-pra-voce.mp3",
+          },
+          {
+            key: "Pequena Flor",
+            emoji: "🌸",
+            title: "Pequena Flor",
+            sub: "Gabriel Elias",
+            msg: "Você faz raiar o bem em mim mesmo quando me desafia. Pequena flor que desarma com um olhar e floresce no meio do meu descontrole.",
+            punch:
+              "Não preciso te entender — só quero te admirar enquanto bagunça meu jardim.",
+            quotes: [
+              "Você faz raiar o bem em mim.",
+              "Não dá pra esconder o quanto eu tô afim.",
+              "Menina, eu te fiz essa canção.",
+            ],
+            src: "./audio/pequena-flor.mp3",
+          },
+          {
+            key: "Dezembro",
+            emoji: "📅",
+            title: "Dezembro",
+            sub: "Arthur Diniz",
+            msg: "O sol de dezembro reflete no teu rosto e o tempo parece parar. Entre o frio e o calor, você é a estação que me faz querer ficar.",
+            punch:
+              "Teu sorriso é constelação — guia o meu caos e aquece o que sobra do inverno.",
+            quotes: [
+              "A minha felicidade tem a pele tão macia.",
+              "O Sol bate em seu rosto num final de tarde de dezembro.",
+              "O seu sorriso é como uma constelação.",
+            ],
+            src: "./audio/dezembro.mp3",
+          },
+          {
+            key: "Teu cheiro",
+            emoji: "🫶",
+            title: "Teu cheiro",
+            sub: "Claus & Vanessa",
+            msg: "Teu cheiro invade o ar e eu perco o rumo. É o tipo de lembrança que não se explica, só se respira.",
+            punch:
+              "Você é o perfume do caos bom — aquele que bagunça e acalma no mesmo instante.",
+            quotes: [
+              "Teu cheiro tem o dom de hipnotizar.",
+              "O teu aroma está no ar, em qualquer lugar que eu vou.",
+              "Vem você e rola aquele som pra gente dançar.",
+            ],
+            src: "./audio/teu-cheiro.mp3",
+          },
+          {
+            key: "Quem Sabe",
+            emoji: "✨",
+            title: "Quem Sabe",
+            sub: "Julies, Sofia Gayoso, DEKO",
+            msg: "Teus talvez me desafiam, teus sorrisos me confundem. Mas é nesse desequilíbrio que eu descubro o quanto gosto de te perder e te achar de novo.",
+            punch:
+              "Se for pra errar, que seja contigo — porque o arrependimento é pequeno perto do que você provoca.",
+            quotes: [
+              "Ele tem Sol, tem sal e um coração pintado.",
+              "Já tô te beijando sem tocar você.",
+              "Melhor se arrepender do que passar vontade.",
+            ],
+            src: "./audio/quem-sabe.mp3",
+          },
+        ];
+
+        // Storage opcional
+        const LS_KEY = "lyricsData.v1";
+        try {
+          const stored = JSON.parse(localStorage.getItem(LS_KEY) || "null");
+          if (stored && Array.isArray(stored)) mergeQuotes(stored);
+        } catch {}
+
+        function mergeQuotes(arr) {
+          const map = new Map(
+            arr.map((o) => [
+              String(o.key || "")
+                .trim()
+                .toLowerCase(),
+              o.quotes || [],
+            ])
+          );
+          tracks.forEach((t) => {
+            const q = map.get(t.key.toLowerCase());
+            if (Array.isArray(q) && q.length)
+              t.quotes = q.slice(0, 10).map((s) => String(s).slice(0, 120));
+          });
+        }
+
+        // Render grid
+        function renderGrid() {
+          grid.innerHTML = "";
+          tracks.forEach((t) => {
+            const card = document.createElement("article");
+            card.className = "track";
+            card.setAttribute("tabindex", "0");
+            card.innerHTML = `
+              <div class="track-head">
+                <div class="art" aria-hidden="true">${t.emoji}</div>
+                <div>
+                  <div class="track-title">${t.title}</div>
+                  <div class="track-sub">${t.sub}</div>
+                </div>
+              </div>
+              <div class="track-cta">
+                <button class="btn tocar" aria-label="tocar faixa" data-src="${t.src}">▶️ Tocar</button>
+              </div>`;
+            const play = () => {
+              card.classList.add("played");
+              applyTrack(t);
+              playAudio(t);
+              updateRemaining();
+            };
+            card.querySelector(".tocar").addEventListener("click", play);
+            card.addEventListener("keyup", (e) => {
+              if (e.key === "Enter" || e.key === " ") play();
+            });
+            grid.appendChild(card);
+          });
+        }
+
+        function pickQuote(t) {
+          if (!t.quotes || !t.quotes.length) return null;
+          const i = Math.floor(Math.random() * t.quotes.length);
+          const raw = String(t.quotes[i] || "").trim();
+          return raw ? raw.slice(0, 120) : null;
+        }
+
+        function applyTrack(t) {
+          titleEl.textContent = t.title;
+          const q = pickQuote(t);
+          if (q) {
+            quoteEl.style.display = "block";
+            quoteEl.innerHTML = `“${escapeHTML(q)}” <small>— ${escapeHTML(
+              t.title
+            )}</small>`;
+          } else {
+            quoteEl.style.display = "none";
+            quoteEl.textContent = "";
+          }
+          lyricEl.textContent = t.msg;
+          punchEl.innerHTML = `<strong>P.S.:</strong> ${t.punch}`;
+          discEl.textContent = t.emoji;
+
+          if (playerEl) {
+            playerEl.classList.remove("hidden");
+            playerEl.classList.remove("reveal");
+            void playerEl.offsetWidth;
+            playerEl.classList.add("reveal");
+          }
+          titleEl.classList.remove("flash");
+          void titleEl.offsetWidth;
+          titleEl.classList.add("flash");
+
+          // Media Session
+          try {
+            if ("mediaSession" in navigator) {
+              navigator.mediaSession.metadata = new MediaMetadata({
+                title: t.title,
+                artist: t.sub,
+                album: "Set pessoal",
+              });
+            }
+          } catch {}
+          showToast("Faixa selecionada ✨");
+        }
+
+        function playAudio(t) {
+          try {
+            const url = t.src;
+            if (!url) {
+              showToast("Sem arquivo de áudio 🤔");
+              return;
+            }
+            const abs = new URL(url, location.href).href;
+            if (audioEl.src !== abs) audioEl.src = url;
+            audioEl.play().catch((err) => {
+              console.error(err);
+              showToast("Não consegui tocar 😅");
+            });
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
+        function updateRemaining() {
+          const remaining = document.querySelectorAll(
+            ".track:not(.played)"
+          ).length;
+          if (remaining > 0) {
+            showToast(remaining + " faixa(s) restante(s)");
+            restartBtn.style.display = "none";
+          } else {
+            showToast("Set encerrado ✨");
+            restartBtn.style.display = "inline-block";
+          }
+        }
+
+        // Recomeçar: limpa cards, esconde player, pausa áudio
+        restartBtn?.addEventListener("click", () => {
+          document
+            .querySelectorAll(".track.played")
+            .forEach((el) => el.classList.remove("played"));
+          restartBtn.style.display = "none";
+
+          if (!playerEl.classList.contains("hidden")) {
+            playerEl.classList.add("out");
+            setTimeout(() => {
+              playerEl.classList.add("hidden");
+              playerEl.classList.remove("out");
+            }, 240);
+          }
+          try {
+            audioEl.pause();
+            audioEl.currentTime = 0;
+          } catch {}
+
+          titleEl.textContent = initial.title;
+          lyricEl.textContent = initial.msg;
+          const cleaned = initial.punch.replace(/^P\.?S\.?\:\s*/i, "");
+          punchEl.innerHTML = `<strong>P.S.:</strong> ${cleaned}`;
+          quoteEl.style.display = "none";
+          quoteEl.textContent = "";
+
+          showToast("Set reiniciado 🔁");
+          grid?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+
+        // Modal trechos (fechar/salvar)
+        function closeLyrics() {
+          lyricsModal.classList.remove("show");
+          lyricsBackdrop.style.opacity = 0;
+        }
+        closeLyricsBtn?.addEventListener("click", closeLyrics);
+        lyricsBackdrop?.addEventListener("click", closeLyrics);
+
+        function parseTextarea(txt) {
+          const blocks = String(txt || "").split(/\n\s*\n/);
+          const out = [];
+          for (const b of blocks) {
+            const lines = b
+              .split(/\n/)
+              .map((s) => s.trim())
+              .filter(Boolean);
+            if (!lines.length) continue;
+            const header = lines.shift();
+            const m = header.match(/^(.+?):\s*$/);
+            const key = m ? m[1].trim() : header.replace(/:$/, "").trim();
+            if (!key) continue;
+            const quotes = lines.map((s) => s.slice(0, 120)).filter(Boolean);
+            out.push({ key, quotes });
+          }
+          return out;
+        }
+        saveLyricsBtn?.addEventListener("click", () => {
+          const parsed = parseTextarea(lyricsTextarea.value);
+          if (!parsed.length) {
+            showToast("Nada para salvar 😅");
+            return;
+          }
+          mergeQuotes(parsed);
+          try {
+            localStorage.setItem(LS_KEY, JSON.stringify(parsed));
+          } catch {}
+          closeLyrics();
+          showToast("Trechos salvos ✅");
+        });
+
+        // Utils
+        function escapeHTML(s) {
+          return String(s).replace(
+            /[&<>\"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              }[c])
+          );
+        }
+
+        // Inicializa grid
+        renderGrid();
+
+        /* ===== Gate Logic (senha) & Alerta ===== */
+        const GATE_KEY_PARAM = (
+          new URL(location.href).searchParams.get("pass") || ""
+        ).trim();
+        const ACCESS_CODE = GATE_KEY_PARAM || "P";
+        const gate = $("#gate");
+        const gateInput = $("#gateInput");
+        const gateEnter = $("#gateEnter");
+        const gateErr = $("#gateErr");
+        const gateTheme = $("#gateTheme");
+
+        function gateHide() {
+          gate.classList.add("hidden");
+          gate.setAttribute("aria-hidden", "true");
+        }
+        function gateShow() {
+          gate.classList.remove("hidden");
+          gate.removeAttribute("aria-hidden");
+          setTimeout(() => gateInput?.focus(), 50);
+        }
+        function gateShake(msg) {
+          if (gateErr) gateErr.textContent = msg || "Senha incorreta 😅";
+          const card = gate.querySelector(".gate-card");
+          card.classList.remove("shake");
+          void card.offsetWidth;
+          card.classList.add("shake");
+        }
+
+        function paragraphizeAlert() {
+          if (!alertTextEl) return;
+          // Transforma o texto em <p>…</p> separando por fim de frase.
+          const raw = alertTextEl.textContent
+            .replace(/\s*\n\s*/g, " ")
+            .replace(/\s{2,}/g, " ")
+            .trim();
+          const html =
+            "<p>" +
+            raw.replace(/([.!?…])\s+(?=[A-ZÁÉÍÓÚÂÊÔÃÕÇ])/g, "$1</p><p>") +
+            "</p>";
+          alertTextEl.innerHTML = html;
+        }
+        function showDedicationAlertOnce() {
+          try {
+            if (sessionStorage.getItem("dedicationShown") === "yes") return;
+            paragraphizeAlert();
+            alertBackdrop.classList.add("show");
+            sessionStorage.setItem("dedicationShown", "yes");
+          } catch {
+            paragraphizeAlert();
+            alertBackdrop.classList.add("show");
+          }
+        }
+
+        function gateCheck() {
+          const v = (gateInput?.value || "").trim();
+          if (v === ACCESS_CODE) {
+            sessionStorage.setItem("doceSalgadoAccess", "ok");
+            gateHide();
+            try {
+              showToast("Bem-vinda! ✨");
+            } catch {}
+            showDedicationAlertOnce(); // abre a dedicatória após login
+          } else {
+            gateShake("Ops, foi quase. Tenta de novo?");
+          }
+        }
+
+        if (sessionStorage.getItem("doceSalgadoAccess") === "ok") {
+          gateHide();
+        } else {
+          gateShow();
+        }
+        gateEnter?.addEventListener("click", gateCheck);
+        gateInput?.addEventListener("keyup", (e) => {
+          if (e.key === "Enter") gateCheck();
+        });
+        gateTheme?.addEventListener("click", () => {
+          document.body.classList.toggle("eletrico");
+          const card = gate.querySelector(".gate-card");
+          card.classList.add("shake");
+          setTimeout(() => card.classList.remove("shake"), 400);
+        });
+
+        alertOk?.addEventListener("click", () => {
+          alertBackdrop.classList.remove("show");
+          grid?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      })();
+    </script>
+  </body>
+</html>
