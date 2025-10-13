@@ -58,6 +58,36 @@
         box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.02);
       }
 
+      /* Ícone do título/player */
+      .logo-icon {
+        width: clamp(28px, 4vw, 40px);
+        height: clamp(28px, 4vw, 40px);
+        margin-right: 10px;
+        vertical-align: middle;
+        border-radius: 12px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        object-fit: cover;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .page-title {
+        display: flex;
+        align-items: center;
+        justify-content: left;
+        gap: 10px;
+      }
+
+      /* Leve movimento “ondulante” do ícone */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
+      }
+
       /* Tema Elétrico (escuro) */
       .eletrico {
         --bg1: #0b1020;
@@ -731,7 +761,11 @@
     </div>
 
     <main class="page" role="main">
-      <h1 class="page-title" id="pageTitle">Ondafy</h1>
+      <!-- <h1 class="page-title" id="pageTitle">Ondafy</h1> -->
+      <h1 class="page-title" id="pageTitle">
+        <img src="./img/ico.png" alt="" class="logo-icon" />
+        Ondafy
+      </h1>
 
       <!-- ===== Player (inicialmente oculto) ===== -->
       <section id="player" class="player hidden" aria-label="faixa atual">
