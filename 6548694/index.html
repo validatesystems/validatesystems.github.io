@@ -20,6 +20,10 @@
         --ring: 0 0 0 2px rgba(124, 58, 237, 0.25);
       }
 
+      .alert-content {
+        margin-bottom: 14px; /* espaçamento entre parágrafos */
+      }
+
       /* efeito de brilho ao título do player */
       .title.flash {
         animation: glowTitle 1.2s ease;
@@ -727,32 +731,25 @@
     >
       <div class="alert-box">
         <h3 id="alertTitle">🌙✨ Uma dedicatória 🌙✨</h3>
-        <div id="alertText" class="alert-content">
-          Cléia, imagine que conheci alguém exatamente igual a você. Eu diria a
-          ela que conhecê-la foi como sentir uma brisa qualquer, mas que se
-          tornou mar dentro de mim — serena e infinita.
-        </div>
-        <div id="alertText" class="alert-content">
-          🌊💫 O tipo de presença que chega suave, mas bagunça e transforma tudo
-          ao redor, como a lua faz com as marés.
-        </div>
-        <div id="alertText" class="alert-content">
-          🌕💭 Ela tem algo de encanto e mistério, desses que não se explicam,
-          apenas se sentem. ✨ E, de alguma forma, isso está aqui — em silêncio,
-          mas vivo e contido.
-        </div>
-        <div id="alertText" class="alert-content">
-          É algo lindo que, apesar de eu já ter navegado em vários mares, o dela
-          é impossível de se entender e não sei se quero, pois o encanto está
-          justamente nisso.🌹🌌🫶🏼
-        </div>
-        <div id="alertText" class="alert-content">
-          Espero que ela não se importe com este projeto, que é só um pedaço do
-          que sinto. Ele traz um pouco do caos e do colo que ela provoca em mim.
-        </div>
-        <div id="alertText" class="alert-content">
-          As letras são de músicas que me lembram ela, e o player é um convite
-          para ela se perder e se encontrar nesse caos bom que ela é.
+        <div class="alert-content">
+          <p>Cléia, quem é você aos meus olhos?</p>
+          <p>
+            🌊💫 O tipo de presença que chega suave, mas bagunça e transforma
+            tudo ao redor, como a lua faz com as marés.
+          </p>
+          <p>
+            Quando você sorri, o mundo ganha o brilho de uma lua cheia que
+            ilumina o mar e o céu.
+          </p>
+          <p>
+            Espero que não se importe com este projeto, que é só um pedaço do
+            que vejo em você. Ele traz um pouco do caos e do colo que você
+            provoca.
+          </p>
+          <p>
+            As letras são de músicas que lembram você, e o player é um convite
+            para se perder e se encontrar nesse caos bom que és.
+          </p>
         </div>
         <div class="alert-actions">
           <button id="alertOk" class="btn">OK</button>
@@ -993,9 +990,9 @@ Quem Sabe:
             emoji: "💫",
             title: "Bem me queira",
             sub: "Pedro Salomão, Gabriel Elias",
-            msg: "Você é o vento que balança o meu caos, sorrindo entre calmarias. Ama o mar porque se reconhece nele — vasto, livre e impossível de segurar.",
+            msg: "Você é o vento que não se explica — vem forte, mas leve e capaz de mudar tudo ao redor. Ama o mar porque tem dentro de si a mesma imensidão, a calma e a força das marés mesmo diante do caos.",
             punch:
-              "Quando você passa, o mundo parece dizer: “bem me queira, mesmo que eu te desarrume um pouco.”",
+              "É o tipo de presença que ilumina sem esforço, que sorri e o dia entende o motivo. O mundo apenas observa e pensa: 'bem me queira como ela é'.",
             quotes: [
               "Ela ama o mar porque encontra lá a outra metade da tua imensidão.",
               "Ela é o vento que balança a própria rede, sorrindo a tarde inteira.",
@@ -1003,14 +1000,15 @@ Quem Sabe:
             ],
             src: "./audio/bem-me-queira.mp3",
           },
+
           {
             key: "Fiz esse som pra você",
             emoji: "🎧",
             title: "Fiz esse som pra você",
             sub: "Gabriel Elias, Ralk",
-            msg: "Cada vez que penso em você, é como se o mar inteiro respirasse junto. Entre as ondas do teu cabelo e o som da tua voz, eu me encontro.",
+            msg: "Você tem o ritmo do mar — caótico e suave, mas impossível de ignorar. Sua voz carrega um som que parece nascer das ondas, e o vento muda de direção só pra ouvir melhor.",
             punch:
-              "Você é a canção que o mar tenta repetir - quelas canções que ficam tocando na cabeça e não saem mais.",
+              "É o tipo de melodia que o mar tenta repetir, mas nunca alcança. Um som que fica na memória mesmo depois do silêncio.",
             quotes: [
               "Fiz esse som pra você ouvir na beira do mar.",
               "Eu vou dropar nas ondas desse teu cabelo.",
@@ -1018,14 +1016,15 @@ Quem Sabe:
             ],
             src: "./audio/fiz-esse-som-pra-voce.mp3",
           },
+
           {
             key: "Pequena Flor",
             emoji: "🌸",
             title: "Pequena Flor",
             sub: "Gabriel Elias",
-            msg: "Você faz raiar o bem em mim mesmo quando me desafia. Pequena flor que desarma com um olhar e floresce no meio do meu descontrole.",
+            msg: "Você é delicadeza que tenta se disfarçar. Pequena flor que floresce até nos dias nublados, e que carrega nos gestos a leveza de quem transforma o ambiente sem querer ou perceber.",
             punch:
-              "Não preciso te entender — só quero te admirar enquanto bagunça meu jardim.",
+              "Tem algo em você que faz o dia clarear — não porque tenta, mas porque existe assim: simples, bonita e inteira.",
             quotes: [
               "Você faz raiar o bem em mim.",
               "Não dá pra esconder o quanto eu tô afim.",
@@ -1033,14 +1032,15 @@ Quem Sabe:
             ],
             src: "./audio/pequena-flor.mp3",
           },
+
           {
             key: "Dezembro",
             emoji: "📅",
             title: "Dezembro",
             sub: "Arthur Diniz",
-            msg: "O sol de dezembro reflete no teu rosto e o tempo parece parar. Entre o frio e o calor, você é a estação que me faz querer ficar.",
+            msg: "Você tem algo como o sol em fim de tarde — aquece sem pedir, acalma sem prometer. O caos some à medida que o Sol se põe, trazendo assim o encontro raro entre o calor e a brisa que chega depois.",
             punch:
-              "Teu sorriso é constelação — guia o meu caos e aquece o que sobra do inverno.",
+              "Seu sorriso é constelação: faz a Lua ganhar um brilho extra.",
             quotes: [
               "A minha felicidade tem a pele tão macia.",
               "O Sol bate em seu rosto num final de tarde de dezembro.",
@@ -1048,14 +1048,15 @@ Quem Sabe:
             ],
             src: "./audio/dezembro.mp3",
           },
+
           {
             key: "Teu cheiro",
             emoji: "🫶",
             title: "Teu cheiro",
             sub: "Claus & Vanessa",
-            msg: "Teu cheiro invade o ar e eu perco o rumo. É o tipo de lembrança que não se explica, só se respira.",
+            msg: "Você tem o perfume de quem marca presença mesmo quando parte. Há em você um ar leve e forte, desses que preenchem o espaço e tornam o silêncio mais bonito.",
             punch:
-              "Você é o perfume do caos bom — aquele que bagunça e acalma no mesmo instante.",
+              "Seu cheiro é lembrança boa que não se apaga — mistura de calma e intensidade que fica no ar mesmo depois que o vento muda.",
             quotes: [
               "Teu cheiro tem o dom de hipnotizar.",
               "O teu aroma está no ar, em qualquer lugar que eu vou.",
@@ -1063,14 +1064,15 @@ Quem Sabe:
             ],
             src: "./audio/teu-cheiro.mp3",
           },
+
           {
             key: "Quem Sabe",
             emoji: "✨",
             title: "Quem Sabe",
             sub: "Julies, Sofia Gayoso, DEKO",
-            msg: "Teus talvez me desafiam, teus sorrisos me confundem. Mas é nesse desequilíbrio que eu descubro o quanto gosto de te perder e te achar de novo.",
+            msg: "Teus talvez me desafiam, teus sorrisos me confundem. Como é possível gostar de uma confusão assim? Simplesmente porque é você.",
             punch:
-              "Se for pra errar, que seja contigo — porque o arrependimento é pequeno perto do que você provoca.",
+              "Se for pra errar, que seja contigo — porque, até o erro será divertido ao seu lado.",
             quotes: [
               "Ele tem Sol, tem sal e um coração pintado.",
               "Já tô te beijando sem tocar você.",
