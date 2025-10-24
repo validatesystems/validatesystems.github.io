@@ -260,9 +260,10 @@
 
         <div class="actions">
           <button class="btn" id="copyBtn" type="button">Copiar</button>
-          <button class="btn" id="okBtn" type="button">Entendi ✨</button>
+          <button class="btn" id="okBtn" type="button">Sair ✨</button>
         </div>
       </article>
+      <footer>Developed with 💜 by ._.. ...</footer>
     </main>
 
     <script>
@@ -391,9 +392,14 @@
           }
         });
 
-        btnOk?.addEventListener("click", () =>
-          window.scrollTo({ top: 0, behavior: "smooth" })
-        );
+        // btnOk?.addEventListener("click", () =>
+        //   window.scrollTo({ top: 0, behavior: "smooth" })
+        // );
+        /* ===== OK -> redireciona para a página inicial ===== */
+        okBtn?.addEventListener("click", () => {
+          window.location.href =
+            "https://validatesystems.github.io/6548694/index.html";
+        });
       })();
     </script>
   </body>

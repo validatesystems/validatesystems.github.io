@@ -199,9 +199,10 @@
           </p>
         </div>
         <div class="actions">
-          <button class="btn" id="okBtn">Ok ✨</button>
+          <button class="btn" id="okBtn">Sair ✨</button>
         </div>
       </article>
+      <footer>Developed with 💜 by ._.. ...</footer>
     </main>
 
     <script>
@@ -225,9 +226,14 @@
         });
 
         /* ===== Ações do card ===== */
+        // okBtn?.addEventListener("click", () => {
+        //   window.scrollTo({ top: 0, behavior: "smooth" });
+        //   card.querySelector(".title")?.focus?.();
+        // });
+        /* ===== OK -> redireciona para a página inicial ===== */
         okBtn?.addEventListener("click", () => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          card.querySelector(".title")?.focus?.();
+          window.location.href =
+            "https://validatesystems.github.io/6548694/index.html";
         });
       })();
     </script>
