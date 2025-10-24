@@ -314,6 +314,28 @@
         inset: 0;
         width: 100%;
       }
+
+      .card-meta {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .card-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.06);
+      }
+
+      .eletrico .card-date {
+        background: rgba(255, 255, 255, 0.08);
+      }
     </style>
   </head>
   <body>
@@ -537,11 +559,21 @@
         const grid = $("#grid");
         const cards = [
           {
+            emoji: "😂📊",
+            title: "Assuntos sérios (com uma professora que sabe rir deles)",
+            sub: "Final de dia de sexta-feira",
+            desc: "Uma página que transforma prazos em piadas e reuniões em terapia — com humor e um toque de café cancelado.",
+            href: "./index(Assuntos sérios (com uma professora que sabe rir deles)).html",
+            publishedAt: "2025-10-24", // ← defina aqui
+          },
+
+          {
             emoji: "📜",
             title: "Carta narrada pelo silêncio",
             sub: "Uma carta narrada pelo silêncio",
             desc: "Página que tenta revelar o que o silêncio sabe sobre você.",
             href: "./index(carta narrada pelo silêncio).html",
+            publishedAt: "2025-10-23", // ← defina aqui
           },
           {
             emoji: "🌱",
@@ -549,6 +581,7 @@
             sub: "Bom dia especial para alguém mais do que especial",
             desc: "Página de bom dia que planta uma semente para você iluminar.",
             href: "./index(bom dia semente de luz).html",
+            publishedAt: "2025-10-22", // ← defina aqui
           },
           {
             emoji: "🫙",
@@ -556,6 +589,7 @@
             sub: "Mensagens especiais do mar",
             desc: "Página de cartas engarrafadas: mensagens que o mar traz pra você.",
             href: "./index(cartas engarrafadas).html",
+            publishedAt: "2025-10-21", // ← defina aqui
           },
           {
             emoji: "🌅",
@@ -563,6 +597,7 @@
             sub: "Mensagem especial",
             desc: "Página de bom dia no estilo morde & assopra: revira e acalma.",
             href: "./index(bom dia morde e assopra).html",
+            publishedAt: "2025-10-21", // ← defina aqui
           },
           {
             emoji: "🎧",
@@ -570,6 +605,7 @@
             sub: "Página com player e faixas",
             desc: "Set de músicas, citações e aquele clima de mar + caos bom.",
             href: "./index(musical).html",
+            publishedAt: "2025-10-20", // ← defina aqui
           },
           {
             emoji: "🍯",
@@ -577,27 +613,56 @@
             sub: "Página com mensagens que trazem a combinação de doce e salgado",
             desc: "Entre o doce e o salgado…",
             href: "./index(doce e salgado).html",
+            publishedAt: "2025-10-10", // ← defina aqui
           },
         ];
 
         function render() {
           grid.innerHTML = "";
+
+          // formata datas pt-BR; se quiser só dia/mês/ano, troque as opções
+          const fmt = new Intl.DateTimeFormat("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          });
+
           for (const c of cards) {
             const a = document.createElement("article");
             a.className = "card";
+
+            // calcula texto da data (ou vazio se não houver)
+            let dateHtml = "";
+            if (c.publishedAt) {
+              const d = new Date(c.publishedAt);
+              const safe = isNaN(d.getTime()) ? null : d;
+              if (safe) {
+                dateHtml = `
+          <div class="card-meta">
+            <span class="card-date" title="Data de publicação">
+              <span aria-hidden="true">🗓️</span>
+              <span>${fmt.format(safe)}</span>
+            </span>
+          </div>
+        `;
+              }
+            }
+
             a.innerHTML = `
-              <div class="card-head">
-                <div class="art" aria-hidden="true">${c.emoji}</div>
-                <div>
-                  <h3 class="card-title">${c.title}</h3>
-                  <p class="card-sub">${c.sub}</p>
-                </div>
-              </div>
-              <div class="card-body">${c.desc}</div>
-              <div class="card-actions">
-                <a class="btn secondary" href="${c.href}">Abrir</a>
-              </div>
-            `;
+      <div class="card-head">
+        <div class="art" aria-hidden="true">${c.emoji}</div>
+        <div>
+          <h3 class="card-title">${c.title}</h3>
+          <p class="card-sub">${c.sub}</p>
+          ${dateHtml}
+        </div>
+      </div>
+      <div class="card-body">${c.desc}</div>
+      <div class="card-actions">
+        <a class="btn secondary" href="${c.href}">Abrir</a>
+      </div>
+    `;
+
             // acessibilidade via teclado (Enter/Space abre o link)
             a.tabIndex = 0;
             a.addEventListener("click", (e) => {
@@ -607,9 +672,11 @@
             a.addEventListener("keyup", (e) => {
               if (e.key === "Enter" || e.key === " ") location.href = c.href;
             });
+
             grid.appendChild(a);
           }
         }
+
         render();
       })();
     </script>
