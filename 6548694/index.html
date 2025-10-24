@@ -617,6 +617,15 @@
           },
         ];
 
+        function localDateFromYYYYMMDD(s) {
+          // aceita "YYYY-MM-DD" ou "YYYY-MM-DDTHH:mm"
+          if (!s) return null;
+          const only = s.slice(0, 10); // pega só a parte da data
+          const [y, m, d] = only.split("-").map(Number);
+          if (!y || !m || !d) return null;
+          return new Date(y, m - 1, d); // <-- constrói no fuso local
+        }
+
         function render() {
           grid.innerHTML = "";
 
@@ -634,17 +643,17 @@
             // calcula texto da data (ou vazio se não houver)
             let dateHtml = "";
             if (c.publishedAt) {
-              const d = new Date(c.publishedAt);
-              const safe = isNaN(d.getTime()) ? null : d;
+              const d = localDateFromYYYYMMDD(c.publishedAt); // <-- aqui
+              const safe = d && !isNaN(d.getTime()) ? d : null;
               if (safe) {
                 dateHtml = `
-          <div class="card-meta">
-            <span class="card-date" title="Data de publicação">
-              <span aria-hidden="true">🗓️</span>
-              <span>${fmt.format(safe)}</span>
-            </span>
-          </div>
-        `;
+      <div class="card-meta">
+        <span class="card-date" title="Data de publicação">
+          <span aria-hidden="true">🗓️</span>
+          <span>${fmt.format(safe)}</span>
+        </span>
+      </div>
+    `;
               }
             }
 
