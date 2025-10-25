@@ -51,6 +51,7 @@
         );
         background-size: 400% 400%;
         animation: bgShift 18s ease infinite;
+        -webkit-tap-highlight-color: transparent;
       }
       @keyframes bgShift {
         0% {
@@ -107,6 +108,8 @@
       /* ----- Área de leitura com lanterna ----- */
       .reader {
         position: relative;
+        /* permite rolar na vertical e ainda enviar eventos de toque */
+        touch-action: pan-y;
       }
       /* camada de base (desfocada) */
       .content {
@@ -124,7 +127,7 @@
       #reveal {
         position: absolute;
         inset: 0;
-        pointer-events: none;
+        pointer-events: none; /* deixa os toques passarem para a base */
         /* máscara: só o círculo deixa ver a camada nítida */
         -webkit-mask: radial-gradient(
           circle var(--r) at var(--cx, -9999px) var(--cy, -9999px),
@@ -138,6 +141,9 @@
           #000 60%,
           transparent 61%
         );
+        /* ajuda a manter a animação suave em iOS */
+        will-change: transform, -webkit-mask, mask;
+        transform: translateZ(0);
       }
 
       /* Quando acessibilidade está ON (mostrar tudo), removemos o blur da base e escondemos a máscara */
@@ -304,7 +310,7 @@
         }
         cloneClearLayer();
 
-        /* ===== Lanterna de leitura (CSS mask segue ponteiro) ===== */
+        /* ===== Lanterna de leitura ===== */
         let pointerActive = false;
 
         function setMaskPosition(clientX, clientY) {
@@ -319,40 +325,91 @@
           reveal.style.setProperty("--cy", y + "px");
         }
 
-        // Desktop: segue o mouse sempre que estiver sobre a área
+        // --- Pointer Events (desktop, Android modernos, iOS 13+) ---
         reader.addEventListener("pointermove", (ev) => {
           if (ev.pointerType === "mouse" || pointerActive) {
             setMaskPosition(ev.clientX, ev.clientY);
           }
         });
 
-        // Mobile: só revela enquanto o dedo estiver pressionando
         reader.addEventListener("pointerdown", (ev) => {
           pointerActive = true;
           reader.setPointerCapture?.(ev.pointerId);
           setMaskPosition(ev.clientX, ev.clientY);
         });
-        function endPointer(ev) {
-          if (!pointerActive) return;
-          pointerActive = false;
-          // “esconde” a lanterna fora de cena (mask some)
+
+        function hideMask() {
           reveal.style.setProperty("--cx", "-9999px");
           reveal.style.setProperty("--cy", "-9999px");
-          reader.releasePointerCapture?.(ev.pointerId);
         }
+
+        function endPointer() {
+          if (!pointerActive) return;
+          pointerActive = false;
+          hideMask();
+          // Não dependemos de pointerId aqui (robusto p/ iOS)
+          try {
+            // soltar captura se houver
+            // (não temos o id neste escopo, então ignoramos)
+          } catch {}
+        }
+
         reader.addEventListener("pointerup", endPointer);
         reader.addEventListener("pointercancel", endPointer);
         reader.addEventListener("pointerleave", (ev) => {
           if (ev.pointerType === "mouse" && !pointerActive) {
-            reveal.style.setProperty("--cx", "-9999px");
-            reveal.style.setProperty("--cy", "-9999px");
+            hideMask();
           }
         });
 
+        // --- Fallback Touch (iOS e navegadores que priorizam TouchEvents) ---
+        function touchToClient(ev) {
+          const t = ev.touches[0] || ev.changedTouches?.[0];
+          if (!t) return null;
+          return { x: t.clientX, y: t.clientY };
+        }
+
+        reader.addEventListener(
+          "touchstart",
+          (ev) => {
+            const p = touchToClient(ev);
+            if (!p) return;
+            pointerActive = true;
+            setMaskPosition(p.x, p.y);
+          },
+          { passive: true }
+        );
+
+        reader.addEventListener(
+          "touchmove",
+          (ev) => {
+            if (!pointerActive) return;
+            const p = touchToClient(ev);
+            if (!p) return;
+            setMaskPosition(p.x, p.y);
+          },
+          { passive: true }
+        );
+
+        reader.addEventListener(
+          "touchend",
+          () => {
+            endPointer();
+          },
+          { passive: true }
+        );
+
+        reader.addEventListener(
+          "touchcancel",
+          () => {
+            endPointer();
+          },
+          { passive: true }
+        );
+
         // Redimensionamento mantém alinhamento
         window.addEventListener("resize", () => {
-          reveal.style.setProperty("--cx", "-9999px");
-          reveal.style.setProperty("--cy", "-9999px");
+          hideMask();
           // Recria a camada (caso quebre fluxo/linhas em layouts diferentes)
           cloneClearLayer();
         });
@@ -392,11 +449,8 @@
           }
         });
 
-        // btnOk?.addEventListener("click", () =>
-        //   window.scrollTo({ top: 0, behavior: "smooth" })
-        // );
         /* ===== OK -> redireciona para a página inicial ===== */
-        okBtn?.addEventListener("click", () => {
+        btnOk?.addEventListener("click", () => {
           window.location.href =
             "https://validatesystems.github.io/6548694/index.html";
         });
