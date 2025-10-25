@@ -18,6 +18,19 @@
         --card: rgba(255, 255, 255, 0.78);
         --glass: blur(10px);
         --ring: 0 0 0 2px rgba(124, 58, 237, 0.25);
+
+        /* ===== INPUT THEME-AWARE (tokens derivados) ===== */
+        --input-bg: color-mix(in srgb, var(--card) 90%, transparent);
+        --input-border: color-mix(in srgb, var(--fg) 14%, transparent);
+        --input-border-hover: color-mix(in srgb, var(--fg) 22%, transparent);
+        --input-border-focus: color-mix(
+          in srgb,
+          var(--accent) 62%,
+          transparent
+        );
+        --input-placeholder: color-mix(in srgb, var(--fg) 55%, transparent);
+        --input-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        --input-shadow-focus: 0 10px 28px rgba(0, 0, 0, 0.16);
       }
       /* Tema Elétrico (escuro) */
       .eletrico {
@@ -30,6 +43,19 @@
         --accent-2: #a78bfa;
         --card: rgba(20, 20, 40, 1);
         --ring: 0 0 0 2px rgba(34, 211, 238, 0.28);
+
+        /* ajustes sutis de contraste no escuro */
+        --input-bg: color-mix(in srgb, var(--card) 92%, transparent);
+        --input-border: color-mix(in srgb, var(--fg) 18%, transparent);
+        --input-border-hover: color-mix(in srgb, var(--fg) 28%, transparent);
+        --input-border-focus: color-mix(
+          in srgb,
+          var(--accent) 65%,
+          transparent
+        );
+        --input-placeholder: color-mix(in srgb, var(--fg) 55%, transparent);
+        --input-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        --input-shadow-focus: 0 12px 36px rgba(0, 0, 0, 0.5);
       }
 
       * {
@@ -257,15 +283,40 @@
         opacity: 0.85;
         margin: 4px 0 12px;
       }
+
+      /* ===== INPUT THEME-AWARE ===== */
       .gate-input {
         width: 100%;
         padding: 12px 14px;
         border-radius: 12px;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid var(--input-border);
+        background: var(--input-bg);
+        color: var(--fg);
         font-size: 16px;
         outline: none;
+        box-shadow: var(--input-shadow);
+        transition: border-color 0.15s ease, box-shadow 0.2s ease,
+          background 0.2s ease, transform 0.06s ease;
+        backdrop-filter: var(--glass);
       }
+      .gate-input::placeholder {
+        color: var(--input-placeholder);
+      }
+      .gate-input:hover {
+        border-color: var(--input-border-hover);
+      }
+      .gate-input:focus {
+        border-color: var(--input-border-focus);
+        box-shadow: var(--ring), var(--input-shadow-focus);
+        background: color-mix(in srgb, var(--card) 96%, transparent);
+        transform: translateY(-1px);
+      }
+      .gate-input.is-error {
+        border-color: #ff7b7b;
+        box-shadow: 0 0 0 3px rgba(255, 123, 123, 0.25), var(--input-shadow);
+        animation: shakeX 0.45s ease;
+      }
+
       .gate-actions {
         display: flex;
         gap: 10px;
@@ -323,7 +374,6 @@
         font-size: 12px;
         color: var(--muted);
       }
-
       .card-date {
         display: inline-flex;
         align-items: center;
@@ -332,7 +382,6 @@
         border-radius: 999px;
         background: rgba(0, 0, 0, 0.06);
       }
-
       .eletrico .card-date {
         background: rgba(255, 255, 255, 0.08);
       }
@@ -392,12 +441,8 @@
         </div>
       </header>
 
-      <!-- (Opcional) barra extra -->
       <nav class="toolbar" aria-label="ações rápidas"></nav>
-
-      <!-- Grid de projetos -->
       <section class="grid" id="grid" aria-label="lista de páginas"></section>
-
       <footer>Developed with 💜 by ._.. ...</footer>
     </main>
 
@@ -406,27 +451,12 @@
         const $ = (s) => document.querySelector(s);
 
         /* ==================== CONFIGURE AQUI AS CHAVES ==================== */
-        /**
-         * Cada item: { id: string, pass: "SENHA", hint: "Dica para exibir" }
-         * Obs.: comparação é case-sensitive. Coloque como desejar (ex.: MAIÚSCULAS).
-         */
         const KEYS = [
           { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
           { id: "vento", pass: "VENTO", hint: "Balança sua rede." },
           { id: "dj", pass: "SEREIA", hint: "DJ do mar" },
-
-          // ---- novas chaves sugeridas ----
           { id: "mare", pass: "MARE", hint: "Sobe e desce sem pedir licença." },
-          // { id: "concha", pass: "CONCHA", hint: "Guarda o som do mar." },
-          // { id: "farol", pass: "FAROL", hint: "Guia navios na noite." },
-          // { id: "sal", pass: "SAL", hint: "Dá sabor e conserva lembranças." },
-          // { id: "brisa", pass: "BRISA", hint: "Vento leve do fim de tarde." },
           { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
-          // {
-          //   id: "ancora",
-          //   pass: "ANCORA",
-          //   hint: "Mantém no lugar quando tudo se move.",
-          // },
         ];
         /* ================================================================== */
 
@@ -465,12 +495,10 @@
         const gateTheme = $("#gateTheme");
         const appRoot = $("#appRoot");
 
-        // Escolhe o índice com base no horário (muda a cada hora).
         function pickKeyIndex() {
           return Math.floor(Math.random() * KEYS.length);
         }
 
-        // Permite escolher uma chave específica via ?key=id (opcional)
         const keyParam = (
           new URL(location.href).searchParams.get("key") || ""
         ).toLowerCase();
@@ -482,13 +510,12 @@
         })();
         let currentKey = KEYS[currentKeyIndex];
 
-        // Exibe a dica selecionada
         function refreshHint() {
           gateHint.textContent = "Dica: " + (currentKey?.hint || "—");
         }
 
         /* ===== Persistência de sessão ===== */
-        const ACCESS_TAG = "cardsAccess.v1"; // chave no sessionStorage
+        const ACCESS_TAG = "cardsAccess.v1";
         function grantAccess() {
           try {
             sessionStorage.setItem(ACCESS_TAG, "ok:" + (currentKey?.id || ""));
@@ -518,21 +545,28 @@
           appRoot.removeAttribute("aria-hidden");
         }
 
-        function shake(msg) {
+        function setError(msg) {
           if (gateErr) gateErr.textContent = msg || "Senha incorreta 😅";
           const card = gate.querySelector(".gate-card");
           card.classList.remove("shake");
-          void card.offsetWidth;
+          void card.offsetWidth; // reflow para reiniciar animação
           card.classList.add("shake");
+          gateInput?.classList.add("is-error");
+          gateInput?.setAttribute("aria-invalid", "true");
+        }
+        function clearError() {
+          gateErr.textContent = "";
+          gateInput?.classList.remove("is-error");
+          gateInput?.removeAttribute("aria-invalid");
         }
 
         function checkPass() {
           const v = (gateInput?.value || "").trim();
-          if (!currentKey) return shake("Nenhuma chave ativa.");
+          if (!currentKey) return setError("Nenhuma chave ativa.");
           if (v === currentKey.pass) {
             grantAccess();
           } else {
-            shake("Ops, foi quase. Tenta de novo?");
+            setError("Ops, foi quase. Tenta de novo?");
           }
         }
 
@@ -547,12 +581,15 @@
         gateEnter?.addEventListener("click", checkPass);
         gateInput?.addEventListener("keyup", (e) => {
           if (e.key === "Enter") checkPass();
+          else clearError(); // limpa erro enquanto digita
         });
+        gateInput?.addEventListener("input", clearError); // limpa erro ao editar
         gateTheme?.addEventListener("click", () => {
           toggleTheme();
           const card = gate.querySelector(".gate-card");
           card.classList.add("shake");
           setTimeout(() => card.classList.remove("shake"), 380);
+          gateInput?.focus();
         });
 
         /* ===== Grid de cards ===== */
@@ -564,16 +601,15 @@
             sub: "Final de dia de sexta-feira",
             desc: "Uma página que transforma prazos em piadas e reuniões em terapia — com humor e um toque de café cancelado.",
             href: "./index(Assuntos sérios (com uma professora que sabe rir deles)).html",
-            publishedAt: "2025-10-24", // ← defina aqui
+            publishedAt: "2025-10-24",
           },
-
           {
             emoji: "📜",
             title: "Carta narrada pelo silêncio",
             sub: "Uma carta narrada pelo silêncio",
             desc: "Página que tenta revelar o que o silêncio sabe sobre você.",
             href: "./index(carta narrada pelo silêncio).html",
-            publishedAt: "2025-10-23", // ← defina aqui
+            publishedAt: "2025-10-23",
           },
           {
             emoji: "🌱",
@@ -581,7 +617,7 @@
             sub: "Bom dia especial para alguém mais do que especial",
             desc: "Página de bom dia que planta uma semente para você iluminar.",
             href: "./index(bom dia semente de luz).html",
-            publishedAt: "2025-10-22", // ← defina aqui
+            publishedAt: "2025-10-22",
           },
           {
             emoji: "🫙",
@@ -589,7 +625,7 @@
             sub: "Mensagens especiais do mar",
             desc: "Página de cartas engarrafadas: mensagens que o mar traz pra você.",
             href: "./index(cartas engarrafadas).html",
-            publishedAt: "2025-10-21", // ← defina aqui
+            publishedAt: "2025-10-21",
           },
           {
             emoji: "🌅",
@@ -597,7 +633,7 @@
             sub: "Mensagem especial",
             desc: "Página de bom dia no estilo morde & assopra: revira e acalma.",
             href: "./index(bom dia morde e assopra).html",
-            publishedAt: "2025-10-21", // ← defina aqui
+            publishedAt: "2025-10-21",
           },
           {
             emoji: "🎧",
@@ -605,7 +641,7 @@
             sub: "Página com player e faixas",
             desc: "Set de músicas, citações e aquele clima de mar + caos bom.",
             href: "./index(musical).html",
-            publishedAt: "2025-10-20", // ← defina aqui
+            publishedAt: "2025-10-20",
           },
           {
             emoji: "🍯",
@@ -613,23 +649,20 @@
             sub: "Página com mensagens que trazem a combinação de doce e salgado",
             desc: "Entre o doce e o salgado…",
             href: "./index(doce e salgado).html",
-            publishedAt: "2025-10-10", // ← defina aqui
+            publishedAt: "2025-10-10",
           },
         ];
 
         function localDateFromYYYYMMDD(s) {
-          // aceita "YYYY-MM-DD" ou "YYYY-MM-DDTHH:mm"
           if (!s) return null;
-          const only = s.slice(0, 10); // pega só a parte da data
+          const only = s.slice(0, 10);
           const [y, m, d] = only.split("-").map(Number);
           if (!y || !m || !d) return null;
-          return new Date(y, m - 1, d); // <-- constrói no fuso local
+          return new Date(y, m - 1, d);
         }
 
         function render() {
           grid.innerHTML = "";
-
-          // formata datas pt-BR; se quiser só dia/mês/ano, troque as opções
           const fmt = new Intl.DateTimeFormat("pt-BR", {
             day: "2-digit",
             month: "2-digit",
@@ -640,39 +673,37 @@
             const a = document.createElement("article");
             a.className = "card";
 
-            // calcula texto da data (ou vazio se não houver)
             let dateHtml = "";
             if (c.publishedAt) {
-              const d = localDateFromYYYYMMDD(c.publishedAt); // <-- aqui
+              const d = localDateFromYYYYMMDD(c.publishedAt);
               const safe = d && !isNaN(d.getTime()) ? d : null;
               if (safe) {
                 dateHtml = `
-      <div class="card-meta">
-        <span class="card-date" title="Data de publicação">
-          <span aria-hidden="true">🗓️</span>
-          <span>${fmt.format(safe)}</span>
-        </span>
-      </div>
-    `;
+                  <div class="card-meta">
+                    <span class="card-date" title="Data de publicação">
+                      <span aria-hidden="true">🗓️</span>
+                      <span>${fmt.format(safe)}</span>
+                    </span>
+                  </div>
+                `;
               }
             }
 
             a.innerHTML = `
-      <div class="card-head">
-        <div class="art" aria-hidden="true">${c.emoji}</div>
-        <div>
-          <h3 class="card-title">${c.title}</h3>
-          <p class="card-sub">${c.sub}</p>
-          ${dateHtml}
-        </div>
-      </div>
-      <div class="card-body">${c.desc}</div>
-      <div class="card-actions">
-        <a class="btn secondary" href="${c.href}">Abrir</a>
-      </div>
-    `;
+              <div class="card-head">
+                <div class="art" aria-hidden="true">${c.emoji}</div>
+                <div>
+                  <h3 class="card-title">${c.title}</h3>
+                  <p class="card-sub">${c.sub}</p>
+                  ${dateHtml}
+                </div>
+              </div>
+              <div class="card-body">${c.desc}</div>
+              <div class="card-actions">
+                <a class="btn secondary" href="${c.href}">Abrir</a>
+              </div>
+            `;
 
-            // acessibilidade via teclado (Enter/Space abre o link)
             a.tabIndex = 0;
             a.addEventListener("click", (e) => {
               const isButton = e.target.closest("a,button");
