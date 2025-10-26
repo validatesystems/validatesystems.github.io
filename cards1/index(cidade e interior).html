@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cidade & Interior — entre buzinas e passarinhos</title>
+    <meta name="color-scheme" content="light dark" />
+    <style>
+      :root {
+        /* TEMA CIDADE (padrão) */
+        --bg1: #0c0e1a;
+        --bg2: #1a1d2e;
+        --bg3: #2d3248;
+        --fg: #e8eaed;
+        --accent: #4dabf7;
+        --accent-2: #ff6b6b;
+        --card: rgba(15, 18, 32, 0.85);
+        --shadow: rgba(0, 0, 0, 0.4);
+        --grid: rgba(255, 255, 255, 0.05);
+        --paper: #f5f5f5;
+        --ink: #2c2c2c;
+      }
+
+      /* TEMA INTERIOR */
+      .interior {
+        --bg1: #1a2a1a;
+        --bg2: #2d4a2d;
+        --bg3: #3f5c3f;
+        --fg: #e8f5e8;
+        --accent: #8bc34a;
+        --accent-2: #ffb74d;
+        --card: rgba(26, 42, 26, 0.85);
+        --shadow: rgba(0, 0, 0, 0.4);
+        --grid: rgba(255, 255, 255, 0.05);
+        --paper: #f5f7f5;
+        --ink: #2c3e2c;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--fg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background: var(--bg1);
+      }
+
+      /* --- NOVO FUNDO COM MAPA E TRAJETO --- */
+      .scene {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background: var(--bg1);
+      }
+
+      .map-container {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at 20% 30%,
+            var(--bg3) 0%,
+            transparent 50%
+          ),
+          radial-gradient(circle at 80% 70%, var(--bg2) 0%, transparent 50%);
+        opacity: 0.5;
+      }
+
+      .route {
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        width: 80%;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          var(--accent) 20%,
+          var(--accent) 50%,
+          var(--accent-2) 80%,
+          transparent 100%
+        );
+        animation: routePulse 4s ease-in-out infinite;
+      }
+
+      .route::before,
+      .route::after {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--accent);
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .route::before {
+        left: 20%;
+        box-shadow: 0 0 10px var(--accent);
+      }
+
+      .route::after {
+        left: 80%;
+        background: var(--accent-2);
+        box-shadow: 0 0 10px var(--accent-2);
+      }
+
+      @keyframes routePulse {
+        0%,
+        100% {
+          opacity: 0.6;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .city-icon,
+      .country-icon {
+        position: absolute;
+        font-size: 24px;
+        filter: drop-shadow(0 0 5px currentColor);
+      }
+
+      .city-icon {
+        top: 30%;
+        left: 20%;
+        color: var(--accent);
+      }
+
+      .country-icon {
+        top: 70%;
+        left: 80%;
+        color: var(--accent-2);
+      }
+
+      .paper-texture {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+            circle at 25% 25%,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 75% 75%,
+            rgba(255, 255, 255, 0.05) 0%,
+            transparent 50%
+          );
+        mix-blend-mode: overlay;
+        opacity: 0.3;
+      }
+
+      /* --- DIÁRIO / CADERNO --- */
+      .journal {
+        position: relative;
+        width: min(700px, 90vw);
+        min-height: 500px;
+        background: var(--paper);
+        color: var(--ink);
+        border-radius: 8px;
+        box-shadow: 0 10px 30px var(--shadow),
+          0 0 0 1px rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      .journal::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background: var(--accent);
+        z-index: 1;
+      }
+
+      .journal::after {
+        content: "";
+        position: absolute;
+        top: 40px;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(0, 0, 0, 0.1),
+          transparent
+        );
+      }
+
+      .journal-content {
+        padding: 60px 40px 40px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .page-number {
+        position: absolute;
+        bottom: 20px;
+        right: 30px;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.4);
+      }
+
+      .paper-lines {
+        position: absolute;
+        inset: 40px 0 0 0;
+        background-image: repeating-linear-gradient(
+          to bottom,
+          transparent,
+          transparent 23px,
+          rgba(0, 0, 0, 0.05) 23px,
+          rgba(0, 0, 0, 0.05) 24px
+        );
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* --- CONTEÚDO DO DIÁRIO --- */
+      .entry-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .date-stamp {
+        font-size: 12px;
+        color: var(--accent);
+        font-weight: bold;
+        padding: 4px 8px;
+        border: 1px dashed var(--accent);
+        border-radius: 4px;
+      }
+
+      .location-tag {
+        font-size: 12px;
+        background: rgba(0, 0, 0, 0.05);
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+
+      .entry-title {
+        font-size: 28px;
+        margin-bottom: 20px;
+        line-height: 1.2;
+        font-weight: 700;
+        color: var(--ink);
+        position: relative;
+        display: inline-block;
+      }
+
+      .entry-title::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        border-radius: 1px;
+      }
+
+      .entry-content {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .entry-content p {
+        margin-bottom: 16px;
+        text-align: justify;
+      }
+
+      .entry-footer {
+        margin-top: 30px;
+        padding-top: 15px;
+        border-top: 1px dashed rgba(0, 0, 0, 0.1);
+        font-style: italic;
+        color: rgba(0, 0, 0, 0.6);
+      }
+
+      /* --- CONTROLES COMO ADESIVOS --- */
+      .sticker-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 30px;
+        justify-content: center;
+      }
+
+      .sticker {
+        position: relative;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 15px 15px 15px 5px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        transform: rotate(-1deg);
+      }
+
+      .sticker:hover {
+        transform: rotate(0deg) translateY(-2px);
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .sticker.primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .sticker.secondary {
+        background: var(--accent-2);
+        color: white;
+        transform: rotate(1deg);
+      }
+
+      .sticker.ghost {
+        background: rgba(0, 0, 0, 0.05);
+        color: var(--ink);
+      }
+
+      .sticker::after {
+        content: "";
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 15px;
+        height: 15px;
+        background: rgba(255, 255, 255, 0.7);
+        clip-path: polygon(0 0, 100% 0, 100% 100%);
+        border-radius: 0 0 0 5px;
+      }
+
+      /* --- ELEMENTOS DECORATIVOS --- */
+      .tape {
+        position: absolute;
+        width: 50px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.7);
+        opacity: 0.7;
+        z-index: 3;
+      }
+
+      .tape-1 {
+        top: 30px;
+        left: 30px;
+        transform: rotate(-15deg);
+      }
+
+      .tape-2 {
+        top: 30px;
+        right: 30px;
+        transform: rotate(15deg);
+      }
+
+      .ink-blot {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: var(--accent);
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        opacity: 0.1;
+        z-index: 0;
+      }
+
+      .ink-blot-1 {
+        top: 20%;
+        left: 10%;
+      }
+
+      .ink-blot-2 {
+        bottom: 20%;
+        right: 10%;
+        background: var(--accent-2);
+      }
+
+      /* --- MODAL COMO PÁGINA DO DIÁRIO --- */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        z-index: 40;
+      }
+
+      .modal-backdrop.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        width: min(500px, 90vw);
+        background: var(--paper);
+        color: var(--ink);
+        border-radius: 8px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        padding: 40px 30px 30px;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        z-index: 50;
+      }
+
+      .modal.show {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        pointer-events: auto;
+      }
+
+      .modal h2 {
+        margin-bottom: 15px;
+        color: var(--ink);
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 8px;
+      }
+
+      .modal p {
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      /* --- TOAST COMO NOTA ADESIVA --- */
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 30px;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--accent-2);
+        color: white;
+        padding: 12px 18px;
+        border-radius: 8px 8px 8px 2px;
+        font-size: 14px;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        z-index: 60;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transform: rotate(-1deg);
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) rotate(-1deg);
+      }
+
+      /* --- ANIMAÇÕES --- */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fade-in {
+        animation: fadeInUp 0.5s ease both;
+      }
+
+      .fade-in-delay {
+        animation: fadeInUp 0.5s 0.2s ease both;
+      }
+
+      /* --- EFETOS DE TRANSFORMAÇÃO --- */
+      .flip-transition {
+        position: fixed;
+        inset: 0;
+        background: var(--accent);
+        z-index: 100;
+        clip-path: circle(0% at var(--tx, 50%) var(--ty, 50%));
+        transition: clip-path 0.6s ease-in-out;
+      }
+
+      .flip-transition.active {
+        clip-path: circle(150% at var(--tx, 50%) var(--ty, 50%));
+      }
+
+      /* --- RESPONSIVIDADE --- */
+      @media (max-width: 600px) {
+        .journal-content {
+          padding: 50px 20px 30px;
+        }
+
+        .entry-title {
+          font-size: 24px;
+        }
+
+        .sticker-controls {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .sticker {
+          width: 100%;
+          max-width: 200px;
+        }
+      }
+
+      /* --- ACESSIBILIDADE --- */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- CENA DE FUNDO -->
+    <div class="scene">
+      <div class="map-container"></div>
+      <div class="route"></div>
+      <div class="city-icon">🏙️</div>
+      <div class="country-icon">🌳</div>
+      <div class="paper-texture"></div>
+    </div>
+
+    <!-- DIÁRIO PRINCIPAL -->
+    <main class="journal" role="main">
+      <div class="paper-lines"></div>
+
+      <!-- Fitas decorativas -->
+      <div class="tape tape-1"></div>
+      <div class="tape tape-2"></div>
+
+      <!-- Manchas de tinta -->
+      <div class="ink-blot ink-blot-1"></div>
+      <div class="ink-blot ink-blot-2"></div>
+
+      <div class="journal-content">
+        <div class="entry-header">
+          <div class="date-stamp" id="dateStamp">HOJE</div>
+          <div class="location-tag" id="locationTag">CIDADE & INTERIOR</div>
+        </div>
+
+        <h1 class="entry-title fade-in" id="title">
+          Entre buzinas e passarinhos.
+        </h1>
+
+        <div class="entry-content">
+          <p class="fade-in" id="message">
+            Quem nasce no interior aprende a ouvir o tempo. Depois, a cidade
+            chega — linda, viva, urgente — e muda o ritmo.
+          </p>
+          <p class="entry-footer fade-in-delay" id="punch">
+            Quando o asfalto quiser te engolir, lembra do cheiro de terra e do
+            café sem pressa: isso cabe no bolso e salva o dia.
+          </p>
+        </div>
+
+        <div class="sticker-controls">
+          <button class="sticker primary" id="copyLink">Copiar link</button>
+          <button class="sticker secondary" id="toggleTheme">
+            Alternar Tema - CIDADE / INTERIOR
+          </button>
+          <button class="sticker ghost" id="shuffle">Próxima 🌆🌾</button>
+        </div>
+
+        <div class="page-number" id="pageNumber">página 1/17</div>
+      </div>
+      <footer>Developed with 💜 by ._.. ...</footer>
+    </main>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- MODAL -->
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div
+      class="modal"
+      id="modalBox"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
+      <h2 id="modalTitle">Quer mais surpresas? ✨</h2>
+      <p id="modalText">
+        Então bora: um pé na calçada, outro na grama — e o coração no meio,
+        dançando.
+      </p>
+      <div class="modal-actions">
+        <button class="sticker primary" id="modalPrimary">Continuar</button>
+      </div>
+    </div>
+
+    <!-- TRANSITION EFFECT -->
+    <div class="flip-transition" id="flipTransition" aria-hidden="true"></div>
+
+    <script>
+      (function () {
+        const $ = (s) => document.querySelector(s);
+
+        // auxiliares
+        function toast(text) {
+          const el = $("#toast");
+          el.textContent = text;
+          el.classList.add("show");
+          clearTimeout(toast._t);
+          toast._t = setTimeout(() => el.classList.remove("show"), 2100);
+        }
+
+        // URL params
+        const titleEl = $("#title"),
+          msgEl = $("#message"),
+          punchEl = $("#punch");
+        let params;
+        try {
+          params = new URL(location.href).searchParams;
+        } catch {
+          params = new URLSearchParams();
+        }
+
+        // Playlist (pode vir por URL ou constante)
+        const DEFAULT_SPOTIFY_PLAYLIST =
+          "https://open.spotify.com/intl-pt/track/1QUPFwEptqGlpFvA6j3RQ1?si=a6634ed7ff57442f"; // opcional: coloque aqui um link padrão
+        const SPOTIFY_PLAYLIST =
+          params.get("playlist") || DEFAULT_SPOTIFY_PLAYLIST;
+
+        const initial = {
+          title: "Entre buzinas e passarinhos.",
+          msg: "Quem nasce no interior aprende a ouvir o tempo. Depois, a cidade chega — linda, viva, urgente — e muda o ritmo.",
+          punch:
+            "Quando o asfalto quiser te engolir, lembra do cheiro da brisa das águas e do café sem pressa: isso cabe no bolso e salva o dia.",
+        };
+        const safe = (v) => (v || "").toString().trim().slice(0, 500);
+        titleEl.textContent = safe(params.get("title")) || initial.title;
+        msgEl.textContent = safe(params.get("msg")) || initial.msg;
+        punchEl.textContent = safe(params.get("punch")) || initial.punch;
+
+        // tema via URL
+        const theme = (params.get("theme") || "").toLowerCase();
+        if (theme === "interior") document.body.classList.add("interior");
+
+        // combos (mesmos conteúdos)
+        const combos = [
+          {
+            flair: "🌆",
+            title: "Pulseira de neon no pulso.",
+            msg: "A cidade corre de salto; você aprende a flutuar entre prazos.",
+            punch: "E ainda encontra tempo pra rir no trânsito.",
+          },
+          {
+            flair: "🌾",
+            title: "Cheiro de maré enchendo.",
+            msg: "O interior lembra que pressa também sabe tirar férias.",
+            punch: "Respira fundo: a alma entende o recado.",
+          },
+          {
+            flair: "🚦",
+            title: "Sinal abre, o peito fecha.",
+            msg: "Notificação toca, mas não diz o que importa.",
+            punch: "É você que decide quando é hora de atravessar.",
+          },
+          {
+            flair: "🍞",
+            title: "Pão de queijo no forno, conversa na varanda.",
+            msg: "A vida simples lembra que afeto não tem agenda.",
+            punch: "E cabe inteiro numa xícara de café ou numa tijela de açaí.",
+          },
+          {
+            flair: "🏙️",
+            title: "Prédio que parece estrela.",
+            msg: "A cidade inventa um céu de vidro, concreto e promessa.",
+            punch: "Bonito… mas o seu norte não mora ali.",
+          },
+          {
+            flair: "🕰️",
+            title: "Relógio de parede vs. relógio do bolso.",
+            msg: "Um marca minutos, o outro coleciona memórias.",
+            punch: "Fica com o que não apita.",
+          },
+          {
+            flair: "🌻",
+            title: "Sol de quintal.",
+            msg: "No interior, o silêncio sabe conversar de verdade.",
+            punch: "E a resposta chega sem vibração nenhuma.",
+          },
+          {
+            flair: "🍃",
+            title: "Janela aberta, barulho bom.",
+            msg: "Cidade grita; interior sussurra, você traduz.",
+            punch: "E escolhe dançar com os dois.",
+          },
+          {
+            flair: "🚇",
+            title: "Ruas lotadas, cabeça cheia.",
+            msg: "Você fecha os olhos e volta pra rua de água.",
+            punch: "Pronto: abriu um espaço dentro do peito.",
+          },
+          {
+            flair: "🛤️",
+            title: "Águas passadas, saudade nova.",
+            msg: "A lembrança do interior aparece como placa na rodovia.",
+            punch: "Aviso útil: reduzir velocidade do ego.",
+          },
+          {
+            flair: "🪴",
+            title: "Vaso na sacada.",
+            msg: "Você planta memórias do INTERIOR na sua casa de cimento, teimosia bonita.",
+            punch: "E a cidade aprende a cheirar aquela brisa do INTERIOR.",
+          },
+          {
+            flair: "📦",
+            title: "Mudança que ficou.",
+            msg: "O que você trouxe do interior não cabe em caixa nenhuma.",
+            punch: "Cabe no costume de ser gentil.",
+          },
+          {
+            flair: "🌇",
+            title: "Fim de tarde cor de cobre.",
+            msg: "O urbano fica manso quando o céu resolve pintar.",
+            punch: "A pressa perde a coragem por alguns minutos.",
+          },
+          {
+            flair: "🌾",
+            title: "Festa na praça.",
+            msg: "Interior não chama: acolhe sem cerimônia.",
+            punch: "E a timidez e o caos viram riso fácil.",
+          },
+          {
+            flair: "📍",
+            title: "Dois CEPs, um coração.",
+            msg: "Você mora na pressa, mas pertence ao abraço.",
+            punch: "E isso te salva todo dia.",
+          },
+          {
+            flair: "☕",
+            title: "Café que não corre.",
+            msg: "No interior, o relógio aprende bons modos.",
+            punch: "Na cidade, você ensina o seu.",
+          },
+        ];
+
+        const endMessages = [
+          "Suas origens definem quem você é!. 🌳",
+          "Seus caminhos te levam onde você precisa estar. 🚶‍♂️",
+          "Diferente dos rios, você pode escolher seu curso. 🌊",
+          "Não tenha medo, você carrega a força das correntes e a leveza de quem sabe fluir. 💪",
+          "Mas, é claro, você sempre pode voltar para casa. 🏡",
+          "Quando a cidade ficar barulhenta demais, lembre-se do silêncio do interior. 🤫",
+          "A vida é feita de ciclos e recomeços. 🔄 Recomeçar também é uma forma de continuar. 🌱",
+          "Se as correntezas te levarem para longe, volte ao interior, lá onde o tempo não levou o que é essencial: você. ⛵",
+          "Obrigado por explorar essa jornada entre cidade e interior, reviver memórias e sentimentos! 🌆🌾",
+        ];
+
+        // estado
+        let order = combos.map((_, i) => i).sort(() => Math.random() - 0.5);
+        let idx = -1;
+        const totalPages = combos.length + 1; // +1 para a página inicial
+        let currentPage = 1;
+        const halfIndex = Math.floor(order.length / 2);
+        let midShown = false;
+        let inEnd = false;
+        let endIdx = 0;
+
+        // Função para atualizar a numeração da página
+        function updatePageNumber() {
+          const pageEl = $("#pageNumber");
+          if (inEnd) {
+            pageEl.textContent = "Fim";
+          } else {
+            pageEl.textContent = `página ${currentPage}/${totalPages}`;
+          }
+        }
+
+        function applyCombo(c) {
+          $("#title").textContent = c.title;
+          $("#message").textContent = c.msg;
+          $("#punch").textContent = c.punch;
+
+          // Reativa animações
+          document
+            .querySelectorAll(".fade-in, .fade-in-delay")
+            .forEach((el) => {
+              el.style.animation = "none";
+              setTimeout(() => {
+                el.style.animation = "";
+              }, 10);
+            });
+
+          toast("Nova entrada no diário 📖");
+        }
+
+        function showModal(t, b, label = "Continuar") {
+          $("#modalTitle").textContent = t || " ";
+          $("#modalText").textContent = b || "";
+          $("#modalPrimary").textContent = label;
+          $("#modalBackdrop").classList.add("show");
+          $("#modalBox").classList.add("show");
+        }
+        function hideModal() {
+          $("#modalBackdrop").classList.remove("show");
+          $("#modalBox").classList.remove("show");
+        }
+
+        function maybeMid() {
+          if (!midShown && idx + 1 === halfIndex) {
+            showModal(
+              "Quer metade cidade, metade interior? ✨",
+              "Então segue o baile: um passo no asfalto, um nado nas águas e a alma no compasso certo.",
+              "Continuar"
+            );
+            midShown = true;
+          }
+        }
+
+        function startEnd() {
+          inEnd = true;
+          endIdx = 0;
+          updatePageNumber();
+          showModal("", endMessages[endIdx], "Continuar");
+          // garante que o botão do Spotify não apareça antes da última mensagem
+          const old = document.querySelector("#openSpotify");
+          if (old) old.remove();
+        }
+
+        // >>> AJUSTE: Spotify apenas no último texto final
+        function advanceEnd() {
+          // remove o botão do Spotify em passos intermediários, se existir
+          const old = document.querySelector("#openSpotify");
+          if (old) old.remove();
+
+          endIdx++;
+          if (endIdx < endMessages.length) {
+            showModal("", endMessages[endIdx], "Continuar");
+          } else {
+            // Último passo: mostra mensagem final + botão Spotify
+            showModal(
+              "",
+              "Acabou por agora. Recomeçar ou quer ouvir uma música que lembra quem você é? 🚶‍♂️🌾. Mas lembre-se, a música que define o seu 'eu do INTERIOR' ainda está tocando dentro de você. Escute-a!, ",
+              "Recomeçar"
+            );
+
+            const actions = document.querySelector(".modal-actions");
+            if (actions) {
+              const btn = document.createElement("button");
+              btn.id = "openSpotify";
+              btn.className = "sticker secondary";
+              btn.type = "button";
+              btn.innerHTML = "Ouvir no Spotify 🎧";
+              btn.addEventListener("click", () => {
+                if (!SPOTIFY_PLAYLIST) {
+                  toast("Defina a playlist em ?playlist= ou na constante.");
+                  return;
+                }
+                window.open(SPOTIFY_PLAYLIST, "_blank", "noopener");
+              });
+              actions.appendChild(btn);
+            }
+          }
+        }
+
+        function resetCycle() {
+          order = combos.map((_, i) => i).sort(() => Math.random() - 0.5);
+          idx = -1;
+          currentPage = 1;
+          midShown = false;
+          inEnd = false;
+          endIdx = 0;
+          updatePageNumber();
+
+          // Remove o botão Spotify, se ainda existir
+          const old = document.querySelector("#openSpotify");
+          if (old) old.remove();
+
+          // Restaura a mensagem inicial
+          $("#title").textContent = initial.title;
+          $("#message").textContent = initial.msg;
+          $("#punch").textContent = initial.punch;
+
+          // Reativa animações
+          document
+            .querySelectorAll(".fade-in, .fade-in-delay")
+            .forEach((el) => {
+              el.style.animation = "none";
+              setTimeout(() => {
+                el.style.animation = "";
+              }, 10);
+            });
+        }
+
+        function nextCombo() {
+          if (inEnd) return;
+          if (idx + 1 >= order.length) {
+            startEnd();
+            return;
+          }
+          idx++;
+          currentPage = idx + 2; // +2 porque começamos na página 1 e idx começa em -1
+          applyCombo(combos[order[idx]]);
+          updatePageNumber();
+          maybeMid();
+        }
+
+        // alternar tema com efeito de virada
+        $("#toggleTheme").addEventListener("click", (e) => {
+          const flip = $("#flipTransition");
+          const rect = document.body.getBoundingClientRect();
+          const tx = ((e.clientX - rect.left) / rect.width) * 100;
+          const ty = ((e.clientY - rect.top) / rect.height) * 100;
+          flip.style.setProperty("--tx", tx + "%");
+          flip.style.setProperty("--ty", ty + "%");
+          flip.classList.add("active");
+          setTimeout(() => {
+            document.body.classList.toggle("interior");
+            updateLocationTag();
+            flip.classList.remove("active");
+
+            // Reativa animações nos textos
+            document
+              .querySelectorAll(".fade-in, .fade-in-delay")
+              .forEach((el) => {
+                el.style.animation = "none";
+                setTimeout(() => {
+                  el.style.animation = "";
+                }, 10);
+              });
+          }, 600);
+        });
+
+        // copiar link
+        $("#copyLink").addEventListener("click", async () => {
+          const u = new URL(location.href.split("?")[0]);
+          u.searchParams.set("title", titleEl.textContent);
+          u.searchParams.set("msg", msgEl.textContent);
+          u.searchParams.set("punch", punchEl.textContent);
+          if (document.body.classList.contains("interior"))
+            u.searchParams.set("theme", "interior");
+          try {
+            await navigator.clipboard.writeText(u.toString());
+            toast("Link copiado! 📋");
+          } catch {
+            toast("Não foi possível copiar. Aqui está o link:");
+            try {
+              prompt("Copie o link:", u.toString());
+            } catch {}
+          }
+        });
+
+        $("#shuffle").addEventListener("click", nextCombo);
+
+        $("#modalPrimary").addEventListener("click", () => {
+          if (inEnd) {
+            if (endIdx < endMessages.length) {
+              advanceEnd();
+            } else {
+              hideModal();
+              resetCycle();
+            }
+          } else {
+            hideModal();
+          }
+        });
+
+        // fechar modal fora/ESC (não fecha durante fim)
+        $("#modalBackdrop").addEventListener("click", () => {
+          if (!inEnd) hideModal();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !inEnd) hideModal();
+        });
+
+        // Atualiza a etiqueta de localização
+        function updateLocationTag() {
+          const isInterior = document.body.classList.contains("interior");
+          $("#locationTag").textContent = isInterior ? "INTERIOR" : "CIDADE";
+        }
+
+        // Inicializa a etiqueta de localização
+        updateLocationTag();
+
+        // Atualiza a data no carimbo
+        function updateDateStamp() {
+          const now = new Date();
+          const options = { day: "numeric", month: "short", year: "numeric" };
+          $("#dateStamp").textContent = "25 de OUTUBRO de 2025";
+          // $("#dateStamp").textContent = now
+          //   .toLocaleDateString("pt-BR", options)
+          //   .toUpperCase();
+        }
+
+        updateDateStamp();
+        updatePageNumber(); // Inicializa a numeração da página
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bom dia — Sementes e Horizontes</title>
+    <meta name="color-scheme" content="light dark" />
+    <style>
+      :root {
+        --bg1: #f8efff;
+        --bg2: #e7f3ff;
+        --bg3: #ffe9f1;
+        --fg: #17172a;
+        --muted: #6b6b83;
+        --accent: #7c3aed;
+        --accent-2: #06b6d4;
+        --card: rgba(255, 255, 255, 0.78);
+        --glass: blur(10px);
+        --ring: 0 0 0 2px rgba(124, 58, 237, 0.25);
+      }
+
+      .eletrico {
+        --bg1: #0b1020;
+        --bg2: #141a39;
+        --bg3: #2a1847;
+        --fg: #eef0ff;
+        --muted: #aab0ff;
+        --accent: #22d3ee;
+        --accent-2: #a78bfa;
+        --card: rgba(20, 20, 40, 1);
+        --ring: 0 0 0 2px rgba(34, 211, 238, 0.28);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji";
+        color: var(--fg);
+        background: linear-gradient(
+          -45deg,
+          var(--bg1),
+          var(--bg2),
+          var(--bg3),
+          var(--bg2)
+        );
+        background-size: 400% 400%;
+        animation: bgShift 16s ease infinite;
+      }
+
+      @keyframes bgShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .page {
+        min-height: 100dvh;
+        padding: clamp(16px, 4vw, 28px);
+        display: grid;
+        place-items: center;
+      }
+
+      /* ===== Card ===== */
+      .card {
+        width: min(760px, 92vw);
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        border-radius: 22px;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+        padding: clamp(18px, 3.6vw, 26px);
+      }
+
+      .title {
+        margin: 0 0 10px;
+        font-size: clamp(22px, 5vw, 32px);
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        text-wrap: balance;
+      }
+
+      .title::after {
+        content: "";
+        display: block;
+        width: 64px;
+        height: 4px;
+        border-radius: 999px;
+        margin-top: 8px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      }
+
+      .content {
+        font-size: clamp(15px, 3.2vw, 18px);
+        line-height: 1.7;
+        text-wrap: pretty;
+        hyphens: auto;
+      }
+
+      .content p {
+        margin: 0 0 0.9em;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+      }
+
+      .btn {
+        appearance: none;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-weight: 700;
+        cursor: pointer;
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        transition: transform 0.08s ease, filter 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn:active {
+        transform: translateY(0) scale(0.98);
+      }
+
+      .btn.ghost {
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--fg);
+      }
+
+      .toolbar {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        gap: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Toolbar (tema) -->
+    <div class="toolbar" id="toolbar">
+      <button class="btn ghost" id="toggleTheme">Alternar tema</button>
+    </div>
+
+    <!-- ===== Página / Card ===== -->
+    <main class="page">
+      <article class="card" id="goodMorningCard" aria-live="polite">
+        <h1 class="title">Bom dia, semente de luz 🌱✨</h1>
+        <div class="content">
+          <p>
+            Hoje o sol nasceu especialmente para lembrar: você carrega dentro de
+            si jardins inteiros que ainda não floresceram. Cada pensamento bom é
+            uma semente, cada gesto gentil é uma rega.
+          </p>
+
+          <p>
+            Você é ponte entre o que foi e o que será. Às vezes treme com o peso
+            das passagens, mas nunca se rompe. Há uma sabedoria antiga no seu
+            jeito de ligar margens que pareciam distantes demais.
+          </p>
+
+          <p>
+            Seu tempo não é relógio, é bússola. Não marca horas, indica
+            caminhos. Você coleciona momentos como quem guarda conchas — cada um
+            com sua textura única. Alguns vão cortar se apertados demais, outros
+            vão brilhar na luz certa.
+          </p>
+
+          <p>
+            Se o dia trouver névoa, respire fundo. A visão clara vem da
+            paciência, não da pressa. Você já sabe que as melhores descobertas
+            acontecem quando nos permitimos não enxergar tudo de uma vez.
+          </p>
+
+          <p>
+            Sua luz não compete com ninguém — apenas existe, como o farol que
+            não tenta ser o sol, mas ilumina perfeitamente o caminho dos
+            navegantes noturnos.
+          </p>
+
+          <p>
+            Bom dia. Continue sendo raiz e flor ao mesmo tempo: firme no que
+            sustenta, leve no que floresce.
+          </p>
+        </div>
+        <div class="actions">
+          <button class="btn" id="okBtn">Sair 🌟</button>
+        </div>
+      </article>
+      <footer>Developed with 💜 by ._.. ...</footer>
+    </main>
+
+    <script>
+      (function () {
+        const $ = (s) => document.querySelector(s);
+        const card = $("#goodMorningCard");
+        const okBtn = $("#okBtn");
+
+        /* ===== Tema ===== */
+        const THEME_KEY = "theme.mode";
+        const storedTheme = localStorage.getItem(THEME_KEY) || "";
+
+        function applyTheme(mode) {
+          document.body.classList.toggle("eletrico", mode === "eletrico");
+          localStorage.setItem(THEME_KEY, mode);
+        }
+
+        applyTheme(storedTheme || "acustico");
+
+        $("#toggleTheme")?.addEventListener("click", () => {
+          const isEletrico = document.body.classList.contains("eletrico");
+          applyTheme(isEletrico ? "acustico" : "eletrico");
+        });
+
+        /* ===== Ações do card ===== */
+        // okBtn?.addEventListener("click", () => {
+        //   window.scrollTo({ top: 0, behavior: "smooth" });
+        //   card.querySelector(".title")?.focus?.();
+        // });
+        /* ===== OK -> redireciona para a página inicial ===== */
+        okBtn?.addEventListener("click", () => {
+          window.location.href =
+            "https://validatesystems.github.io/6548694/index.html";
+        });
+      })();
+    </script>
+  </body>
+</html>
