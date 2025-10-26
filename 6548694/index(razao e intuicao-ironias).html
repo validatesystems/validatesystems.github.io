@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ironias da Vida — mar, lua, inglês & limites</title>
+    <style>
+      :root {
+        --primary-color: #ff6b6b;
+        --secondary-color: #4ecdc4;
+        --bg-color: #f7f7f7;
+        --card-bg: #ffffff;
+        --text-color: #333333;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --accent-color: #ffd166;
+      }
+
+      .dark-theme {
+        --primary-color: #ff8e8e;
+        --secondary-color: #6deae2;
+        --bg-color: #121212;
+        --card-bg: #1e1e1e;
+        --text-color: #f0f0f0;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --accent-color: #ffe082;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      body {
+        font-family: "Comic Neue", cursive, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        min-height: 100vh;
+        padding: 20px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100  100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ff6b6b' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        opacity: 0.6;
+        z-index: -1;
+      }
+
+      .dark-theme::before {
+        opacity: 0.2;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding: 10px 0;
+        border-bottom: 2px dashed var(--primary-color);
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        text-shadow: 2px 2px 0px var(--secondary-color);
+        animation: bounce 2s infinite alternate;
+      }
+
+      @keyframes bounce {
+        0% {
+          transform: translateY(0);
+        }
+        100% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .theme-toggle,
+      .audio-control {
+        background-color: var(--card-bg);
+        border-radius: 50px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 6px var(--shadow-color);
+        transition: transform 0.3s;
+      }
+      .theme-toggle {
+        border: 2px solid var(--primary-color);
+      }
+      .audio-control {
+        border: 2px solid var(--secondary-color);
+        margin-left: 10px;
+      }
+      .theme-toggle:hover,
+      .audio-control:hover {
+        transform: scale(1.05);
+      }
+
+      .controls {
+        display: flex;
+      }
+
+      .cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 10px 20px var(--shadow-color);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid var(--primary-color);
+      }
+
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px var(--shadow-color);
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(
+          90deg,
+          var(--primary-color),
+          var(--secondary-color),
+          var(--accent-color)
+        );
+      }
+
+      .card-icon {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .card-text {
+        font-size: 1.1rem;
+        line-height: 1.5;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+      .card-footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+        color: var(--secondary-color);
+        font-style: italic;
+      }
+
+      .floating-emoji {
+        position: fixed;
+        font-size: 2rem;
+        z-index: -1;
+        animation: float 15s infinite linear;
+        opacity: 0.7;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+        }
+      }
+
+      footer {
+        margin-top: 40px;
+        text-align: center;
+        padding: 20px;
+        border-top: 2px dashed var(--secondary-color);
+        color: var(--text-color);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        .cards-container {
+          grid-template-columns: 1fr;
+        }
+        header {
+          flex-direction: column;
+          gap: 15px;
+        }
+        .controls {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="light-theme">
+    <header>
+      <h1>Ironias da Vida</h1>
+      <div class="controls">
+        <button class="theme-toggle" id="themeToggle">
+          <i class="fas fa-moon"></i> Modo Escuro
+        </button>
+        <button class="audio-control" id="audioControl">
+          <i class="fas fa-volume-up"></i> Som
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <div class="cards-container" id="cardsContainer"></div>
+    </main>
+
+    <footer>
+      <p>
+        Ironias para alegrar seu dia | Feito com
+        <i class="fas fa-heart" style="color: var(--primary-color)"></i> e
+        cuidado
+      </p>
+    </footer>
+
+    <audio id="backgroundAudio" loop>
+      <source
+        src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3"
+        type="audio/mpeg"
+      />
+      Seu navegador não suporta o elemento de áudio.
+    </audio>
+
+    <script>
+      // Ironias ajustadas aos temas: mar, lua, magia, inglês, trabalho, limites, esperança x realidade,
+      // emojis internos (🧚😈 / 😈🍬), perfume, status, grupo, QR code (só como piada), autocuidado.
+      const ironias = [
+        {
+          texto: "Entre 'could' e 'should', eu escolho 'respect'.",
+          emoji: "📚",
+        },
+        {
+          texto:
+            "A lua puxa marés… e pensamentos que eu jurei deixar no trabalho.",
+          emoji: "🌙",
+        },
+        {
+          texto:
+            "Status do WhatsApp não é oráculo, mas às vezes acerta o clima.",
+          emoji: "🪄",
+        },
+        {
+          texto: "Olhares dizem muito; boletos gritam mais alto.",
+          emoji: "📣",
+        },
+        {
+          texto: "Perfume não é máquina do tempo, coração — comporta-te.",
+          emoji: "🧴",
+        },
+        {
+          texto:
+            "Gramática do sentimento: presente simples, limites; futuro condicional, talvez.",
+          emoji: "✍️",
+        },
+        {
+          texto: "Love lesson: não confundir reciprocidade com roteiro.",
+          emoji: "🎬",
+        },
+        { texto: "'Talvez' é o emoji preferido da esperança.", emoji: "🤞" },
+        {
+          texto: "Mar calmo? Só por fora. Aqui dentro tem ressaca emocional.",
+          emoji: "🌊",
+        },
+        {
+          texto: "Silêncio também é mensagem. Tradução: respeito.",
+          emoji: "🔇",
+        },
+        {
+          texto: "Entrelinhas têm Wi‑Fi próprio. Sinal forte, senha difícil.",
+          emoji: "📶",
+        },
+        { texto: "Fada atentada + doce perigo = 🧚😈 + 🍬", emoji: "🧚" },
+        { texto: "Work chat não é heart chat. Anota aí.", emoji: "💼" },
+        {
+          texto: "Esperança pediu prorrogação; autocuidado marcou impedimento.",
+          emoji: "⚽",
+        },
+        {
+          texto: "Café para a razão, água para as marés internas.",
+          emoji: "☕",
+        },
+        {
+          texto: "Se for amor, não precisa QR Code. (Ainda bem.)",
+          emoji: "📱",
+        },
+        {
+          texto:
+            "Tradução livre: 'good night' às vezes quer dizer 'cuida de ti'.",
+          emoji: "🌌",
+        },
+        {
+          texto:
+            "Coleção de memes: método científico para sobreviver a sentimentos.",
+          emoji: "🧪",
+        },
+        {
+          texto:
+            "Anatomia de um crush impossível: 50% silêncio, 30% perfume, 20% imaginação.",
+          emoji: "🧠",
+        },
+        {
+          texto: "A maré sobe, a vontade passa. Repete até acalmar.",
+          emoji: "🌊",
+        },
+        {
+          texto: "Luz da lua: ótimo para fotos, péssimo para decisões.",
+          emoji: "📸",
+        },
+        {
+          texto:
+            "'Teacher', corrige aqui: onde termina educação e começa afeto?",
+          emoji: "👩‍🏫",
+        },
+        {
+          texto: "Entre o 'oi' e o 'boa noite' mora um livro inteiro.",
+          emoji: "📖",
+        },
+        {
+          texto:
+            "Group chat: onde o subtexto usa figurinha para não se explicar.",
+          emoji: "🗨️",
+        },
+        { texto: "Coração quer reply; realidade manda arquivar.", emoji: "📥" },
+        {
+          texto: "Manual de sobrevivência: respirar, respeitar, redirecionar.",
+          emoji: "🧭",
+        },
+        { texto: "O mar devolve o que não é seu. A vida também.", emoji: "🌊" },
+        {
+          texto:
+            "Ironia favorita: quanto mais limpo o corte, mais bonito o texto.",
+          emoji: "✂️",
+        },
+        {
+          texto: "'See you' não é promessa. É polidez com sotaque.",
+          emoji: "🎧",
+        },
+        {
+          texto:
+            "Ansiedade traduz: 'digitando…' = 'espera com o coração na mão'.",
+          emoji: "⌛",
+        },
+        {
+          texto: "Arquivo do dia: sentimentos.rascunho (somente leitura)",
+          emoji: "🗂️",
+        },
+        {
+          texto: "Seja gentil com quem você foi enquanto esperava.",
+          emoji: "🕊️",
+        },
+        {
+          texto: "Atenção: sinais ambíguos podem conter açúcar em excesso.",
+          emoji: "🍬",
+        },
+        {
+          texto: "'We need to talk' com a própria cabeça: reunião recorrente.",
+          emoji: "🗓️",
+        },
+        {
+          texto:
+            "Boa noite enigmática enviada. Agora, boa sorte para o coração.",
+          emoji: "🌙",
+        },
+        {
+          texto: "Autocuidado em 3 passos: água, alonga, desidealiza.",
+          emoji: "💧",
+        },
+        {
+          texto:
+            "Entre a fada e a diabinha mora uma professora de inglês impecável.",
+          emoji: "🧚",
+        },
+        { texto: "Limites: a verdadeira língua universal.", emoji: "🌐" },
+        {
+          texto: "Ficção científica: eu, disciplinado. (Em breve.)",
+          emoji: "🚀",
+        },
+        {
+          texto: "Quando o coração escreve fanfic, a razão edita.",
+          emoji: "📝",
+        },
+        {
+          texto:
+            "Marés internas sob controle: previsão de tempo parcialmente sereno.",
+          emoji: "⛅",
+        },
+      ];
+
+      const cardsContainer = document.getElementById("cardsContainer");
+      const themeToggle = document.getElementById("themeToggle");
+      const audioControl = document.getElementById("audioControl");
+      const backgroundAudio = document.getElementById("backgroundAudio");
+      const body = document.body;
+
+      function criarCards() {
+        ironias.forEach((ironia) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <div class="card-content">
+              <div class="card-icon">${ironia.emoji}</div>
+              <p class="card-text">"${ironia.texto}"</p>
+              <div class="card-footer"><i class="fas fa-smile-wink"></i> Ironia da Vida</div>
+            </div>
+          `;
+          cardsContainer.appendChild(card);
+        });
+      }
+
+      themeToggle.addEventListener("click", () => {
+        if (body.classList.contains("dark-theme")) {
+          body.classList.remove("dark-theme");
+          body.classList.add("light-theme");
+          themeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo Escuro';
+        } else {
+          body.classList.remove("light-theme");
+          body.classList.add("dark-theme");
+          themeToggle.innerHTML = '<i class="fas fa-sun"></i> Modo Claro';
+        }
+      });
+
+      let audioPlaying = false;
+      audioControl.addEventListener("click", () => {
+        if (audioPlaying) {
+          backgroundAudio.pause();
+          audioControl.innerHTML = '<i class="fas fa-volume-mute"></i> Som';
+          audioPlaying = false;
+        } else {
+          backgroundAudio.play().catch(() => {
+            console.log(
+              "Reprodução automática bloqueada. Clique novamente para ativar o som."
+            );
+          });
+          audioControl.innerHTML = '<i class="fas fa-volume-up"></i> Som';
+          audioPlaying = true;
+        }
+      });
+
+      function criarEmojisFlutuantes() {
+        const emojis = [
+          "😂",
+          "🤣",
+          "😆",
+          "😜",
+          "🤪",
+          "🙃",
+          "😅",
+          "🤔",
+          "🌙",
+          "🌊",
+          "🧚",
+          "😈",
+          "🍬",
+        ];
+        for (let i = 0; i < 18; i++) {
+          const emoji = document.createElement("div");
+          emoji.className = "floating-emoji";
+          emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          emoji.style.left = `${Math.random() * 100}vw`;
+          emoji.style.animationDuration = `${15 + Math.random() * 20}s`;
+          emoji.style.animationDelay = `${Math.random() * 5}s`;
+          document.body.appendChild(emoji);
+        }
+      }
+
+      criarCards();
+      criarEmojisFlutuantes();
+
+      document.querySelectorAll(".card-text").forEach((element, index) => {
+        const texto = element.textContent;
+        element.textContent = "";
+        setTimeout(() => {
+          let i = 0;
+          const typeWriter = () => {
+            if (i < texto.length) {
+              element.textContent += texto.charAt(i);
+              i++;
+              setTimeout(typeWriter, 35);
+            }
+          };
+          typeWriter();
+        }, index * 220);
+      });
+    </script>
+  </body>
+</html>

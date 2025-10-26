@@ -31,6 +31,10 @@
         --input-placeholder: color-mix(in srgb, var(--fg) 55%, transparent);
         --input-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         --input-shadow-focus: 0 10px 28px rgba(0, 0, 0, 0.16);
+
+        /* Notificações */
+        --danger: #ef4444;
+        --danger-ring: 0 0 0 2px rgba(239, 68, 68, 0.25);
       }
       /* Tema Elétrico (escuro) */
       .eletrico {
@@ -56,6 +60,9 @@
         --input-placeholder: color-mix(in srgb, var(--fg) 55%, transparent);
         --input-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         --input-shadow-focus: 0 12px 36px rgba(0, 0, 0, 0.5);
+
+        --danger: #f43f5e;
+        --danger-ring: 0 0 0 2px rgba(244, 63, 94, 0.25);
       }
 
       * {
@@ -385,6 +392,71 @@
       .eletrico .card-date {
         background: rgba(255, 255, 255, 0.08);
       }
+
+      /* ====== Notificações: botão + badge ====== */
+      .actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .icon-btn {
+        position: relative;
+        display: inline-grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        border: 1px solid var(--input-border);
+        background: var(--card);
+        color: var(--fg);
+        text-decoration: none;
+        box-shadow: var(--input-shadow);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        transition: transform 0.08s ease, box-shadow 0.2s ease,
+          border-color 0.15s ease;
+      }
+      .icon-btn:hover {
+        transform: translateY(-1px);
+        border-color: var(--input-border-hover);
+      }
+      .icon-btn:active {
+        transform: translateY(0) scale(0.98);
+      }
+      .icon-btn .bell {
+        font-size: 20px;
+        line-height: 1;
+      }
+      .notif-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 800;
+        color: #fff;
+        background: var(--danger);
+        border-radius: 999px;
+        box-shadow: var(--danger-ring), 0 6px 18px rgba(0, 0, 0, 0.18);
+        animation: pulse 1.25s ease-in-out infinite;
+        user-select: none;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.12);
+          opacity: 0.85;
+        }
+      }
     </style>
   </head>
   <body>
@@ -435,6 +507,20 @@
           </div>
         </div>
         <div class="actions">
+          <!-- Botão Notificações -->
+          <a
+            id="notifBtn"
+            class="icon-btn"
+            href="https://bit.ly/3Wkq6Ax"
+            aria-label="Notificações não lidas"
+            title="Ver notificações"
+          >
+            <span class="bell" aria-hidden="true">🔔</span>
+            <span id="notifBadge" class="notif-badge" style="display: none"
+              >0</span
+            >
+          </a>
+
           <button id="toggleTheme" class="btn ghost" type="button">
             Alternar tema
           </button>
@@ -591,6 +677,55 @@
           setTimeout(() => card.classList.remove("shake"), 380);
           gateInput?.focus();
         });
+
+        /* ===== Notificações: lógica do badge ===== */
+        const NOTIF_KEY = "notifications.unread.count";
+        const notifBtn = $("#notifBtn");
+        const notifBadge = $("#notifBadge");
+
+        function getUnreadCount() {
+          const qParam = new URL(location.href).searchParams.get("unread");
+          if (qParam !== null && qParam !== "") {
+            const n = Math.max(0, parseInt(qParam, 10) || 0);
+            try {
+              localStorage.setItem(NOTIF_KEY, String(n));
+            } catch {}
+            return n;
+          }
+          try {
+            const v = parseInt(localStorage.getItem(NOTIF_KEY), 10);
+            if (!isNaN(v) && v >= 0) return v;
+          } catch {}
+          return 1; // valor padrão (exemplo)
+        }
+
+        function setUnreadCount(n) {
+          const safe = Math.max(0, n | 0);
+          try {
+            localStorage.setItem(NOTIF_KEY, String(safe));
+          } catch {}
+          return safe;
+        }
+
+        function updateNotificationBadge() {
+          const count = getUnreadCount();
+          if (!notifBadge) return;
+          if (count > 0) {
+            notifBadge.textContent = count > 9 ? "9+" : String(count);
+            notifBadge.style.display = "inline-flex";
+          } else {
+            notifBadge.style.display = "none";
+          }
+        }
+
+        notifBtn?.addEventListener("click", (e) => {
+          // Marca como lidas antes de redirecionar
+          setUnreadCount(0);
+          updateNotificationBadge();
+          // permite navegação pelo href normalmente
+        });
+
+        updateNotificationBadge();
 
         /* ===== Grid de cards ===== */
         const grid = $("#grid");

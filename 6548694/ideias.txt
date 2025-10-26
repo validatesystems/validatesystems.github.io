@@ -1,0 +1,51 @@
+💫 1. “Entre Marés e Silêncios”
+
+Uma página contemplativa sobre os altos e baixos de sentir — entre o que é dito e o que o mar leva.
+Efeitos: ondas suaves em CSS, trilha sonora leve, frases curtas sobre introspecção e calmaria.
+
+🌙 2. “Diálogos Imaginários”
+
+Mensagens que poderiam ter sido ditas — e talvez foram, em outro tempo.
+Formato tipo chat: você e ela como personagens poéticos, trocando frases curtas, com sutil animação de digitação.
+
+🕊️ 3. “Cartas que o Tempo Não Entregou”
+
+Uma galeria de cartas ou bilhetes escritos, mas nunca enviados.
+Cada carta aparece em um envelope animado, abrindo ao clique.
+
+🔮 4. “Razão & Intuição”
+
+O duelo interno — entre o cálculo e o pressentimento.
+Uma estética dividida: metade lógica (linhas, geometria), metade sensorial (brilho, névoa).
+Cada clique alterna entre “razão” e “intuição”.
+
+🪞 5. “Espelho d’Água”
+
+Reflexões sobre o que se sente, mas não se pode dizer.
+Textos aparecem com leve distorção de água, e se desfazem ao toque.
+
+🕯️ 6. “Luzes e Marés”
+
+Página simbólica sobre ciclos: a lua, o afeto, o retorno do que não se apaga.
+Frases surgem com a luminosidade de velas ou reflexos lunares.
+
+🎧 7. “Entre Sons e Silêncios”
+
+Você coloca trechos de músicas que a lembram e curtos textos reflexivos.
+O visitante pode tocar cada trilha e ler o pensamento associado.
+
+💌 8. “Projeto Sereia”
+
+Um espaço dedicado à admiração e à inspiração que ela representa, sem confissão direta.
+Cada card tem metáforas do mar, música e docência.
+Visual limpo, delicado e com ondas discretas.
+
+🌌 9. “Constelação Particular”
+
+Um mapa interativo de sentimentos, com estrelas representando lembranças, gestos e frases.
+Cada estrela brilha ao toque, revelando um pensamento.
+
+🔏 10. “O que o silêncio escreveu”
+
+Textos curtos, densos e calmos — frases que se leem devagar, acompanhadas por um som ambiente.
+Tema minimalista, fundo escuro e tipografia manuscrita.
