@@ -2,7 +2,10 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <title>Aurora de Vozes: para Cléia</title>
     <meta name="color-scheme" content="light dark" />
     <meta
@@ -20,15 +23,17 @@
         --card: rgba(255, 255, 255, 0.06);
         --ring: 0 0 0 2px rgba(167, 139, 250, 0.35);
         --radius: 18px;
+        --max-text: 70ch;
       }
       @media (prefers-color-scheme: light) {
         :root {
           --bg: #f7f8ff;
           --fg: #0f1220;
           --muted: #4b5563;
-          --card: rgba(255, 255, 255, 0.8);
+          --card: rgba(255, 255, 255, 0.84);
         }
       }
+
       html,
       body {
         height: 100%;
@@ -43,8 +48,12 @@
           radial-gradient(900px 700px at 90% 20%, #1a1231, transparent 60%),
           linear-gradient(180deg, var(--bg), #04060b);
         color: var(--fg);
-        font: 400 16px/1.45 ui-sans-serif, system-ui, -apple-system, Inter,
-          Segoe UI, Roboto, Arial;
+        font-family: ui-sans-serif, system-ui, -apple-system, Inter, Segoe UI,
+          Roboto, Arial;
+        font-weight: 400;
+        line-height: 1.55;
+        -webkit-text-size-adjust: 100%;
+        text-rendering: optimizeLegibility;
       }
 
       /* Canvas aurora */
@@ -56,11 +65,13 @@
       }
 
       header {
-        display: flex;
+        display: grid;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
         padding: clamp(12px, 4vw, 24px);
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
       }
       .brand {
         display: flex;
@@ -68,19 +79,25 @@
         gap: 12px;
         text-decoration: none;
         color: inherit;
+        min-width: 0;
       }
       .brand svg {
+        flex: 0 0 auto;
         filter: drop-shadow(0 0 28px rgba(167, 139, 250, 0.35));
       }
       .brand h1 {
         margin: 0;
-        font-size: clamp(18px, 4vw, 26px);
+        font-size: clamp(18px, 4.5vw, 26px);
       }
       .brand small {
         display: block;
         color: var(--muted);
-        font-size: 12px;
+        font-size: clamp(11px, 3.2vw, 12px);
         margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 60vw;
       }
 
       .controls {
@@ -92,11 +109,12 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 12px;
+        padding: 10px 14px; /* alvo de toque maior */
         border-radius: 999px;
         background: var(--card);
         backdrop-filter: var(--glass);
         border: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: clamp(12px, 3.4vw, 13px);
       }
       .cta {
         display: inline-flex;
@@ -105,11 +123,12 @@
         border: 1px solid rgba(255, 255, 255, 0.12);
         background: linear-gradient(180deg, var(--accent-2), var(--accent));
         color: white;
-        padding: 10px 14px;
-        border-radius: 12px;
+        padding: 12px 16px; /* alvo de toque maior */
+        border-radius: 14px;
         font-weight: 700;
         cursor: pointer;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        font-size: clamp(14px, 3.8vw, 15px);
       }
       .cta.ghost {
         background: transparent;
@@ -123,7 +142,7 @@
       }
 
       .hero {
-        margin-top: 10px;
+        margin-top: 6px;
         border: 1px solid rgba(255, 255, 255, 0.08);
         background: linear-gradient(
           180deg,
@@ -136,9 +155,9 @@
         backdrop-filter: var(--glass);
       }
       .hero h2 {
-        margin: 0 0 6px;
-        font-size: clamp(22px, 6vw, 44px);
-        line-height: 1.05;
+        margin: 0 0 8px;
+        font-size: clamp(22px, 7vw, 44px);
+        line-height: 1.12;
         letter-spacing: 0.3px;
         background: conic-gradient(
           from 180deg at 50% 50%,
@@ -149,10 +168,14 @@
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
+        max-width: var(--max-text);
       }
       .hero p {
         margin: 0;
         color: var(--muted);
+        font-size: clamp(14px, 3.9vw, 18px);
+        line-height: 1.65;
+        max-width: var(--max-text);
       }
       .hero .actions {
         display: flex;
@@ -187,10 +210,10 @@
       }
       .card h3 {
         margin: 0 0 6px;
-        font-size: 16px;
+        font-size: clamp(14px, 3.8vw, 16px);
       }
       .meter {
-        height: 10px;
+        height: 12px;
         border-radius: 8px;
         background: linear-gradient(90deg, #2b2f45, #1e2639);
         overflow: hidden;
@@ -205,7 +228,7 @@
       }
 
       .out {
-        min-height: 72px;
+        min-height: 84px;
         border-radius: 12px;
         padding: 12px;
         border: 1px solid rgba(255, 255, 255, 0.12);
@@ -215,10 +238,12 @@
           rgba(255, 255, 255, 0.03)
         );
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        font-size: clamp(14px, 4.2vw, 18px);
+        line-height: 1.6;
       }
 
       .tiny {
-        font-size: 12px;
+        font-size: clamp(11px, 3.2vw, 12px);
         color: var(--muted);
       }
 
@@ -228,7 +253,32 @@
         justify-content: space-between;
         gap: 12px;
         color: var(--muted);
-        padding: 16px clamp(12px, 5vw, 40px) 40px;
+        padding: 16px clamp(12px, 5vw, 40px)
+          max(40px, env(safe-area-inset-bottom));
+      }
+
+      /* Botão flutuante para sair do modo imersivo */
+      .floating-exit {
+        position: fixed;
+        right: max(16px, env(safe-area-inset-right));
+        top: max(16px, env(safe-area-inset-top));
+        z-index: 20;
+        backdrop-filter: var(--glass);
+      }
+
+      /* Modo imersivo: esconder UI e priorizar aurora */
+      body.immersive header,
+      body.immersive main,
+      body.immersive footer {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(4px);
+      }
+      body.immersive #scene {
+        filter: saturate(1.2) contrast(1.06) brightness(1.02);
+      }
+      body.immersive #exitImmersive[hidden] {
+        display: flex;
       }
 
       /* Acessibilidade: reduzir movimento desliga efeitos intensos */
@@ -236,6 +286,81 @@
         #scene {
           display: none;
         }
+      }
+      /* ===== Legibilidade em telas pequenas ===== */
+      @media (max-width: 480px) {
+        header {
+          position: relative;
+          z-index: 2;
+        }
+
+        /* faixa sutil para separar o topo do fundo animado */
+        header::after {
+          content: "";
+          position: absolute;
+          inset: -6px -8px -12px -8px; /* cobre um pouco acima e abaixo */
+          background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.55),
+            rgba(0, 0, 0, 0.3) 40%,
+            rgba(0, 0, 0, 0)
+          );
+          pointer-events: none;
+          z-index: -1;
+        }
+
+        /* título principal do topo */
+        .brand h1 {
+          font-size: clamp(20px, 6.2vw, 28px);
+          font-weight: 800;
+          letter-spacing: 0.2px;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+        }
+
+        .brand small {
+          max-width: 70vw;
+          text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+        }
+
+        /* botões: contraste e legibilidade */
+        .cta {
+          font-size: clamp(15px, 4.2vw, 16px);
+          font-weight: 800;
+          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+          border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        /* ghost recebe um fundo translúcido para elevar o contraste */
+        .cta.ghost {
+          background: rgba(0, 0, 0, 0.25);
+          border-color: rgba(255, 255, 255, 0.28);
+          color: var(--fg);
+        }
+
+        /* chips de status maiores e com sombra para destacar */
+        .chip {
+          font-size: clamp(13px, 3.8vw, 14px);
+          font-weight: 700;
+          background: rgba(0, 0, 0, 0.28);
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+          border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        /* título da hero mais visível */
+        .hero h2 {
+          font-size: clamp(24px, 8.6vw, 44px);
+          text-shadow: 0 3px 14px rgba(0, 0, 0, 0.55);
+        }
+      }
+
+      /* melhora o foco visual sempre, em qualquer tela */
+      .cta:focus-visible,
+      .chip:focus-visible,
+      .brand:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.55),
+          0 8px 26px rgba(0, 0, 0, 0.3);
       }
     </style>
   </head>
@@ -283,17 +408,21 @@
       <section class="hero">
         <h2 id="saudacao">Olá, Cléia! Vamos pintar o ar?</h2>
         <p id="sub">
-          Fale algo (ou sorria, você brilha quando está sorrindo) e veja a
-          aurora responder. A cada pico de voz, nasce uma frase feita para você.
+          Fale algo (ou sorria) e veja a aurora responder. A cada pico de voz,
+          nasce uma frase feita para você. Em dispositivos móveis, ampliamos
+          fontes e espaçamento para ficar confortável de ler.
         </p>
         <div class="actions">
           <button class="cta ghost" id="gerarTexto">
             Gerar frase sem microfone
           </button>
           <button class="cta ghost" id="copiar">Copiar frase</button>
+          <button class="cta" id="focusAurora" title="Tela cheia da aurora">
+            Olhar só a aurora
+          </button>
         </div>
 
-        <div class="hud panel">
+        <div class="hud panel" aria-live="polite">
           <div class="card">
             <h3>Nível de voz</h3>
             <div class="meter"><i id="bar"></i></div>
@@ -316,6 +445,11 @@
       >
     </footer>
 
+    <!-- Botão flutuante para sair do modo imersivo -->
+    <button class="cta ghost floating-exit" id="exitImmersive" hidden>
+      Voltar
+    </button>
+
     <script>
       // ============================
       // Utilidades
@@ -326,11 +460,21 @@
       let W,
         H,
         DPR = Math.min(2, devicePixelRatio || 1);
+
+      // Corrige 100vh móvel e respeita safe areas
       function resize() {
-        W = scene.width = innerWidth * DPR;
-        H = scene.height = innerHeight * DPR;
-        scene.style.width = innerWidth + "px";
-        scene.style.height = innerHeight + "px";
+        const w = Math.max(
+          document.documentElement.clientWidth,
+          window.innerWidth || 0
+        );
+        const h = Math.max(
+          document.documentElement.clientHeight,
+          window.innerHeight || 0
+        );
+        W = scene.width = w * DPR;
+        H = scene.height = h * DPR;
+        scene.style.width = w + "px";
+        scene.style.height = h + "px";
       }
       resize();
       addEventListener("resize", resize);
@@ -512,7 +656,7 @@
         }
       }
 
-      // mensagens (PT-BR) — carinhosa, inteligente e engraçada ao mesmo tempo
+      // mensagens (PT-BR)
       const banco = {
         prefixo: [
           "Relâmpago gentil:",
@@ -567,9 +711,7 @@
           banco.engenho
         )} ${pick(banco.humor)} ${pick(banco.mar)} ${pick(banco.fecho)}`;
       }
-
       function onBeat(vol, cen) {
-        // Gera frase quando há pico e atualiza texto
         $("#saida").textContent = frase();
       }
 
@@ -610,11 +752,10 @@
         setTimeout(() => el.remove(), 1400);
       }
 
-      // loop
-      function loop() {
+      // Loop desenho
+      (function loop() {
         draw();
-      }
-      loop();
+      })();
 
       // Acessibilidade mínima
       document.addEventListener("keydown", (e) => {
@@ -624,7 +765,7 @@
         }
       });
 
-      // saudação contextual
+      // Saudação contextual
       (function () {
         const now = new Date();
         const hr = now.getHours();
@@ -640,6 +781,20 @@
           "#saudacao"
         ).textContent = `Olá, Cléia! Boa ${periodo}! Vamos pintar o ar?`;
       })();
+
+      // ===== Modo Imersivo (Olhar só a aurora) =====
+      const focusBtn = $("#focusAurora");
+      const exitBtn = $("#exitImmersive");
+      focusBtn.addEventListener("click", () => {
+        document.body.classList.add("immersive");
+        exitBtn.hidden = false;
+        // iOS/Android: acorda o áudio se necessário
+        if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+      });
+      exitBtn.addEventListener("click", () => {
+        document.body.classList.remove("immersive");
+        exitBtn.hidden = true;
+      });
     </script>
   </body>
 </html>
