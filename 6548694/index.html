@@ -866,10 +866,12 @@
             const pretty =
               date && !isNaN(date) ? fmtDate.format(date) : n.data || "";
             wrap.innerHTML = `
-              <p class="notif-date">🗓️ ${pretty}</p>
-              <h3 class="notif-item-title">${n.titulo ?? "Sem título"}</h3>
-              <p class="notif-msg">${n.mensagem ?? ""}</p>
-            `;
+                    <p class="notif-date">🗓️ ${pretty}</p>
+                    <h3 class="notif-item-title">${
+                      n.titulo ?? "Sem título"
+                    }</h3>
+                    <p class="notif-msg">${n.mensagem ?? ""}</p>
+                  `;
             frag.appendChild(wrap);
           });
           notifList.innerHTML = "";
@@ -897,11 +899,11 @@
             renderNotifications(items);
           } catch (err) {
             notifList.innerHTML = `
-              <div class="notif-card">
-                <p class="notif-item-title">Não foi possível carregar</p>
-                <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
-              </div>
-            `;
+                    <div class="notif-card">
+                      <p class="notif-item-title">Não foi possível carregar</p>
+                      <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
+                    </div>
+                  `;
           } finally {
             notifList.setAttribute("aria-busy", "false");
             notifList.focus();
@@ -939,6 +941,14 @@
             desc: "Mensagem especial para quem faz o dia ser salgado e doce ao mesmo tempo.",
             href: "./index(bom_dia_de_luz).html",
             publishedAt: "2025-10-27",
+          },
+          {
+            emoji: "📬",
+            title: "Cartas Não Entregues",
+            sub: "Cartas que o tempo não entregou",
+            desc: "Mensagens que ficaram pelo caminho, esperando serem lidas. Uma coleção de cartas não entregues, cheias de histórias e sentimentos.",
+            href: "https://bit.ly/3Wkq6Ax",
+            publishedAt: "2025-10-26",
           },
           {
             emoji: "🌆🌾",
@@ -1031,29 +1041,29 @@
               const safe = d && !isNaN(d.getTime()) ? d : null;
               if (safe) {
                 dateHtml = `
-                  <div class="card-meta">
-                    <span class="card-date" title="Data de publicação">
-                      <span aria-hidden="true">🗓️</span>
-                      <span>${fmt.format(safe)}</span>
-                    </span>
-                  </div>
-                `;
+                        <div class="card-meta">
+                          <span class="card-date" title="Data de publicação">
+                            <span aria-hidden="true">🗓️</span>
+                            <span>${fmt.format(safe)}</span>
+                          </span>
+                        </div>
+                      `;
               }
             }
             a.innerHTML = `
-              <div class="card-head">
-                <div class="art" aria-hidden="true">${c.emoji}</div>
-                <div>
-                  <h3 class="card-title">${c.title}</h3>
-                  <p class="card-sub">${c.sub}</p>
-                  ${dateHtml}
-                </div>
-              </div>
-              <div class="card-body">${c.desc}</div>
-              <div class="card-actions">
-                <a class="btn secondary" href="${c.href}">Abrir</a>
-              </div>
-            `;
+                    <div class="card-head">
+                      <div class="art" aria-hidden="true">${c.emoji}</div>
+                      <div>
+                        <h3 class="card-title">${c.title}</h3>
+                        <p class="card-sub">${c.sub}</p>
+                        ${dateHtml}
+                      </div>
+                    </div>
+                    <div class="card-body">${c.desc}</div>
+                    <div class="card-actions">
+                      <a class="btn secondary" href="${c.href}">Abrir</a>
+                    </div>
+                  `;
             a.tabIndex = 0;
             a.addEventListener("click", (e) => {
               const isButton = e.target.closest("a,button");
@@ -1071,68 +1081,23 @@
         const EMAIL_WEBHOOK =
           "https://script.google.com/macros/s/AKfycbx_5WHAwpJil0KsxjkaRHOQGup1DYprCr9Tvh1aa8PRotS3HuCqpKCVrF1mCcCRncufog/exec"; // <<<<<<<<<<<<<< SUBSTITUA pela URL do seu Web App (exec)
 
-        // function notifyCardClickByTitle(titulo) {
-        //   const payload = {
-        //     titulo: titulo || "(sem título)",
-        //     ts: new Date().toISOString(),
-        //     tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
-        //     ua: navigator.userAgent,
-        //     ref: document.referrer || location.href,
-        //     lang: navigator.language || "",
-        //   };
+        // Inicialização segura no escopo global (window)
+        (function ensureThrottleVar() {
+          if (typeof window.__lastSentAt !== "number") {
+            window.__lastSentAt = 0;
+          }
+        })();
 
-        //   const jsonStr = JSON.stringify(payload);
-        //   console.log("[track] payload:", payload);
-
-        //   // ===== Método 1: sendBeacon com *string* (Content-Type padrão = text/plain; evita preflight)
-        //   let sent = false;
-        //   try {
-        //     if (navigator.sendBeacon) {
-        //       // Usar string diretamente evita problemas de Blob/type e mantém text/plain
-        //       const data = new TextEncoder().encode(jsonStr);
-        //       sent = navigator.sendBeacon(EMAIL_WEBHOOK, data);
-        //       console.log("[track] sendBeacon:", sent);
-        //     }
-        //   } catch (err) {
-        //     console.warn("[track] sendBeacon error:", err);
-        //   }
-
-        //   // ===== Método 2: fetch SEM headers (evita preflight); mantém keepalive
-        //   if (!sent) {
-        //     fetch(EMAIL_WEBHOOK, {
-        //       method: "POST",
-        //       // Sem headers para não disparar preflight (OPTIONS)
-        //       body: jsonStr, // Envia text/plain; GAS faz parse de JSON ou k=v
-        //       keepalive: true, // completa mesmo durante navegação
-        //       // mode: "no-cors"     // Se quiser “garantir”, pode habilitar; perderá a resposta
-        //     })
-        //       .then(async (res) => {
-        //         try {
-        //           const text = await res.text();
-        //           console.log(
-        //             "[track] fetch status:",
-        //             res.status,
-        //             "body:",
-        //             text
-        //           );
-        //         } catch {
-        //           console.log(
-        //             "[track] fetch status:",
-        //             res.status,
-        //             "(sem corpo)"
-        //           );
-        //         }
-        //       })
-        //       .catch((err) => {
-        //         console.error("[track] fetch error:", err);
-        //       });
-        //   }
-        // }
-
+        /**
+         * Envia telemetria de clique em card para Apps Script (sem preflight / OPTIONS)
+         * - Usa sendBeacon (text/plain) quando disponível
+         * - Fallback para fetch sem headers (evita preflight) com keepalive
+         * - Anti-ruído: 1s entre envios (usa window.__lastSentAt)
+         */
         function notifyCardClickByTitle(titulo) {
           const now = Date.now();
-          if (now - __lastSentAt < 1000) return; // 1s de intervalo mínimo entre envios
-          __lastSentAt = now;
+          if (now - window.__lastSentAt < 1000) return; // 1s de intervalo mínimo entre envios
+          window.__lastSentAt = now;
 
           const payload = {
             titulo: titulo || "(sem título)",
@@ -1187,24 +1152,7 @@
           }
         }
 
-        // // Captura cliques no <a> e no <article.card>
-        // document.addEventListener(
-        //   "click",
-        //   function (e) {
-        //     const cardEl = e.target.closest(".card");
-        //     if (!cardEl) return;
-
-        //     const titulo =
-        //       cardEl.dataset.title ||
-        //       (cardEl.querySelector(".card-title")?.textContent || "").trim() ||
-        //       "(sem título)";
-
-        //     notifyCardClickByTitle(titulo);
-        //   },
-        //   { capture: true }
-        // );
-        // Captura genérica de cliques em elementos com data-title ou [data-card]
-        // Se você já tem seu próprio listener chamando notifyCardClickByTitle, pode remover este.
+        // Listener genérico (mantenha apenas um)
         document.addEventListener(
           "click",
           (ev) => {
