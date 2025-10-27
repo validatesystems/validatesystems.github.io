@@ -1082,45 +1082,58 @@
         //   };
 
         //   const jsonStr = JSON.stringify(payload);
+        //   console.log("[track] payload:", payload);
 
-        //   // // 1) Preferir sendBeacon com STRING (mais compatível que Blob em alguns navegadores)
-        //   // let beaconsent = false;
-        //   // try {
-        //   //   if (navigator.sendBeacon) {
-        //   //     const data = new TextEncoder().encode(jsonStr); // envia como "text/plain" by default
-        //   //     beaconsent = navigator.sendBeacon(EMAIL_WEBHOOK, data);
-        //   //   }
-        //   // } catch (_) {}
-
-        //   // 1) Preferir sendBeacon com BLOB (application/json)
-        //   // 1) Tentar com fetch + keepalive (mais confiável para application/json)
-        //   let requestSent = false;
+        //   // ===== Método 1: sendBeacon com *string* (Content-Type padrão = text/plain; evita preflight)
+        //   let sent = false;
         //   try {
-        //     if (!requestSent) {
-        //       try {
-        //         if (navigator.sendBeacon) {
-        //           const blob = new Blob([jsonStr], {
-        //             type: "application/json",
-        //           });
-        //           requestSent = navigator.sendBeacon(EMAIL_WEBHOOK, blob);
-        //         }
-        //       } catch (_) {}
+        //     if (navigator.sendBeacon) {
+        //       // Usar string diretamente evita problemas de Blob/type e mantém text/plain
+        //       const data = new TextEncoder().encode(jsonStr);
+        //       sent = navigator.sendBeacon(EMAIL_WEBHOOK, data);
+        //       console.log("[track] sendBeacon:", sent);
         //     }
-        //   } catch (_) {}
+        //   } catch (err) {
+        //     console.warn("[track] sendBeacon error:", err);
+        //   }
 
-        //   // 2) Fallback com fetch + keepalive (continua durante unload)
-        //   if (!beaconsent) {
+        //   // ===== Método 2: fetch SEM headers (evita preflight); mantém keepalive
+        //   if (!sent) {
         //     fetch(EMAIL_WEBHOOK, {
         //       method: "POST",
-        //       headers: { "Content-Type": "application/json" },
-        //       body: jsonStr,
-        //       keepalive: true, // <- chave para não perder a requisição na navegação
-        //       mode: "no-cors",
-        //     }).catch(() => {});
+        //       // Sem headers para não disparar preflight (OPTIONS)
+        //       body: jsonStr, // Envia text/plain; GAS faz parse de JSON ou k=v
+        //       keepalive: true, // completa mesmo durante navegação
+        //       // mode: "no-cors"     // Se quiser “garantir”, pode habilitar; perderá a resposta
+        //     })
+        //       .then(async (res) => {
+        //         try {
+        //           const text = await res.text();
+        //           console.log(
+        //             "[track] fetch status:",
+        //             res.status,
+        //             "body:",
+        //             text
+        //           );
+        //         } catch {
+        //           console.log(
+        //             "[track] fetch status:",
+        //             res.status,
+        //             "(sem corpo)"
+        //           );
+        //         }
+        //       })
+        //       .catch((err) => {
+        //         console.error("[track] fetch error:", err);
+        //       });
         //   }
         // }
 
         function notifyCardClickByTitle(titulo) {
+          const now = Date.now();
+          if (now - __lastSentAt < 1000) return; // 1s de intervalo mínimo entre envios
+          __lastSentAt = now;
+
           const payload = {
             titulo: titulo || "(sem título)",
             ts: new Date().toISOString(),
@@ -1133,11 +1146,10 @@
           const jsonStr = JSON.stringify(payload);
           console.log("[track] payload:", payload);
 
-          // ===== Método 1: sendBeacon com *string* (Content-Type padrão = text/plain; evita preflight)
+          // 1) sendBeacon com string/Uint8Array => Content-Type text/plain (sem preflight)
           let sent = false;
           try {
             if (navigator.sendBeacon) {
-              // Usar string diretamente evita problemas de Blob/type e mantém text/plain
               const data = new TextEncoder().encode(jsonStr);
               sent = navigator.sendBeacon(EMAIL_WEBHOOK, data);
               console.log("[track] sendBeacon:", sent);
@@ -1146,14 +1158,13 @@
             console.warn("[track] sendBeacon error:", err);
           }
 
-          // ===== Método 2: fetch SEM headers (evita preflight); mantém keepalive
+          // 2) Fallback fetch SEM headers (evita preflight); mantém keepalive
           if (!sent) {
             fetch(EMAIL_WEBHOOK, {
               method: "POST",
-              // Sem headers para não disparar preflight (OPTIONS)
-              body: jsonStr, // Envia text/plain; GAS faz parse de JSON ou k=v
-              keepalive: true, // completa mesmo durante navegação
-              // mode: "no-cors"     // Se quiser “garantir”, pode habilitar; perderá a resposta
+              body: jsonStr, // text/plain (sem headers) — GAS faz parse robusto
+              keepalive: true,
+              // mode: "no-cors" // opcional: se ativar, resposta será opaca (difícil de debugar)
             })
               .then(async (res) => {
                 try {
@@ -1172,29 +1183,43 @@
                   );
                 }
               })
-              .catch((err) => {
-                console.error("[track] fetch error:", err);
-              });
+              .catch((err) => console.error("[track] fetch error:", err));
           }
         }
 
-        // Captura cliques no <a> e no <article.card>
+        // // Captura cliques no <a> e no <article.card>
+        // document.addEventListener(
+        //   "click",
+        //   function (e) {
+        //     const cardEl = e.target.closest(".card");
+        //     if (!cardEl) return;
+
+        //     const titulo =
+        //       cardEl.dataset.title ||
+        //       (cardEl.querySelector(".card-title")?.textContent || "").trim() ||
+        //       "(sem título)";
+
+        //     notifyCardClickByTitle(titulo);
+        //   },
+        //   { capture: true }
+        // );
+        // Captura genérica de cliques em elementos com data-title ou [data-card]
+        // Se você já tem seu próprio listener chamando notifyCardClickByTitle, pode remover este.
         document.addEventListener(
           "click",
-          function (e) {
-            const cardEl = e.target.closest(".card");
-            if (!cardEl) return;
-
-            const titulo =
-              cardEl.dataset.title ||
-              (cardEl.querySelector(".card-title")?.textContent || "").trim() ||
-              "(sem título)";
-
-            notifyCardClickByTitle(titulo);
+          (ev) => {
+            const el = ev.target.closest("[data-title],[data-card]");
+            if (!el) return;
+            const title =
+              el.getAttribute("data-title") ||
+              el.getAttribute("data-card") ||
+              el.textContent?.trim();
+            if (title) notifyCardClickByTitle(title);
           },
           { capture: true }
         );
       })();
     </script>
+    <!-- === End: Email tracking patch (GAS) === -->
   </body>
 </html>
