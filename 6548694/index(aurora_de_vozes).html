@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <title>Aurora de Vozes: para Cléia</title>
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark light" />
     <meta
       name="description"
       content="Uma experiência que transforma a voz em auroras coloridas e mensagens ao vivo para a Cléia."
@@ -25,14 +25,17 @@
         --radius: 18px;
         --max-text: 70ch;
       }
-      @media (prefers-color-scheme: dark) {
+      /* @media (prefers-color-scheme: light) {
         :root {
           --bg: #f7f8ff;
           --fg: #0f1220;
           --muted: #4b5563;
           --card: rgba(255, 255, 255, 0.84);
         }
-      }
+      } */
+      :root {
+        color-scheme: dark;
+      } /* escurece também inputs/scrollbars nativos */
 
       html,
       body {
@@ -396,7 +399,7 @@
 
     <main>
       <section class="hero">
-        <h2 id="saudacao">Olá, Cléia! Vamos pintar o ar?</h2>
+        <h2 id="saudacao">Olá, Cléia! Vamos pintar o céu?</h2>
         <p id="sub">
           Fale algo (ou sorria) e veja a aurora responder. A cada pico de voz,
           nasce uma frase feita para você. Em dispositivos móveis, ampliamos
@@ -755,7 +758,7 @@
             : "noite";
         $(
           "#saudacao"
-        ).textContent = `Olá, Cléia! Boa ${periodo}! Vamos pintar o ar?`;
+        ).textContent = `Olá, Cléia! Boa ${periodo}! Vamos pintar o céu?`;
       })();
 
       // ===== Modo Imersivo (Olhar só a aurora) =====
