@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aurora de Vozes: para Cléia</title>
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="description"
+      content="Uma experiência que transforma a voz em auroras coloridas e mensagens ao vivo para a Cléia."
+    />
+    <style>
+      :root {
+        --bg: #070a12;
+        --fg: #eef2ff;
+        --muted: #9aa4b2;
+        --accent: #22d3ee; /* ciano */
+        --accent-2: #a78bfa; /* violeta */
+        --glass: blur(14px);
+        --card: rgba(255, 255, 255, 0.06);
+        --ring: 0 0 0 2px rgba(167, 139, 250, 0.35);
+        --radius: 18px;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8ff;
+          --fg: #0f1220;
+          --muted: #4b5563;
+          --card: rgba(255, 255, 255, 0.8);
+        }
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: radial-gradient(
+            1200px 900px at 10% 10%,
+            #10162b,
+            transparent 60%
+          ),
+          radial-gradient(900px 700px at 90% 20%, #1a1231, transparent 60%),
+          linear-gradient(180deg, var(--bg), #04060b);
+        color: var(--fg);
+        font: 400 16px/1.45 ui-sans-serif, system-ui, -apple-system, Inter,
+          Segoe UI, Roboto, Arial;
+      }
+
+      /* Canvas aurora */
+      #scene {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        filter: saturate(1.15) contrast(1.03);
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: clamp(12px, 4vw, 24px);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: inherit;
+      }
+      .brand svg {
+        filter: drop-shadow(0 0 28px rgba(167, 139, 250, 0.35));
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: clamp(18px, 4vw, 26px);
+      }
+      .brand small {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: linear-gradient(180deg, var(--accent-2), var(--accent));
+        color: white;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      }
+      .cta.ghost {
+        background: transparent;
+        color: var(--fg);
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 clamp(12px, 5vw, 40px) clamp(20px, 6vw, 60px);
+      }
+
+      .hero {
+        margin-top: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.03)
+        );
+        border-radius: var(--radius);
+        box-shadow: 0 0 40px rgba(167, 139, 250, 0.15);
+        padding: clamp(16px, 4vw, 28px);
+        backdrop-filter: var(--glass);
+      }
+      .hero h2 {
+        margin: 0 0 6px;
+        font-size: clamp(22px, 6vw, 44px);
+        line-height: 1.05;
+        letter-spacing: 0.3px;
+        background: conic-gradient(
+          from 180deg at 50% 50%,
+          var(--accent),
+          var(--accent-2),
+          var(--accent)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+      }
+      .hero .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+
+      .hud {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 800px) {
+        .panel {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border-radius: 14px;
+        padding: 12px;
+      }
+      .card h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+      .meter {
+        height: 10px;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #2b2f45, #1e2639);
+        overflow: hidden;
+        position: relative;
+      }
+      .meter > i {
+        position: absolute;
+        inset: 0;
+        width: 10%;
+        background: linear-gradient(90deg, var(--accent-2), var(--accent));
+        box-shadow: 0 0 22px rgba(167, 139, 250, 0.35);
+      }
+
+      .out {
+        min-height: 72px;
+        border-radius: 12px;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.08),
+          rgba(255, 255, 255, 0.03)
+        );
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      }
+
+      .tiny {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        padding: 16px clamp(12px, 5vw, 40px) 40px;
+      }
+
+      /* Acessibilidade: reduzir movimento desliga efeitos intensos */
+      @media (prefers-reduced-motion: reduce) {
+        #scene {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="scene" aria-hidden="true"></canvas>
+
+    <header>
+      <a href="#" class="brand" aria-label="Início">
+        <svg
+          width="34"
+          height="34"
+          viewBox="0 0 64 64"
+          fill="none"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="var(--accent)" />
+              <stop offset="1" stop-color="var(--accent-2)" />
+            </linearGradient>
+          </defs>
+          <circle cx="32" cy="32" r="28" stroke="url(#g)" stroke-width="4" />
+          <path
+            d="M12 34c8-8 16-8 24 0s16 8 24 0"
+            stroke="url(#g)"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <circle cx="44" cy="24" r="4" fill="url(#g)" />
+        </svg>
+        <div>
+          <h1>Aurora de Vozes: Cléia</h1>
+          <small>onde sua voz vira luz</small>
+        </div>
+      </a>
+      <div class="controls">
+        <span class="chip" id="status">Silencioso</span>
+        <button class="cta" id="toggleMic" aria-pressed="false">
+          Ativar microfone
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h2 id="saudacao">Olá, Cléia! Vamos pintar o ar?</h2>
+        <p id="sub">
+          Fale algo (ou sorria, você brilha quando está sorrindo) e veja a
+          aurora responder. A cada pico de voz, nasce uma frase feita para você.
+        </p>
+        <div class="actions">
+          <button class="cta ghost" id="gerarTexto">
+            Gerar frase sem microfone
+          </button>
+          <button class="cta ghost" id="copiar">Copiar frase</button>
+        </div>
+
+        <div class="hud panel">
+          <div class="card">
+            <h3>Nível de voz</h3>
+            <div class="meter"><i id="bar"></i></div>
+            <div class="tiny" id="freq">—</div>
+          </div>
+          <div class="card">
+            <h3>Frase atual</h3>
+            <div class="out" id="saida">Aguardando o primeiro brilho…</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span class="tiny"
+        >Respeita seu tema e sua privacidade. Tudo roda no seu navegador.</span
+      >
+      <span class="tiny"
+        >Dica: diga “Cléiaaa” puxado — a aurora estica junto.</span
+      >
+    </footer>
+
+    <script>
+      // ============================
+      // Utilidades
+      // ============================
+      const $ = (s) => document.querySelector(s);
+      const scene = $("#scene");
+      const ctx = scene.getContext("2d");
+      let W,
+        H,
+        DPR = Math.min(2, devicePixelRatio || 1);
+      function resize() {
+        W = scene.width = innerWidth * DPR;
+        H = scene.height = innerHeight * DPR;
+        scene.style.width = innerWidth + "px";
+        scene.style.height = innerHeight + "px";
+      }
+      resize();
+      addEventListener("resize", resize);
+
+      // ============================
+      // Web Audio Setup
+      // ============================
+      let audioCtx,
+        analyser,
+        dataF,
+        dataT,
+        micStream,
+        running = false;
+      let rms = 0,
+        centroid = 0,
+        beat = false,
+        lastBeat = 0;
+
+      async function startMic() {
+        if (running) return stopMic();
+        try {
+          micStream = await navigator.mediaDevices.getUserMedia({
+            audio: { echoCancellation: true, noiseSuppression: true },
+          });
+          audioCtx =
+            audioCtx ||
+            new (window.AudioContext || window.webkitAudioContext)();
+          const src = audioCtx.createMediaStreamSource(micStream);
+          analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 2048; // resolução boa para voz
+          analyser.smoothingTimeConstant = 0.86;
+          src.connect(analyser);
+          dataF = new Uint8Array(analyser.frequencyBinCount);
+          dataT = new Uint8Array(analyser.fftSize);
+          running = true;
+          $("#toggleMic").textContent = "Desativar microfone";
+          $("#toggleMic").setAttribute("aria-pressed", "true");
+          $("#status").textContent = "Ouvindo…";
+          if (audioCtx.state === "suspended") await audioCtx.resume();
+        } catch (err) {
+          console.error(err);
+          toast("Permita o microfone para ver a aurora ✨");
+        }
+      }
+      function stopMic() {
+        if (!running) return;
+        running = false;
+        try {
+          micStream.getTracks().forEach((t) => t.stop());
+        } catch (_) {}
+        $("#toggleMic").textContent = "Ativar microfone";
+        $("#toggleMic").setAttribute("aria-pressed", "false");
+        $("#status").textContent = "Silencioso";
+      }
+
+      $("#toggleMic").addEventListener("click", async () => {
+        if (audioCtx && audioCtx.state === "suspended") await audioCtx.resume();
+        startMic();
+      });
+
+      // ============================
+      // Aurora Renderer (Canvas 2D)
+      // ============================
+      let t = 0,
+        raf;
+      function draw() {
+        t += 0.005;
+        // efeito de trilha
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.10)";
+        ctx.fillRect(0, 0, W, H);
+
+        // ler áudio
+        let vol = 0,
+          cen = 0;
+        if (running && analyser) {
+          analyser.getByteTimeDomainData(dataT);
+          analyser.getByteFrequencyData(dataF);
+          // RMS simplificado
+          let sum = 0;
+          for (let i = 0; i < dataT.length; i++) {
+            const v = (dataT[i] - 128) / 128;
+            sum += v * v;
+          }
+          rms = Math.sqrt(sum / dataT.length);
+          vol = rms;
+          // Centróide espectral
+          let num = 0,
+            den = 0;
+          const nyquist = audioCtx.sampleRate / 2;
+          for (let i = 0; i < dataF.length; i++) {
+            const f = (i * nyquist) / dataF.length;
+            const mag = dataF[i];
+            num += f * mag;
+            den += mag;
+          }
+          cen = den > 0 ? num / den : 0;
+          centroid = cen;
+          // detecção de pico simples
+          const now = performance.now();
+          const th = 0.06; // threshold
+          const isBeat = vol > th && now - lastBeat > 250;
+          beat = isBeat;
+          if (isBeat) {
+            lastBeat = now;
+            onBeat(vol, cen);
+          }
+          // HUD
+          $("#bar").style.width = Math.min(100, vol * 350).toFixed(1) + "%";
+          $("#freq").textContent = `centro de frequência ≈ ${Math.round(
+            cen
+          )} Hz`;
+        } else {
+          // animação passiva (respiração)
+          vol = 0.02 + 0.02 * Math.sin(t * 2);
+          cen = 220 + 80 * Math.sin(t * 1.3);
+          $("#bar").style.width = Math.min(100, vol * 350).toFixed(1) + "%";
+          $("#freq").textContent = "—";
+        }
+
+        // cores a partir do centróide
+        const hue1 = (220 + cen / 8) % 360; // azul-ciano-violeta
+        const hue2 = (hue1 + 80) % 360;
+
+        // camadas onduladas
+        ctx.globalCompositeOperation = "lighter";
+        for (let layer = 0; layer < 3; layer++) {
+          const amp = (20 + layer * 18) * (1 + vol * 25);
+          const ybase = H * 0.35 + layer * H * 0.18;
+          ctx.beginPath();
+          for (let x = 0; x <= W; x += 8) {
+            const n =
+              Math.sin(x * 0.0025 + t * (0.8 + layer * 0.2)) +
+              Math.cos(x * 0.0014 - t * (1.2 - layer * 0.1));
+            const y = ybase - n * amp;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          const grd = ctx.createLinearGradient(
+            0,
+            ybase - amp * 2,
+            0,
+            ybase + amp * 2
+          );
+          grd.addColorStop(0, `hsla(${hue1}, 90%, 60%, ${0.12 + vol * 0.4})`);
+          grd.addColorStop(1, `hsla(${hue2}, 90%, 65%, ${0.1 + vol * 0.35})`);
+          ctx.strokeStyle = grd;
+          ctx.lineWidth = 2 + vol * 10;
+          ctx.stroke();
+        }
+
+        // partículas cintilantes
+        sparkle(hue1, vol);
+
+        raf = requestAnimationFrame(draw);
+      }
+
+      // Partículas simples
+      const stars = Array.from({ length: 140 }, () => ({
+        x: Math.random() * 1,
+        y: Math.random() * 1,
+        z: Math.random() * 1,
+        s: Math.random() * 1,
+      }));
+      function sparkle(hue, vol) {
+        for (const st of stars) {
+          st.y -= (0.0006 + vol * 0.004) * (0.4 + st.s);
+          if (st.y < -0.05) {
+            st.y = 1.05;
+            st.x = Math.random() * 1;
+            st.s = Math.random() * 1;
+          }
+          const x = st.x * W,
+            y = st.y * H;
+          ctx.fillStyle = `hsla(${
+            hue + Math.sin((x + y) * 0.001 + t) * 20
+          }, 90%, ${60 + st.s * 20}%, ${0.15 + vol * 0.35})`;
+          ctx.fillRect(x, y, 2 + DPR * st.s * 2, 2 + DPR * st.s * 2);
+        }
+      }
+
+      // mensagens (PT-BR) — carinhosa, inteligente e engraçada ao mesmo tempo
+      const banco = {
+        prefixo: [
+          "Relâmpago gentil:",
+          "Nota auroral:",
+          "Vento do norte contou:",
+          "Diário de bordo de hoje:",
+          "Cartografia do riso:",
+        ],
+        carinho: [
+          "Você ilumina até o que não pede luz, e ainda assim sabe quando deixar o escuro falar.",
+          "Seu jeito acalma até os pensamentos que não sabiam pedir pausa.",
+          "Você faz o mundo parecer menos urgente e mais humano.",
+          "Seu silêncio tem a delicadeza de quem entende tudo sem precisar responder, mesmo travando suas batalhas internas.",
+          "Você é o tipo de presença que faz a vida parecer menos corrida e mais vivida.",
+        ],
+        engenho: [
+          "Sua criatividade tem GPS próprio: sempre acha o caminho mais bonito.",
+          "Você pensa como quem dança, lógica que tem ritmo e improviso.",
+          "Seu raciocínio é arquitetura invisível: firme, leve e com janelas para o sol.",
+          "Você descobre soluções que parecem poesia disfarçada de algoritmo.",
+          "Seu engenho é uma bússola que não aponta para o norte, mas para o possível.",
+          "Sua rosa dos ventos gira quando o mundo insiste em ficar parado. Seja o vento dela!",
+        ],
+        humor: [
+          "Seu humor é o tipo de remédio que não vem em bula, mas cura mesmo assim.",
+          "Você faz a vida tropeçar e rir do próprio tropeço.",
+          "Quando o dia promete caos, sua risada vira plano de contingência.",
+          "Até as planilhas ficam menos quadradas quando você chega.",
+          "Seu olhar encontra graça onde os outros veem rotina.",
+          "Você tem o talento raro de fazer o ordinário parecer extraordinário com uma simples risada.",
+        ],
+        mar: [
+          "O horizonte parece mais bem resolvido depois que você passa.",
+          "O mar aprende seu nome e ajusta a maré para combinar.",
+          "Seu riso transforma ressaca em espuma leve.",
+          "As ondas seguem seu ritmo, como se o oceano dançasse ao som da sua voz.",
+          "Você é a brisa que refresca até os dias mais turbulentos.",
+          "Seu espírito é como o mar: profundo, misterioso e cheio de vida.",
+        ],
+        fecho: [
+          "— ass.: alguém torcendo por você em silêncio (e rindo alto por dentro).",
+          "— PS: a vida fica touchscreen quando você encosta.",
+          "— assinatura: O navegante que aposentou a bússola e seguiu sua risada. Você brilha quando está sorrindo.",
+          "— Seu abraço: Onde as águas encontram a costa e levam as mais belas mensagens das profundezas do mar.",
+        ],
+      };
+      function pick(a) {
+        return a[Math.floor(Math.random() * a.length)];
+      }
+      function frase() {
+        return `${pick(banco.prefixo)} ${pick(banco.carinho)} ${pick(
+          banco.engenho
+        )} ${pick(banco.humor)} ${pick(banco.mar)} ${pick(banco.fecho)}`;
+      }
+
+      function onBeat(vol, cen) {
+        // Gera frase quando há pico e atualiza texto
+        $("#saida").textContent = frase();
+      }
+
+      // gerar sem microfone
+      $("#gerarTexto").addEventListener(
+        "click",
+        () => ($("#saida").textContent = frase())
+      );
+      $("#copiar").addEventListener("click", async () => {
+        const txt = $("#saida").textContent.trim();
+        if (!txt) return;
+        try {
+          await navigator.clipboard.writeText(txt);
+          toast("Frase copiada ✨");
+        } catch {
+          alert("Copie manualmente: " + txt);
+        }
+      });
+
+      function toast(msg = "Feito!") {
+        const el = document.createElement("div");
+        el.textContent = msg;
+        Object.assign(el.style, {
+          position: "fixed",
+          left: "50%",
+          bottom: "24px",
+          transform: "translateX(-50%)",
+          background:
+            "linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.85))",
+          color: "#0a0b10",
+          padding: "10px 14px",
+          borderRadius: "12px",
+          boxShadow: "0 10px 30px rgba(0,0,0,.25)",
+          border: "1px solid #fff3",
+          zIndex: 9999,
+        });
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1400);
+      }
+
+      // loop
+      function loop() {
+        draw();
+      }
+      loop();
+
+      // Acessibilidade mínima
+      document.addEventListener("keydown", (e) => {
+        if (e.key === " ") {
+          e.preventDefault();
+          startMic();
+        }
+      });
+
+      // saudação contextual
+      (function () {
+        const now = new Date();
+        const hr = now.getHours();
+        const periodo =
+          hr < 5
+            ? "madrugada"
+            : hr < 12
+            ? "manhã"
+            : hr < 18
+            ? "tarde"
+            : "noite";
+        $(
+          "#saudacao"
+        ).textContent = `Olá, Cléia! Boa ${periodo}! Vamos pintar o ar?`;
+      })();
+    </script>
+  </body>
+</html>

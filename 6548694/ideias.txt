@@ -1,3 +1,70 @@
+Sim — dá pra explorar vários conceitos totalmente diferentes para uma página dedicada à Cléia, cada um com um “mundo” próprio de estilos, emoções e tecnologias.
+Aqui estão 10 ideias originais (todas possíveis com HTML, CSS e JS puros, ou com pequenas libs modernas se quiser aprofundar depois):
+
+🌅 1. “Aurora de Vozes”
+
+Conceito: página que reage à voz.
+O visitante fala (ou ativa o microfone), e as ondas de som criam auroras coloridas e frases suaves surgem ao ritmo da voz.
+Tecnologias: Web Audio API + Canvas + animações de gradiente.
+Sensação: leve, meditativa, etérea.
+
+🪞 2. “Espelho Quântico”
+
+Conceito: a página reflete o humor do usuário — alegria, calma, foco, saudade — mudando cores, fontes e animações conforme a escolha de um “estado”.
+Tecnologias: CSS variables dinâmicas + transições suaves.
+Sensação: introspectiva, emocional, como um “termômetro da alma”.
+
+🪶 3. “Cartas ao Vento”
+
+Conceito: cartas digitais flutuam na tela (como envelopes ou folhas). Ao clicar, se abrem com pequenas mensagens, citações ou lembranças escritas pra ela.
+Tecnologias: CSS transform + animation + JS para gerar cartas dinamicamente.
+Sensação: nostálgica e poética.
+
+🌌 4. “Constelação de Pensamentos”
+
+Conceito: um céu estrelado onde cada estrela representa uma lembrança, qualidade ou frase sobre ela. Ao clicar numa estrela, surge uma animação com texto e som suave.
+Tecnologias: Three.js (ou Canvas 2D) + GSAP + áudio ambiente.
+Sensação: cósmica e imersiva.
+
+🫧 5. “Bolhas de Risos”
+
+Conceito: bolhas coloridas sobem lentamente na tela com palavras engraçadas, frases leves ou piadas internas do cotidiano de vocês.
+Tecnologias: CSS keyframes + randomização em JS.
+Sensação: alegre, brincalhona, relaxante.
+
+📜 6. “Códice dos Dias”
+
+Conceito: um pergaminho digital que se desenrola à medida que o visitante rola a página, revelando “entradas de diário” ou microcapítulos poéticos.
+Tecnologias: Scroll-based animations (ScrollTimeline API ou GSAP ScrollTrigger).
+Sensação: narrativa e intimista.
+
+🌿 7. “Jardim da Calma”
+
+Conceito: cada clique planta uma flor virtual e gera uma frase curta de reflexão ou afeto. As flores crescem lentamente conforme o tempo de permanência na página.
+Tecnologias: SVG animado + localStorage (para lembrar o jardim).
+Sensação: calma, acolhedora, contemplativa.
+
+💡 8. “Sala das Ideias”
+
+Conceito: ambiente 3D (ou pseudo-3D) com “lâmpadas de ideias” penduradas. Cada lâmpada contém uma curiosidade, um elogio ou uma lembrança.
+Tecnologias: CSS 3D transform + lighting effects + som ambiente suave.
+Sensação: criativa e inspiradora.
+
+🎭 9. “Teatro dos Contrastes”
+
+Conceito: divide a tela em dois — “Razão” e “Intuição”. As duas partes interagem entre si com frases que se completam (ex: uma pergunta de um lado, resposta do outro).
+Tecnologias: CSS Grid + animações cruzadas JS.
+Sensação: filosófica e elegante, com toques de humor.
+
+🕯️ 10. “Memória Luminosa”
+
+Conceito: fundo escuro com luzes que acendem conforme o visitante passa o mouse ou o dedo. Cada luz revela uma palavra-chave: “calma”, “força”, “riso”, “mar”.
+Tecnologias: efeito “lanterna” + data-attributes em JS.
+Sensação: misteriosa, sensível, artística.
+
+
+
+
 💫 1. “Entre Marés e Silêncios”
 
 Uma página contemplativa sobre os altos e baixos de sentir — entre o que é dito e o que o mar leva.
