@@ -19,7 +19,7 @@
         --glass: blur(10px);
         --ring: 0 0 0 2px rgba(124, 58, 237, 0.25);
 
-        /* INPUT tokens */
+        /* ===== INPUT THEME-AWARE (tokens derivados) ===== */
         --input-bg: color-mix(in srgb, var(--card) 90%, transparent);
         --input-border: color-mix(in srgb, var(--fg) 14%, transparent);
         --input-border-hover: color-mix(in srgb, var(--fg) 22%, transparent);
@@ -389,78 +389,112 @@
         background: rgba(255, 255, 255, 0.08);
       }
 
-      /* ===== NOVO: Sino igual à imagem ===== */
-      .notif-btn {
+      /* ====== Notificações: botão + badge ====== */
+      .actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .icon-btn {
+        position: relative;
+        display: inline-grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        border: 1px solid var(--input-border);
+        background: var(--card);
+        color: var(--fg);
+        text-decoration: none;
+        box-shadow: var(--input-shadow);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        transition: transform 0.08s ease, box-shadow 0.2s ease,
+          border-color 0.15s ease;
+      }
+      .icon-btn:hover {
+        transform: translateY(-1px);
+        border-color: var(--input-border-hover);
+      }
+      .icon-btn:active {
+        transform: translateY(0) scale(0.98);
+      }
+      .icon-btn .bell {
+        font-size: 20px;
+        line-height: 1;
+      }
+      /* .notif-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: #fff;
-        width: 56px;
-        height: 56px;
-        border-radius: 16px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08),
-          inset 0 1px 0 rgba(255, 255, 255, 0.7);
-        position: relative;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        border: none;
-      }
-      .notif-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-      }
-      .notif-btn:active {
-        transform: scale(0.96);
-      }
-      .notif-icon-wrap {
-        position: relative;
-      }
-      .bell {
-        font-size: 28px;
-        color: #facc15; /* dourado */
-        filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
-      }
-      /* Badge estilizado e sintilante */
-      .notif-badge {
-        position: absolute;
-        top: -6px;
-        right: -6px;
-        background: linear-gradient(135deg, #ef4444, #f87171);
+        font-size: 11px;
+        font-weight: 800;
         color: #fff;
-        font-weight: 700;
-        font-size: 14px;
-        line-height: 1;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        display: none; /* controlado via JS */
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 0 8px rgba(255, 0, 0, 0.5),
-          0 0 4px rgba(255, 255, 255, 0.3) inset;
-        animation: pulseBadge 1.8s infinite ease-in-out,
-          glowBadge 2.5s infinite ease-in-out alternate;
+        background: var(--danger);
+        border-radius: 999px;
+        box-shadow: var(--danger-ring), 0 6px 18px rgba(0, 0, 0, 0.18);
+        animation: pulse 1.25s ease-in-out infinite;
+        user-select: none;
+      } */
+      /* Brilho/sparkle extra no badge */
+      .notif-badge {
+        animation: pulse 1.25s ease-in-out infinite,
+          glow 2.2s ease-in-out infinite;
       }
-      @keyframes pulseBadge {
+
+      /* Estrela que pisca */
+      .notif-badge::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 50%;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #fff;
+        opacity: 0.9;
+        transform: translateX(-50%) scale(0.8);
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+        animation: twinkle 1.4s ease-in-out infinite;
+      }
+
+      @keyframes glow {
+        0%,
+        100% {
+          box-shadow: var(--danger-ring), 0 6px 18px rgba(0, 0, 0, 0.18),
+            0 0 8px rgba(239, 68, 68, 0.35);
+        }
+        50% {
+          box-shadow: var(--danger-ring), 0 8px 22px rgba(0, 0, 0, 0.22),
+            0 0 14px rgba(239, 68, 68, 0.55);
+        }
+      }
+      @keyframes twinkle {
+        0%,
+        100% {
+          transform: translateX(-50%) scale(0.7);
+          opacity: 0.6;
+        }
+        50% {
+          transform: translateX(-50%) scale(1.1);
+          opacity: 1;
+        }
+      }
+      @keyframes pulse {
         0%,
         100% {
           transform: scale(1);
           opacity: 1;
         }
         50% {
-          transform: scale(1.15);
-          opacity: 0.9;
-        }
-      }
-      @keyframes glowBadge {
-        0%,
-        100% {
-          box-shadow: 0 0 8px rgba(255, 0, 0, 0.6),
-            0 0 3px rgba(255, 255, 255, 0.3) inset;
-        }
-        50% {
-          box-shadow: 0 0 12px rgba(255, 0, 0, 0.8),
-            0 0 6px rgba(255, 255, 255, 0.4) inset;
+          transform: scale(1.12);
+          opacity: 0.85;
         }
       }
 
@@ -548,6 +582,99 @@
         text-align: center;
         color: var(--muted);
       }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      /* === NOVO estilo do sino === */
+      .notif-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        position: relative;
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .notif-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      }
+
+      .notif-btn:active {
+        transform: scale(0.96);
+      }
+
+      .notif-icon-wrap {
+        position: relative;
+      }
+
+      .bell {
+        font-size: 28px;
+        color: #facc15; /* tom dourado */
+        filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+      }
+
+      /* Badge estilizado */
+      .notif-badge {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: linear-gradient(135deg, #ef4444, #f87171);
+        color: #fff;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 1;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 8px rgba(255, 0, 0, 0.5),
+          0 0 4px rgba(255, 255, 255, 0.3) inset;
+        animation: pulseBadge 1.8s infinite ease-in-out,
+          glowBadge 2.5s infinite ease-in-out alternate;
+      }
+
+      /* Efeito de pulsação */
+      @keyframes pulseBadge {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.15);
+          opacity: 0.9;
+        }
+      }
+
+      /* Efeito de brilho sintilante */
+      @keyframes glowBadge {
+        0%,
+        100% {
+          box-shadow: 0 0 8px rgba(255, 0, 0, 0.6),
+            0 0 3px rgba(255, 255, 255, 0.3) inset;
+        }
+        50% {
+          box-shadow: 0 0 12px rgba(255, 0, 0, 0.8),
+            0 0 6px rgba(255, 255, 255, 0.4) inset;
+        }
+      }
     </style>
   </head>
   <body>
@@ -601,6 +728,14 @@
           <h2 id="notifTitle" class="notif-title">Notificações</h2>
           <div class="notif-actions">
             <button
+              id="notifMarkRead"
+              class="btn ghost"
+              type="button"
+              title="Marcar como lidas"
+            >
+              Marcar como lidas
+            </button>
+            <button
               id="notifClose"
               class="notif-close"
               type="button"
@@ -629,11 +764,11 @@
           <img src="./img/ico.png" alt="" class="logo" />
           <div>
             <h1 class="title">Cards para você</h1>
-            <p class="subtitle">Escolha um card</p>
+            <p class="subtitle">Escolhar um card</p>
           </div>
         </div>
         <div class="actions">
-          <!-- Botão Notificações (estilo da imagem) -->
+          <!-- Botão Notificações -->
           <a
             id="notifBtn"
             class="notif-btn"
@@ -642,8 +777,10 @@
             title="Ver notificações"
           >
             <div class="notif-icon-wrap">
-              <span class="bell" aria-hidden="true">🔔</span>
-              <span id="notifBadge" class="notif-badge">0</span>
+              <span class="bell">🔔</span>
+              <span id="notifBadge" class="notif-badge" style="display: none"
+                >0</span
+              >
             </div>
           </a>
 
@@ -657,6 +794,170 @@
       <section class="grid" id="grid" aria-label="lista de páginas"></section>
       <footer>Developed with 💜 by ._.. ...</footer>
     </main>
+
+    <script>
+      /* ===== Notificações (badge + modal) ===== */
+      const notifBtn = document.querySelector("#notifBtn");
+      const notifBadge = document.querySelector("#notifBadge");
+      const notifBackdrop = document.querySelector("#notifBackdrop");
+      const notifList = document.querySelector("#notifList");
+      const notifClose = document.querySelector("#notifClose");
+      const notifMarkRead = document.querySelector("#notifMarkRead");
+
+      const fmtDate = new Intl.DateTimeFormat("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      /* Util: YYYY-MM-DD local */
+      function ymdLocal(d = new Date()) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${dd}`;
+      }
+
+      /* Conta quantas notificações são do dia local */
+      async function countTodayNotifications() {
+        try {
+          const res = await fetch("./notificacoes.json?ts=" + Date.now(), {
+            cache: "no-store",
+          });
+          if (!res.ok) throw new Error("Falha ao carregar notificações");
+          const data = await res.json();
+          const items = Array.isArray(data)
+            ? data
+            : Array.isArray(data?.notificacoes)
+            ? data.notificacoes
+            : [];
+
+          const today = ymdLocal(); // dia local do usuário
+          let count = 0;
+
+          for (const n of items) {
+            if (!n?.data) continue;
+            const s = String(n.data);
+            // Se vier em ISO, o slice(0,10) já dá YYYY-MM-DD
+            const inlineIso = /^\d{4}-\d{2}-\d{2}/.test(s)
+              ? s.slice(0, 10)
+              : null;
+            if (inlineIso && inlineIso === today) {
+              count++;
+              continue;
+            }
+
+            // fallback: parse Date e compara por data local
+            const dt = new Date(s);
+            if (!isNaN(dt)) count += ymdLocal(dt) === today ? 1 : 0;
+          }
+          return count;
+        } catch (e) {
+          // Em caso de erro, não mostra badge para não confundir
+          return 0;
+        }
+      }
+
+      /* Atualiza badge com base no JSON e no dia atual */
+      async function refreshNotificationBadgeFromJSON() {
+        const count = await countTodayNotifications();
+        if (!notifBadge) return;
+        if (count > 0) {
+          notifBadge.textContent = count > 9 ? "9+" : String(count);
+          notifBadge.style.display = "inline-flex";
+        } else {
+          notifBadge.style.display = "none";
+        }
+      }
+
+      /* Render do modal */
+      function renderNotifications(items) {
+        if (!items.length) {
+          notifList.innerHTML = `<p class="notif-empty">Sem notificações por aqui.</p>`;
+          return;
+        }
+        const frag = document.createDocumentFragment();
+        items.forEach((n) => {
+          const wrap = document.createElement("article");
+          wrap.className = "notif-card";
+          const date = n.data ? new Date(n.data) : null;
+          const pretty =
+            date && !isNaN(date) ? fmtDate.format(date) : n.data || "";
+          wrap.innerHTML = `
+      <p class="notif-date">🗓️ ${pretty}</p>
+      <h3 class="notif-item-title">${n.titulo ?? "Sem título"}</h3>
+      <p class="notif-msg">${n.mensagem ?? ""}</p>
+    `;
+          frag.appendChild(wrap);
+        });
+        notifList.innerHTML = "";
+        notifList.appendChild(frag);
+      }
+
+      /* Abre modal e carrega JSON (não zera mais o badge: ele reflete o dia atual) */
+      async function openNotificationsModal() {
+        notifBackdrop.classList.add("open");
+        notifBackdrop.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        notifList.setAttribute("aria-busy", "true");
+        notifList.innerHTML = '<p class="notif-empty">Carregando…</p>';
+
+        try {
+          const res = await fetch("./notificacoes.json?ts=" + Date.now(), {
+            cache: "no-store",
+          });
+          if (!res.ok) throw new Error("Falha ao carregar notificações.");
+          const data = await res.json();
+          const items = Array.isArray(data)
+            ? data
+            : Array.isArray(data?.notificacoes)
+            ? data.notificacoes
+            : [];
+          renderNotifications(items);
+        } catch (err) {
+          notifList.innerHTML = `
+      <div class="notif-card">
+        <p class="notif-item-title">Não foi possível carregar</p>
+        <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
+      </div>
+    `;
+        } finally {
+          notifList.setAttribute("aria-busy", "false");
+          notifList.focus();
+        }
+      }
+
+      function closeNotificationsModal() {
+        notifBackdrop.classList.remove("open");
+        notifBackdrop.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        notifBtn?.focus();
+      }
+
+      /* Eventos */
+      notifBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        openNotificationsModal();
+      });
+      notifClose?.addEventListener("click", closeNotificationsModal);
+      notifBackdrop?.addEventListener("click", (e) => {
+        if (e.target === notifBackdrop) closeNotificationsModal();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && notifBackdrop.classList.contains("open"))
+          closeNotificationsModal();
+      });
+
+      /* Mantém por conveniência: só esconde visualmente (não altera contagem do dia) */
+      notifMarkRead?.addEventListener("click", () => {
+        notifBadge.style.display = "none";
+      });
+
+      /* === Inicializa badge do dia === */
+      refreshNotificationBadgeFromJSON();
+    </script>
 
     <script>
       (function () {
@@ -768,7 +1069,7 @@
           const v = (gateInput?.value || "").trim();
           if (!currentKey) return setError("Nenhuma chave ativa.");
           if (v === currentKey.pass) {
-            grantAccess();
+            grantAccess(); /* depois que entra, segue normal */
           } else setError("Ops, foi quase. Tenta de novo?");
         }
 
@@ -789,11 +1090,13 @@
         });
 
         /* ===== Notificações (badge + modal) ===== */
+        const NOTIF_KEY = "notifications.unread.count";
         const notifBtn = $("#notifBtn"),
           notifBadge = $("#notifBadge");
         const notifBackdrop = $("#notifBackdrop"),
           notifList = $("#notifList"),
-          notifClose = $("#notifClose");
+          notifClose = $("#notifClose"),
+          notifMarkRead = $("#notifMarkRead");
         const fmtDate = new Intl.DateTimeFormat("pt-BR", {
           day: "2-digit",
           month: "2-digit",
@@ -802,57 +1105,80 @@
           minute: "2-digit",
         });
 
-        function ymdLocal(d = new Date()) {
-          const y = d.getFullYear();
-          const m = String(d.getMonth() + 1).padStart(2, "0");
-          const dd = String(d.getDate()).padStart(2, "0");
-          return `${y}-${m}-${dd}`;
+        function getUnreadCount() {
+          const qParam = new URL(location.href).searchParams.get("unread");
+          if (qParam !== null && qParam !== "") {
+            const n = Math.max(0, parseInt(qParam, 10) || 0);
+            try {
+              localStorage.setItem(NOTIF_KEY, String(n));
+            } catch {}
+            return n;
+          }
+          try {
+            const v = parseInt(localStorage.getItem(NOTIF_KEY), 10);
+            if (!isNaN(v) && v >= 0) return v;
+          } catch {}
+          return 1; // padrão
+        }
+        function setUnreadCount(n) {
+          const safe = Math.max(0, n | 0);
+          try {
+            localStorage.setItem(NOTIF_KEY, String(safe));
+          } catch {}
+          return safe;
+        }
+        function updateNotificationBadge() {
+          const count = getUnreadCount();
+          if (!notifBadge) return;
+          if (count > 0) {
+            notifBadge.textContent = count > 9 ? "9+" : String(count);
+            notifBadge.style.display = "inline-flex";
+          } else {
+            notifBadge.style.display = "none";
+          }
         }
 
-        async function countTodayNotifications() {
+        // Abre modal e carrega JSON
+        async function openNotificationsModal() {
+          notifBackdrop.classList.add("open");
+          notifBackdrop.setAttribute("aria-hidden", "false");
+          document.body.style.overflow = "hidden";
+          notifList.setAttribute("aria-busy", "true");
+          notifList.innerHTML = '<p class="notif-empty">Carregando…</p>';
+
           try {
             const res = await fetch("./notificacoes.json?ts=" + Date.now(), {
               cache: "no-store",
             });
-            if (!res.ok) throw new Error("Falha ao carregar notificações");
+            if (!res.ok) throw new Error("Falha ao carregar notificações.");
             const data = await res.json();
             const items = Array.isArray(data)
               ? data
               : Array.isArray(data?.notificacoes)
               ? data.notificacoes
               : [];
-            const today = ymdLocal();
-            let count = 0;
-            for (const n of items) {
-              if (!n?.data) continue;
-              const s = String(n.data);
-              const inlineIso = /^\d{4}-\d{2}-\d{2}/.test(s)
-                ? s.slice(0, 10)
-                : null;
-              if (inlineIso && inlineIso === today) {
-                count++;
-                continue;
-              }
-              const dt = new Date(s);
-              if (!isNaN(dt)) count += ymdLocal(dt) === today ? 1 : 0;
-            }
-            return count;
-          } catch (e) {
-            return 0;
+            renderNotifications(items);
+            // Marca como lidas ao abrir
+            setUnreadCount(0);
+            updateNotificationBadge();
+          } catch (err) {
+            notifList.innerHTML = `
+              <div class="notif-card">
+                <p class="notif-item-title">Não foi possível carregar</p>
+                <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
+              </div>
+            `;
+          } finally {
+            notifList.setAttribute("aria-busy", "false");
+            notifList.focus();
           }
         }
-
-        async function refreshNotificationBadgeFromJSON() {
-          const count = await countTodayNotifications();
-          if (!notifBadge) return;
-          if (count > 0) {
-            notifBadge.textContent = count > 9 ? "9+" : String(count);
-            notifBadge.style.display = "flex";
-          } else {
-            notifBadge.style.display = "none";
-          }
+        function closeNotificationsModal() {
+          notifBackdrop.classList.remove("open");
+          notifBackdrop.setAttribute("aria-hidden", "true");
+          document.body.style.overflow = "";
+          notifBtn?.focus();
         }
-
         function renderNotifications(items) {
           if (!items.length) {
             notifList.innerHTML = `<p class="notif-empty">Sem notificações por aqui.</p>`;
@@ -876,45 +1202,9 @@
           notifList.appendChild(frag);
         }
 
-        async function openNotificationsModal() {
-          notifBackdrop.classList.add("open");
-          notifBackdrop.setAttribute("aria-hidden", "false");
-          document.body.style.overflow = "hidden";
-          notifList.setAttribute("aria-busy", "true");
-          notifList.innerHTML = '<p class="notif-empty">Carregando…</p>';
-
-          try {
-            const res = await fetch("./notificacoes.json?ts=" + Date.now(), {
-              cache: "no-store",
-            });
-            if (!res.ok) throw new Error("Falha ao carregar notificações.");
-            const data = await res.json();
-            const items = Array.isArray(data)
-              ? data
-              : Array.isArray(data?.notificacoes)
-              ? data.notificacoes
-              : [];
-            renderNotifications(items);
-          } catch (err) {
-            notifList.innerHTML = `
-              <div class="notif-card">
-                <p class="notif-item-title">Não foi possível carregar</p>
-                <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
-              </div>
-            `;
-          } finally {
-            notifList.setAttribute("aria-busy", "false");
-            notifList.focus();
-          }
-        }
-        function closeNotificationsModal() {
-          notifBackdrop.classList.remove("open");
-          notifBackdrop.setAttribute("aria-hidden", "true");
-          document.body.style.overflow = "";
-          notifBtn?.focus();
-        }
-
+        // Eventos do modal
         notifBtn?.addEventListener("click", (e) => {
+          // Evita navegar para o href; abrimos o modal
           e.preventDefault();
           openNotificationsModal();
         });
@@ -926,8 +1216,12 @@
           if (e.key === "Escape" && notifBackdrop.classList.contains("open"))
             closeNotificationsModal();
         });
+        notifMarkRead?.addEventListener("click", () => {
+          setUnreadCount(0);
+          updateNotificationBadge();
+        });
 
-        refreshNotificationBadgeFromJSON();
+        updateNotificationBadge();
 
         /* ===== Grid de cards ===== */
         const grid = $("#grid");
@@ -941,10 +1235,18 @@
             publishedAt: "2025-10-27",
           },
           {
+            emoji: "📬",
+            title: "Cartas Não Entregues",
+            sub: "Cartas que o tempo não entregou",
+            desc: "Mensagens que ficaram pelo caminho, esperando serem lidas. Uma coleção de cartas não entregues, cheias de histórias e sentimentos.",
+            href: "https://bit.ly/3Wkq6Ax",
+            publishedAt: "2025-10-26",
+          },
+          {
             emoji: "🌆🌾",
             title: "Cidade & Interior — entre buzinas e passarinhos",
             sub: "Ritmos que se cruzam entre o asfalto e as águas",
-            desc: "Uma travessia entre o concreto e os rios, onde o barulho da cidade encontra o silêncio do interior.",
+            desc: "Uma travessia entre o concreto e os rios, onde o barulho da cidade encontra o silêncio do interior. Um diário sobre tempo, memória e recomeço.",
             href: "./index(cidade e interior).html",
             publishedAt: "2025-10-25",
           },
@@ -952,7 +1254,7 @@
             emoji: "😂📊",
             title: "Assuntos sérios (com uma professora que sabe rir deles)",
             sub: "Final de dia de sexta-feira",
-            desc: "Transforma prazos em piadas e reuniões em terapia — com humor e um toque de café cancelado.",
+            desc: "Uma página que transforma prazos em piadas e reuniões em terapia — com humor e um toque de café cancelado.",
             href: "./index(Assuntos sérios (com uma professora que sabe rir deles)).html",
             publishedAt: "2025-10-24",
           },
@@ -999,7 +1301,7 @@
           {
             emoji: "🍯",
             title: "Doce e Salgado",
-            sub: "Combinação que dá certo",
+            sub: "Página com mensagens que trazem a combinação de doce e salgado",
             desc: "Entre o doce e o salgado…",
             href: "./index(doce e salgado).html",
             publishedAt: "2025-10-10",
@@ -1013,7 +1315,6 @@
           if (!y || !m || !d) return null;
           return new Date(y, m - 1, d);
         }
-
         function render() {
           grid.innerHTML = "";
           const fmt = new Intl.DateTimeFormat("pt-BR", {
@@ -1024,7 +1325,6 @@
           for (const c of cards) {
             const a = document.createElement("article");
             a.className = "card";
-            a.dataset.title = c.title; /* usado pelo rastreamento */
             let dateHtml = "";
             if (c.publishedAt) {
               const d = localDateFromYYYYMMDD(c.publishedAt);
@@ -1066,134 +1366,6 @@
           }
         }
         render();
-
-        /* ===== Rastreamento por título (envia para GAS) ===== */
-        const EMAIL_WEBHOOK =
-          "https://script.google.com/macros/s/AKfycbx_5WHAwpJil0KsxjkaRHOQGup1DYprCr9Tvh1aa8PRotS3HuCqpKCVrF1mCcCRncufog/exec"; // <<<<<<<<<<<<<< SUBSTITUA pela URL do seu Web App (exec)
-
-        // function notifyCardClickByTitle(titulo) {
-        //   const payload = {
-        //     titulo: titulo || "(sem título)",
-        //     ts: new Date().toISOString(),
-        //     tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
-        //     ua: navigator.userAgent,
-        //     ref: document.referrer || location.href,
-        //     lang: navigator.language || "",
-        //   };
-
-        //   const jsonStr = JSON.stringify(payload);
-
-        //   // // 1) Preferir sendBeacon com STRING (mais compatível que Blob em alguns navegadores)
-        //   // let beaconsent = false;
-        //   // try {
-        //   //   if (navigator.sendBeacon) {
-        //   //     const data = new TextEncoder().encode(jsonStr); // envia como "text/plain" by default
-        //   //     beaconsent = navigator.sendBeacon(EMAIL_WEBHOOK, data);
-        //   //   }
-        //   // } catch (_) {}
-
-        //   // 1) Preferir sendBeacon com BLOB (application/json)
-        //   // 1) Tentar com fetch + keepalive (mais confiável para application/json)
-        //   let requestSent = false;
-        //   try {
-        //     if (!requestSent) {
-        //       try {
-        //         if (navigator.sendBeacon) {
-        //           const blob = new Blob([jsonStr], {
-        //             type: "application/json",
-        //           });
-        //           requestSent = navigator.sendBeacon(EMAIL_WEBHOOK, blob);
-        //         }
-        //       } catch (_) {}
-        //     }
-        //   } catch (_) {}
-
-        //   // 2) Fallback com fetch + keepalive (continua durante unload)
-        //   if (!beaconsent) {
-        //     fetch(EMAIL_WEBHOOK, {
-        //       method: "POST",
-        //       headers: { "Content-Type": "application/json" },
-        //       body: jsonStr,
-        //       keepalive: true, // <- chave para não perder a requisição na navegação
-        //       mode: "no-cors",
-        //     }).catch(() => {});
-        //   }
-        // }
-
-        function notifyCardClickByTitle(titulo) {
-          const payload = {
-            titulo: titulo || "(sem título)",
-            ts: new Date().toISOString(),
-            tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
-            ua: navigator.userAgent,
-            ref: document.referrer || location.href,
-            lang: navigator.language || "",
-          };
-
-          const jsonStr = JSON.stringify(payload);
-          console.log("[track] payload:", payload);
-
-          // ===== Método 1: sendBeacon com *string* (Content-Type padrão = text/plain; evita preflight)
-          let sent = false;
-          try {
-            if (navigator.sendBeacon) {
-              // Usar string diretamente evita problemas de Blob/type e mantém text/plain
-              const data = new TextEncoder().encode(jsonStr);
-              sent = navigator.sendBeacon(EMAIL_WEBHOOK, data);
-              console.log("[track] sendBeacon:", sent);
-            }
-          } catch (err) {
-            console.warn("[track] sendBeacon error:", err);
-          }
-
-          // ===== Método 2: fetch SEM headers (evita preflight); mantém keepalive
-          if (!sent) {
-            fetch(EMAIL_WEBHOOK, {
-              method: "POST",
-              // Sem headers para não disparar preflight (OPTIONS)
-              body: jsonStr, // Envia text/plain; GAS faz parse de JSON ou k=v
-              keepalive: true, // completa mesmo durante navegação
-              // mode: "no-cors"     // Se quiser “garantir”, pode habilitar; perderá a resposta
-            })
-              .then(async (res) => {
-                try {
-                  const text = await res.text();
-                  console.log(
-                    "[track] fetch status:",
-                    res.status,
-                    "body:",
-                    text
-                  );
-                } catch {
-                  console.log(
-                    "[track] fetch status:",
-                    res.status,
-                    "(sem corpo)"
-                  );
-                }
-              })
-              .catch((err) => {
-                console.error("[track] fetch error:", err);
-              });
-          }
-        }
-
-        // Captura cliques no <a> e no <article.card>
-        document.addEventListener(
-          "click",
-          function (e) {
-            const cardEl = e.target.closest(".card");
-            if (!cardEl) return;
-
-            const titulo =
-              cardEl.dataset.title ||
-              (cardEl.querySelector(".card-title")?.textContent || "").trim() ||
-              "(sem título)";
-
-            notifyCardClickByTitle(titulo);
-          },
-          { capture: true }
-        );
       })();
     </script>
   </body>
