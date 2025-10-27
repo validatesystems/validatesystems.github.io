@@ -25,7 +25,7 @@
         --radius: 18px;
         --max-text: 70ch;
       }
-      @media (prefers-color-scheme: light) {
+      @media (prefers-color-scheme: dark) {
         :root {
           --bg: #f7f8ff;
           --fg: #0f1220;
@@ -264,8 +264,9 @@
         top: max(16px, env(safe-area-inset-top));
         z-index: 20;
         backdrop-filter: var(--glass);
+        /* fica invisível por padrão; aparece só no modo imersivo */
+        display: none;
       }
-
       /* Modo imersivo: esconder UI e priorizar aurora */
       body.immersive header,
       body.immersive main,
@@ -277,8 +278,9 @@
       body.immersive #scene {
         filter: saturate(1.2) contrast(1.06) brightness(1.02);
       }
-      body.immersive #exitImmersive[hidden] {
-        display: flex;
+      /* Mostra o botão Voltar apenas no modo imersivo */
+      body.immersive .floating-exit {
+        display: inline-flex;
       }
 
       /* Acessibilidade: reduzir movimento desliga efeitos intensos */
@@ -287,18 +289,17 @@
           display: none;
         }
       }
+
       /* ===== Legibilidade em telas pequenas ===== */
       @media (max-width: 480px) {
         header {
           position: relative;
           z-index: 2;
         }
-
-        /* faixa sutil para separar o topo do fundo animado */
         header::after {
           content: "";
           position: absolute;
-          inset: -6px -8px -12px -8px; /* cobre um pouco acima e abaixo */
+          inset: -6px -8px -12px -8px;
           background: linear-gradient(
             180deg,
             rgba(0, 0, 0, 0.55),
@@ -308,21 +309,16 @@
           pointer-events: none;
           z-index: -1;
         }
-
-        /* título principal do topo */
         .brand h1 {
           font-size: clamp(20px, 6.2vw, 28px);
           font-weight: 800;
           letter-spacing: 0.2px;
           text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
         }
-
         .brand small {
           max-width: 70vw;
           text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
         }
-
-        /* botões: contraste e legibilidade */
         .cta {
           font-size: clamp(15px, 4.2vw, 16px);
           font-weight: 800;
@@ -330,15 +326,11 @@
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
           border-color: rgba(255, 255, 255, 0.18);
         }
-
-        /* ghost recebe um fundo translúcido para elevar o contraste */
         .cta.ghost {
           background: rgba(0, 0, 0, 0.25);
           border-color: rgba(255, 255, 255, 0.28);
           color: var(--fg);
         }
-
-        /* chips de status maiores e com sombra para destacar */
         .chip {
           font-size: clamp(13px, 3.8vw, 14px);
           font-weight: 700;
@@ -346,15 +338,13 @@
           box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
           border-color: rgba(255, 255, 255, 0.18);
         }
-
-        /* título da hero mais visível */
         .hero h2 {
           font-size: clamp(24px, 8.6vw, 44px);
           text-shadow: 0 3px 14px rgba(0, 0, 0, 0.55);
         }
       }
 
-      /* melhora o foco visual sempre, em qualquer tela */
+      /* foco visível */
       .cta:focus-visible,
       .chip:focus-visible,
       .brand:focus-visible {
@@ -445,15 +435,13 @@
       >
     </footer>
 
-    <!-- Botão flutuante para sair do modo imersivo -->
+    <!-- Botão flutuante: só aparece no modo imersivo -->
     <button class="cta ghost floating-exit" id="exitImmersive" hidden>
       Voltar
     </button>
 
     <script>
-      // ============================
-      // Utilidades
-      // ============================
+      // ============================ Utilidades ============================
       const $ = (s) => document.querySelector(s);
       const scene = $("#scene");
       const ctx = scene.getContext("2d");
@@ -461,7 +449,6 @@
         H,
         DPR = Math.min(2, devicePixelRatio || 1);
 
-      // Corrige 100vh móvel e respeita safe areas
       function resize() {
         const w = Math.max(
           document.documentElement.clientWidth,
@@ -479,9 +466,7 @@
       resize();
       addEventListener("resize", resize);
 
-      // ============================
-      // Web Audio Setup
-      // ============================
+      // ============================ Web Audio ============================
       let audioCtx,
         analyser,
         dataF,
@@ -504,7 +489,7 @@
             new (window.AudioContext || window.webkitAudioContext)();
           const src = audioCtx.createMediaStreamSource(micStream);
           analyser = audioCtx.createAnalyser();
-          analyser.fftSize = 2048; // resolução boa para voz
+          analyser.fftSize = 2048;
           analyser.smoothingTimeConstant = 0.86;
           src.connect(analyser);
           dataF = new Uint8Array(analyser.frequencyBinCount);
@@ -529,31 +514,25 @@
         $("#toggleMic").setAttribute("aria-pressed", "false");
         $("#status").textContent = "Silencioso";
       }
-
       $("#toggleMic").addEventListener("click", async () => {
         if (audioCtx && audioCtx.state === "suspended") await audioCtx.resume();
         startMic();
       });
 
-      // ============================
-      // Aurora Renderer (Canvas 2D)
-      // ============================
+      // ============================ Aurora Renderer ============================
       let t = 0,
         raf;
       function draw() {
         t += 0.005;
-        // efeito de trilha
         ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = "rgba(0, 0, 0, 0.10)";
         ctx.fillRect(0, 0, W, H);
 
-        // ler áudio
         let vol = 0,
           cen = 0;
         if (running && analyser) {
           analyser.getByteTimeDomainData(dataT);
           analyser.getByteFrequencyData(dataF);
-          // RMS simplificado
           let sum = 0;
           for (let i = 0; i < dataT.length; i++) {
             const v = (dataT[i] - 128) / 128;
@@ -561,7 +540,7 @@
           }
           rms = Math.sqrt(sum / dataT.length);
           vol = rms;
-          // Centróide espectral
+
           let num = 0,
             den = 0;
           const nyquist = audioCtx.sampleRate / 2;
@@ -573,33 +552,30 @@
           }
           cen = den > 0 ? num / den : 0;
           centroid = cen;
-          // detecção de pico simples
+
           const now = performance.now();
-          const th = 0.06; // threshold
+          const th = 0.06;
           const isBeat = vol > th && now - lastBeat > 250;
           beat = isBeat;
           if (isBeat) {
             lastBeat = now;
             onBeat(vol, cen);
           }
-          // HUD
+
           $("#bar").style.width = Math.min(100, vol * 350).toFixed(1) + "%";
           $("#freq").textContent = `centro de frequência ≈ ${Math.round(
             cen
           )} Hz`;
         } else {
-          // animação passiva (respiração)
           vol = 0.02 + 0.02 * Math.sin(t * 2);
           cen = 220 + 80 * Math.sin(t * 1.3);
           $("#bar").style.width = Math.min(100, vol * 350).toFixed(1) + "%";
           $("#freq").textContent = "—";
         }
 
-        // cores a partir do centróide
-        const hue1 = (220 + cen / 8) % 360; // azul-ciano-violeta
+        const hue1 = (220 + cen / 8) % 360;
         const hue2 = (hue1 + 80) % 360;
 
-        // camadas onduladas
         ctx.globalCompositeOperation = "lighter";
         for (let layer = 0; layer < 3; layer++) {
           const amp = (20 + layer * 18) * (1 + vol * 25);
@@ -626,26 +602,24 @@
           ctx.stroke();
         }
 
-        // partículas cintilantes
         sparkle(hue1, vol);
-
         raf = requestAnimationFrame(draw);
       }
 
-      // Partículas simples
+      // Partículas
       const stars = Array.from({ length: 140 }, () => ({
-        x: Math.random() * 1,
-        y: Math.random() * 1,
-        z: Math.random() * 1,
-        s: Math.random() * 1,
+        x: Math.random(),
+        y: Math.random(),
+        z: Math.random(),
+        s: Math.random(),
       }));
       function sparkle(hue, vol) {
         for (const st of stars) {
           st.y -= (0.0006 + vol * 0.004) * (0.4 + st.s);
           if (st.y < -0.05) {
             st.y = 1.05;
-            st.x = Math.random() * 1;
-            st.s = Math.random() * 1;
+            st.x = Math.random();
+            st.s = Math.random();
           }
           const x = st.x * W,
             y = st.y * H;
@@ -656,7 +630,7 @@
         }
       }
 
-      // mensagens (PT-BR)
+      // Mensagens
       const banco = {
         prefixo: [
           "Relâmpago gentil:",
@@ -703,19 +677,15 @@
           "— Seu abraço: Onde as águas encontram a costa e levam as mais belas mensagens das profundezas do mar.",
         ],
       };
-      function pick(a) {
-        return a[Math.floor(Math.random() * a.length)];
-      }
-      function frase() {
-        return `${pick(banco.prefixo)} ${pick(banco.carinho)} ${pick(
+      const pick = (a) => a[Math.floor(Math.random() * a.length)];
+      const frase = () =>
+        `${pick(banco.prefixo)} ${pick(banco.carinho)} ${pick(
           banco.engenho
         )} ${pick(banco.humor)} ${pick(banco.mar)} ${pick(banco.fecho)}`;
-      }
-      function onBeat(vol, cen) {
+      function onBeat() {
         $("#saida").textContent = frase();
       }
 
-      // gerar sem microfone
       $("#gerarTexto").addEventListener(
         "click",
         () => ($("#saida").textContent = frase())
@@ -752,16 +722,22 @@
         setTimeout(() => el.remove(), 1400);
       }
 
-      // Loop desenho
       (function loop() {
         draw();
       })();
 
-      // Acessibilidade mínima
-      document.addEventListener("keydown", (e) => {
+      // Acessibilidade: espaço liga/desliga microfone
+      document.addEventListener("keydown", async (e) => {
         if (e.key === " ") {
           e.preventDefault();
           startMic();
+        }
+        if (
+          e.key === "Escape" &&
+          document.body.classList.contains("immersive")
+        ) {
+          document.body.classList.remove("immersive");
+          $("#exitImmersive").hidden = true;
         }
       });
 
@@ -785,15 +761,14 @@
       // ===== Modo Imersivo (Olhar só a aurora) =====
       const focusBtn = $("#focusAurora");
       const exitBtn = $("#exitImmersive");
-      focusBtn.addEventListener("click", () => {
+      focusBtn.addEventListener("click", async () => {
         document.body.classList.add("immersive");
-        exitBtn.hidden = false;
-        // iOS/Android: acorda o áudio se necessário
-        if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+        exitBtn.hidden = false; // aparece somente agora
+        if (audioCtx && audioCtx.state === "suspended") await audioCtx.resume();
       });
       exitBtn.addEventListener("click", () => {
         document.body.classList.remove("immersive");
-        exitBtn.hidden = true;
+        exitBtn.hidden = true; // volta a desaparecer
       });
     </script>
   </body>
