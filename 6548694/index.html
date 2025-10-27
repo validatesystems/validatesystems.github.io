@@ -86,6 +86,24 @@
         background-size: 400% 400%;
         animation: bgShift 16s ease infinite;
       }
+      /* ===== EFEITO DE CLIQUE NOS CARDS ===== */
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        background: radial-gradient(circle, var(--accent) 10%, transparent 70%);
+        transform: scale(0);
+        opacity: 0;
+        transition: transform 0.5s ease-out, opacity 0.6s ease-out;
+      }
+
+      .card.clicked::after {
+        transform: scale(4);
+        opacity: 0.25;
+      }
+
       @keyframes bgShift {
         0% {
           background-position: 0% 50%;
@@ -547,6 +565,31 @@
         padding: 16px;
         text-align: center;
         color: var(--muted);
+      }
+      /* ===== Ripple de clique nos cards (posição exata) ===== */
+      .card {
+        overflow: hidden; /* já existe no seu CSS, mas reforço aqui */
+      }
+
+      .card::after {
+        content: "";
+        position: absolute;
+        left: calc(var(--rx, 0) * 1px);
+        top: calc(var(--ry, 0) * 1px);
+        width: 28px;
+        height: 28px;
+        transform: translate(-50%, -50%) scale(0);
+        border-radius: 50%;
+        pointer-events: none;
+        background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+        opacity: 0.35;
+        transition: transform 600ms ease-out, opacity 680ms ease-out;
+      }
+
+      .card.ripple::after {
+        /* Escala grande para cobrir qualquer tamanho de card */
+        transform: translate(-50%, -50%) scale(16);
+        opacity: 0;
       }
     </style>
   </head>
@@ -1175,6 +1218,43 @@
           { capture: true }
         );
       })();
+      /* ===== Efeito visual ao clicar/tocar em um card ===== */
+      document.addEventListener("click", (ev) => {
+        const card = ev.target.closest(".card");
+        if (!card) return;
+
+        // Remove classe anterior, se houver
+        card.classList.remove("clicked");
+        void card.offsetWidth; // força reflow
+
+        // Adiciona classe para ativar a animação
+        card.classList.add("clicked");
+
+        // Remove a classe após o término da animação
+        setTimeout(() => card.classList.remove("clicked"), 600);
+      });
+
+      /* ===== Ripple no ponto exato do clique/toque ===== */
+      document.addEventListener("pointerdown", (ev) => {
+        const card = ev.target.closest(".card");
+        if (!card) return;
+
+        const rect = card.getBoundingClientRect();
+        const x = ev.clientX - rect.left;
+        const y = ev.clientY - rect.top;
+
+        // injeta as coords do clique em variáveis CSS do card
+        card.style.setProperty("--rx", x);
+        card.style.setProperty("--ry", y);
+
+        // reinicia a animação
+        card.classList.remove("ripple");
+        void card.offsetWidth; // força reflow
+        card.classList.add("ripple");
+
+        // limpa a classe ao final para futuras animações
+        setTimeout(() => card.classList.remove("ripple"), 700);
+      });
     </script>
     <!-- === End: Email tracking patch (GAS) === -->
   </body>
