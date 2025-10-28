@@ -1,7 +1,7 @@
 Sim — dá pra explorar vários conceitos totalmente diferentes para uma página dedicada à Cléia, cada um com um “mundo” próprio de estilos, emoções e tecnologias.
 Aqui estão 10 ideias originais (todas possíveis com HTML, CSS e JS puros, ou com pequenas libs modernas se quiser aprofundar depois):
 
-🌅 1. “Aurora de Vozes”
+🌅 1. “Aurora de Vozes” (já feito)
 
 Conceito: página que reage à voz.
 O visitante fala (ou ativa o microfone), e as ondas de som criam auroras coloridas e frases suaves surgem ao ritmo da voz.
