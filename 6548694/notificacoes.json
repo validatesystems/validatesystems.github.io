@@ -1,5 +1,10 @@
 [
     {
+        "data": "2025-10-30T04:46:00-03:00",
+        "titulo": "Novo card disponível",
+        "mensagem": "O card 'Bom dia, Cléia' foi adicionado. Uma página leve e inspiradora, com frases que lembram que cada manhã é uma nova chance de cantar, sorrir e recomeçar."
+    },
+    {
         "data": "2025-10-29T20:05:00-03:00",
         "titulo": "Novo card disponível",
         "mensagem": "O card 'Boa noite, Cléia' foi adicionado. Uma página tranquila, feita para encerrar o dia com leveza — entre carambolas, gestos simples e o lembrete de que o que é verdadeiro nunca tem pressa."
@@ -7,6 +12,6 @@
     {
         "data": "2025-10-29T04:32:00-03:00",
         "titulo": "Novo card disponível",
-        "mensagem": "O card 'Bom dia, do seu chfinho' foi adicionado. Uma página que mistura ironia, carinho e risadas pra lembrar que até a seriedade precisa de um gole de leveza pela manhã."
+        "mensagem": "O card 'Bom dia, do seu chefinho' foi adicionado. Uma página que mistura ironia, carinho e risadas pra lembrar que até a seriedade precisa de um gole de leveza pela manhã."
     }
 ]
