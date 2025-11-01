@@ -947,12 +947,12 @@
             const pretty =
               date && !isNaN(date) ? fmtDate.format(date) : n.data || "";
             wrap.innerHTML = `
-                    <p class="notif-date">🗓️ ${pretty}</p>
-                    <h3 class="notif-item-title">${
-                      n.titulo ?? "Sem título"
-                    }</h3>
-                    <p class="notif-msg">${n.mensagem ?? ""}</p>
-                  `;
+                          <p class="notif-date">🗓️ ${pretty}</p>
+                          <h3 class="notif-item-title">${
+                            n.titulo ?? "Sem título"
+                          }</h3>
+                          <p class="notif-msg">${n.mensagem ?? ""}</p>
+                        `;
             frag.appendChild(wrap);
           });
           notifList.innerHTML = "";
@@ -980,11 +980,11 @@
             renderNotifications(items);
           } catch (err) {
             notifList.innerHTML = `
-                    <div class="notif-card">
-                      <p class="notif-item-title">Não foi possível carregar</p>
-                      <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
-                    </div>
-                  `;
+                          <div class="notif-card">
+                            <p class="notif-item-title">Não foi possível carregar</p>
+                            <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
+                          </div>
+                        `;
           } finally {
             notifList.setAttribute("aria-busy", "false");
             notifList.focus();
@@ -1015,6 +1015,15 @@
         /* ===== Grid de cards ===== */
         const grid = $("#grid");
         const cards = [
+          {
+            emoji: "🎭",
+            title: "A Tragédia do Sábado Perdido",
+            sub: "Uma comédia dramática sobre o descanso que nunca chega",
+            desc: "Uma experiência interativa que ironiza o sábado dos professores — entre café, planilhas e promessas de descanso interrompidas pela vocação.",
+            href: "./index(tragedia_do_sabado_perdido).html",
+            publishedAt: "2025-11-01",
+          },
+
           {
             emoji: "📚",
             title: "12 Motivos para Ser Professora",
@@ -1172,26 +1181,26 @@
               const safe = d && !isNaN(d.getTime()) ? d : null;
               if (safe) {
                 dateHtml = `
-                        <div class="card-meta">
-                          <span class="card-date" title="Data de publicação">
-                            <span aria-hidden="true">🗓️</span>
-                            <span>${fmt.format(safe)}</span>
-                          </span>
-                        </div>
-                      `;
+                              <div class="card-meta">
+                                <span class="card-date" title="Data de publicação">
+                                  <span aria-hidden="true">🗓️</span>
+                                  <span>${fmt.format(safe)}</span>
+                                </span>
+                              </div>
+                            `;
               }
             }
             a.innerHTML = `
-                    <div class="card-head">
-                      <div class="art" aria-hidden="true">${c.emoji}</div>
-                      <div>
-                        <h3 class="card-title">${c.title}</h3>
-                        <p class="card-sub">${c.sub}</p>
-                        ${dateHtml}
-                      </div>
-                    </div>
-                    <div class="card-body">${c.desc}</div>
-                  `;
+                          <div class="card-head">
+                            <div class="art" aria-hidden="true">${c.emoji}</div>
+                            <div>
+                              <h3 class="card-title">${c.title}</h3>
+                              <p class="card-sub">${c.sub}</p>
+                              ${dateHtml}
+                            </div>
+                          </div>
+                          <div class="card-body">${c.desc}</div>
+                        `;
             a.tabIndex = 0;
             a.addEventListener("click", (e) => {
               const isButton = e.target.closest("a,button");
