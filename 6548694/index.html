@@ -629,6 +629,20 @@
         align-items: center;
         gap: 10px;
       }
+      .card-hoje {
+        box-shadow: 0 0 0 3px var(--accent), 0 0 18px var(--accent);
+        animation: pulseHoje 2.5s infinite ease-in-out;
+      }
+
+      @keyframes pulseHoje {
+        0%,
+        100% {
+          box-shadow: 0 0 0 3px var(--accent), 0 0 18px var(--accent);
+        }
+        50% {
+          box-shadow: 0 0 0 4px var(--accent-2), 0 0 24px var(--accent-2);
+        }
+      }
     </style>
   </head>
   <body>
@@ -1016,12 +1030,20 @@
         const grid = $("#grid");
         const cards = [
           {
+            emoji: "✨",
+            title: "Luz em Caos",
+            sub: "Uma calmaria disfarçada de tempestade",
+            desc: "Uma experiência interativa que transforma o caos em luz — porque até nas tempestades mais intensas, há sempre um brilho escondido esperando para ser descoberto. Ela traz mensagens que descrevem como te vejo/sinto.",
+            href: "./index(luz_em_caos).html",
+            publishedAt: "2025-11-01T15:30:00-03:00",
+          },
+          {
             emoji: "🎭",
             title: "A Tragédia do Sábado Perdido",
             sub: "Uma comédia dramática sobre o descanso que nunca chega",
             desc: "Uma experiência interativa que ironiza o sábado dos professores — entre café, planilhas e promessas de descanso interrompidas pela vocação.",
             href: "./index(sabadou).html",
-            publishedAt: "2025-11-01",
+            publishedAt: "2025-11-01T07:00:00-03:00",
           },
 
           {
@@ -1030,7 +1052,7 @@
             sub: "Uma sexta com 12 aulas e ainda um sorriso no final",
             desc: "Uma experiência interativa que transforma cansaço em riso e rotina em vocação — porque nem toda energia é elétrica, algumas são pedagógicas.",
             href: "./index(12aulas12motivos).html",
-            publishedAt: "2025-10-31",
+            publishedAt: "2025-10-31T07:00:00-03:00",
           },
           {
             emoji: "☀️",
@@ -1038,7 +1060,7 @@
             sub: "Entre café, música e esperança",
             desc: "Uma página que desperta com leveza — inspirada em canções que falam de recomeço, calma e beleza nas pequenas coisas.",
             href: "./index(bom_dia_cleia).html",
-            publishedAt: "2025-10-30",
+            publishedAt: "2025-10-30T04:32:00-03:00",
           },
           {
             emoji: "🌙",
@@ -1046,7 +1068,7 @@
             sub: "Um descanso merecido e gestos que falam mais que palavras",
             desc: "Uma página serena, feita para desacelerar — lembrando que os pequenos gestos e conexões verdadeiras são o que realmente importam quando o dia se despede.",
             href: "./index(boa_noite_com_estrelas).html",
-            publishedAt: "2025-10-29",
+            publishedAt: "2025-10-29T20:00:00-03:00",
           },
           {
             emoji: "😏",
@@ -1054,7 +1076,7 @@
             sub: "Um bom humor que acorda antes do café",
             desc: "Uma página que mistura ironia, carinho e risadas pra lembrar que até a seriedade precisa de um gole de leveza pela manhã.",
             href: "./index(bom_dia_do_chefinho).html",
-            publishedAt: "2025-10-29",
+            publishedAt: "2025-10-29T06:00:00-03:00",
           },
 
           {
@@ -1063,7 +1085,7 @@
             sub: "Um amanhecer com som de passarinhos e palavras leves",
             desc: "Uma página que desperta devagar, com café, risadas e mensagens feitas pra você começar o dia sorrindo.",
             href: "./(bom_dia_com_passarinhos)index.html",
-            publishedAt: "2025-10-28",
+            publishedAt: "2025-10-28T08:00:00-03:00",
           },
 
           {
@@ -1072,7 +1094,7 @@
             sub: "Onde sua voz vira luz",
             desc: "Use sua voz para criar uma aurora personalizada de cores e emoções para você.",
             href: "./index(aurora_de_vozes).html",
-            publishedAt: "2025-10-27",
+            publishedAt: "2025-10-27T08:00:00-03:00",
           },
           {
             emoji: "🌤️",
@@ -1080,15 +1102,15 @@
             sub: "Ele encontrou um sorriso bonito",
             desc: "Mensagem especial para quem faz o dia ser salgado e doce ao mesmo tempo.",
             href: "./index(bom_dia_de_luz).html",
-            publishedAt: "2025-10-27",
+            publishedAt: "2025-10-27T08:00:00-03:00",
           },
           {
             emoji: "📬",
             title: "Cartas Não Entregues",
             sub: "Cartas que o tempo não entregou",
             desc: "Mensagens que ficaram pelo caminho, esperando serem lidas. Uma coleção de cartas não entregues, cheias de histórias e sentimentos.",
-            href: "https://bit.ly/3Wkq6Ax",
-            publishedAt: "2025-10-26",
+            href: "./index(cartas_nao_entregues).html",
+            publishedAt: "2025-10-26T08:00:00-03:00",
           },
           {
             emoji: "🌆🌾",
@@ -1096,7 +1118,7 @@
             sub: "Ritmos que se cruzam entre o asfalto e as águas",
             desc: "Uma travessia entre o concreto e os rios, onde o barulho da cidade encontra o silêncio do interior.",
             href: "./index(cidade e interior).html",
-            publishedAt: "2025-10-25",
+            publishedAt: "2025-10-25T08:00:00-03:00",
           },
           {
             emoji: "😂📊",
@@ -1104,7 +1126,7 @@
             sub: "Final de dia de sexta-feira",
             desc: "Transforma prazos em piadas e reuniões em terapia — com humor e um toque de café cancelado.",
             href: "./index(Assuntos sérios (com uma professora que sabe rir deles)).html",
-            publishedAt: "2025-10-24",
+            publishedAt: "2025-10-24T08:00:00-03:00",
           },
           {
             emoji: "📜",
@@ -1112,7 +1134,7 @@
             sub: "Uma carta narrada pelo silêncio",
             desc: "Página que tenta revelar o que o silêncio sabe sobre você.",
             href: "./index(carta narrada pelo silêncio).html",
-            publishedAt: "2025-10-23",
+            publishedAt: "2025-10-23T08:00:00-03:00",
           },
           {
             emoji: "🌱",
@@ -1120,7 +1142,7 @@
             sub: "Bom dia especial para alguém mais do que especial",
             desc: "Página de bom dia que planta uma semente para você iluminar.",
             href: "./index(bom dia semente de luz).html",
-            publishedAt: "2025-10-22",
+            publishedAt: "2025-10-22T08:00:00-03:00",
           },
           {
             emoji: "🫙",
@@ -1128,7 +1150,7 @@
             sub: "Mensagens especiais do mar",
             desc: "Página de cartas engarrafadas: mensagens que o mar traz pra você.",
             href: "./index(cartas engarrafadas).html",
-            publishedAt: "2025-10-21",
+            publishedAt: "2025-10-21T21:00:00-03:00",
           },
           {
             emoji: "🌅",
@@ -1136,7 +1158,7 @@
             sub: "Mensagem especial",
             desc: "Página de bom dia no estilo morde & assopra: revira e acalma.",
             href: "./index(bom dia morde e assopra).html",
-            publishedAt: "2025-10-21",
+            publishedAt: "2025-10-21T08:00:00-03:00",
           },
           {
             emoji: "🎧",
@@ -1144,7 +1166,7 @@
             sub: "Página com player e faixas",
             desc: "Set de músicas, citações e aquele clima de mar + caos bom.",
             href: "./index(musical).html",
-            publishedAt: "2025-10-20",
+            publishedAt: "2025-10-20T08:00:00-03:00",
           },
           {
             emoji: "🍯",
@@ -1152,7 +1174,7 @@
             sub: "Combinação que dá certo",
             desc: "Entre o doce e o salgado…",
             href: "./index(doce e salgado).html",
-            publishedAt: "2025-10-10",
+            publishedAt: "2025-10-10T08:00:00-03:00",
           },
         ];
 
@@ -1163,44 +1185,70 @@
           if (!y || !m || !d) return null;
           return new Date(y, m - 1, d);
         }
-
         function render() {
           grid.innerHTML = "";
+
+          // Formatação com data + horário
           const fmt = new Intl.DateTimeFormat("pt-BR", {
             day: "2-digit",
             month: "2-digit",
             year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
           });
+
+          // Parser que preserva horário quando vier em ISO completo
+          const parsePublishedAt = (s) => {
+            if (!s) return null;
+            const dt = new Date(s); // tenta ISO (com fuso, ex: 2025-11-01T14:20:00-03:00)
+            if (!isNaN(dt)) return dt;
+            // fallback para YYYY-MM-DD
+            const only = s.slice(0, 10);
+            const [y, m, d] = only.split("-").map(Number);
+            if (!y || !m || !d) return null;
+            return new Date(y, m - 1, d);
+          };
+
           for (const c of cards) {
             const a = document.createElement("article");
             a.className = "card";
-            a.dataset.title = c.title; /* usado pelo rastreamento */
+            a.dataset.title = c.title;
+
             let dateHtml = "";
-            if (c.publishedAt) {
-              const d = localDateFromYYYYMMDD(c.publishedAt);
-              const safe = d && !isNaN(d.getTime()) ? d : null;
-              if (safe) {
-                dateHtml = `
-                              <div class="card-meta">
-                                <span class="card-date" title="Data de publicação">
-                                  <span aria-hidden="true">🗓️</span>
-                                  <span>${fmt.format(safe)}</span>
-                                </span>
-                              </div>
-                            `;
+            const d = parsePublishedAt(c.publishedAt);
+            if (d && !isNaN(d.getTime())) {
+              // Destaca cards do dia atual
+              const hoje = new Date();
+              if (
+                d.getFullYear() === hoje.getFullYear() &&
+                d.getMonth() === hoje.getMonth() &&
+                d.getDate() === hoje.getDate()
+              ) {
+                a.classList.add("card-hoje");
               }
+
+              dateHtml = `
+        <div class="card-meta">
+          <span class="card-date" title="Data de publicação">
+            <span aria-hidden="true">🗓️</span>
+            <span>${fmt.format(d)}</span>
+          </span>
+        </div>
+      `;
             }
+
             a.innerHTML = `
-                          <div class="card-head">
-                            <div class="art" aria-hidden="true">${c.emoji}</div>
-                            <div>
-                              <h3 class="card-title">${c.title}</h3>
-                              <p class="card-sub">${c.sub}</p>
-                              ${dateHtml}
-                            </div>
-                          </div>
-                          <div class="card-body">${c.desc}</div>
-                        `;
+      <div class="card-head">
+        <div class="art" aria-hidden="true">${c.emoji}</div>
+        <div>
+          <h3 class="card-title">${c.title}</h3>
+          <p class="card-sub">${c.sub}</p>
+          ${dateHtml}
+        </div>
+      </div>
+      <div class="card-body">${c.desc}</div>
+    `;
+
             a.tabIndex = 0;
             a.addEventListener("click", (e) => {
               const isButton = e.target.closest("a,button");
@@ -1209,9 +1257,11 @@
             a.addEventListener("keyup", (e) => {
               if (e.key === "Enter" || e.key === " ") location.href = c.href;
             });
+
             grid.appendChild(a);
           }
         }
+
         render();
 
         /* ===== Rastreamento por título (envia para GAS) ===== */
