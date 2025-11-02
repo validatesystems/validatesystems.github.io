@@ -15,17 +15,17 @@
       window.COMMENT_CONFIG = {
         GAS_ENDPOINT:
           "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
-        SECRET: "6548694", // exemplo; troque se quiser
+        SECRET: "6548694",
       };
     </script>
     <meta name="color-scheme" content="light dark" />
     <style>
       :root {
-        --bg1: #fff7e6; /* manhã suave */
-        --bg2: #ffe0f7; /* tarde rosada */
+        --bg1: #fff7e6;
+        --bg2: #ffe0f7;
         --text: #1a1a1a;
         --muted: #6b6b6b;
-        --accent: #ffb703; /* dourado dos números */
+        --accent: #ffb703;
         --pm: #8b5cf6;
         --am: #10b981;
         --card: rgba(255, 255, 255, 0.84);
@@ -37,6 +37,11 @@
         --safe-bottom: env(safe-area-inset-bottom, 16px);
       }
 
+      /* ====== BASE ====== */
+      html,
+      body {
+        height: 100%;
+      }
       body {
         margin: 0;
         font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto,
@@ -49,10 +54,10 @@
           ),
           radial-gradient(1000px 600px at 80% 90%, var(--bg2), transparent),
           linear-gradient(160deg, #fafafa, #f2f2f2);
-        min-height: 100dvh;
+        min-height: 100svh; /* usa svh em navegadores novos, melhora em mobile */
         display: grid;
         place-items: center;
-        overflow: hidden;
+        overflow: auto; /* mantém rolagem – só bloqueamos quando painel abre */
       }
 
       .noise {
@@ -75,15 +80,17 @@
       }
 
       .wrap {
-        width: min(960px, 94vw);
+        width: min(960px, 100vw);
         display: grid;
         grid-template-rows: auto 1fr auto;
-        gap: 14px;
-        padding: calc(var(--safe-top) + 8px) 12px calc(var(--safe-bottom) + 8px);
+        gap: 12px;
+        padding: calc(var(--safe-top) + 8px) 10px calc(var(--safe-bottom) + 8px);
       }
+
+      /* ====== APPBAR ====== */
       header {
         display: grid;
-        grid-template-columns: 1fr auto auto;
+        grid-template-columns: 1fr auto;
         gap: 10px;
         align-items: center;
         backdrop-filter: var(--glass);
@@ -92,20 +99,40 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        min-width: 0;
       }
       .title h1 {
-        font-size: clamp(1.2rem, 2.8vw, 2rem);
+        font-size: clamp(1.1rem, 3.8vw, 1.8rem);
         margin: 0;
         color: var(--accent);
       }
       .title small {
         color: var(--muted);
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* barra de ações rolável em telas estreitas */
+      .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        padding: 2px 0;
+        scrollbar-width: none;
+      }
+      .actions::-webkit-scrollbar {
+        display: none;
       }
 
       .btn {
         -webkit-tap-highlight-color: transparent;
         appearance: none;
-        border: none;
+        border: 0;
         background: var(--accent);
         color: #fff;
         text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
@@ -118,6 +145,8 @@
         font-weight: 700;
         cursor: pointer;
         transition: transform 0.2s ease, filter 0.2s ease;
+        white-space: nowrap;
+        font-size: clamp(0.9rem, 3.3vw, 1rem);
       }
       .btn:hover {
         filter: brightness(1.05) saturate(1.05);
@@ -125,19 +154,23 @@
       .btn:active {
         transform: scale(0.98);
       }
+      .btn-comment {
+        all: unset;
+        cursor: pointer;
+        font-size: clamp(1.2rem, 4.5vw, 1.4rem);
+      }
 
+      /* ====== GRID / RELÓGIO ====== */
       .grid {
         position: relative;
         display: grid;
         place-items: center;
         padding: 8px;
-        min-height: 64dvh;
+        min-height: min(64svh, 620px);
       }
-
-      /* Relógio (sem ponteiros) */
       .clock {
         position: relative;
-        width: min(88vw, 540px);
+        width: min(88vw, 520px);
         aspect-ratio: 1/1;
         border-radius: 50%;
         background: radial-gradient(
@@ -155,7 +188,7 @@
 
       .portal {
         position: absolute;
-        width: clamp(56px, 11vw, 84px);
+        width: clamp(52px, 14vw, 84px);
         aspect-ratio: 1/1;
         border-radius: 50%;
         display: grid;
@@ -172,21 +205,22 @@
         transition: transform 0.25s ease, filter 0.25s ease,
           box-shadow 0.25s ease;
         outline: none;
-      }
-      .portal[data-state="done"] {
-        filter: saturate(1.2) contrast(1.05);
+        touch-action: manipulation; /* melhora tempo de resposta mobile */
       }
       .portal:active {
         transform: scale(0.97);
       }
+      .portal[data-state="done"] {
+        filter: saturate(1.15) contrast(1.05);
+      }
       .portal .num {
         font-weight: 900;
-        font-size: clamp(16px, 4.2vw, 24px);
+        font-size: clamp(16px, 4.8vw, 24px);
         color: var(--accent);
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
       }
       .portal .tag {
-        font-size: 0.72rem;
+        font-size: clamp(0.68rem, 3vw, 0.72rem);
         color: var(--muted);
         margin-top: 2px;
       }
@@ -208,7 +242,7 @@
       }
       .center h2 {
         margin: 6px 0 0;
-        font-size: clamp(1rem, 3.4vw, 1.4rem);
+        font-size: clamp(1rem, 3.8vw, 1.4rem);
       }
       .meter {
         --p: 0;
@@ -229,6 +263,7 @@
         transition: width 0.6s cubic-bezier(0.2, 0.9, 0.2, 1);
       }
 
+      /* ====== PAINEL (bottom sheet) ====== */
       .panel {
         position: fixed;
         left: 0;
@@ -246,21 +281,25 @@
         border-radius: 20px 20px 0 0;
         box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.16);
         padding: 16px 18px calc(18px + var(--safe-bottom));
+        max-height: 80svh; /* cabe em celulares baixos */
+        overflow: auto; /* rolagem interna do conteúdo */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
       }
       .panel.show {
         translate: 0 0;
       }
       .panel h3 {
         margin: 6px 0;
-        font-size: clamp(1.05rem, 3.6vw, 1.4rem);
+        font-size: clamp(1.05rem, 4vw, 1.4rem);
         color: var(--accent);
       }
       .panel p {
         margin: 8px 0 0;
         color: var(--text);
         line-height: 1.6;
+        font-size: clamp(0.95rem, 3.6vw, 1.05rem);
       }
-
       .panel .row {
         display: flex;
         gap: 8px;
@@ -268,26 +307,30 @@
         flex-wrap: wrap;
       }
       .chip {
-        border: none;
+        border: 0;
         border-radius: 999px;
-        padding: 8px 12px;
+        padding: 10px 14px;
         font-weight: 700;
         background: var(--card);
         color: var(--text);
         box-shadow: var(--ring), var(--shadow);
         cursor: pointer;
+        font-size: clamp(0.9rem, 3.4vw, 1rem);
+        -webkit-tap-highlight-color: transparent;
       }
 
+      /* ====== FOOTER ====== */
       footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 10px;
         margin-top: 2px;
+        flex-wrap: wrap;
       }
       .note {
         color: var(--muted);
-        font-size: 0.9rem;
+        font-size: clamp(0.9rem, 3.4vw, 1rem);
       }
 
       .confetti {
@@ -311,6 +354,7 @@
           opacity: 0.9;
         }
       }
+
       @media (prefers-reduced-motion: reduce) {
         * {
           animation-duration: 0.001ms !important;
@@ -319,10 +363,27 @@
           scroll-behavior: auto !important;
         }
       }
+
+      /* ====== AJUSTES FINOS PARA TELAS MUITO ESTREITAS ====== */
+      @media (max-width: 420px) {
+        .wrap {
+          gap: 10px;
+        }
+        header {
+          grid-template-columns: 1fr;
+        }
+        .clock {
+          width: min(94vw, 460px);
+        }
+        .center {
+          inset: 24% 24%;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="noise" aria-hidden="true"></div>
+
     <div class="wrap">
       <header>
         <div class="title">
@@ -335,34 +396,26 @@
             >
           </div>
         </div>
-        <button id="toggleSound" class="btn" aria-pressed="false">
-          🔊 Som
-        </button>
-        <button id="reset" class="btn">♻️ Recomeçar</button>
-        <button
-          id="openComment"
-          class="btn-comment"
-          aria-label="Abrir comentário"
-        >
-          💬 Comentar
-        </button>
+
+        <!-- barra de ações com rolagem horizontal no mobile -->
+        <div class="actions" role="toolbar" aria-label="Ações">
+          <button id="toggleSound" class="btn" aria-pressed="false">
+            🔊 Som
+          </button>
+          <button id="reset" class="btn">♻️ Recomeçar</button>
+          <button
+            id="openComment"
+            class="btn-comment"
+            aria-label="Abrir comentário"
+          >
+            💬 Comentar
+          </button>
+        </div>
       </header>
 
       <main class="grid">
         <section class="clock" aria-label="Relógio de 12 aulas">
-          <!-- Portais serão posicionados via JS -->
           <div class="center" id="center" tabindex="0" role="status">
-            <!-- <div>⚡ Energia pedagógica</div>
-            <div class="meter" id="meter" style="--p: 0">
-              <h2 id="centerLabel">Toque no número da aula para começar</h2>
-              <small class="note"
-                >Dica: Para uma melhor experiência, a cada aula dada volte aqui
-                e clique nela até concluir as 12 aulas.</small
-              >
-            </div>
-            <h2 id="centerLabel">Toque um portal para começar</h2>
-          </div>
-        </section> -->
             <div>⚡ Energia pedagógica</div>
             <div class="meter" id="meter" style="--p: 0"></div>
             <h2 id="centerLabel">Toque um portal para começar</h2>
@@ -425,7 +478,7 @@
         },
         {
           t: "#6 — Pequenas vitórias",
-          m: "Cada aula é um degrau. Pensou em pegar uma escada rolante? Esquece, respire fundo eprocure subir sorrindo até a 12ª.",
+          m: "Cada aula é um degrau. Pensou em pegar uma escada rolante? Esquece, respire fundo e procure subir sorrindo até a 12ª.",
           tag: "manhã",
         },
         {
@@ -445,7 +498,7 @@
         },
         {
           t: "#10 — Didática ninja",
-          m: "Porque explica difícil em língua de abraço. (dica: aaproveite para xingar a 11ª aula em inglês)",
+          m: "Porque explica difícil em língua de abraço. (dica: aproveite para xingar a 11ª aula em inglês)",
           tag: "tarde",
         },
         {
@@ -482,7 +535,6 @@
 
       const $ = (s, r = document) => r.querySelector(s);
       const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-
       function save() {
         localStorage.setItem("x.cl.clockIndex", String(S.i));
         localStorage.setItem(
@@ -511,15 +563,15 @@
           g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
           o.start();
           o.stop(ctx.currentTime + dur + 0.01);
-        } catch (e) {}
+        } catch {}
       }
 
-      /* ========= Monta portais (1 a 12) ao redor do círculo ========= */
+      /* Monta portais (1–12) */
       const clock = $(".clock");
       const portals = [];
       motivos.forEach((mot, idx) => {
-        const angle = (idx / 12) * Math.PI * 2 - Math.PI / 2; // topo
-        const R = 38; // raio %
+        const angle = (idx / 12) * Math.PI * 2 - Math.PI / 2;
+        const R = 38;
         const x = 50 + Math.cos(angle) * R;
         const y = 50 + Math.sin(angle) * R;
         const p = document.createElement("button");
@@ -527,7 +579,7 @@
         p.setAttribute("data-idx", idx);
         p.style.left = `${x}%`;
         p.style.top = `${y}%`;
-        p.style.transform = "translate(-50%, -50%)";
+        p.style.transform = "translate(-50%,-50%)";
         p.style.background =
           mot.tag === "manhã"
             ? "linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.7)), radial-gradient(80% 80% at 50% 20%, rgba(16,185,129,.25), transparent)"
@@ -547,12 +599,13 @@
         clock.appendChild(p);
       });
 
-      /* ===================== Painel ===================== */
-      const panel = $("#panel");
-      const panelTitle = $("#panelTitle");
-      const panelText = $("#panelText");
-      const centerLabel = $("#centerLabel");
-      const meter = $("#meter");
+      /* Painel */
+      const panel = $("#panel"),
+        panelTitle = $("#panelTitle"),
+        panelText = $("#panelText"),
+        centerLabel = $("#centerLabel"),
+        meter = $("#meter");
+
       function setMeter() {
         const pct = Math.round((S.done.length / 12) * 100);
         meter.style.setProperty("--p", pct);
@@ -577,7 +630,7 @@
         panelText.textContent = mot.m;
         panel.classList.add("show");
         panel.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = "hidden"; // trava fundo só quando aberto
 
         if (!S.done.includes(idx)) {
           S.done.push(idx);
@@ -600,7 +653,7 @@
       function closePanel() {
         panel.classList.remove("show");
         panel.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
+        document.body.style.overflow = ""; // libera rolagem novamente
         beep("sine", 0.06, 260);
       }
       $("#close").addEventListener("click", closePanel);
@@ -693,25 +746,21 @@
           S.i = 0;
           S.celebrated = false;
           save();
-
-          // 🔹 Limpa os confetes ao recomeçar (ajuste solicitado)
           const box = document.getElementById("confetti");
           if (box) box.innerHTML = "";
-
           $$(".portal").forEach((p) => p.removeAttribute("data-state"));
           setMeter();
           closePanel();
         }
       });
 
-      // Se o usuário recarregar com tudo completo, garante celebração pendente
       if (S.done.length >= 12 && !S.celebrated) {
         setTimeout(maybeCelebrate, 120);
       }
 
       // Easter egg: segure o centro por 2s
       let pressTimer = null;
-      const center = $("#center");
+      const center = document.getElementById("center");
       function startHold() {
         pressTimer = setTimeout(() => {
           alert(
@@ -724,13 +773,13 @@
         clearTimeout(pressTimer);
       }
       center.addEventListener("mousedown", startHold);
-      center.addEventListener("touchstart", startHold);
+      center.addEventListener("touchstart", startHold, { passive: true });
       center.addEventListener("mouseup", endHold);
       center.addEventListener("mouseleave", endHold);
       center.addEventListener("touchend", endHold);
 
       // Modo Sexta
-      $("#friday").addEventListener("click", () => {
+      document.getElementById("friday").addEventListener("click", () => {
         const body = document.body;
         body.animate(
           [
