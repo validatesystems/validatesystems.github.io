@@ -672,7 +672,7 @@
           class="gate-input"
           type="password"
           autocomplete="off"
-          placeholder="Resposta (MAIÚSCULAS)"
+          placeholder="Resposta"
         />
         <div id="gateErr" class="gate-error" aria-live="polite"></div>
         <div class="gate-actions">
@@ -800,6 +800,23 @@
           gateErr = $("#gateErr"),
           gateTheme = $("#gateTheme"),
           appRoot = $("#appRoot");
+
+        // --- Força UPPERCASE sem mover o cursor ---
+        gateInput?.addEventListener("input", (e) => {
+          // limpa erro enquanto digita
+          clearError();
+
+          const el = e.target;
+          const { selectionStart, selectionEnd } = el;
+          const upper = (el.value || "").toUpperCase();
+          if (upper !== el.value) {
+            el.value = upper;
+            // restaura a posição do cursor
+            try {
+              el.setSelectionRange(selectionStart, selectionEnd);
+            } catch {}
+          }
+        });
 
         function pickKeyIndex() {
           return Math.floor(Math.random() * KEYS.length);
