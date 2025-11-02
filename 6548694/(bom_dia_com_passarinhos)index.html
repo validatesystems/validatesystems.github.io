@@ -3,8 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bom Dia, Cléia ☀️</title>
+    <title>Bom dia com passarinhos</title>
     <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
     <style>
       :root {
         --sky-top: #c9f0ff; /* céu claro */
@@ -396,6 +407,15 @@
       data-msg="4"
       title="Clique: mensagem 5"
     ></div>
+    <div class="bird bird6" id="bird6" data-msg="5" title="Clique: mensagem 6">
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
+    </div>
 
     <div class="card" role="region" aria-label="Mensagem de bom dia">
       <h1>Bom dia, Cléia! ☀️</h1>

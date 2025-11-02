@@ -3,8 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bom dia — Sementes e Horizontes</title>
+    <title>Bom dia — Semente de luz</title>
     <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
     <style>
       :root {
         --bg1: #f8efff;
@@ -206,6 +217,14 @@
           </p>
         </div>
         <div class="actions">
+          <button
+            id="openComment"
+            class="btn-comment"
+            aria-label="Abrir comentário"
+          >
+            💬 Comentar
+          </button>
+          <p></p>
           <button class="btn" id="okBtn">Sair 🌟</button>
         </div>
       </article>

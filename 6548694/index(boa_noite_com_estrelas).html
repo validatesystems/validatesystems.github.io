@@ -3,7 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Boa noite, Cléia 🌙✨</title>
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Boa noite com estrelas ✨</title>
     <style>
       :root {
         --bg1: #0a0a1a;
@@ -171,6 +182,14 @@
       <p class="fade">
         E, por favor... carambolas, entenda isso de uma vez por todas! 🍈✨
       </p>
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
+
       <footer class="fade">Com carinho, seu chefinho 🍃</footer>
     </div>
 

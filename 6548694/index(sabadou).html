@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>🎭 A Tragédia do Sábado Perdido — para Cléia</title>
     <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
     <style>
       :root {
         --stage-bg: #0c1020;
@@ -194,6 +205,11 @@
         background: var(--danger);
         color: #1a0404;
       }
+      #commentModal {
+        position: static;
+        margin: 0 20px 20px;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -289,6 +305,15 @@
         <div class="controls">
           <button class="btn primary" id="nextAct">Iniciar Ato I</button>
           <button class="btn danger" id="drama">Ativar drama 😵‍💫</button>
+        </div>
+        <div id="commentModal">
+          <button
+            id="openComment"
+            class="btn-comment"
+            aria-label="Abrir comentário"
+          >
+            💬 Comentar
+          </button>
         </div>
       </section>
     </main>

@@ -3,7 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bom dia, Cléia 😏☕</title>
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Bom dia do chefinho!</title>
     <style>
       :root {
         --bg1: #fff7e6;
@@ -245,6 +256,13 @@
     <div class="card" id="message">
       <!-- As frases serão inseridas via JS, uma a cada 3s -->
       <div class="emoji" aria-hidden="true">🌞☕💻</div>
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
     </div>
 
     <button class="interactive-btn" id="surpriseBtn">Surpresa Especial</button>

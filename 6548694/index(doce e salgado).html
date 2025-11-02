@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Doce & Salgado — um recadinho pra você</title>
     <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
     <style>
       :root {
         --bg1: #ffecd2;
@@ -399,6 +410,15 @@
         </button>
         <button class="btn ghost" id="shuffle">Surpresa 🍫🧂</button>
       </div>
+      <p>
+        <button
+          id="openComment"
+          class="btn-comment"
+          aria-label="Abrir comentário"
+        >
+          💬 Comentar
+        </button>
+      </p>
       <footer>Developed with 💜 by ._.. ...</footer>
     </main>
 

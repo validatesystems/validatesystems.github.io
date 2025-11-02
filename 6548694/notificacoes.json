@@ -1,5 +1,10 @@
 [
     {
+        "data": "2025-11-02T10:50:32-03:00",
+        "titulo": "Novo recurso disponível",
+        "mensagem": "Novidade! Agora você pode fazer comentários sobre os cards. Foi adicionado um botão para isso."
+    },
+    {
         "data": "2025-11-02T07:30:00-03:00",
         "titulo": "Novo card disponível",
         "mensagem": "O card 'Domingos com Você' foi adicionado — uma experiência que explica o motivo para que o tempo pareça gostar mais quando passa ao teu lado."

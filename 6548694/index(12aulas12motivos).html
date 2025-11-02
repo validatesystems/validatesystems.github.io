@@ -7,6 +7,17 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <title>Cléia — 12 Motivos para Ser Professora (Sexta x12)</title>
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
     <meta name="color-scheme" content="light dark" />
     <style>
       :root {
@@ -328,6 +339,13 @@
           🔊 Som
         </button>
         <button id="reset" class="btn">♻️ Recomeçar</button>
+        <button
+          id="openComment"
+          class="btn-comment"
+          aria-label="Abrir comentário"
+        >
+          💬 Comentar
+        </button>
       </header>
 
       <main class="grid">
@@ -407,7 +425,7 @@
         },
         {
           t: "#6 — Pequenas vitórias",
-          m: "Cada aula é um degrau. Pensou em pegar uma escada rolante? Esquece, respire fundo e procure subir sorrindo até a 12ª.",
+          m: "Cada aula é um degrau. Pensou em pegar uma escada rolante? Esquece, respire fundo eprocure subir sorrindo até a 12ª.",
           tag: "manhã",
         },
         {

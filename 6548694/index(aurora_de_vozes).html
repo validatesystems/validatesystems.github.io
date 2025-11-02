@@ -12,6 +12,17 @@
       name="description"
       content="Uma experiência que transforma a voz em auroras coloridas e mensagens ao vivo para a Cléia."
     />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
     <style>
       :root {
         --bg: #070a12;
@@ -394,6 +405,13 @@
         <button class="cta" id="toggleMic" aria-pressed="false">
           Ativar microfone
         </button>
+        <button
+          id="openComment"
+          class="btn-comment"
+          aria-label="Abrir comentário"
+        >
+          💬 Comentar
+        </button>
       </div>
     </header>
 
@@ -775,4 +793,3 @@
     </script>
   </body>
 </html>
-

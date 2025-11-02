@@ -6,7 +6,18 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Um Abraço Otimista para Você! ✨</title>
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Domingos com Você! ✨</title>
     <style>
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -136,6 +147,13 @@
 
       <p id="assinatura">Com todo meu carinho.</p>
       <p id="assinatura">._.. ...</p>
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
     </div>
 
     <script>

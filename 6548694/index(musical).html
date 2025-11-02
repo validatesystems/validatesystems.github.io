@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Cards Musicais</title>
     <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
     <style>
       :root {
         /* Tema Acústico (claro) */
@@ -570,6 +581,12 @@
           animation: none !important;
         }
       }
+      #title-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
     </style>
   </head>
   <body>
@@ -611,10 +628,21 @@
     </div>
 
     <main class="page" role="main">
-      <h1 class="page-title" id="pageTitle">
-        <img src="./img/ico.png" alt="" class="logo-icon" />
-        Ondafy
-      </h1>
+      <div id="title-header">
+        <h1 class="page-title" id="pageTitle">
+          <img src="./img/ico.png" alt="" class="logo-icon" />
+          Ondafy
+        </h1>
+        <h1>
+          <button
+            id="openComment"
+            class="btn-comment"
+            aria-label="Abrir comentário"
+          >
+            💬 Comentar
+          </button>
+        </h1>
+      </div>
 
       <!-- ===== Player (inicialmente oculto) ===== -->
       <section id="player" class="player hidden" aria-label="faixa atual">

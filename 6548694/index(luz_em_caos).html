@@ -7,6 +7,17 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <meta name="theme-color" content="#0f1222" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
     <title>Luz em Caos</title>
     <style>
       :root {
@@ -190,6 +201,13 @@
           Toque e arraste para desenhar luz. O contador mostra seu progresso nas
           frases.
         </p>
+        <button
+          id="openComment"
+          class="btn-comment"
+          aria-label="Abrir comentário"
+        >
+          💬 Comentar
+        </button>
       </section>
       <footer>Feito com 💜 ._.. ...</footer>
     </div>

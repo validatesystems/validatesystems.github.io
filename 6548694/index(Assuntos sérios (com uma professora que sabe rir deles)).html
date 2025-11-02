@@ -7,6 +7,17 @@
       Sexta-feira — Assuntos sérios (com uma professora que sabe rir deles)
     </title>
     <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
     <style>
       :root {
         --bg1: #f8efff;
@@ -475,6 +486,14 @@
         </div>
 
         <div class="actions">
+          <button
+            id="openComment"
+            class="btn-comment"
+            aria-label="Abrir comentário"
+          >
+            💬 Comentar
+          </button>
+
           <span class="pill" id="dayHint">sexta-feira</span>
           <button class="btn" id="okBtn">Sair ✨</button>
         </div>

@@ -3,6 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
     <title>Bom Dia, Cléia ☀️</title>
     <style>
       :root {
@@ -83,6 +94,7 @@
         padding: 40px;
         backdrop-filter: blur(10px);
         animation: fadeIn 1.5s ease;
+        margin: 20px;
       }
 
       @keyframes fadeIn {
@@ -108,6 +120,9 @@
         font-size: 0.9rem;
         color: var(--muted);
       }
+      #comment {
+        margin-top: 20px;
+      }
     </style>
   </head>
   <body>
@@ -123,6 +138,15 @@
         E se algo der errado, lembre-se: até o sol tem dias nublados. 🌥️
       </p>
     </div>
+    <p id="comment">
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
+    </p>
     <!-- <footer>Enviado direto do departamento de boas energias. 🌈</footer> -->
     <footer>Developed with 💜 by ._.. ...</footer>
   </body>
