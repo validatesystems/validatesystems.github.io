@@ -25,7 +25,7 @@
 }
 
 .comment-modal {
-  width: min(560px, 92vw);
+  width: min(560px, 80vw);
   background: linear-gradient(
     180deg,
     var(--modal-card),

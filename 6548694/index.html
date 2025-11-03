@@ -978,12 +978,12 @@
             const pretty =
               date && !isNaN(date) ? fmtDate.format(date) : n.data || "";
             wrap.innerHTML = `
-                          <p class="notif-date">🗓️ ${pretty}</p>
-                          <h3 class="notif-item-title">${
-                            n.titulo ?? "Sem título"
-                          }</h3>
-                          <p class="notif-msg">${n.mensagem ?? ""}</p>
-                        `;
+                                <p class="notif-date">🗓️ ${pretty}</p>
+                                <h3 class="notif-item-title">${
+                                  n.titulo ?? "Sem título"
+                                }</h3>
+                                <p class="notif-msg">${n.mensagem ?? ""}</p>
+                              `;
             frag.appendChild(wrap);
           });
           notifList.innerHTML = "";
@@ -1008,19 +1008,41 @@
               : Array.isArray(data?.notificacoes)
               ? data.notificacoes
               : [];
-            renderNotifications(items);
+
+            // ===== FILTRO: somente HOJE e horário <= AGORA (local) =====
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = now.getMonth();
+            const d = now.getDate();
+
+            const filtered = items.filter((n) => {
+              if (!n?.data) return false;
+              const dt = new Date(n.data);
+              if (isNaN(dt)) return false;
+              const isSameDay =
+                dt.getFullYear() === y &&
+                dt.getMonth() === m &&
+                dt.getDate() === d;
+              return isSameDay && dt <= now;
+            });
+
+            // (opcional) ordenar por data/hora crescente
+            filtered.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+            renderNotifications(filtered);
           } catch (err) {
             notifList.innerHTML = `
-                          <div class="notif-card">
-                            <p class="notif-item-title">Não foi possível carregar</p>
-                            <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
-                          </div>
-                        `;
+      <div class="notif-card">
+        <p class="notif-item-title">Não foi possível carregar</p>
+        <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
+      </div>
+    `;
           } finally {
             notifList.setAttribute("aria-busy", "false");
             notifList.focus();
           }
         }
+
         function closeNotificationsModal() {
           notifBackdrop.classList.remove("open");
           notifBackdrop.setAttribute("aria-hidden", "true");
@@ -1046,14 +1068,23 @@
         /* ===== Grid de cards ===== */
         const grid = $("#grid");
         const cards = [
-          // {
-          //   emoji: "🌤️",
-          //   title: "Bom dia, Cléia",
-          //   sub: "Um amanhecer suave e encantado",
-          //   desc: "Uma experiência imersiva que desperta calma e inspiração — com sol nascendo, passarinhos cantando e o lembrete de que o universo sorri quando promove encontros improváveis.",
-          //   href: "./index(bom_dia_cleia).html",
-          //   publishedAt: "2025-11-03T05:00:00-03:00",
-          // },
+          {
+            emoji: "🧜‍♀️",
+            title: "Sereia: Voz do Mar",
+            sub: "Um mergulho nos mistérios da sereia",
+            desc: "Uma experiência que traz as curiosidades e lendas sobre sereias — explorando sua ligação com o mar, suas histórias fascinantes e o encanto que elas exercem sobre as pessoas.",
+            href: "./index(sereia_voz_do_mar).html",
+            publishedAt: "2025-11-03T12:37:14-03:00",
+          },
+
+          {
+            emoji: "🌤️",
+            title: "Bom dia, Cléia",
+            sub: "Um amanhecer suave e encantado",
+            desc: "Uma experiência imersiva que desperta calma e inspiração — com sol nascendo, passarinhos cantando e o lembrete de que o universo sorri quando promove encontros improváveis.",
+            href: "./index(bom_dia_cleia).html",
+            publishedAt: "2025-11-03T04:13:02-03:00",
+          },
           {
             emoji: "🗓",
             title: "Domingos com Você",
@@ -1218,10 +1249,96 @@
           if (!y || !m || !d) return null;
           return new Date(y, m - 1, d);
         }
+        //     function render() {
+        //       grid.innerHTML = "";
+
+        //       // Formatação com data + horário
+        //       const fmt = new Intl.DateTimeFormat("pt-BR", {
+        //         day: "2-digit",
+        //         month: "2-digit",
+        //         year: "numeric",
+        //         hour: "2-digit",
+        //         minute: "2-digit",
+        //       });
+
+        //       // Parser que preserva horário quando vier em ISO completo
+        //       const parsePublishedAt = (s) => {
+        //         if (!s) return null;
+        //         const dt = new Date(s); // tenta ISO (com fuso, ex: 2025-11-01T14:20:00-03:00)
+        //         if (!isNaN(dt)) return dt;
+        //         // fallback para YYYY-MM-DD
+        //         const only = s.slice(0, 10);
+        //         const [y, m, d] = only.split("-").map(Number);
+        //         if (!y || !m || !d) return null;
+        //         return new Date(y, m - 1, d);
+        //       };
+
+        //       // NOVO: "agora" no horário local do usuário
+        //       const now = new Date();
+
+        //       // NOVO: filtra e ordena apenas os cards já publicados (<= agora)
+        //       const visibleCards = cards
+        //         .map((c) => ({ ...c, __dt: parsePublishedAt(c.publishedAt) }))
+        //         .filter((c) => c.__dt && c.__dt <= now)
+        //         .sort((a, b) => b.__dt - a.__dt); // mais recente primeiro
+
+        //       for (const c of cards) {
+        //         const a = document.createElement("article");
+        //         a.className = "card";
+        //         a.dataset.title = c.title;
+
+        //         let dateHtml = "";
+        //         const d = parsePublishedAt(c.publishedAt);
+        //         if (d && !isNaN(d.getTime())) {
+        //           // Destaca cards do dia atual
+        //           const hoje = new Date();
+        //           if (
+        //             d.getFullYear() === hoje.getFullYear() &&
+        //             d.getMonth() === hoje.getMonth() &&
+        //             d.getDate() === hoje.getDate()
+        //           ) {
+        //             a.classList.add("card-hoje");
+        //           }
+
+        //           dateHtml = `
+        //     <div class="card-meta">
+        //       <span class="card-date" title="Data de publicação">
+        //         <span aria-hidden="true">🗓️</span>
+        //         <span>${fmt.format(d)}</span>
+        //       </span>
+        //     </div>
+        //   `;
+        //         }
+
+        //         a.innerHTML = `
+        //   <div class="card-head">
+        //     <div class="art" aria-hidden="true">${c.emoji}</div>
+        //     <div>
+        //       <h3 class="card-title">${c.title}</h3>
+        //       <p class="card-sub">${c.sub}</p>
+        //       ${dateHtml}
+        //     </div>
+        //   </div>
+        //   <div class="card-body">${c.desc}</div>
+        // `;
+
+        //         a.tabIndex = 0;
+        //         a.addEventListener("click", (e) => {
+        //           const isButton = e.target.closest("a,button");
+        //           if (!isButton) location.href = c.href;
+        //         });
+        //         a.addEventListener("keyup", (e) => {
+        //           if (e.key === "Enter" || e.key === " ") location.href = c.href;
+        //         });
+
+        //         grid.appendChild(a);
+        //       }
+        //     }
+
         function render() {
           grid.innerHTML = "";
 
-          // Formatação com data + horário
+          // Formatação com dia/mês/ano + horário no fuso LOCAL do usuário
           const fmt = new Intl.DateTimeFormat("pt-BR", {
             day: "2-digit",
             month: "2-digit",
@@ -1230,57 +1347,64 @@
             minute: "2-digit",
           });
 
-          // Parser que preserva horário quando vier em ISO completo
+          // Parser que preserva horário quando vier em ISO completo (com fuso)
           const parsePublishedAt = (s) => {
             if (!s) return null;
-            const dt = new Date(s); // tenta ISO (com fuso, ex: 2025-11-01T14:20:00-03:00)
+            const dt = new Date(s); // ex: 2025-11-02T07:30:00-03:00
             if (!isNaN(dt)) return dt;
-            // fallback para YYYY-MM-DD
+            // fallback para YYYY-MM-DD (interpreta como 00:00 no horário local)
             const only = s.slice(0, 10);
             const [y, m, d] = only.split("-").map(Number);
             if (!y || !m || !d) return null;
             return new Date(y, m - 1, d);
           };
 
-          for (const c of cards) {
+          // "Agora" no horário local do usuário
+          const now = new Date();
+
+          // Filtra (<= agora) e ordena do mais recente ao mais antigo
+          const visibleCards = cards
+            .map((c) => ({ ...c, __dt: parsePublishedAt(c.publishedAt) }))
+            .filter((c) => c.__dt && c.__dt <= now)
+            .sort((a, b) => b.__dt - a.__dt);
+
+          for (const c of visibleCards) {
             const a = document.createElement("article");
             a.className = "card";
             a.dataset.title = c.title;
 
-            let dateHtml = "";
-            const d = parsePublishedAt(c.publishedAt);
-            if (d && !isNaN(d.getTime())) {
-              // Destaca cards do dia atual
-              const hoje = new Date();
-              if (
-                d.getFullYear() === hoje.getFullYear() &&
-                d.getMonth() === hoje.getMonth() &&
-                d.getDate() === hoje.getDate()
-              ) {
-                a.classList.add("card-hoje");
-              }
+            const d = c.__dt; // data/hora já parseada e válida
 
-              dateHtml = `
-        <div class="card-meta">
-          <span class="card-date" title="Data de publicação">
-            <span aria-hidden="true">🗓️</span>
-            <span>${fmt.format(d)}</span>
-          </span>
-        </div>
-      `;
+            // Destaque para cards do "hoje" (comparação em local time)
+            const hoje = new Date();
+            if (
+              d.getFullYear() === hoje.getFullYear() &&
+              d.getMonth() === hoje.getMonth() &&
+              d.getDate() === hoje.getDate()
+            ) {
+              a.classList.add("card-hoje");
             }
 
+            const dateHtml = `
+            <div class="card-meta">
+              <span class="card-date" title="Data de publicação">
+                <span aria-hidden="true">🗓️</span>
+                <span>${fmt.format(d)}</span>
+              </span>
+            </div>
+          `;
+
             a.innerHTML = `
-      <div class="card-head">
-        <div class="art" aria-hidden="true">${c.emoji}</div>
-        <div>
-          <h3 class="card-title">${c.title}</h3>
-          <p class="card-sub">${c.sub}</p>
-          ${dateHtml}
-        </div>
-      </div>
-      <div class="card-body">${c.desc}</div>
-    `;
+            <div class="card-head">
+              <div class="art" aria-hidden="true">${c.emoji}</div>
+              <div>
+                <h3 class="card-title">${c.title}</h3>
+                <p class="card-sub">${c.sub}</p>
+                ${dateHtml}
+              </div>
+            </div>
+            <div class="card-body">${c.desc}</div>
+          `;
 
             a.tabIndex = 0;
             a.addEventListener("click", (e) => {
