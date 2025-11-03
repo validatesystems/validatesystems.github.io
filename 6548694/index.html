@@ -921,34 +921,72 @@
           return `${y}-${m}-${dd}`;
         }
 
+        // async function countTodayNotifications() {
+        //   try {
+        //     const res = await fetch("./notificacoes.json?ts=" + Date.now(), {
+        //       cache: "no-store",
+        //     });
+        //     if (!res.ok) throw new Error("Falha ao carregar notificações");
+        //     const data = await res.json();
+        //     const items = Array.isArray(data)
+        //       ? data
+        //       : Array.isArray(data?.notificacoes)
+        //       ? data.notificacoes
+        //       : [];
+        //     const today = ymdLocal();
+        //     let count = 0;
+        //     for (const n of items) {
+        //       if (!n?.data) continue;
+        //       const s = String(n.data);
+        //       const inlineIso = /^\d{4}-\d{2}-\d{2}/.test(s)
+        //         ? s.slice(0, 10)
+        //         : null;
+        //       if (inlineIso && inlineIso === today) {
+        //         count++;
+        //         continue;
+        //       }
+        //       const dt = new Date(s);
+        //       if (!isNaN(dt)) count += ymdLocal(dt) === today ? 1 : 0;
+        //     }
+        //     return count;
+        //   } catch (e) {
+        //     return 0;
+        //   }
+        // }
+
         async function countTodayNotifications() {
           try {
             const res = await fetch("./notificacoes.json?ts=" + Date.now(), {
               cache: "no-store",
             });
             if (!res.ok) throw new Error("Falha ao carregar notificações");
+
             const data = await res.json();
             const items = Array.isArray(data)
               ? data
               : Array.isArray(data?.notificacoes)
               ? data.notificacoes
               : [];
-            const today = ymdLocal();
-            let count = 0;
-            for (const n of items) {
-              if (!n?.data) continue;
-              const s = String(n.data);
-              const inlineIso = /^\d{4}-\d{2}-\d{2}/.test(s)
-                ? s.slice(0, 10)
-                : null;
-              if (inlineIso && inlineIso === today) {
-                count++;
-                continue;
-              }
-              const dt = new Date(s);
-              if (!isNaN(dt)) count += ymdLocal(dt) === today ? 1 : 0;
-            }
-            return count;
+
+            // ===== FILTRO: apenas notificações de HOJE e com horário <= AGORA =====
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = now.getMonth();
+            const d = now.getDate();
+
+            const filtered = items.filter((n) => {
+              if (!n?.data) return false;
+              const dt = new Date(n.data);
+              if (isNaN(dt)) return false;
+              const isSameDay =
+                dt.getFullYear() === y &&
+                dt.getMonth() === m &&
+                dt.getDate() === d;
+              return isSameDay && dt <= now;
+            });
+
+            // retorna a quantidade filtrada
+            return filtered.length;
           } catch (e) {
             return 0;
           }
