@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Vento que leva as palavras</title>
+    <style>
+      /* =====================
+         Design Tokens
+         ===================== */
+      :root {
+        --bg1: #f7f3ff;
+        --bg2: #e3f3ff;
+        --bg3: #fff6fa;
+        --ink: #2d1b3a;
+        --muted: #6e5677;
+        --accent: #b675ff;
+        --accent-2: #6ed7ff;
+        --card: rgba(255, 255, 255, 0.65);
+        --ring: 0 0 0 1.5px rgba(182, 117, 255, 0.28);
+        --blur: blur(10px);
+      }
+
+      /* =====================
+         Base
+         ===================== */
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+        color: var(--ink);
+        background: radial-gradient(
+            1200px 600px at 85% -10%,
+            rgba(110, 215, 255, 0.25),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 700px at -10% 110%,
+            rgba(182, 117, 255, 0.22),
+            transparent 60%
+          ),
+          linear-gradient(160deg, var(--bg1), var(--bg2) 50%, var(--bg3));
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      /* Sutileza de textura para dar vida ao fundo */
+      .grain {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.035"/></svg>');
+        mix-blend-mode: multiply;
+        opacity: 0.6;
+        z-index: 0;
+      }
+
+      /* Camadas de brisa para profundidade */
+      .breeze,
+      .breeze.b2,
+      .breeze.b3 {
+        position: absolute;
+        inset: -10% -20% 0 -20%;
+        background: radial-gradient(
+          120px 60px at 10% 30%,
+          rgba(255, 255, 255, 0.33),
+          transparent 70%
+        );
+        /* AGORA: vento da ESQUERDA → DIREITA */
+        animation: windFlow 28s linear infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .breeze.b2 {
+        animation-duration: 36s;
+        filter: blur(2px) saturate(120%);
+        opacity: 0.6;
+      }
+      .breeze.b3 {
+        animation-duration: 44s;
+        filter: blur(4px);
+        opacity: 0.45;
+      }
+      @keyframes windFlow {
+        from {
+          transform: translateX(-50%);
+        }
+        to {
+          transform: translateX(50%);
+        }
+      }
+
+      /* Cartão principal */
+      .card {
+        position: relative;
+        z-index: 2;
+        max-width: min(720px, 92vw);
+        padding: clamp(20px, 4vw, 36px);
+        background: var(--card);
+        -webkit-backdrop-filter: var(--blur);
+        backdrop-filter: var(--blur);
+        border-radius: 24px;
+        box-shadow: 0 15px 45px rgba(45, 27, 58, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        outline: var(--ring);
+      }
+
+      /* Cabeçalho com tipografia expressiva */
+      h1 {
+        margin: 0 0 0.6rem 0;
+        font-size: clamp(1.8rem, 3.6vw, 2.4rem);
+        line-height: 1.1;
+        letter-spacing: 0.4px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+        text-align: center;
+      }
+
+      /* Poema */
+      #poem {
+        font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+        line-height: 1.75;
+        margin: 0;
+        opacity: 0;
+        transform: translateY(4px);
+        animation: fadeIn 1.2s ease forwards;
+        animation-delay: 0.8s;
+      }
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* Palavras levadas pelo vento */
+      .fly {
+        display: inline-block;
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg);
+        animation: blowAway var(--dur, 7s)
+          var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)) var(--delay, 0s)
+          forwards;
+        will-change: transform, opacity, filter;
+        filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
+      }
+      @keyframes blowAway {
+        0% {
+          opacity: 1;
+          transform: translate(0, 0) rotate(0deg) skewX(0deg);
+        }
+        45% {
+          opacity: 0.95;
+          transform: translate(
+              calc(var(--dx, 180px) * 0.45),
+              calc(var(--dy, -60px) * 0.45)
+            )
+            rotate(calc(var(--rot, 12deg) * 0.6)) skewX(4deg);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(var(--dx, 180px), var(--dy, -60px))
+            rotate(var(--rot, 12deg)) skewX(6deg);
+        }
+      }
+
+      /* Mensagem após o vento */
+      .gone {
+        text-align: center;
+        font-size: clamp(1rem, 2.2vw, 1.15rem);
+        opacity: 0.85;
+        line-height: 1.7;
+        color: var(--muted);
+        padding-top: 0.5rem;
+      }
+
+      /* Botão discreto para recomeçar */
+      .actions {
+        display: flex;
+        gap: 0.6rem;
+        justify-content: center;
+        margin-top: 1rem;
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.6rem 0.9rem;
+        border-radius: 999px;
+        background: linear-gradient(
+          90deg,
+          rgba(182, 117, 255, 0.18),
+          rgba(110, 215, 255, 0.18)
+        );
+        color: var(--ink);
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        outline: var(--ring);
+        transition: transform 0.2s ease, box-shadow 0.2s ease,
+          background 0.3s ease;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(45, 27, 58, 0.12);
+      }
+
+      /* Acessibilidade: respeita reduzir movimento */
+      @media (prefers-reduced-motion: reduce) {
+        .breeze,
+        .breeze.b2,
+        .breeze.b3 {
+          animation: none;
+        }
+        .fly {
+          animation-duration: 0.01ms;
+          animation-iteration-count: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Camadas sutis de vento e textura -->
+    <div class="breeze"></div>
+    <div class="breeze b2"></div>
+    <div class="breeze b3"></div>
+    <div class="grain"></div>
+
+    <main class="card" id="messageBox">
+      <header>
+        <h1>🌬️ Vento que leva as palavras</h1>
+      </header>
+
+      <p id="poem">
+        Em ti, o mundo tem duas marés:<br />
+        uma que sossega, outra que desperta.<br />
+        Há dias em que és brisa leve,<nobr></nobr><br />
+        e outros, um mar agitado —<br />
+        mas em todos, há um eixo invisível<br />
+        onde repousa teu amor.<br /><br />
+
+        Teu caos não assusta, encanta;<br />
+        é tempestade mansa que sabe dançar.<br />
+        Quando sorris, o tempo desacelera, quando te calas, o mar se agita, e
+        eu, que sempre temi ventos fortes, aprendi a flutuar no teu olhar.<br /><br />
+
+        Se o vento levar minhas palavras, que leve também meu sossego:<br />
+        porque em ti, Cléia, até o caos é um lugar de paz.
+      </p>
+
+      <div class="actions" id="actions" hidden></div>
+    </main>
+    <button id="openComment" class="btn-comment" aria-label="Abrir comentário">
+      💬 Comentar
+    </button>
+    <button class="btn" id="reset">._.. ...</button>
+
+    <script>
+      const poem = document.getElementById("poem");
+      const messageBox = document.getElementById("messageBox");
+      const actions = document.getElementById("actions");
+      const resetBtn = document.getElementById("reset");
+
+      // Verifica se o vento já levou as palavras em visitas anteriores
+      const gone = localStorage.getItem("poemGone");
+
+      function showGoneMessage(text) {
+        poem.style.display = "none";
+        const msg = document.createElement("div");
+        msg.className = "gone";
+        msg.innerHTML =
+          text ||
+          "O vento levou as palavras...<br>mas deixou o que era essencial.";
+        messageBox.appendChild(msg);
+        actions.hidden = false; // botão só aparece aqui, quando tudo acabou
+      }
+
+      if (gone === "true") {
+        // Em visitas seguintes, as palavras já foram levadas
+        showGoneMessage(
+          "O vento já levou as palavras...<br>mas o sentimento ficou no ar."
+        );
+      } else {
+        // Após ~26s, começa o vento
+        setTimeout(() => {
+          const raw = poem.innerText; // preserva quebras de linha
+          const frag = document.createDocumentFragment();
+          const rng = (min, max) => Math.random() * (max - min) + min;
+
+          for (const ch of raw) {
+            if (ch === "\n") {
+              frag.appendChild(document.createElement("br"));
+              continue;
+            }
+            const s = document.createElement("span");
+            s.textContent = ch;
+            s.className = "fly";
+
+            // ►► Parâmetros por caractere para vento ESQUERDA → DIREITA
+            const dx = rng(160, 260); // sempre positivo (direita)
+            const dy = rng(-120, -40); // sobe levemente
+            const rot = rng(-10, 18);
+            const dur = rng(6.5, 9.5);
+            const delay = rng(0, 2.4);
+
+            s.style.setProperty("--dx", dx + "px");
+            s.style.setProperty("--dy", dy + "px");
+            s.style.setProperty("--rot", rot + "deg");
+            s.style.setProperty("--dur", dur + "s");
+            s.style.setProperty("--delay", delay + "s");
+            s.style.setProperty("--ease", "cubic-bezier(.16,.67,.33,1)");
+
+            frag.appendChild(s);
+          }
+
+          poem.innerHTML = "";
+          poem.appendChild(frag);
+
+          // ========= Mostrar botão apenas quando TODAS animações terminarem =========
+          const chars = poem.querySelectorAll(".fly");
+          let ended = 0;
+          let done = false;
+          const total = chars.length;
+          const onFinish = () => {
+            if (done) return;
+            done = true;
+            localStorage.setItem("poemGone", "true");
+            showGoneMessage();
+          };
+          const onEnd = () => {
+            ended++;
+            if (ended >= total) onFinish();
+          };
+
+          chars.forEach((el) => {
+            el.addEventListener("animationend", onEnd, { once: true });
+            el.addEventListener("animationcancel", onEnd, { once: true });
+          });
+
+          // Fallback de segurança caso algum evento não dispare (ex.: abas inativas)
+          const maxTotal = 9.5 + 2.4; // duração máxima + maior atraso (~11.9s)
+          setTimeout(onFinish, maxTotal * 1000 + 500);
+        }, 26000);
+      }
+
+      // Permite rever (limpa o estado e recarrega)
+      resetBtn?.addEventListener("click", () => {
+        localStorage.removeItem("poemGone");
+        location.reload();
+      });
+    </script>
+  </body>
+</html>
