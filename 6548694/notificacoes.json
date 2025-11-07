@@ -1,62 +1,67 @@
 [
-    {
-        "data": "2025-11-06T22:42:00-03:00",
-        "titulo": "Novo card - Quiz da Cléia",
-        "mensagem": "Um quiz interativo e afetuosamente irônico — cada pergunta revela um traço dela, entre o caos e a calma, o riso e o reflexo."
-    },
-    {
-        "data": "2025-11-05T20:05:10-03:00",
-        "titulo": "Novo card - Quando o vento perder a curva",
-        "mensagem": "Um poema que sopra verdades com charme e ironia — sobre ela, o vento e as voltas que ambos sabem dar."
-    },
-    {
-        "data": "2025-11-05T20:05:40-03:00",
-        "titulo": "Novo card - Poema para Cléia",
-        "mensagem": "Um poema leve e provocante — mistura afeto, sarcasmo e encanto em versos que fingem brincadeira, mas dizem mais do que parecem."
-    },
-    {
-        "data": "2025-11-05T19:05:10-03:00",
-        "titulo": "Novo card - Traços de Você — Playlist e Sentidos",
-        "mensagem": "Uma experiência que traz um pouco de você em cada música."
-    },
-    {
-        "data": "2025-11-04T19:03:10-03:00",
-        "titulo": "Novo card - Lua e os Mares — Segredos das Marés e das Sereias",
-        "mensagem": "Uma experiência que revela como a Lua move oceanos, inspira lendas e desperta as sereias em noites de encantamento."
-    },
-    {
-        "data": "2025-11-04T11:50:10-03:00",
-        "titulo": "Novo card - Manual de Autoproteção Emocional — Volume Cléia",
-        "mensagem": "Uma experiência que ensina como lidar com o caos dessa menina."
-    },
-    {
-        "data": "2025-11-04T00:00:02-03:00",
-        "titulo": "Novo card - Entre corridas e pausas",
-        "mensagem": "Mensagem simples mas que carrega um significado profundo."
-    },
-    {
-        "data": "2025-11-03T12:22:54-03:00",
-        "titulo": "Novo card disponível",
-        "mensagem": "O card 'Vento que leva as palavras' foi adicionado — uma brisa suave leva cada letra e deixa no ar o que importa."
-    },
-    {
-        "data": "2025-11-03T04:33:14-03:00",
-        "titulo": "Novo card disponível",
-        "mensagem": "O card 'Sereia: Voz do Mar' foi adicionado — uma experiência que convida a ouvir o oceano, descobrir segredos em cada onda e lembrar que a verdadeira serenidade mora em quem sabe transformar o caos em canto."
-    },
-    {
-        "data": "2025-11-03T03:50:02-03:00",
-        "titulo": "Novo card disponível",
-        "mensagem": "O card 'Bom dia, Cléia' foi adicionado — uma experiência imersiva que celebra o merecido descanso do fim de semana, a reta final do ano letivo e a gratidão por encontros que o universo vem ensaiando há 13 bilhões de anos."
-    },
-    {
-        "data": "2025-11-02T10:50:32-03:00",
-        "titulo": "Novo recurso disponível",
-        "mensagem": "Novidade! Agora você pode fazer comentários sobre os cards. Foi adicionado um botão para isso."
-    },
-    {
-        "data": "2025-11-02T07:30:00-03:00",
-        "titulo": "Novo card disponível",
-        "mensagem": "O card 'Domingos com Você' foi adicionado — uma experiência que explica o motivo para que o tempo pareça gostar mais quando passa ao teu lado."
-    }
+  {
+    "data": "2025-11-07T10:23:00-03:00",
+    "titulo": "Novo card - Retrato de admiração",
+    "mensagem": "Uma carta escrita à mão, em tom calmo e verdadeiro — sobre enxergar beleza na essência, leveza no caos e encanto até nos silêncios."
+  },
+  {
+    "data": "2025-11-06T22:42:00-03:00",
+    "titulo": "Novo card - Quiz da Cléia",
+    "mensagem": "Um quiz interativo e afetuosamente irônico — cada pergunta revela um traço dela, entre o caos e a calma, o riso e o reflexo."
+  },
+  {
+    "data": "2025-11-05T20:05:10-03:00",
+    "titulo": "Novo card - Quando o vento perder a curva",
+    "mensagem": "Um poema que sopra verdades com charme e ironia — sobre ela, o vento e as voltas que ambos sabem dar."
+  },
+  {
+    "data": "2025-11-05T20:05:40-03:00",
+    "titulo": "Novo card - Poema para Cléia",
+    "mensagem": "Um poema leve e provocante — mistura afeto, sarcasmo e encanto em versos que fingem brincadeira, mas dizem mais do que parecem."
+  },
+  {
+    "data": "2025-11-05T19:05:10-03:00",
+    "titulo": "Novo card - Traços de Você — Playlist e Sentidos",
+    "mensagem": "Uma experiência que traz um pouco de você em cada música."
+  },
+  {
+    "data": "2025-11-04T19:03:10-03:00",
+    "titulo": "Novo card - Lua e os Mares — Segredos das Marés e das Sereias",
+    "mensagem": "Uma experiência que revela como a Lua move oceanos, inspira lendas e desperta as sereias em noites de encantamento."
+  },
+  {
+    "data": "2025-11-04T11:50:10-03:00",
+    "titulo": "Novo card - Manual de Autoproteção Emocional — Volume Cléia",
+    "mensagem": "Uma experiência que ensina como lidar com o caos dessa menina."
+  },
+  {
+    "data": "2025-11-04T00:00:02-03:00",
+    "titulo": "Novo card - Entre corridas e pausas",
+    "mensagem": "Mensagem simples mas que carrega um significado profundo."
+  },
+  {
+    "data": "2025-11-03T12:22:54-03:00",
+    "titulo": "Novo card disponível",
+    "mensagem": "O card 'Vento que leva as palavras' foi adicionado — uma brisa suave leva cada letra e deixa no ar o que importa."
+  },
+  {
+    "data": "2025-11-03T04:33:14-03:00",
+    "titulo": "Novo card disponível",
+    "mensagem": "O card 'Sereia: Voz do Mar' foi adicionado — uma experiência que convida a ouvir o oceano, descobrir segredos em cada onda e lembrar que a verdadeira serenidade mora em quem sabe transformar o caos em canto."
+  },
+  {
+    "data": "2025-11-03T03:50:02-03:00",
+    "titulo": "Novo card disponível",
+    "mensagem": "O card 'Bom dia, Cléia' foi adicionado — uma experiência imersiva que celebra o merecido descanso do fim de semana, a reta final do ano letivo e a gratidão por encontros que o universo vem ensaiando há 13 bilhões de anos."
+  },
+  {
+    "data": "2025-11-02T10:50:32-03:00",
+    "titulo": "Novo recurso disponível",
+    "mensagem": "Novidade! Agora você pode fazer comentários sobre os cards. Foi adicionado um botão para isso."
+  },
+  {
+    "data": "2025-11-02T07:30:00-03:00",
+    "titulo": "Novo card disponível",
+    "mensagem": "O card 'Domingos com Você' foi adicionado — uma experiência que explica o motivo para que o tempo pareça gostar mais quando passa ao teu lado."
+  }
 ]
