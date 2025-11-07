@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Quiz da Cléia — Perguntas Sequenciais</title>
+    <style>
+      /* =====================
+         Design Tokens (Light default)
+         ===================== */
+      :root {
+        --bg1: #f8f6ff;
+        --bg2: #eaf4ff;
+        --ink: #2c1b3a;
+        --muted: #7b6e87;
+        --accent: #b47aff;
+        --accent-2: #6ed7ff;
+        --card: rgba(255, 255, 255, 0.95);
+        --ring: 0 0 0 2px rgba(180, 122, 255, 0.25);
+        --success: #2e7d32;
+        --error: #c62828;
+        --shadow: 0 10px 30px rgba(18, 16, 28, 0.12);
+        --chip: #f3eaff;
+        --chip-ink: #5b2db6;
+        --surface: #ffffff;
+        --border: rgba(0, 0, 0, 0.08);
+        --hover: #faf7ff;
+      }
+
+      /* =====================
+         Dark Tokens (aplicados quando data-theme="dark")
+         ===================== */
+      html[data-theme="dark"] {
+        --bg1: #0b0f1e;
+        --bg2: #141a2e;
+        --ink: #f2f5ff; /* texto principal claro */
+        --muted: #cbd5ff; /* texto secundário legível */
+        --accent: #7cc2ff;
+        --accent-2: #ffd6a3;
+        --card: rgba(18, 20, 32, 0.82);
+        --ring: 0 0 0 2px rgba(124, 194, 255, 0.28);
+        --success: #6be28a;
+        --error: #ff7b7b;
+        --shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+        --chip: rgba(124, 194, 255, 0.14);
+        --chip-ink: #e7f0ff;
+        --surface: #161b2b; /* superfície dos cards/botões */
+        --border: rgba(255, 255, 255, 0.16);
+        --hover: rgba(255, 255, 255, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Inter, "Helvetica Neue", Arial;
+        color: var(--ink);
+        background: linear-gradient(135deg, var(--bg1), var(--bg2));
+        display: grid;
+        place-items: center;
+        padding: 24px env(safe-area-inset-right) 24px env(safe-area-inset-left);
+      }
+
+      .shell {
+        width: min(780px, 100%);
+        background: var(--card);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 24px;
+        animation: pop 0.5s ease;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .title {
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+      .progress {
+        font-size: 0.95rem;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      /* Botão para alternar tema */
+      .theme-toggle {
+        background: none;
+        border: 1.5px solid var(--border);
+        border-radius: 999px;
+        width: auto;
+        padding: 8px 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.95rem;
+        color: var(--ink);
+        cursor: pointer;
+        background-color: var(--surface);
+        transition: background 0.3s, color 0.3s, transform 0.2s,
+          border-color 0.2s;
+      }
+      .theme-toggle:hover {
+        transform: translateY(-1px);
+        background: var(--hover);
+        border-color: var(--accent);
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1.5px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 6px 18px rgba(20, 16, 40, 0.06);
+        margin-top: 6px;
+        color: var(--ink);
+      }
+
+      .badge {
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: var(--chip);
+        color: var(--chip-ink);
+        border: 1px solid var(--border);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .q {
+        font-size: 1.15rem;
+        font-weight: 700;
+        line-height: 1.35;
+        margin: 10px 0 16px;
+      }
+      .options {
+        display: grid;
+        gap: 10px;
+      }
+
+      .option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        border: 2px solid transparent;
+        border-radius: 12px;
+        background: var(--surface);
+        padding: 12px 14px;
+        text-align: left;
+        cursor: pointer;
+        transition: transform 0.12s ease, border-color 0.2s ease,
+          background 0.2s ease, color 0.2s ease;
+        font-size: 1rem;
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .option:hover {
+        border-color: var(--accent);
+        background: var(--hover);
+      }
+      .option:disabled {
+        opacity: 0.75;
+        cursor: not-allowed;
+      }
+
+      .feedback {
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        font-weight: 700;
+        display: none;
+      }
+      .feedback.success {
+        display: block;
+        background: var(--success);
+        color: #0b160f;
+      }
+      .feedback.error {
+        display: block;
+        background: var(--error);
+        color: #140808;
+      }
+
+      .controls {
+        margin-top: 12px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .footer {
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        color: var(--muted);
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-weight: 700;
+        cursor: pointer;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        color: #121121;
+        box-shadow: 0 6px 14px rgba(124, 58, 237, 0.2);
+        transition: opacity 0.3s ease, transform 0.2s ease;
+      }
+      .btn:hover:not(:disabled) {
+        transform: scale(1.04);
+        opacity: 0.96;
+      }
+      .btn.secondary {
+        background: var(--surface);
+        border: 1.5px solid var(--border);
+        color: var(--ink);
+        box-shadow: none;
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      /* Resumo */
+      .summary {
+        margin-top: 16px;
+        display: grid;
+        gap: 10px;
+      }
+      .summary-item {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        background: var(--surface);
+      }
+      .summary-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+      .pill {
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 999px;
+        color: #fff;
+      }
+      .pill.ok {
+        background: var(--success);
+        color: #0b160f;
+      }
+      .pill.no {
+        background: var(--error);
+        color: #140808;
+      }
+      .summary-row {
+        font-size: 0.95rem;
+        color: var(--ink);
+      }
+      .summary-row small {
+        color: var(--muted);
+        opacity: 1;
+      }
+
+      @keyframes pop {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @media (max-width: 420px) {
+        .q {
+          font-size: 1.05rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell" role="main">
+      <header>
+        <div class="left">
+          <div class="title">🪞 Quiz da Cléia</div>
+          <div id="progress" class="progress" aria-live="polite">
+            Preparando…
+          </div>
+        </div>
+        <button
+          id="themeToggle"
+          class="theme-toggle"
+          type="button"
+          aria-live="polite"
+          title="Alternar tema"
+        >
+          <span id="themeIcon">🌙</span><span id="themeLabel">Tema</span>
+        </button>
+      </header>
+
+      <section id="card" class="card" aria-live="polite">
+        <div id="qBadge" class="badge">Carregando</div>
+        <h2 id="question" class="q">Carregando…</h2>
+        <div
+          id="options"
+          class="options"
+          role="group"
+          aria-label="opções"
+        ></div>
+        <div id="feedback" class="feedback" role="status"></div>
+
+        <div class="controls">
+          <button id="next" class="btn" type="button" disabled>Próxima</button>
+        </div>
+
+        <!-- Resumo final é injetado aqui -->
+        <div id="summary" class="summary hidden" aria-live="polite"></div>
+      </section>
+
+      <div class="footer">
+        <div id="scoreInfo">Acertos: 0</div>
+        <button
+          id="openComment"
+          class="btn-comment"
+          aria-label="Abrir comentário"
+        >
+          💬 Comentar
+        </button>
+
+        <div style="display: flex; gap: 8px">
+          <button id="newQuiz" class="btn secondary hidden" type="button">
+            Novo Quiz
+          </button>
+          <button id="restart" class="btn secondary hidden" type="button">
+            Recomeçar
+          </button>
+        </div>
+      </div>
+      <footer>Feito com respeito (._.. ...)</footer>
+    </main>
+
+    <script>
+      // ==============================
+      // Tema: segue sistema por padrão, com toggle manual (salvo)
+      // ==============================
+      const THEME_KEY = "quiz.theme"; // 'light' | 'dark'
+      const themeToggle = document.getElementById("themeToggle");
+      const themeIcon = document.getElementById("themeIcon");
+
+      function setTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        try {
+          localStorage.setItem(THEME_KEY, theme);
+        } catch {}
+        themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
+      }
+      function initTheme() {
+        let saved = null;
+        try {
+          saved = localStorage.getItem(THEME_KEY);
+        } catch {}
+        if (saved === "light" || saved === "dark") setTheme(saved);
+        else if (matchMedia("(prefers-color-scheme: dark)").matches)
+          setTheme("dark");
+        else setTheme("light");
+        // Se o SO mudar e o usuário não tiver preferência salva, acompanhar
+        const mq = matchMedia("(prefers-color-scheme: dark)");
+        mq.addEventListener?.("change", () => {
+          const hasPref = localStorage.getItem(THEME_KEY);
+          if (!hasPref) setTheme(mq.matches ? "dark" : "light");
+        });
+      }
+      themeToggle.addEventListener("click", () => {
+        const cur = document.documentElement.getAttribute("data-theme");
+        setTheme(cur === "dark" ? "light" : "dark");
+      });
+      initTheme();
+
+      // ==============================
+      // Configurações do Quiz
+      // ==============================
+      const AUTO_ADVANCE = false; // true: avança sozinho; false: usa botão "Próxima"
+      const DELAY_CORRECT_MS = 2200; // usado se AUTO_ADVANCE === true
+      const DELAY_WRONG_MS = 3000; // usado se AUTO_ADVANCE === true
+
+      // ==============================
+      // Grupos de perguntas (pode adicionar mais grupos)
+      // ==============================
+      const GROUP_A = [
+        {
+          tag: "Caos que acalma",
+          question: "O que a Cléia faz quando está calma demais?",
+          answers: [
+            { text: "Organiza seus relatórios", correct: false },
+            { text: "Dorme cedo", correct: false },
+            { text: "Ela sempre está calma (só que não)", correct: true },
+            { text: "Fica mandando memes nos grupos", correct: false },
+          ],
+          success:
+            "✨ Acertou! Aparenta sempre estar calma, mas só ela sabe o caos que a habita.",
+          error: "💨 Errou! Mas tudo bem, o vento também muda de direção.",
+        },
+        {
+          tag: "Vento & silêncio",
+          question: "Quando o vento leva as palavras, o que fica?",
+          answers: [
+            { text: "O texto em rascunho", correct: false },
+            { text: "O silêncio", correct: true },
+            { text: "O Wi-Fi instável", correct: false },
+            { text: "Um meme de aprovação", correct: false },
+          ],
+          success: "🌬️ Sim — o silêncio também fala.",
+          error:
+            "🍃 Não desta vez. Às vezes, o que importa é o que não foi dito.",
+        },
+        {
+          tag: "Lua em concha",
+          question: "Quando a conta emocional chega, qual é o refúgio dela?",
+          answers: [
+            { text: "Uma reunião de 4 horas", correct: false },
+            { text: "A própria concha", correct: true },
+            { text: "Planilhas", correct: false },
+            { text: "Preparar planos de aula", correct: false },
+          ],
+          success: "🌙 Exato — recolher-se também é sabedoria.",
+          error: "🦪 Quase. Tem horas que a concha é casa.",
+        },
+        {
+          tag: "Sereia consciente",
+          question: "Qual combinação descreve melhor a presença dela?",
+          answers: [
+            { text: "Brilho alto, barulho alto", correct: false },
+            { text: "Caos intenso, calmaria disfarçada", correct: true },
+            { text: "Silêncio e indiferença", correct: false },
+            { text: "Fofura e nada além", correct: false },
+          ],
+          success: "🧜‍♀️ Perfeito — intensidade que acalma.",
+          error: "⚖️ Não. É o paradoxo que encanta.",
+        },
+        {
+          tag: "Autonomia & afeto",
+          question: "Como ela lida com o vínculo emocional?",
+          answers: [
+            { text: "Se perde fácil e gosta", correct: false },
+            { text: "Equilibra afeto e autonomia", correct: true },
+            { text: "Evita qualquer laço", correct: false },
+            { text: "Quer controle total do outro", correct: false },
+          ],
+          success: "🧭 Isso! Vínculo sem perder de si.",
+          error: "🤹🏻‍♀️ Não. O truque é o equilíbrio.",
+        },
+      ];
+
+      const GROUP_B = [
+        {
+          tag: "Entrelinhas",
+          question: "Quando ela não responde logo, geralmente é porque…",
+          answers: [
+            { text: "Está ignorando por esporte", correct: false },
+            { text: "Prefere pensar antes de sentir", correct: true },
+            { text: "Esqueceu o celular no freezer", correct: false },
+            { text: "Está ensaiando um stand-up", correct: false },
+          ],
+          success: "🧠 Exato — o racional costuma vir primeiro.",
+          error: "⌛ Nem sempre é sobre você. Às vezes é sobre processar.",
+        },
+        {
+          tag: "Olhar que diz",
+          question: "O sorriso dela, em silêncio, costuma significar…",
+          answers: [
+            { text: "Nada, é só sorriso", correct: false },
+            { text: "Ok, mas observe melhor", correct: true },
+            { text: "Sarcasmo puro", correct: false },
+            { text: "Pedido de ajuda urgente", correct: false },
+          ],
+          success: "🌙 Isso — tem luz nas entrelinhas.",
+          error: "🪞 Quase. Nem tudo é ironia, às vezes é cuidado discreto.",
+        },
+        {
+          tag: "Morde e assopra",
+          question: "Se ela provoca, normalmente espera de você…",
+          answers: [
+            { text: "Silêncio absoluto", correct: false },
+            { text: "Fuga dramática", correct: false },
+            { text: "Leitura do tom e leveza na resposta", correct: true },
+            { text: "Uma tese de 30 páginas", correct: false },
+          ],
+          success: "⚖️ Perfeito — leveza com presença.",
+          error: "🎭 Nem 8 nem 80. Ritmo e escuta importam.",
+        },
+        {
+          tag: "Autoproteção elegante",
+          question: "Quando o assunto encosta na vulnerabilidade, ela tende a…",
+          answers: [
+            { text: "Expor tudo com detalhes", correct: false },
+            { text: "Usar uma piada para desviar", correct: true },
+            { text: "Brigar por esporte", correct: false },
+            { text: "Fingir que não ouviu", correct: false },
+          ],
+          success: "🛡️ Sim — humor também é escudo.",
+          error: "🫧 Não confunda proteção com indiferença.",
+        },
+        {
+          tag: "Ritual de calma",
+          question: "O que costuma ajudar quando o dia pesa?",
+          answers: [
+            { text: "É o dia que pede ajuda", correct: true },
+            { text: "Assistir um filme", correct: false },
+            { text: "Criar três problemas novos", correct: false },
+            { text: "Dorme cedo", correct: false },
+          ],
+          success: "☕ Boa — ela não dá mole na missão.",
+          error: "🌫️ Nem sempre mais barulho resolve.",
+        },
+      ];
+
+      const QUIZ_GROUPS = [GROUP_A, GROUP_B];
+
+      // ==============================
+      // Utilidades e elementos
+      // ==============================
+      const $ = (sel) => document.querySelector(sel);
+      const elProgress = $("#progress");
+      const elBadge = $("#qBadge");
+      const elQuestion = $("#question");
+      const elOptions = $("#options");
+      const elFeedback = $("#feedback");
+      const elScore = $("#scoreInfo");
+      const elRestart = $("#restart");
+      const elNewQuiz = $("#newQuiz");
+      const elSummary = $("#summary");
+      const elNext = $("#next");
+
+      // Estado
+      let currentGroupIndex = 0; // começa no grupo A
+      let QUESTIONS = []; // embaralhadas da sessão
+      let index = 0;
+      let score = 0;
+      const answersLog = []; // {tag, question, chosenText, chosenCorrect, correctText}
+      let hasAnswered = false;
+      let autoAdvanceTimer = null;
+
+      function shuffle(arr) {
+        return arr
+          .map((v) => ({ v, r: Math.random() }))
+          .sort((a, b) => a.r - b.r)
+          .map(({ v }) => v);
+      }
+      function loadGroup(idx) {
+        currentGroupIndex =
+          ((idx % QUIZ_GROUPS.length) + QUIZ_GROUPS.length) %
+          QUIZ_GROUPS.length;
+        return QUIZ_GROUPS[currentGroupIndex];
+      }
+      function prepareSession(newGroup = false) {
+        if (newGroup) {
+          const nextIndex = (currentGroupIndex + 1) % QUIZ_GROUPS.length;
+          loadGroup(nextIndex);
+        }
+        const base = loadGroup(currentGroupIndex);
+        QUESTIONS = shuffle(base.slice());
+        index = 0;
+        score = 0;
+        answersLog.length = 0;
+        hasAnswered = false;
+        elScore.textContent = "Acertos: 0";
+        elRestart.classList.add("hidden");
+        elNewQuiz.classList.add("hidden");
+        elSummary.classList.add("hidden");
+        elSummary.innerHTML = "";
+      }
+
+      function renderQuestion() {
+        if (autoAdvanceTimer) {
+          clearTimeout(autoAdvanceTimer);
+          autoAdvanceTimer = null;
+        }
+        hasAnswered = false;
+        elNext.disabled = true;
+        const total = QUESTIONS.length;
+        elProgress.textContent = `Pergunta ${index + 1}/${total}`;
+        const q = QUESTIONS[index];
+        elBadge.textContent = q.tag;
+        elQuestion.textContent = q.question;
+        elFeedback.className = "feedback";
+        elFeedback.style.display = "none";
+        elSummary.classList.add("hidden");
+        elOptions.innerHTML = "";
+        const answers = shuffle(q.answers.slice());
+        answers.forEach((ans) => {
+          const btn = document.createElement("button");
+          btn.className = "option";
+          btn.type = "button";
+          btn.textContent = ans.text;
+          btn.dataset.correct = String(!!ans.correct);
+          btn.addEventListener("click", () =>
+            handleAnswer(btn, ans.correct, q)
+          );
+          elOptions.appendChild(btn);
+        });
+      }
+
+      function handleAnswer(button, isCorrect, question) {
+        if (hasAnswered) return;
+        hasAnswered = true;
+        [...elOptions.children].forEach((b) => (b.disabled = true));
+        const correctText = question.answers.find((a) => a.correct)?.text || "";
+        answersLog.push({
+          tag: question.tag,
+          question: question.question,
+          chosenText: button.textContent.trim(),
+          chosenCorrect: !!isCorrect,
+          correctText,
+        });
+        if (isCorrect) {
+          score++;
+          elFeedback.textContent = question.success || "Acertou!";
+          elFeedback.className = "feedback success";
+          button.style.borderColor = "var(--success)";
+        } else {
+          elFeedback.textContent = question.error || "Errou!";
+          elFeedback.className = "feedback error";
+          button.style.borderColor = "var(--error)";
+          const c = elOptions.querySelector('[data-correct="true"]');
+          if (c) c.style.borderColor = "var(--success)";
+        }
+        elFeedback.style.display = "block";
+        elScore.textContent = `Acertos: ${score}`;
+        elNext.disabled = false;
+        const isLast = index >= QUESTIONS.length - 1;
+        if (AUTO_ADVANCE) {
+          autoAdvanceTimer = setTimeout(
+            () => {
+              if (isLast) showEndScreen();
+              else nextQuestion();
+            },
+            isCorrect ? DELAY_CORRECT_MS : DELAY_WRONG_MS
+          );
+        }
+      }
+
+      function nextQuestion() {
+        const isLast = index >= QUESTIONS.length - 1;
+        if (isLast) {
+          showEndScreen();
+        } else {
+          index++;
+          renderQuestion();
+        }
+      }
+
+      function showEndScreen() {
+        const total = QUESTIONS.length;
+        const pct = Math.round((score / total) * 100);
+        const mood =
+          pct === 100
+            ? "✨ Brilhou."
+            : pct >= 60
+            ? "🌙 Boa leitura de entrelinhas."
+            : "🍃 O vento distraiu um pouco.";
+        elBadge.textContent = "Resultado";
+        elQuestion.textContent = `Você acertou ${score} de ${total} (${pct}%).`;
+        elOptions.innerHTML = "";
+        elNext.disabled = true;
+        elFeedback.textContent = mood;
+        elFeedback.className = "feedback " + (pct >= 60 ? "success" : "error");
+        elFeedback.style.display = "block";
+        elProgress.textContent = "Fim";
+        elRestart.classList.remove("hidden");
+        elNewQuiz.classList.remove("hidden");
+        elRestart.focus();
+        renderSummary();
+      }
+
+      function renderSummary() {
+        elSummary.innerHTML = "";
+        answersLog.forEach((log, i) => {
+          const item = document.createElement("div");
+          item.className = "summary-item";
+          const head = document.createElement("div");
+          head.className = "summary-head";
+          const left = document.createElement("div");
+          left.innerHTML = `<span class="badge">${log.tag}</span> <span>Q${
+            i + 1
+          }</span>`;
+          const pill = document.createElement("span");
+          pill.className = "pill " + (log.chosenCorrect ? "ok" : "no");
+          pill.textContent = log.chosenCorrect ? "ACERTOU" : "ERROU";
+          head.appendChild(left);
+          head.appendChild(pill);
+          const rowQ = document.createElement("div");
+          rowQ.className = "summary-row";
+          rowQ.innerHTML = `<strong>Pergunta:</strong> ${log.question}`;
+          const rowChosen = document.createElement("div");
+          rowChosen.className = "summary-row";
+          rowChosen.innerHTML = `<strong>Sua resposta:</strong> ${log.chosenText}`;
+          const rowCorrect = document.createElement("div");
+          rowCorrect.className = "summary-row";
+          rowCorrect.innerHTML = log.chosenCorrect
+            ? `<small>(Correta)</small>`
+            : `<strong>Correta:</strong> ${log.correctText}`;
+          item.appendChild(head);
+          item.appendChild(rowQ);
+          item.appendChild(rowChosen);
+          item.appendChild(rowCorrect);
+          elSummary.appendChild(item);
+        });
+        elSummary.classList.remove("hidden");
+      }
+
+      // Eventos
+      const onRestart = () => {
+        if (autoAdvanceTimer) {
+          clearTimeout(autoAdvanceTimer);
+          autoAdvanceTimer = null;
+        }
+        prepareSession(false);
+        renderQuestion();
+      };
+      const onNewQuiz = () => {
+        if (autoAdvanceTimer) {
+          clearTimeout(autoAdvanceTimer);
+          autoAdvanceTimer = null;
+        }
+        prepareSession(true);
+        renderQuestion();
+      };
+      elNext.addEventListener("click", () => {
+        if (!hasAnswered) return;
+        nextQuestion();
+      });
+      elRestart.addEventListener("click", onRestart);
+      elNewQuiz.addEventListener("click", onNewQuiz);
+
+      // Inicializa
+      loadGroup(0);
+      prepareSession(false);
+      renderQuestion();
+    </script>
+  </body>
+</html>
