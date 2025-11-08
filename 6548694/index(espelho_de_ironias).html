@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694",
+      };
+    </script>
+    <title>Espelho de Ironias — Cléia</title>
+    <meta name="color-scheme" content="light dark" />
+    <style>
+      /* =====================
+         Design Tokens por tema (apenas claro/escuro)
+         ===================== */
+      :root[data-theme="light"] {
+        --bg1: #f8efff;
+        --bg2: #e7f3ff;
+        --bg3: #fff0f6;
+        --ink: #1f1632;
+        --muted: #6e5f86;
+        --accent: #a277ff;
+        --accent-2: #5fd0ff;
+        --card: rgba(255, 255, 255, 0.72);
+        --ring: 0 0 0 1.5px rgba(162, 119, 255, 0.25);
+        --blur: blur(10px);
+        --radius: 18px;
+        --shadow: 0 10px 30px rgba(23, 17, 42, 0.12);
+        --shadow-strong: 0 20px 50px rgba(23, 17, 42, 0.18);
+        --glass-outline: 1px solid rgba(255, 255, 255, 0.35);
+      }
+      :root[data-theme="dark"] {
+        --bg1: #0f0c18;
+        --bg2: #141223;
+        --bg3: #1b1530;
+        --ink: #f3ecff;
+        --muted: #b7a9d7;
+        --accent: #b58bff;
+        --accent-2: #7de0ff;
+        --card: rgba(18, 14, 30, 0.55);
+        --ring: 0 0 0 1.5px rgba(181, 139, 255, 0.35);
+        --shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+        --shadow-strong: 0 32px 80px rgba(0, 0, 0, 0.5);
+        --glass-outline: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      /* =====================
+         Base Layout
+         ===================== */
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Ubuntu, Cantarell, Noto Sans, Arial,
+          "Apple Color Emoji", "Segoe UI Emoji";
+        color: var(--ink);
+        background: radial-gradient(
+            1200px 800px at 20% -10%,
+            var(--bg3),
+            transparent
+          ),
+          radial-gradient(1200px 800px at 110% 10%, var(--bg2), transparent),
+          linear-gradient(160deg, var(--bg1), var(--bg2));
+        background-attachment: fixed;
+        overflow-x: hidden;
+        transition: background 400ms ease, color 250ms ease;
+      }
+
+      .wrap {
+        min-height: 100dvh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+      }
+
+      header {
+        position: sticky;
+        top: env(safe-area-inset-top, 0);
+        z-index: 10;
+        padding: calc(16px + env(safe-area-inset-top, 0)) 20px 10px 20px;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+      .title .emoji {
+        font-size: 1.5rem;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: 0.95rem;
+        margin-top: 2px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        cursor: pointer;
+        user-select: none;
+        padding: 10px 14px;
+        border-radius: 14px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.75),
+          rgba(255, 255, 255, 0.55)
+        );
+        box-shadow: var(--shadow);
+        backdrop-filter: var(--blur);
+        -webkit-backdrop-filter: var(--blur);
+        outline: none;
+        position: relative;
+        color: var(--ink);
+        transition: color 0.25s ease, background 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .btn:focus-visible {
+        box-shadow: 0 0 0 3px rgba(95, 208, 255, 0.45);
+      }
+      .btn[data-variant="ghost"] {
+        background: transparent;
+        box-shadow: none;
+        border: var(--glass-outline);
+      }
+
+      main {
+        padding: 10px 18px 40px;
+      }
+      .grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        align-items: stretch;
+      }
+
+      /* =====================
+         Card (flip)
+         ===================== */
+      .card {
+        perspective: 1100px;
+        position: relative;
+        height: 184px;
+      }
+      .inner {
+        position: absolute;
+        inset: 0;
+        transform-style: preserve-3d;
+        transition: transform 650ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        will-change: transform;
+      }
+      .face {
+        position: absolute;
+        inset: 0;
+        border-radius: var(--radius);
+        padding: 16px 16px 14px 16px;
+        display: grid;
+        align-content: center;
+        justify-items: start;
+        background: var(--card);
+        border: var(--glass-outline);
+        box-shadow: var(--shadow);
+        backdrop-filter: var(--blur);
+        -webkit-backdrop-filter: var(--blur);
+        overflow: hidden;
+      }
+      .front {
+        backface-visibility: hidden;
+      }
+      .back {
+        transform: rotateY(180deg);
+        backface-visibility: hidden;
+        background: radial-gradient(
+            700px 260px at 0% 0%,
+            rgba(162, 119, 255, 0.18),
+            transparent
+          ),
+          var(--card);
+      }
+      .card.flipped .inner {
+        transform: rotateY(180deg);
+      }
+
+      .tag {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.4);
+        border: var(--glass-outline);
+        border-radius: 999px;
+        padding: 6px 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        backdrop-filter: blur(6px);
+      }
+      .tag .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 3px rgba(162, 119, 255, 0.25);
+      }
+
+      .text {
+        font-size: 1.03rem;
+        line-height: 1.35;
+        font-weight: 600;
+        margin-top: 10px;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 0.92rem;
+        margin-top: 8px;
+      }
+      .badge {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .card:not(.flipped):hover .front {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-strong);
+      }
+      .card:active .front {
+        transform: translateY(0);
+      }
+
+      footer {
+        padding: 20px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 0.95rem;
+      }
+      .legend {
+        display: inline-flex;
+        gap: 12px;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: var(--glass-outline);
+        background: var(--card);
+        backdrop-filter: blur(6px);
+      }
+      .legend b {
+        color: var(--ink);
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .card button.flip {
+        position: absolute;
+        inset: 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: transparent;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .sheen::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          120deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.25) 35%,
+          transparent 65%
+        );
+        transform: translateX(-120%);
+        transition: transform 1200ms ease;
+      }
+      .card:hover .sheen::before {
+        transform: translateX(120%);
+      }
+
+      .sarcasm .card:not(.flipped) .front {
+        animation: wobble 2200ms ease-in-out infinite;
+      }
+      @keyframes wobble {
+        0%,
+        100% {
+          transform: rotate(-0.2deg) translateY(0);
+        }
+        50% {
+          transform: rotate(0.25deg) translateY(-1px);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          height: 200px;
+        }
+      }
+
+      /* Botão comentar (estilo mínimo, depende do seu modal.css/modal.js) */
+      .btn-comment {
+        margin-top: 8px;
+        background: transparent;
+        border: var(--glass-outline);
+        border-radius: 12px;
+        padding: 8px 12px;
+        color: var(--ink);
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="head">
+          <div>
+            <div class="title">
+              <span class="emoji" aria-hidden>🪩</span>
+              <span>Espelho de Ironias — Versão Cléia</span>
+            </div>
+            <div class="sub">
+              Reflexões que sorriem de volta — metade ironia, metade verdade.
+            </div>
+            <button
+              id="openComment"
+              class="btn-comment"
+              aria-label="Abrir comentário"
+            >
+              💬 Comentar
+            </button>
+          </div>
+          <div class="actions">
+            <!-- Controles opcionais (descomente para usar): -->
+            <!-- <button class="btn" id="btnRevelar">Revelar tudo</button> -->
+            <!-- <button class="btn" id="btnOcultar" title="Voltar para o lado irônico">Ocultar tudo</button> -->
+            <!-- <button class="btn" id="btnSarcasmo" data-variant="ghost">Ativar modo sarcasmo</button> -->
+            <button
+              class="btn"
+              id="btnTema"
+              data-variant="ghost"
+              aria-pressed="false"
+              title="Alternar tema"
+            >
+              ☀️ Modo escuro
+            </button>
+          </div>
+        </div>
+        <div class="toolbar">
+          <!-- <button class="btn" id="btnEmbaralhar" data-variant="ghost">Embaralhar</button> -->
+          <!-- <button class="btn" id="btnFiltrar">Mostrar só favoritas</button> -->
+        </div>
+      </header>
+
+      <main>
+        <section class="grid" id="grid" aria-live="polite"></section>
+      </main>
+
+      <footer>
+        <span class="legend">
+          <span class="tag"><span class="dot"></span> ironia</span>
+          <span>⇄</span>
+          <span class="tag" style="--accent: var(--accent-2)">
+            <span
+              class="dot"
+              style="
+                background: var(--accent-2);
+                box-shadow: 0 0 0 3px rgba(95, 208, 255, 0.25);
+              "
+            ></span>
+            intenção
+          </span>
+          <span>• toque/click para virar</span>
+          <span>Feito com humor por ._.. ...</span>
+        </span>
+      </footer>
+    </div>
+
+    <script>
+      /* =====================
+         Tema claro/escuro com persistência
+         ===================== */
+      const THEME_KEY = "espelho.theme";
+      const btnTema = document.getElementById("btnTema");
+
+      function setTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem(THEME_KEY, theme);
+        if (btnTema) {
+          btnTema.textContent =
+            theme === "light" ? "🌙 Modo escuro" : "☀️ Modo claro";
+          btnTema.style.color = theme === "light" ? "#1f1632" : "#f3ecff";
+          btnTema.setAttribute("aria-pressed", theme === "dark");
+        }
+      }
+      function toggleTheme() {
+        const current =
+          document.documentElement.getAttribute("data-theme") || "light";
+        setTheme(current === "light" ? "dark" : "light");
+      }
+      const prefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const initialTheme =
+        localStorage.getItem(THEME_KEY) || (prefersDark ? "dark" : "light");
+      setTheme(initialTheme);
+      if (btnTema) btnTema.addEventListener("click", toggleTheme);
+
+      /* =====================
+         Dataset — frases ambíguas x intenção real
+         ===================== */
+      const PAIRS = [
+        {
+          tag: "morde & assopra",
+          ambigua: "Imagina, nem me afetou.",
+          real: "Me afetou sim, só não queria te entregar o jogo agora.",
+          fav: true,
+        },
+        {
+          tag: "vento",
+          ambigua: "Tanto faz o rumo.",
+          real: "Eu sei o rumo — só deixei o vento brincar primeiro.",
+          fav: false,
+        },
+        {
+          tag: "chuva",
+          ambigua: "Só um tempo feio.",
+          real: "Convite pra não ter pressa e ouvir o que eu calo.",
+          fav: false,
+        },
+        {
+          tag: "sereia",
+          ambigua: "Nem é tudo isso…",
+          real: "É sim — eu só finjo que não sei o efeito que tenho.",
+          fav: true,
+        },
+        {
+          tag: "foto sem filtro",
+          ambigua: "Ficou ok.",
+          real: "Gostei do que vi — só não vou admitir fácil.",
+          fav: true,
+        },
+        {
+          tag: "brincadeira interna",
+          ambigua: "Só piada.",
+          real: "Código afetivo pra quem sabe ler nas entrelinhas.",
+          fav: true,
+        },
+        {
+          tag: "tarefa entregue",
+          ambigua: "Cumpri.",
+          real: "Dei mais do que devia e mostrei menos do que posso.",
+          fav: false,
+        },
+        {
+          tag: "boné da paciência",
+          ambigua: "Tá tudo bem.",
+          real: "Tá sob controle — porque eu segurei firme.",
+          fav: false,
+        },
+        {
+          tag: "mensagem digitada mas não enviada",
+          ambigua: "Melhor deixar pra lá.",
+          real: "Faltou coragem, não vontade.",
+          fav: true,
+        },
+        {
+          tag: "recado curto",
+          ambigua: "Tá.",
+          real: "Li tudo, senti tudo — economizei palavra pra não parecer sentimental.",
+          fav: true,
+        },
+        {
+          tag: "12 aulas",
+          ambigua: "Deu pra levar.",
+          real: "Foi puxado, mas meu humor salvou metade da turma (e a mim).",
+          fav: false,
+        },
+        {
+          tag: "promessa pequena",
+          ambigua: "Depois eu vejo.",
+          real: "Eu vou ver sim — só preciso me ver primeiro.",
+          fav: true,
+        },
+        {
+          tag: "caos que acalma",
+          ambigua: "Tá tranquilo.",
+          real: "O caos tá aí, eu que aprendi a respirar dentro dele.",
+          fav: true,
+        },
+        {
+          tag: "mar",
+          ambigua: "Só tô cansada.",
+          real: "Preciso de mar, silêncio e risada boba pra resetar.",
+          fav: false,
+        },
+        {
+          tag: "ironia",
+          ambigua: "Que elogio exagerado…",
+          real: "Você me percebeu de um jeito que eu não tava pronta pra admitir.",
+          fav: true,
+        },
+        {
+          tag: "professora",
+          ambigua: "Foi só mais um dia.",
+          real: "Foi um dia inteiro de cuidar de gente — por isso parece mais de um.",
+          fav: false,
+        },
+        {
+          tag: "silêncio",
+          ambigua: "Nada a declarar.",
+          real: "Meu silêncio tá fazendo curadoria do que vale virar palavra.",
+          fav: true,
+        },
+        {
+          tag: "brisa",
+          ambigua: "Tanto faz a música.",
+          real: "Escolhe aquela que me lembra de respirar devagar.",
+          fav: false,
+        },
+        {
+          tag: "acaso",
+          ambigua: "Coincidência.",
+          real: "O universo tem dessas gentilezas quando a gente merece.",
+          fav: true,
+        },
+        // novos
+        {
+          tag: "lua",
+          ambigua: "Nem reparei.",
+          real: "Reparei sim — mas quis guardar o encanto só pra mim.",
+          fav: true,
+        },
+        {
+          tag: "chá das cinco",
+          ambigua: "Foi só uma conversa.",
+          real: "Foi terapia disfarçada de risada.",
+          fav: false,
+        },
+        {
+          tag: "paciência",
+          ambigua: "Tô de boa.",
+          real: "Tô no limite, mas com uma elegância que engana bem.",
+          fav: true,
+        },
+        {
+          tag: "mensagem visualizada",
+          ambigua: "Esqueci de responder.",
+          real: "Pensei em mil respostas e nenhuma parecia leve o bastante.",
+          fav: true,
+        },
+        {
+          tag: "orgulho",
+          ambigua: "Não era nada.",
+          real: "Era tudo, mas admitir doía mais do que calar.",
+          fav: false,
+        },
+        {
+          tag: "sarcasmo",
+          ambigua: "Brincadeira!",
+          real: "Brincadeira, mas nem tanto.",
+          fav: true,
+        },
+        {
+          tag: "rotina",
+          ambigua: "Tá tudo igual.",
+          real: "Por dentro, tudo muda — só disfarço bem o enredo.",
+          fav: false,
+        },
+        {
+          tag: "olhar",
+          ambigua: "Nem percebi.",
+          real: "Foi ali que comecei a perder a razão.",
+          fav: true,
+        },
+        {
+          tag: "mensagem de bom dia",
+          ambigua: "Só pra ser educada.",
+          real: "Era pra saber se você estava bem.",
+          fav: true,
+        },
+        {
+          tag: "sexta-feira",
+          ambigua: "Só mais um dia.",
+          real: "O corpo cansado, o humor em 10% e a vontade de desaparecer por 48h.",
+          fav: false,
+        },
+      ];
+
+      /* =====================
+         Embaralhar uma única vez ao entrar na página
+         ===================== */
+      function shuffleInPlace(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+      let SHUFFLED = shuffleInPlace([...PAIRS]); // ordem random “fixa” por sessão
+
+      /* =====================
+         Renderização
+         ===================== */
+      const grid = document.getElementById("grid");
+      let showOnlyFav = false;
+
+      function createCard(pair, idx) {
+        const card = document.createElement("article");
+        card.className = "card sheen";
+        card.dataset.index = idx;
+        card.ariaLabel = `Card ${idx + 1}: ${pair.tag}`;
+
+        const inner = document.createElement("div");
+        inner.className = "inner";
+
+        const front = document.createElement("div");
+        front.className = "face front";
+        front.innerHTML = `
+          <span class="tag" aria-hidden><span class="dot"></span>${pair.tag}</span>
+          <div class="text">${pair.ambigua}</div>
+          <div class="hint">(o que <em>parece</em> que eu quis dizer)</div>
+          <span class="badge">toque para virar</span>
+        `;
+
+        const back = document.createElement("div");
+        back.className = "face back";
+        back.innerHTML = `
+          <span class="tag" aria-hidden style="--accent: var(--accent-2)"><span class="dot" style="background: var(--accent-2); box-shadow: 0 0 0 3px rgba(95,208,255,.25)"></span> intenção</span>
+          <div class="text">${pair.real}</div>
+          <div class="hint">(o que <em>de fato</em> eu quis dizer)</div>
+          <span class="badge">toque para voltar</span>
+        `;
+
+        const button = document.createElement("button");
+        button.className = "flip";
+        button.setAttribute("aria-label", "Virar card");
+        button.innerHTML = '<span class="sr-only">Virar card</span>';
+
+        inner.appendChild(front);
+        inner.appendChild(back);
+        card.appendChild(inner);
+        card.appendChild(button);
+
+        button.addEventListener("click", () =>
+          card.classList.toggle("flipped")
+        );
+        card.addEventListener("keydown", (ev) => {
+          if (ev.key === "Enter" || ev.key === " ") {
+            ev.preventDefault();
+            card.classList.toggle("flipped");
+          }
+        });
+        card.tabIndex = 0;
+
+        return card;
+      }
+
+      function render() {
+        grid.innerHTML = "";
+        const data = showOnlyFav ? SHUFFLED.filter((p) => p.fav) : SHUFFLED;
+        data.forEach((p, i) => grid.appendChild(createCard(p, i)));
+      }
+      render();
+
+      /* =====================
+         Controles (opcionais — só funcionam se os botões estiverem ativos)
+         ===================== */
+      const btnRevelar = document.getElementById("btnRevelar");
+      if (btnRevelar)
+        btnRevelar.addEventListener("click", () => {
+          document
+            .querySelectorAll(".card")
+            .forEach((c) => c.classList.add("flipped"));
+        });
+
+      const btnOcultar = document.getElementById("btnOcultar");
+      if (btnOcultar)
+        btnOcultar.addEventListener("click", () => {
+          document
+            .querySelectorAll(".card")
+            .forEach((c) => c.classList.remove("flipped"));
+        });
+
+      const btnEmbaralhar = document.getElementById("btnEmbaralhar");
+      if (btnEmbaralhar)
+        btnEmbaralhar.addEventListener("click", () => {
+          SHUFFLED = shuffleInPlace([...PAIRS]); // reembaralha manualmente
+          render();
+        });
+
+      const btnFiltrar = document.getElementById("btnFiltrar");
+      if (btnFiltrar)
+        btnFiltrar.addEventListener("click", (e) => {
+          showOnlyFav = !showOnlyFav;
+          e.currentTarget.textContent = showOnlyFav
+            ? "Mostrar todas"
+            : "Mostrar só favoritas";
+          render();
+        });
+
+      const sarcasmBtn = document.getElementById("btnSarcasmo");
+      if (sarcasmBtn)
+        sarcasmBtn.addEventListener("click", () => {
+          document.body.classList.toggle("sarcasm");
+          sarcasmBtn.textContent = document.body.classList.contains("sarcasm")
+            ? "Desativar modo sarcasmo"
+            : "Ativar modo sarcasmo";
+        });
+
+      /* =====================
+         Acessibilidade & atalhos
+         ===================== */
+      window.addEventListener("keydown", (ev) => {
+        if (ev.target.closest && ev.target.closest("input, textarea, button"))
+          return;
+        const k = ev.key.toLowerCase();
+        if (k === "t") toggleTheme();
+        if (k === "r" && btnRevelar) btnRevelar.click();
+        if (k === "o" && btnOcultar) btnOcultar.click();
+        if (k === "s" && sarcasmBtn) sarcasmBtn.click();
+      });
+    </script>
+  </body>
+</html>

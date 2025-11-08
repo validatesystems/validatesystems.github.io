@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Bom dia, Cléia ☀️</title>
+    <style>
+      :root {
+        --bg1: #0e1a2b;
+        --bg2: #fef3c7;
+        --sun: #facc15;
+        --text: #1a1a1a;
+        --muted: #4b5563;
+        --card: rgba(255, 255, 255, 0.75);
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto,
+          sans-serif;
+        color: var(--text);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background: linear-gradient(180deg, var(--bg1), var(--bg2));
+        animation: sunrise 8s ease forwards;
+      }
+
+      .sun-wrap {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .sun {
+        position: absolute;
+        left: 50%;
+        bottom: -120px;
+        width: 420px;
+        height: 420px;
+        margin-left: -210px;
+        background: radial-gradient(
+          circle at 50% 50%,
+          var(--sun) 0%,
+          rgba(250, 204, 21, 0.6) 40%,
+          rgba(250, 204, 21, 0) 70%
+        );
+        filter: blur(2px);
+        border-radius: 50%;
+        animation: rise 8s ease forwards;
+        opacity: 0.9;
+      }
+      .rays {
+        position: absolute;
+        inset: -20vh -20vw;
+        background: conic-gradient(
+          from 0deg,
+          rgba(250, 204, 21, 0.12),
+          transparent 8%,
+          rgba(250, 204, 21, 0.1) 12%,
+          transparent 20%,
+          rgba(250, 204, 21, 0.08) 24%,
+          transparent 32%,
+          rgba(250, 204, 21, 0.06) 36%,
+          transparent 44%,
+          rgba(250, 204, 21, 0.04) 48%,
+          transparent 56%
+        );
+        transform-origin: 50% 80%;
+        animation: spin 24s linear infinite;
+        filter: blur(12px);
+      }
+
+      .specks {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .speck {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: rgba(250, 204, 21, 0.75);
+        opacity: 0;
+        transform: translateY(0);
+        animation: float 6s ease-in-out infinite;
+        box-shadow: 0 0 8px rgba(250, 204, 21, 0.8);
+      }
+
+      .card {
+        position: relative;
+        z-index: 1;
+        width: min(680px, 92vw);
+        background: var(--card);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        border-radius: 20px;
+        padding: 24px 18px 20px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+        text-align: center;
+      }
+      h1 {
+        margin: 0 0 6px;
+        font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+        letter-spacing: 0.2px;
+      }
+      .sub {
+        color: var(--muted);
+        margin-bottom: 14px;
+        font-size: 0.98rem;
+      }
+
+      p.line {
+        margin: 8px auto;
+        color: #374151;
+        font-size: clamp(1.02rem, 3.3vw, 1.18rem);
+        line-height: 1.55;
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      .cta {
+        margin-top: 10px;
+        color: #6b7280;
+        font-size: 0.92rem;
+      }
+
+      .sound-toggle {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        z-index: 2;
+        border: none;
+        border-radius: 999px;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.6);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        color: #374151;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+      }
+
+      @keyframes sunrise {
+        0% {
+          background: linear-gradient(180deg, #0e1a2b, #0e1a2b);
+        }
+        60% {
+          background: linear-gradient(180deg, #1b2e4a, #fde68a);
+        }
+        100% {
+          background: linear-gradient(180deg, #eff6ff, #fde68a);
+        }
+      }
+      @keyframes rise {
+        0% {
+          transform: translateY(140px) scale(0.9);
+          opacity: 0;
+        }
+        60% {
+          transform: translateY(-10px) scale(1.02);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-30px) scale(1);
+          opacity: 1;
+        }
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes float {
+        0% {
+          opacity: 0;
+          transform: translateY(0) scale(1);
+        }
+        15% {
+          opacity: 1;
+        }
+        50% {
+          transform: translateY(-18px) scale(1.05);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-36px) scale(1);
+        }
+      }
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sun-wrap">
+      <div class="sun"></div>
+      <div class="rays"></div>
+    </div>
+    <div class="specks" id="specks"></div>
+
+    <div class="card">
+      <button class="sound-toggle" id="soundBtn">🔊 Som</button>
+      <h1>Bom dia, Cléia ☀️</h1>
+      <div class="sub">Um dia que começa com música e vontade de sorrir</div>
+
+      <p class="line">
+        🌅 Hoje o dia chegou de mansinho, pedindo pra gente acreditar de novo no
+        que é simples. ✨<br /><span style="font-size: 0.9rem; color: #6b7280"
+          >(inspirado em “Dia Especial” — Tiago Iorc)</span
+        >
+      </p>
+      <p class="line">
+        🌬️ Tem um som bonito no vento, e ele canta: “levanta, respira e tenta
+        mais uma vez.” 🎶<br /><span style="font-size: 0.9rem; color: #6b7280"
+          >(inspirado em “Do Seu Lado” — Jota Quest)</span
+        >
+      </p>
+      <p class="line">
+        ☕ O café esquenta o corpo, mas é a esperança que desperta a alma. 💛<br /><span
+          style="font-size: 0.9rem; color: #6b7280"
+          >(inspirado em “Pra Sonhar” — Marcelo Jeneci)</span
+        >
+      </p>
+      <p class="line">
+        🤗 Que seu dia te abrace 🫂 com calma, mesmo que o mundo esteja
+        apressado. 🕊️<br /><span style="font-size: 0.9rem; color: #6b7280"
+          >(inspirado em “O Sol” — Vitor Kley)</span
+        >
+      </p>
+      <p class="line">
+        🌟 E que entre uma tarefa e outra, você lembre: há beleza em continuar.
+        <br /><span style="font-size: 0.9rem; color: #6b7280"
+          >(inspirado em “Dias Melhores” — Jota Quest)</span
+        >
+      </p>
+
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
+
+      <div class="cta">Com carinho, ._.. ...</div>
+
+      <audio id="birds" preload="auto" loop autoplay playsinline>
+        <source src="./assets/birds.mp3" type="audio/mpeg" />
+        <source src="./assets/birds.ogg" type="audio/ogg" />
+      </audio>
+    </div>
+
+    <script>
+      const specks = document.getElementById("specks");
+      for (let i = 0; i < 36; i++) {
+        const s = document.createElement("div");
+        s.className = "speck";
+        s.style.left = Math.random() * 100 + "%";
+        s.style.bottom = Math.random() * 40 + "vh";
+        s.style.animationDelay = Math.random() * 6 + "s";
+        s.style.animationDuration = 5 + Math.random() * 5 + "s";
+        specks.appendChild(s);
+      }
+
+      const lines = document.querySelectorAll(".line");
+      lines.forEach((el, i) => {
+        setTimeout(() => {
+          el.style.animation = "fadeInUp 900ms ease forwards";
+        }, 1200 + i * 3000);
+      });
+
+      const btn = document.getElementById("soundBtn");
+      const birds = document.getElementById("birds");
+
+      window.addEventListener("load", async () => {
+        try {
+          await birds.play();
+          btn.textContent = "🔊 Som";
+        } catch {
+          btn.textContent = "🔈 Ativar Som";
+        }
+      });
+
+      btn.addEventListener("click", async () => {
+        try {
+          if (birds.paused) {
+            await birds.play();
+            btn.textContent = "🔊 Som";
+          } else {
+            birds.pause();
+            btn.textContent = "🔈 Som";
+          }
+        } catch (_) {}
+      });
+    </script>
+  </body>
+</html>

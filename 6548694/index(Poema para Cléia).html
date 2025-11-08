@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poema para Cléia</title>
+    <style>
+      :root {
+        --bg1: #fff6fa;
+        --bg2: #e3f3ff;
+        --ink: #2d1b3a;
+        --accent: #b675ff;
+        --muted: #6e5677;
+        --card: rgba(255, 255, 255, 0.65);
+        --glass: blur(10px);
+      }
+      body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        font-family: "Georgia", serif;
+        background: linear-gradient(135deg, var(--bg1), var(--bg2));
+        color: var(--ink);
+        overflow: hidden;
+      }
+      .poem {
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border-radius: 20px;
+        padding: 40px;
+        max-width: 600px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        line-height: 1.6;
+        font-size: 18px;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+      h1 {
+        text-align: center;
+        color: var(--accent);
+        margin-bottom: 24px;
+        font-size: 24px;
+      }
+      footer {
+        margin-top: 24px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .line {
+        opacity: 0;
+        transition: opacity 0.8s ease;
+      }
+      .visible {
+        opacity: 1;
+      }
+      .hint {
+        position: absolute;
+        bottom: 20px;
+        font-size: 14px;
+        color: var(--muted);
+        user-select: none;
+        animation: blink 1.5s infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0.5;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="poem" id="poem">
+      <h1>Poema para Cléia</h1>
+      <p>
+        Dizem que ironia é defesa,<br />mas no teu caso, é charme
+        estratégico.<br />Você ri do caos com a leveza<br />de quem decora
+        tragédias em verso cômico.
+      </p>
+      <p>
+        Finge desdém, mas distribui cuidado disfarçado,<br />tipo: “nem me
+        importo”, enquanto ajeita o mundo ao redor.<br />Tua calma fingida é
+        estratégia de guerra <br />e tua braveza, uma aula de performance.
+      </p>
+      <p>
+        Se fosse música, seria aquelas<br />que começam suaves e de repente
+        viram refrão gritado.<br />Um caos harmonioso, um erro calculado.<br />Um
+        poema que ri do próprio drama e ainda sai aplaudido.
+      </p>
+      <p>
+        Te observo como quem suspeita que tua ironia foi feita sob encomenda,<br />e
+        penso: sorte de quem entende o idioma<br />das tuas ironias "ternas"
+        <br />porque é ali que o sentimento se veste de ironia pra não se
+        entregar.
+      </p>
+    </div>
+    <div class="hint">Clique para avançar</div>
+    <footer>© 2025 — Escrito para Cléia, com ironia e admiração.</footer>
+
+    <script>
+      const poemEl = document.getElementById("poem");
+      const hintEl = document.querySelector(".hint");
+      poemEl.style.opacity = 1;
+
+      // Divide cada verso em spans
+      const lines = [];
+      poemEl.querySelectorAll("p").forEach((p) => {
+        const parts = p.innerHTML.split("<br>");
+        p.innerHTML = "";
+        parts.forEach((txt, i) => {
+          const span = document.createElement("span");
+          span.className = "line";
+          span.innerHTML = txt.trim();
+          p.appendChild(span);
+          if (i < parts.length - 1) p.appendChild(document.createElement("br"));
+          lines.push(span);
+        });
+      });
+
+      let index = 0;
+      function showNextLine() {
+        if (index < lines.length) {
+          lines[index].classList.add("visible");
+          index++;
+        } else {
+          hintEl.textContent = "Fim do poema";
+        }
+      }
+
+      // primeiro verso ao carregar
+      showNextLine();
+      document.body.addEventListener("click", showNextLine);
+    </script>
+  </body>
+</html>

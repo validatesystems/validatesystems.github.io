@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bom dia com passarinhos</title>
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <style>
+      :root {
+        --sky-top: #c9f0ff; /* céu claro */
+        --sky-mid: #e9f9ff; /* tom de dia */
+        --sky-low: #ffffff; /* horizonte muito claro */
+        --sun: #ffd166;
+        --sun-glow: rgba(255, 209, 102, 0.45);
+        --hill1: #9bd1ff;
+        --hill2: #b8e1ff;
+        --hill3: #d7efff;
+        --fg: #1d2a33;
+        --muted: #6b7280;
+        --card: rgba(255, 255, 255, 0.72);
+        --glass: blur(12px);
+        --ring: 0 0 0 2px rgba(99, 102, 241, 0.28);
+        --shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        color: var(--fg);
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, "Helvetica Neue", Arial;
+        background: linear-gradient(
+          180deg,
+          var(--sky-top),
+          var(--sky-mid) 40%,
+          var(--sky-low)
+        );
+        overflow: hidden;
+      }
+
+      /* CAMADA: CÉU */
+      .sky {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+      }
+      .cloud {
+        position: absolute;
+        top: 10vh;
+        width: 220px;
+        height: 80px;
+        filter: blur(0.6px);
+        background: radial-gradient(
+            60px 40px at 30% 60%,
+            rgba(255, 255, 255, 0.9),
+            transparent 60%
+          ),
+          radial-gradient(
+            70px 50px at 55% 50%,
+            rgba(255, 255, 255, 0.85),
+            transparent 60%
+          ),
+          radial-gradient(
+            60px 40px at 75% 55%,
+            rgba(255, 255, 255, 0.8),
+            transparent 60%
+          );
+        opacity: 0.95;
+        animation: drift linear infinite;
+        border-radius: 40px;
+      }
+      .cloud.c2 {
+        top: 20vh;
+        transform: scale(1.2);
+        animation-duration: 90s;
+        opacity: 0.85;
+      }
+      .cloud.c1 {
+        left: -240px;
+        animation-duration: 70s;
+      }
+      .cloud.c3 {
+        top: 30vh;
+        left: -240px;
+        transform: scale(0.9);
+        animation-duration: 110s;
+        opacity: 0.75;
+      }
+      @keyframes drift {
+        from {
+          left: -280px;
+        }
+        to {
+          left: calc(100vw + 280px);
+        }
+      }
+
+      /* SOL */
+      .sunWrap {
+        position: absolute;
+        left: 50%;
+        bottom: -22vh;
+        transform: translateX(-50%);
+        width: 60vmin;
+        height: 60vmin;
+      }
+      .sun {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+        margin: auto;
+        width: 40vmin;
+        height: 40vmin;
+        border-radius: 50%;
+        background: radial-gradient(
+          closest-side,
+          var(--sun),
+          #ffc857 60%,
+          rgba(255, 255, 255, 0) 61%
+        );
+        box-shadow: 0 0 120px 40px var(--sun-glow);
+        animation: sunrise 30s ease-in forwards; /* sobe lentamente */
+      }
+      @keyframes sunrise {
+        from {
+          transform: translateY(20vmin);
+        }
+        to {
+          transform: translateY(-8vmin);
+        }
+      }
+
+      /* COLINAS */
+      .hills {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+      .hill {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 50%;
+        filter: blur(0.4px);
+      }
+      .h1 {
+        bottom: -26vmin;
+        width: 140vmax;
+        height: 70vmin;
+        background: var(--hill3);
+      }
+      .h2 {
+        bottom: -24vmin;
+        width: 130vmax;
+        height: 64vmin;
+        background: var(--hill2);
+      }
+      .h3 {
+        bottom: -20vmin;
+        width: 120vmax;
+        height: 58vmin;
+        background: var(--hill1);
+      }
+
+      /* PASSARINHOS (5 unidades) */
+      .bird {
+        position: fixed;
+        width: 32px;
+        height: 24px;
+        cursor: pointer;
+        z-index: 20;
+      }
+      .bird::before,
+      .bird::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 8px;
+        border-radius: 16px 16px 0 0;
+        background: #334155;
+        top: 8px;
+      }
+      .bird::before {
+        transform-origin: right bottom;
+        left: 0;
+        animation: wing 1.2s ease-in-out infinite;
+      }
+      .bird::after {
+        transform-origin: left bottom;
+        right: 0;
+        animation: wing 1.2s ease-in-out infinite reverse;
+      }
+      @keyframes wing {
+        0%,
+        100% {
+          transform: rotate(6deg);
+        }
+        50% {
+          transform: rotate(-22deg);
+        }
+      }
+
+      /* trajetórias distintas */
+      .bird1 {
+        left: 8vw;
+        top: 52vh;
+        animation: fly1 42s linear infinite;
+      }
+      .bird2 {
+        left: 86vw;
+        top: 28vh;
+        transform: scale(0.9);
+        animation: fly2 50s linear infinite;
+      }
+      .bird3 {
+        left: 18vw;
+        top: 20vh;
+        transform: scale(0.8);
+        animation: fly3 60s linear infinite;
+      }
+      .bird4 {
+        left: 70vw;
+        top: 40vh;
+        transform: scale(1.05);
+        animation: fly4 55s linear infinite;
+      }
+      .bird5 {
+        left: 35vw;
+        top: 32vh;
+        transform: scale(0.95);
+        animation: fly5 48s linear infinite;
+      }
+
+      @keyframes fly1 {
+        0% {
+          transform: translateX(0) scale(1);
+        }
+        100% {
+          transform: translateX(90vw) scale(1);
+        }
+      }
+      @keyframes fly2 {
+        0% {
+          transform: translateX(0) scale(0.9);
+        }
+        100% {
+          transform: translateX(-95vw) scale(0.9);
+        }
+      }
+      @keyframes fly3 {
+        0% {
+          transform: translateX(0) scale(0.8);
+        }
+        100% {
+          transform: translateX(100vw) scale(0.8);
+        }
+      }
+      @keyframes fly4 {
+        0% {
+          transform: translateX(0) scale(1.05);
+        }
+        100% {
+          transform: translateX(-100vw) scale(1.05);
+        }
+      }
+      @keyframes fly5 {
+        0% {
+          transform: translateX(0) scale(0.95);
+        }
+        100% {
+          transform: translateX(95vw) scale(0.95);
+        }
+      }
+
+      /* CARTÃO PRINCIPAL */
+      .card {
+        position: fixed;
+        left: 50%;
+        top: 16vh;
+        transform: translateX(-50%);
+        width: min(92vw, 760px);
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        padding: 18px 18px 16px;
+        z-index: 8;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(18px, 3.6vw, 28px);
+        letter-spacing: 0.3px;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .msg {
+        margin: 12px 0 0;
+        font-size: clamp(18px, 4.2vw, 28px);
+        line-height: 1.35;
+        transition: transform 0.18s ease, opacity 0.18s ease;
+      }
+
+      /* TOAST */
+      .toast {
+        position: fixed;
+        left: 50%;
+        top: 64px;
+        transform: translateX(-50%) translateY(-8px);
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        padding: 10px 14px;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 9;
+        font-size: 14px;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        transition: 0.32s ease;
+      }
+
+      /* MODO AURORA */
+      .aurora .card,
+      .aurora .toast,
+      .aurora .bird {
+        display: none;
+      }
+
+      .hint {
+        position: fixed;
+        left: 50%;
+        bottom: 14px;
+        transform: translateX(-50%);
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border-radius: 12px;
+        padding: 8px 12px;
+        color: var(--muted);
+        font-size: 13px;
+        z-index: 7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sky" aria-hidden="true">
+      <div class="cloud c1"></div>
+      <div class="cloud c2"></div>
+      <div class="cloud c3"></div>
+      <div class="sunWrap"><div class="sun" aria-hidden="true"></div></div>
+    </div>
+
+    <div class="hills" aria-hidden="true">
+      <div class="hill h1"></div>
+      <div class="hill h2"></div>
+      <div class="hill h3"></div>
+    </div>
+
+    <!-- 5 PASSARINHOS, cada um com uma mensagem -->
+    <div
+      class="bird bird1"
+      id="bird1"
+      data-msg="0"
+      title="Clique: mensagem 1"
+    ></div>
+    <div
+      class="bird bird2"
+      id="bird2"
+      data-msg="1"
+      title="Clique: mensagem 2"
+    ></div>
+    <div
+      class="bird bird3"
+      id="bird3"
+      data-msg="2"
+      title="Clique: mensagem 3"
+    ></div>
+    <div
+      class="bird bird4"
+      id="bird4"
+      data-msg="3"
+      title="Clique: mensagem 4"
+    ></div>
+    <div
+      class="bird bird5"
+      id="bird5"
+      data-msg="4"
+      title="Clique: mensagem 5"
+    ></div>
+    <div class="bird bird6" id="bird6" data-msg="5" title="Clique: mensagem 6">
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
+    </div>
+
+    <div class="card" role="region" aria-label="Mensagem de bom dia">
+      <h1>Bom dia, Cléia! ☀️</h1>
+      <span class="subtitle">Hoje o céu abriu só pra você sorrir.</span>
+      <div class="msg" id="message">
+        Clique em um passarinho e receba uma mensagem. 🐦
+      </div>
+    </div>
+
+    <div class="toast" id="toast">copiado!</div>
+    <div class="hint">
+      Dica: cada passarinho tem uma mensagem diferente — clique para ler e
+      ouvir. 🐦🐦🐦🐦🐦
+    </div>
+
+    <script>
+      // ======== Áudio ========
+      const AudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      function chirp() {
+        const o = AudioCtx.createOscillator();
+        const g = AudioCtx.createGain();
+        o.type = "sine";
+        o.frequency.setValueAtTime(1100, AudioCtx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(
+          2200,
+          AudioCtx.currentTime + 0.1
+        );
+        g.gain.setValueAtTime(0.0001, AudioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.18, AudioCtx.currentTime + 0.02);
+        g.gain.exponentialRampToValueAtTime(
+          0.0001,
+          AudioCtx.currentTime + 0.35
+        );
+        o.connect(g);
+        g.connect(AudioCtx.destination);
+        o.start();
+        o.stop(AudioCtx.currentTime + 0.36);
+      }
+
+      // ======== Mensagens (5) ========
+      const MESSAGES = [
+        "Bom dia! Que seu café da manhã saiba o tamanho do desafio de hoje e ainda sorria de volta. ☕️😄",
+        "Que o vento aprenda com você: às vezes é preciso bagunçar para reorganizar. 🍃💫",
+        "Que o dia tenha a sua leveza e tropece em risadas pelo caminho. 😊🌈",
+        "Se o mundo correr, que seja de você. 🚶‍♀️💨",
+        "Que o dia seja gentil, do jeito que você é e um pouco desastrado, pra te divertir. 💛🤭",
+      ];
+
+      const msgEl = document.getElementById("message");
+      const birds = document.querySelectorAll(".bird");
+
+      function swapMessageByBird(bird) {
+        const i = parseInt(bird.dataset.msg, 10) || 0;
+        const next = MESSAGES[Math.min(Math.max(i, 0), MESSAGES.length - 1)];
+        // pequena animação na troca
+        msgEl.style.opacity = "0";
+        msgEl.style.transform = "translateY(4px)";
+        setTimeout(() => {
+          msgEl.textContent = next;
+          msgEl.style.opacity = "1";
+          msgEl.style.transform = "translateY(0)";
+        }, 140);
+      }
+
+      birds.forEach((b) => {
+        b.addEventListener("click", () => {
+          chirp();
+          swapMessageByBird(b);
+        });
+      });
+
+      // garantir desbloqueio de áudio com primeiro gesto
+      window.addEventListener(
+        "pointerdown",
+        () => {
+          try {
+            AudioCtx.resume && AudioCtx.resume();
+          } catch (e) {}
+        },
+        { once: true }
+      );
+    </script>
+  </body>
+</html>

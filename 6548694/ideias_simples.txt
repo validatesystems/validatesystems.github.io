@@ -1,0 +1,107 @@
+💭 1. "Modo Reboot Emocional"
+Conceito: Página simulando uma tela de sistema reiniciando sentimentos.
+Mensagem central:
+
+“Reiniciando sistema... removendo dramas desnecessários... reinstalando brilho natural.”
+Visual: Fundo escuro com letras digitando (efeito typewriter), e um botão piscante: “Reiniciar com café ☕”.
+
+
+🌧️ 2. "Nuvem Temporária"
+Conceito: Fundo com nuvens lentas que passam e frases que surgem tipo respingos.
+Mensagem:
+
+“Hoje o tempo fechou, mas não esquece: você é o tipo de sol que nem a previsão ousa prever.”
+Tom: otimismo disfarçado de ironia, para dias meio nublados (emocionalmente e meteorologicamente).
+
+
+🪞 3. "Manual de Sobrevivência ao Próprio Humor"
+Conceito: Cards que viram com frases irônicas de autocuidado.
+Exemplos de frases:
+
+
+“Tomar um café e fingir que é maturidade.”
+
+
+“Sorrir com classe enquanto o caos tenta te irritar.”
+
+
+“Autoestima reiniciando... aguarde com paciência e batom.”
+Estilo: minimalista com tipografia elegante e ícones pequenos (💅, 🧘‍♀️, ☕).
+
+
+
+🔥 4. "Caos Controlado (mais ou menos)"
+Conceito: Fundo animado com pequenas partículas que se movem erraticamente, simbolizando o “caos”.
+Mensagem:
+
+“Nem tudo precisa fazer sentido. Às vezes, só precisa ter estilo.”
+Tom: autoirônico, provocante e divertido.
+
+
+🌸 5. "Jardim das Ironias"
+Conceito: Cada “flor” (ícone clicável) revela uma ironia otimista.
+Frases sugeridas:
+
+
+“Florescem até os cactos. E olha que ninguém rega eles direito.”
+
+
+“Ser forte é fácil — difícil é ser fofa e sarcástica ao mesmo tempo.”
+Efeito: flores crescendo lentamente com transição suave, música ambiente sutil.
+
+
+
+☕ 6. "Café, Caos e Classe"
+Conceito: Uma mesa minimalista em ilustração com xícara fumegante e frases que surgem no vapor.
+Mensagem:
+
+“Entre um gole e outro, ela decide se vai mudar o mundo ou ignorar todo mundo.”
+Estilo: marrom, bege e dourado; letras dançando levemente.
+
+
+🌙 7. "Fase Cheia (ou quase)"
+Conceito: Lua que muda de fase conforme o humor do dia (clique alterna).
+Mensagens alternadas:
+
+
+“Hoje: fase introspectiva com pitadas de genialidade.”
+
+
+“Amanhã: fase cheia de vontade de sumir e brilhar ao mesmo tempo.”
+Efeito: leve animação de brilho e sombra mudando na lua.
+
+
+
+🎭 8. "Sincericídios Poéticos"
+Conceito: Tela de fundo preto com textos brancos que surgem como confissões.
+Exemplo de texto:
+
+“Estou bem, obrigada. Só cansada de fingir que estou bem, obrigada.”
+Depois aparece:
+“Mas tudo bem, ironia é meu mecanismo de defesa favorito.”
+Tom: elegante, cômico e verdadeiro.
+
+
+🌊 9. "Onda Interna"
+Conceito: Ondas suaves no fundo; palavras surgem e desaparecem com o ritmo.
+Mensagem:
+
+“Mesmo quando o mar está calmo, dentro da cabeça tem tsunami ensaiando.”
+Tom: introspectivo, mas com humor leve.
+
+
+🔮 10. "Modo Sereia Sarcástica"
+Conceito: Página com visual marinho e bolhas que sobem com frases curtas.
+Mensagens:
+
+
+“Não é drama, é profundidade.”
+
+
+“Se afogando em pensamentos ou apenas meditando com estilo?”
+Tom: mistura perfeita de sarcasmo e serenidade — bem “ela”.
+
+
+
+Posso te ajudar a escolher uma delas e transformar em página completa (HTML, CSS e JS) — com som ambiente, animações leves e identidade visual personalizada (ex: paleta “Cléia”).
+Quer que eu monte uma primeira versão pronta de alguma dessas? Se sim, qual delas te inspira mais hoje?

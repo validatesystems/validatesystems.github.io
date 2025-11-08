@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Bom dia do chefinho!</title>
+    <style>
+      :root {
+        --bg1: #fff7e6;
+        --bg2: #ffe0e0;
+        --accent: #f59e0b;
+        --text: #1a1a1a;
+        --muted: #6b6b6b;
+        --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(160deg, var(--bg1), var(--bg2));
+        color: var(--text);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        text-align: center;
+        overflow-x: hidden;
+        padding: 20px;
+        transition: var(--transition);
+      }
+
+      h1 {
+        font-size: 2.4rem;
+        color: var(--accent);
+        margin-bottom: 8px;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+        color: var(--muted);
+        margin-bottom: 30px;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.75);
+        border-radius: 20px;
+        padding: 25px;
+        max-width: 500px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.4),
+          transparent
+        );
+        transition: var(--transition);
+      }
+      .card:hover {
+        transform: scale(1.03);
+      }
+      .card:hover::before {
+        left: 100%;
+      }
+
+      /* Linhas DENTRO do card, entram com animação */
+      .card p.line {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin: 0 0 16px 0;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      .card p.line.show {
+        animation: fadeInUp 0.8s forwards;
+      }
+
+      .emoji {
+        font-size: 2rem;
+        margin-top: 10px;
+        animation: bounce 2s infinite;
+      }
+
+      .floating-elements {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+      }
+      .floating-element {
+        position: absolute;
+        font-size: 1.5rem;
+        opacity: 0.2;
+        animation: floatRandom 15s infinite linear;
+      }
+
+      .interactive-btn {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: var(--transition);
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+      }
+      .interactive-btn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+      }
+
+      footer {
+        margin-top: 40px;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.7);
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+        z-index: 100;
+      }
+      .theme-toggle:hover {
+        transform: rotate(30deg);
+      }
+
+      .coffee-cup {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        font-size: 2rem;
+        animation: coffeeSteam 4s infinite ease-in-out;
+        z-index: 100;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      @keyframes floatRandom {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+          transform: translate(10vw, 20vh) rotate(90deg);
+        }
+        50% {
+          transform: translate(20vw, 10vh) rotate(180deg);
+        }
+        75% {
+          transform: translate(10vw, 30vh) rotate(270deg);
+        }
+        100% {
+          transform: translate(0, 0) rotate(360deg);
+        }
+      }
+      @keyframes coffeeSteam {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-5px) scale(1.05);
+        }
+      }
+
+      /* Dark theme */
+      body.dark-theme {
+        --bg1: #2d3748;
+        --bg2: #1a202c;
+        --accent: #f6ad55;
+        --text: #f7fafc;
+        --muted: #a0aec0;
+      }
+      body.dark-theme .card {
+        background: rgba(45, 55, 72, 0.8);
+      }
+      body.dark-theme .theme-toggle {
+        background: rgba(45, 55, 72, 0.7);
+        color: #f7fafc;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="theme-toggle" id="themeToggle">🌙</button>
+    <div class="floating-elements" id="floatingElements"></div>
+
+    <h1>Bom dia, Cléia 😏</h1>
+    <h2>Seu chefinho quer te desejar um excelente dia!</h2>
+
+    <!-- Card ÚNICO (sem frases fixas no HTML) -->
+    <div class="card" id="message">
+      <!-- As frases serão inseridas via JS, uma a cada 3s -->
+      <div class="emoji" aria-hidden="true">🌞☕💻</div>
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
+    </div>
+
+    <button class="interactive-btn" id="surpriseBtn">Surpresa Especial</button>
+    <div class="coffee-cup">☕</div>
+    <footer>Feito com leve ironia e muito carinho ._.. ... 💛</footer>
+
+    <script>
+      // ========= Emoticons flutuantes =========
+      const floatingElements = document.getElementById("floatingElements");
+      const emojis = [
+        "📊",
+        "📝",
+        "📅",
+        "⏰",
+        "💼",
+        "😴",
+        "🤓",
+        "📞",
+        "🗓️",
+        "💬",
+      ];
+      for (let i = 0; i < 15; i++) {
+        const el = document.createElement("div");
+        el.className = "floating-element";
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = `${Math.random() * 100}vw`;
+        el.style.top = `${Math.random() * 100}vh`;
+        el.style.animationDelay = `${Math.random() * 5}s`;
+        el.style.fontSize = `${Math.random() * 1.5 + 1}rem`;
+        floatingElements.appendChild(el);
+      }
+
+      // ========= Alternância de tema =========
+      const themeToggle = document.getElementById("themeToggle");
+      themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-theme");
+        themeToggle.textContent = document.body.classList.contains("dark-theme")
+          ? "☀️"
+          : "🌙";
+      });
+
+      // ========= Frases (uma a cada 3s) =========
+      const phrases = [
+        "☀️ Acordar tarde é uma escolha... da vida, não sua.",
+        "💼 Que seu dia renda mais que as reuniões canceladas de ontem.",
+        "😴 Se você não dormiu bem, e daí? Quero os trabalhos corrigidos até o meio-dia na minha mesa!",
+        "💬 Se faltar paciência, recorra à ironia — é grátis e não dá relatório.",
+        "🤓 Que o dia te trate bem... ou pelo menos finja, igual você faz nas reuniões.",
+        '📞 Que ninguém diga "rapidinho" hoje. Nada "rapidinho" nunca é.',
+        "🗓️ Que sua paciência dure mais que a bateria do notebook.",
+      ];
+
+      const card = document.getElementById("message");
+
+      // Garante que o card NÃO tenha frases duplicadas
+      function clearCardLines() {
+        card.querySelectorAll("p.line").forEach((p) => p.remove());
+      }
+
+      function appendLine(text) {
+        const p = document.createElement("p");
+        p.className = "line";
+        p.textContent = text;
+        card.insertBefore(p, card.querySelector(".emoji"));
+        // força reflow para aplicar a animação na sequência
+        requestAnimationFrame(() => p.classList.add("show"));
+      }
+
+      // Inicia exibição sequencial (3s por frase)
+      function startSequence() {
+        clearCardLines();
+        let i = 0;
+        appendLine(phrases[i++]); // mostra a primeira imediatamente
+        const interval = setInterval(() => {
+          if (i >= phrases.length) {
+            clearInterval(interval);
+            return;
+          }
+          appendLine(phrases[i++]);
+        }, 3000); // 3 segundos por frase
+      }
+
+      // dispara assim que a página carrega
+      document.addEventListener("DOMContentLoaded", startSequence);
+
+      // ========= Botão de surpresa =========
+      const surpriseBtn = document.getElementById("surpriseBtn");
+      let surpriseUsed = false;
+      surpriseBtn.addEventListener("click", () => {
+        if (surpriseUsed) return; // evita duplicar
+        surpriseUsed = true;
+
+        // Confetes
+        for (let i = 0; i < 50; i++) createConfetti();
+
+        // Mensagem especial (entra ao final das frases)
+        const special = document.createElement("p");
+        special.className = "line";
+        special.textContent =
+          "💤 Sono acumulado vira folga... na sua próxima vida!";
+        special.style.color = "#f59e0b";
+        special.style.fontWeight = "bold";
+        // adiciona após um pequeno delay para ter o efeito de “mais uma linha”
+        setTimeout(() => {
+          card.insertBefore(special, card.querySelector(".emoji"));
+          requestAnimationFrame(() => special.classList.add("show"));
+        }, 500);
+
+        // Efeito sonoro
+        playClickSound();
+
+        // Desabilita o botão
+        surpriseBtn.disabled = true;
+        surpriseBtn.textContent = "Surpresa Ativada!";
+        surpriseBtn.style.background = "#6b6b6b";
+      });
+
+      function createConfetti() {
+        const confetti = document.createElement("div");
+        confetti.style.position = "fixed";
+        confetti.style.width = "10px";
+        confetti.style.height = "10px";
+        confetti.style.background = getRandomColor();
+        confetti.style.borderRadius = "50%";
+        confetti.style.top = "0";
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.zIndex = "1000";
+        confetti.style.pointerEvents = "none";
+        document.body.appendChild(confetti);
+
+        const animation = confetti.animate(
+          [
+            { transform: "translateY(0) rotate(0deg)", opacity: 1 },
+            {
+              transform: `translateY(${window.innerHeight}px) rotate(${
+                Math.random() * 360
+              }deg)`,
+              opacity: 0,
+            },
+          ],
+          {
+            duration: Math.random() * 3000 + 2000,
+            easing: "cubic-bezier(0.1, 0.8, 0.2, 1)",
+          }
+        );
+        animation.onfinish = () => confetti.remove();
+      }
+
+      function getRandomColor() {
+        const colors = ["#f59e0b", "#ef4444", "#10b981", "#3b82f6", "#8b5cf6"];
+        return colors[Math.floor(Math.random() * colors.length)];
+      }
+
+      function playClickSound() {
+        const context = new (window.AudioContext ||
+          window.webkitAudioContext)();
+        const oscillator = context.createOscillator();
+        const gainNode = context.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(context.destination);
+        oscillator.type = "sine";
+        oscillator.frequency.value = 800;
+        gainNode.gain.value = 0.1;
+        oscillator.start();
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.001,
+          context.currentTime + 0.5
+        );
+        oscillator.stop(context.currentTime + 0.5);
+      }
+    </script>
+  </body>
+</html>

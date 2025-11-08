@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doce & Salgado — um recadinho pra você</title>
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <style>
+      :root {
+        --bg1: #ffecd2;
+        --bg2: #fcb69f;
+        --bg3: #ffd1ff;
+        --fg: #2b2b2b;
+        --accent: #ff5e86;
+        --accent-2: #ff9f43;
+        --card: rgba(255, 255, 255, 0.72);
+        --glass: blur(10px);
+      }
+
+      .salgado {
+        --bg1: #b2f7ef;
+        --bg2: #cfd9df;
+        --bg3: #a1c4fd;
+        --fg: #0e2030;
+        --accent: #0fb9b1;
+        --accent-2: #3b82f6;
+        --card: rgba(255, 255, 255, 0.72);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji";
+        color: var(--fg);
+        background: linear-gradient(
+          -45deg,
+          var(--bg1),
+          var(--bg2),
+          var(--bg3),
+          var(--bg2)
+        );
+        background-size: 400% 400%;
+        animation: bgShift 16s ease infinite;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      @keyframes bgShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .floaters {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .floater {
+        position: absolute;
+        font-size: clamp(16px, 2.5vw, 28px);
+        opacity: 0.18;
+        animation: floatY linear infinite;
+        will-change: transform, opacity;
+      }
+
+      @keyframes floatY {
+        0% {
+          transform: translateY(110vh) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.22;
+        }
+        90% {
+          opacity: 0.18;
+        }
+        100% {
+          transform: translateY(-10vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      .card {
+        position: relative;
+        z-index: 10;
+        max-width: min(680px, 92vw);
+        margin: 6vh auto;
+        padding: clamp(18px, 4.2vw, 36px);
+        border-radius: 24px;
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+        text-align: center;
+      }
+
+      .chip {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.55);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .chip b {
+        color: var(--accent);
+      }
+
+      h1 {
+        margin: 8px 0 10px;
+        font-size: clamp(28px, 5.6vw, 44px);
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+      }
+
+      .shine {
+        background: linear-gradient(
+          90deg,
+          currentColor 0%,
+          var(--accent) 40%,
+          currentColor 70%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        background-size: 200% 100%;
+        animation: shineMove 5s ease-in-out infinite;
+      }
+
+      @keyframes shineMove {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .msg {
+        font-size: clamp(16px, 3.9vw, 20px);
+        line-height: 1.6;
+        margin: 6px 0 14px;
+      }
+
+      .punch {
+        font-size: clamp(15px, 3.6vw, 18px);
+        opacity: 0.9;
+      }
+
+      .divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(0, 0, 0, 0.12),
+          transparent
+        );
+        margin: 18px 0;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .btn {
+        appearance: none;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-weight: 600;
+        cursor: pointer;
+        background: var(--accent);
+        color: white;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        transition: transform 0.08s ease, box-shadow 0.2s ease,
+          opacity 0.2s ease;
+      }
+
+      .btn.secondary {
+        background: var(--accent-2);
+      }
+
+      .btn.ghost {
+        background: rgba(255, 255, 255, 0.65);
+        color: var(--fg);
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn:active {
+        transform: translateY(0px) scale(0.98);
+      }
+
+      footer {
+        margin-top: 12px;
+        font-size: 13px;
+        opacity: 0.7;
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        transform: translateX(-50%) translateY(20px);
+        background: rgba(20, 20, 20, 0.9);
+        color: white;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.25s ease;
+        z-index: 60;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.25);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+        z-index: 40;
+      }
+
+      .modal-backdrop.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -45%) scale(0.98);
+        width: min(560px, 92vw);
+        border-radius: 22px;
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        padding: 22px;
+        text-align: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+        z-index: 50;
+      }
+
+      .modal.show {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        pointer-events: auto;
+      }
+
+      .modal h2 {
+        margin: 6px 0 8px;
+        font-size: clamp(22px, 4.8vw, 28px);
+      }
+
+      .modal p {
+        margin: 6px 0 16px;
+        font-size: clamp(15px, 3.6vw, 18px);
+      }
+
+      .modal .actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .modal .actions .btn {
+        padding: 10px 16px;
+      }
+
+      @keyframes popSlide {
+        0% {
+          opacity: 0;
+          transform: translateY(10px) scale(0.98);
+        }
+        60% {
+          opacity: 1;
+          transform: translateY(0) scale(1.01);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes gentleGlow {
+        0% {
+          text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        }
+        40% {
+          text-shadow: 0 6px 22px rgba(0, 0, 0, 0.12);
+        }
+        100% {
+          text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+        }
+      }
+
+      .animate-msg {
+        animation: popSlide 0.58s cubic-bezier(0.16, 0.84, 0.44, 1) both;
+      }
+
+      .animate-punch {
+        animation: popSlide 0.58s 0.06s cubic-bezier(0.16, 0.84, 0.44, 1) both,
+          gentleGlow 1.2s 0.06s ease-out 1;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .animate-msg,
+        .animate-punch {
+          animation: none !important;
+        }
+      }
+
+      .btn.spotify {
+        background: #1db954;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn.spotify:hover {
+        filter: brightness(1.05);
+        transform: translateY(-1px);
+      }
+
+      .btn.spotify .sp-icon {
+        display: inline-flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="floaters" id="floaters" aria-hidden="true"></div>
+
+    <main class="card" role="main">
+      <div class="chip" id="chip">
+        <span id="flair">🍬</span>
+        <span><b>doce</b> & <b>salgado</b></span>
+      </div>
+      <h1 class="shine" id="title">Entre o doce e o salgado… você.</h1>
+      <p class="msg" id="message">
+        Esse docinho salgado é a sua cara: delicado por fora, temperado por
+        dentro — e a soma dos dois é uma delícia. 😋
+      </p>
+      <p class="punch" id="punch">
+        P.S.: Se um dia eu errar a dose, que seja de carinho — porque confusão
+        boa é aquela que termina em sorriso.
+      </p>
+
+      <div class="divider"></div>
+
+      <div class="controls">
+        <button class="btn" id="copyLink">Copiar link com esta mensagem</button>
+        <button class="btn secondary" id="toggleTheme">
+          Alternar tema: Doce ⇄ Salgado
+        </button>
+        <button class="btn ghost" id="shuffle">Surpresa 🍫🧂</button>
+      </div>
+      <p>
+        <button
+          id="openComment"
+          class="btn-comment"
+          aria-label="Abrir comentário"
+        >
+          💬 Comentar
+        </button>
+      </p>
+      <footer>Developed with 💜 by ._.. ...</footer>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal" id="modalBox">
+      <h2 id="modalTitle">Cléia, você quer mais surpresas? ✨</h2>
+      <p id="modalText">
+        Então vamos lá! Eu ainda tenho mais docinhos & salgadinhos guardados
+        aqui. 😋🧂
+      </p>
+      <div class="actions">
+        <button class="btn" id="modalPrimary">Continuar</button>
+        <a
+          class="btn spotify"
+          id="spotifyBtn"
+          href="https://open.spotify.com/playlist/1zb2zuXu6dqhsl5ieyXIxa?si=34e6d2bc44184475"
+          target="_blank"
+          rel="noopener"
+          style="display: none"
+        >
+          <span class="sp-icon" aria-hidden="true">🎵</span>
+          <span>Ouvir playlist</span>
+        </a>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const $ = (s) => document.querySelector(s);
+        const titleEl = $("#title");
+        const messageEl = $("#message");
+        const punchEl = $("#punch");
+        const toast = $("#toast");
+
+        function showToast(text) {
+          toast.textContent = text;
+          toast.classList.add("show");
+          clearTimeout(showToast._t);
+          showToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
+        }
+
+        function retriggerAnim(el, cls) {
+          el.classList.remove(cls);
+          void el.offsetWidth;
+          el.classList.add(cls);
+        }
+
+        // ===== Params iniciais
+        const params = new URL(location.href).searchParams;
+        const initial = {
+          title: "Entre o doce e o salgado… você.",
+          msg: "Esse docinho salgado é a sua cara: delicado por fora, temperado por dentro — e a soma dos dois é uma delícia. 😋",
+          punch:
+            "P.S.: Se um dia eu errar a dose, que seja de carinho — porque confusão boa é aquela que termina em sorriso.",
+        };
+        const safe = (v) => (v || "").toString().trim().slice(0, 500);
+        titleEl.textContent = safe(params.get("title")) || initial.title;
+        messageEl.textContent = safe(params.get("msg")) || initial.msg;
+        punchEl.textContent = safe(params.get("punch")) || initial.punch;
+
+        // ===== Tema
+        const theme = (params.get("theme") || "").toLowerCase();
+        if (theme === "salgado") document.body.classList.add("salgado");
+        $("#toggleTheme").addEventListener("click", () => {
+          document.body.classList.toggle("salgado");
+          hintThemeEmoji();
+          retriggerAnim(messageEl, "animate-msg");
+          retriggerAnim(punchEl, "animate-punch");
+        });
+
+        // ===== Copiar link
+        $("#copyLink").addEventListener("click", async () => {
+          const u = new URL(location.href.split("?")[0]);
+          u.searchParams.set("title", titleEl.textContent);
+          u.searchParams.set("msg", messageEl.textContent);
+          u.searchParams.set("punch", punchEl.textContent);
+          if (document.body.classList.contains("salgado"))
+            u.searchParams.set("theme", "salgado");
+          try {
+            await navigator.clipboard.writeText(u.toString());
+            showToast("Link copiado! 💌");
+          } catch {
+            prompt("Copie o link:", u.toString());
+          }
+        });
+
+        // ===== Combos restaurados (mensagens)
+        const combos = [
+          {
+            flair: "🧂",
+            title: "Temperada na medida certa.",
+            msg: "Você adoça os dias e salpica caos nas horas — tudo com a mesma leveza de quem finge que é sem querer.",
+            punch:
+              "Mas tá perdoada, porque o sabor que você deixa não dá pra esquecer.",
+          },
+          {
+            flair: "🍬",
+            title: "A doçura que dá trabalho pros meus pensamentos.",
+            msg: "Você chega doce, bagunça a calma e ainda finge que não fez nada.",
+            punch:
+              "Difícil mesmo é decidir se quero te abraçar ou reclamar sorrindo.",
+          },
+          {
+            flair: "🍫",
+            title: "O meio-termo preferido.",
+            msg: "Entre o carinho que acalma e a provocação que tira o juízo, você domina o clima como os ventos no litoral.",
+            punch: "Serve quente, frio ou confuso — mas sempre irresistível.",
+          },
+          {
+            flair: "🍪",
+            title: "Metade açúcar, metade coragem.",
+            msg: "Você tem esse talento raro de causar bagunça com ternura — derrete o humor e ainda sai com pose de inocente.",
+            punch:
+              "Equilíbrio perfeito entre encanto e loucura (e o caos é meu pedaço favorito).",
+          },
+          {
+            flair: "🧁",
+            title: "Receita que o destino acertou na medida.",
+            msg: "Tem gosto de abraço e cheiro de problema bom — daquele que a gente finge que não quer, mas quer.",
+            punch:
+              "E o pior é que um domingo foi o bastante pra me viciar nisso.",
+          },
+          {
+            flair: "🍯",
+            title: "Sorriso de mel, ironia de mar.",
+            msg: "Você cura com um olhar e desorganiza com outro, como quem sabe que o efeito colateral é viciante.",
+            punch:
+              "E o pior (ou melhor) é que eu fico torcendo pra dose ser alta.",
+          },
+          {
+            flair: "🥐",
+            title: "Croissant de sentimentos.",
+            msg: "Camadas de humor, recheio de charme e um leve toque de confusão emocional.",
+            punch:
+              "Não sei se é sobremesa ou lição de paciência, mas eu peço repeteco.",
+          },
+          {
+            flair: "🍓",
+            title: "Doce com um toque de tempestade.",
+            msg: "Você chega leve, bagunça o clima e ainda deixa o ar com cheiro de saudade.",
+            punch:
+              "Difícil decidir se quero te abraçar ou te pedir pra voltar mais tarde (mas volta).",
+          },
+          {
+            flair: "🍕",
+            title: "Cléia em fatias generosas.",
+            msg: "Tem dias em que você é calmaria, noutros, caos disfarçado de sorriso.",
+            punch: "De todo jeito, eu sempre acabo querendo mais uma fatia.",
+          },
+          {
+            flair: "🌩️",
+            title: "Tempestade de sabores.",
+            msg: "Você aparece feito chuva: bagunça, refresca e deixa tudo mais vivo — e ainda culpa os outro pelo trovão.",
+            punch: "Conclusão: até o caos fica gostoso quando vem de você.",
+          },
+          {
+            flair: "🍋",
+            title: "Ácido na dose certa.",
+            msg: "Seu jeito tem aquele azedinho que desperta e o doce que compensa depois.",
+            punch: "E no fim, o gosto que fica é sempre o de querer mais.",
+          },
+          {
+            flair: "🍿",
+            title: "Drama e comédia na mesma pipoca.",
+            msg: "Você faz bagunça, ri de si mesma e ainda me faz achar graça no caos.",
+            punch: "Resultado: filme nenhum te supera.",
+          },
+          {
+            flair: "☕",
+            title: "Amarga o suficiente pra ser interessante.",
+            msg: "Você desperta, provoca e aquece — às vezes queima, mas vicia.",
+            punch: "Sem você, o dia fica muito calmo!",
+          },
+          {
+            flair: "🍦",
+            title: "Fria? Só até derreter.",
+            msg: "Você tem o dom de se fingir de gelo e virar abraço em segundos.",
+            punch:
+              "Manual prático de como confundir e encantar ao mesmo tempo.",
+          },
+          {
+            flair: "🍉",
+            title: "Refresco de sarcasmo e afeto.",
+            msg: "Você mistura doçura e ironia como quem entende de equilíbrio.",
+            punch: "E cada vez que aparece, o calor vira calmaria.",
+          },
+          {
+            flair: "🍪",
+            title: "Versão recheada de contradições.",
+            msg: "Crocrante quando fala, macia quando ri — receita de confusão boa.",
+            punch:
+              "Se tivesse rótulo, viria escrito: ‘Cuidado! Altamente viciante.’.",
+          },
+          {
+            flair: "🌶️",
+            title: "Pimenta e mel, tudo junto.",
+            msg: "Você fala doce, mas suas entrelinhas ardem.",
+            punch: "E eu? Tento entender o sabor, mas acabo pedindo repeteco.",
+          },
+          {
+            flair: "🧊",
+            title: "Gelo que esquenta a história.",
+            msg: "Você finge distanciamento, mas seu olhar entrega o incêndio.",
+            punch: "No fundo, é só mais uma forma criativa de queimar.",
+          },
+          {
+            flair: "🔥",
+            title: "O frio que esquenta e o ódio que aperta.",
+            msg: "É saudade vestida de implicância — o tipo de emoção que queima devagar e finge que é só birra.",
+            punch:
+              "Resumo do dia: te culpo sorrindo, te lembro reclamando, e te quero negando.",
+          },
+          {
+            flair: "🩵",
+            title: "Entre o silêncio e o suspiro.",
+            msg: "Há dias em que o frio na barriga é saudade atrasada; noutros, é raiva disfarçada de lembrança.",
+            punch:
+              "E eu fico ali, entre a vontade de esquecer e o impulso de sentir de novo.",
+          },
+          {
+            flair: "💫",
+            title: "Entre o caos e o colo.",
+            msg: "Você é o intervalo entre o arrepio da falta e o consolo do reencontro.",
+            punch:
+              "Você é tipo arrepio em dia quente — irrita, arrepia, e no fim eu ainda acho bom.",
+          },
+        ];
+
+        const endMessages = [
+          "Eita, acabaram-se as surpresas! 😅 Mas não se preocupe, Cléia — até o silêncio aqui é temperado com um restinho de carinho e caos. 🍬🧂",
+          "As frases dormem, mas o sentimento segue acordado. 🌙✨",
+          "O estoque de doçura e ironia foi zerado, favor reabastecer com um sorriso. 😋💬",
+        ];
+
+        // ===== Shuffle/estado do ciclo
+        let order = combos.map((_, i) => i).sort(() => Math.random() - 0.5);
+        let idx = -1;
+        const halfIndex = Math.floor(order.length / 2);
+        let midMessageShown = false;
+
+        // Seq final
+        let inEndSequence = false;
+        let endIdx = 0;
+
+        function applyCombo(c) {
+          $("#flair").textContent = c.flair;
+          titleEl.textContent = c.title;
+          messageEl.textContent = c.msg;
+          punchEl.textContent = c.punch;
+          retriggerAnim(messageEl, "animate-msg");
+          retriggerAnim(punchEl, "animate-punch");
+          showToast("Mensagem atualizada ✨");
+        }
+
+        // ===== Modal helpers
+        function showModal(title, body, primaryLabel = "Continuar") {
+          $("#modalTitle").textContent = title || " ";
+          $("#modalText").textContent = body || "";
+          $("#modalPrimary").textContent = primaryLabel;
+          const sp = document.getElementById("spotifyBtn");
+          if (sp) sp.style.display = "none";
+          $("#modalBackdrop").classList.add("show");
+          $("#modalBox").classList.add("show");
+        }
+        function hideModal() {
+          $("#modalBackdrop").classList.remove("show");
+          $("#modalBox").classList.remove("show");
+        }
+
+        function maybeShowMidMessage() {
+          if (!midMessageShown && idx + 1 === halfIndex) {
+            showModal(
+              "Cléia, você quer mais surpresas? ✨",
+              "Então vamos lá! Eu ainda tenho mais docinhos & salgadinhos guardados aqui. 😋🧂",
+              "Continuar"
+            );
+            midMessageShown = true;
+          }
+        }
+
+        function startEndSequence() {
+          const sp = document.getElementById("spotifyBtn");
+          if (sp) sp.style.display = "none";
+          inEndSequence = true;
+          endIdx = 0;
+          showModal("", endMessages[endIdx], "Continuar");
+        }
+
+        function advanceEndSequence() {
+          endIdx++;
+          if (endIdx < endMessages.length) {
+            showModal("", endMessages[endIdx], "Continuar");
+          } else {
+            showModal(
+              "",
+              "Acabou o menu especial de surpresas. Quer recomeçar💫 ou ouvir uma playlist🎶? ",
+              "Recomeçar"
+            );
+            const sp = document.getElementById("spotifyBtn");
+            if (sp) sp.style.display = "inline-flex";
+          }
+        }
+
+        function resetCycle() {
+          order = combos.map((_, i) => i).sort(() => Math.random() - 0.5);
+          idx = -1;
+          midMessageShown = false;
+          inEndSequence = false;
+          endIdx = 0;
+        }
+
+        function nextCombo() {
+          if (inEndSequence) return;
+          if (idx + 1 >= order.length) {
+            startEndSequence();
+            return;
+          }
+          idx++;
+          applyCombo(combos[order[idx]]);
+          maybeShowMidMessage();
+        }
+
+        $("#shuffle").addEventListener("click", nextCombo);
+
+        // ===== Botões do modal
+        $("#modalPrimary").addEventListener("click", () => {
+          if (inEndSequence) {
+            if (endIdx < endMessages.length) {
+              advanceEndSequence();
+            } else {
+              // Recomeçar ciclo
+              hideModal();
+              const sp = document.getElementById("spotifyBtn");
+              if (sp) sp.style.display = "none";
+              resetCycle();
+              nextCombo();
+            }
+          } else {
+            hideModal(); // modal da metade
+          }
+        });
+
+        $("#modalBackdrop").addEventListener("click", () => {
+          if (!inEndSequence) hideModal();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !inEndSequence) hideModal();
+        });
+
+        // ===== Partículas
+        const floaters = $("#floaters");
+        const emojis = ["🍬", "🧂", "🍫", "🥨", "🧁", "🧀", "🍩"];
+        function spawnFloater() {
+          const span = document.createElement("span");
+          span.className = "floater";
+          span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          span.style.left = Math.random() * 100 + "vw";
+          span.style.animationDuration = 12 + Math.random() * 12 + "s";
+          span.style.fontSize = 16 + Math.random() * 22 + "px";
+          floaters.appendChild(span);
+          setTimeout(() => span.remove(), 25000);
+        }
+        for (let i = 0; i < 18; i++) spawnFloater();
+        setInterval(spawnFloater, 900);
+
+        // ===== Emoji do chip
+        const chip = $("#chip");
+        function hintThemeEmoji() {
+          const isSalgado = document.body.classList.contains("salgado");
+          $("#flair").textContent = isSalgado ? "🧂" : "🍬";
+          chip.style.boxShadow = "0 2px 12px rgba(0,0,0,0.10)";
+        }
+        hintThemeEmoji();
+
+        // ===== Animação inicial
+        messageEl.classList.add("animate-msg");
+        punchEl.classList.add("animate-punch");
+      })();
+    </script>
+  </body>
+</html>

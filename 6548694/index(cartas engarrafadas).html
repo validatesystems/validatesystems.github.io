@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cartas Engarrafadas</title>
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <style>
+      :root {
+        /* Tema Acústico (claro) */
+        --bg-sky: #bfe9ff; /* céu */
+        --bg-horizon: #eef7ff; /* horizonte */
+        --sea1: #8bd3f7; /* onda clara */
+        --sea2: #5bb7e6; /* onda média */
+        --sea3: #3498db; /* onda profunda */
+        --fg: #182230;
+        --muted: #314659;
+        --accent: #0ea5e9;
+        --accent-2: #8b5cf6;
+        --card: rgba(255, 255, 255, 0.78);
+        --glass: blur(10px);
+        --ring: 0 0 0 2px rgba(14, 165, 233, 0.25);
+        --bottle-grad: radial-gradient(
+          100% 100% at 30% 25%,
+          var(--accent),
+          var(--accent-2)
+        );
+      }
+      /* Tema Elétrico (escuro) */
+      .eletrico {
+        --bg-sky: #0b1020;
+        --bg-horizon: #101633;
+        --sea1: #162347;
+        --sea2: #1b2a59;
+        --sea3: #1f2f66;
+        --fg: #eef0ff;
+        --muted: #aab0ff;
+        --accent: #22d3ee;
+        --accent-2: #a78bfa;
+        --card: rgba(20, 20, 40, 1);
+        --ring: 0 0 0 2px rgba(34, 211, 238, 0.28);
+        --bottle-grad: radial-gradient(
+          100% 100% at 30% 25%,
+          var(--accent),
+          var(--accent-2)
+        );
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans";
+        color: var(--fg);
+        background: linear-gradient(
+          180deg,
+          var(--bg-sky) 0%,
+          var(--bg-horizon) 45%,
+          var(--sea1) 46%,
+          var(--sea2) 60%,
+          var(--sea3) 100%
+        );
+        overflow-x: hidden;
+      }
+
+      .page {
+        min-height: 100dvh;
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        gap: 16px;
+        padding: clamp(14px, 4vw, 28px);
+        position: relative;
+        isolation: isolate; /* garante z-index correto para ondas/garrafas */
+      }
+
+      /* Cabeçalho */
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .mark {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: var(--bottle-grad);
+        box-shadow: var(--ring);
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 20px;
+        animation: float 6s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-3px);
+        }
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(20px, 5vw, 28px);
+        letter-spacing: -0.02em;
+      }
+      .toolbar {
+        display: flex;
+        gap: 8px;
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        cursor: pointer;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-weight: 700;
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        transition: transform 0.08s ease, filter 0.2s ease;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: translateY(0) scale(0.98);
+      }
+      .btn.ghost {
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--fg);
+      }
+      .eletrico .btn.ghost {
+        background: rgba(255, 255, 255, 0.16);
+        color: var(--fg);
+      }
+      .subtitle {
+        margin: 0 0 6px;
+        opacity: 0.85;
+        font-size: clamp(14px, 3.2vw, 16px);
+      }
+
+      /* Mar: ondas em camadas (SVG) */
+      .waves {
+        position: absolute;
+        inset: auto 0 0 0;
+        height: 45vh;
+        z-index: -1;
+        pointer-events: none;
+      }
+      .wave {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 200%;
+        height: 40%;
+        opacity: 0.9;
+      }
+      .wave svg {
+        width: 100%;
+        height: 100%;
+      }
+      .wave.one {
+        bottom: 0;
+        animation: drift 18s linear infinite;
+        opacity: 0.35;
+      }
+      .wave.two {
+        bottom: 6%;
+        animation: drift 24s linear infinite reverse;
+        opacity: 0.45;
+      }
+      .wave.three {
+        bottom: 12%;
+        animation: drift 36s linear infinite;
+        opacity: 0.55;
+      }
+      @keyframes drift {
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* Garrafas “flutuando no mar” */
+      .sea {
+        position: relative;
+        min-height: 52vh;
+        display: block;
+      }
+      .bottle-card {
+        position: absolute;
+        width: min(280px, 78vw);
+        border-radius: 18px;
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+        transform-origin: 50% 80%;
+        animation: bob 5.6s ease-in-out infinite, sway 8s ease-in-out infinite;
+        will-change: transform;
+      }
+      /* leve balanço vertical */
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateY(-2px);
+        }
+        50% {
+          transform: translateY(4px);
+        }
+      }
+      /* leve rotação para dar sensação de mar */
+      @keyframes sway {
+        0%,
+        100% {
+          rotate: -0.6deg;
+        }
+        50% {
+          rotate: 0.8deg;
+        }
+      }
+
+      .bottle-head {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+      .bottle-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        font-size: 26px;
+        color: #fff;
+        background: var(--bottle-grad);
+        box-shadow: var(--ring);
+      }
+      .bottle-title {
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+      .bottle-sub {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .bottle-cta {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .btn.small {
+        padding: 8px 10px;
+      }
+
+      /* Layout alternativo (mobile muito pequeno) vira grid */
+      /* @media (max-width: 560px) {
+        .sea {
+          min-height: auto;
+        }
+        .bottle-card {
+          position: static;
+          width: auto;
+          animation: none;
+          margin-bottom: 12px;
+        }
+      } */
+      /* Layout mobile: mantém flutuando */
+      @media (max-width: 560px) {
+        .sea {
+          min-height: 65vh;
+        }
+        .bottle-card {
+          /* continua absolute e animando */
+          position: absolute;
+          width: min(300px, 86vw);
+          /* balanço um pouco mais visível em telas pequenas */
+          animation: bob 6.2s ease-in-out infinite,
+            sway 7.4s ease-in-out infinite;
+          /* separa o “pivô” um pouco mais abaixo pra parecer boiando */
+          transform-origin: 50% 85%;
+          /* toque maior para acessibilidade */
+          padding: 16px;
+        }
+        .bottle-head {
+          gap: 10px;
+        }
+        .bottle-icon,
+        .bottle-img {
+          width: 58px;
+          height: 58px;
+        }
+      }
+
+      /* Modal */
+      .backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+        background: rgba(0, 0, 0, 0.35);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: 0.22s ease;
+      }
+      .backdrop.show {
+        display: flex;
+        opacity: 1;
+      }
+      .modal {
+        width: min(760px, 92vw);
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        border-radius: 20px;
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.28);
+        padding: clamp(16px, 3vw, 22px);
+        transform: translateY(-6px) scale(0.98);
+        animation: modalIn 0.22s ease forwards;
+        color: var(--fg);
+      }
+      @keyframes modalIn {
+        to {
+          transform: translateY(0) scale(1);
+        }
+      }
+      .modal h3 {
+        margin: 4px 0 10px;
+        font-size: clamp(18px, 3.4vw, 22px);
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+      .modal .content {
+        line-height: 1.65;
+        font-size: clamp(14px, 2.8vw, 16px);
+        text-wrap: pretty;
+        hyphens: auto;
+      }
+      .modal .content p {
+        margin: 0;
+      }
+      .modal .content p + p {
+        margin-top: 0.75em;
+      }
+      .modal .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      /* Toast */
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%) translateY(20px);
+        background: rgba(20, 20, 20, 0.92);
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.25s ease;
+        z-index: 95;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      .bottle-img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        border-radius: 12px;
+        background: var(--bottle-grad);
+        box-shadow: var(--ring);
+      }
+      /* permite gesto de arrastar e muda cursor */
+      .bottle-card {
+        touch-action: none; /* impede scroll enquanto arrasta */
+        cursor: grab;
+      }
+      .bottle-card.dragging {
+        animation-play-state: paused; /* pausa bob/sway durante o arrasto */
+        cursor: grabbing;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <div class="brand">
+          <div class="mark">🫙</div>
+          <h1>Cartas Engarrafadas</h1>
+        </div>
+        <div class="toolbar">
+          <button
+            id="openComment"
+            class="btn-comment"
+            aria-label="Abrir comentário"
+          >
+            💬 Comentar
+          </button>
+
+          <button class="btn ghost" id="toggleTheme" type="button">
+            Alternar tema
+          </button>
+        </div>
+      </header>
+
+      <p class="subtitle">Clique em uma garrafa para abrir a carta.</p>
+
+      <!-- Mar com garrafas flutuando -->
+      <section class="sea" id="sea" aria-label="garrafas no mar"></section>
+
+      <!-- Ondas (três camadas) -->
+      <div class="waves" aria-hidden="true">
+        <div class="wave one">
+          <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path
+              fill="rgba(255,255,255,.18)"
+              d="M0,128L60,144C120,160,240,192,360,181.3C480,171,600,117,720,96C840,75,960,85,1080,117.3C1200,149,1320,203,1380,229.3L1440,256L1440,320L0,320Z"
+            ></path>
+          </svg>
+        </div>
+        <div class="wave two">
+          <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path
+              fill="rgba(255,255,255,.22)"
+              d="M0,160L80,149.3C160,139,320,117,480,101.3C640,85,800,75,960,106.7C1120,139,1280,213,1360,250.7L1440,288L1440,320L0,320Z"
+            ></path>
+          </svg>
+        </div>
+        <div class="wave three">
+          <svg viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path
+              fill="rgba(255,255,255,.28)"
+              d="M0,192L120,197.3C240,203,480,213,720,197.3C960,181,1200,139,1320,117.3L1440,96L1440,320L0,320Z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+
+      <footer
+        style="
+          text-align: center;
+          opacity: 0.72;
+          font-size: 13px;
+          margin-top: 8px;
+        "
+      >
+        Feito com 💙 — garrafas ao mar
+        <footer>Developed with 💜 by ._.. ...</footer>
+      </footer>
+    </main>
+
+    <!-- Modal -->
+    <div
+      id="backdrop"
+      class="backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+      aria-describedby="modalContent"
+    >
+      <article class="modal">
+        <h3 id="modalTitle">Carta</h3>
+        <div id="modalContent" class="content"></div>
+        <div class="actions">
+          <button class="btn ghost" id="closeModal">Fechar</button>
+        </div>
+      </article>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      (function () {
+        const $ = (s) => document.querySelector(s);
+
+        // ===== Textos (como você enviou) =====
+        const LETTERS = {
+          vento: `
+<p>O vento traz o que precisa levar. Às vezes um segredo, às vezes a poeira que atrapalha a vista.</p>
+<p>Você aprendeu a ouvir sem se desarraigar - isso é raro.</p>
+<p>Hoje, deixe que ele passe pelos seus cabelos, mas não pelas suas certezas.</p>
+        `,
+          mar: `
+<p>O mar não promete calmaria, apenas profundidade. E você sempre soube nadar melhor nas águas revoltas.</p>
+<p>Há sal nas suas histórias e isso preserva o que merece durar.</p>
+<p>Maré alta ou baixa, você continua sendo a praia que acolhe e a onda que transforma.</p>
+        `,
+          semente: `
+<p>Alguns pensamentos são como sementes: precisam de escuridão para germinar.</p>
+<p>Não tenha pressa. O que está brotando em você merece seu próprio tempo de silêncio.</p>
+<p>Quando emergir, será na direção da luz - isso é instinto.</p>
+        `,
+          ponte: `
+<p>Você é ponte entre o que foi e o que será. Às vezes tremula com o peso, mas nunca se rompe.</p>
+<p>Há uma sabedoria antiga no seu jeito de ligar margens aparentemente distantes.</p>
+<p>Siga sustentando passos, principalmente os seus.</p>
+        `,
+          fogueira: `
+<p>Seu calor não queima, transforma. Afasta o frio sem precisar explicar como.</p>
+<p>Há histórias na sua chama que só fazem sentido ao ser contadas na penumbra.</p>
+<p>Continue iluminando os cantos que precisam de coragem.</p>
+        `,
+          raiz: `
+<p>Você cresce em duas direções: uma que o mundo vê, outra que só você sente.</p>
+<p>Nas estações mais duras, é essa parte invisível que sustenta tudo.</p>
+<p>Nunca duvide do que está acontecendo debaixo da superfície.</p>
+        `,
+          tempo: `
+<p>O tempo na sua mão não é relógio, é bússola. Não marca horas, indica caminhos.</p>
+<p>Você coleciona momentos como quem guarda conchas - cada um com sua textura própria.</p>
+<p>Alguns vão cortar se apertados demais, outros vão brilhar na luz certa.</p>
+        `,
+        };
+
+        // Garrafas: título, emoji e posição inicial (percentuais)
+        const BOTTLES = [
+          { key: "vento", title: "Carta ao Vento", emoji: "🌬️", x: 12, y: 8 },
+          { key: "mar", title: "Carta ao Mar", emoji: "🌊", x: 44, y: 14 },
+          {
+            key: "semente",
+            title: "Carta à Semente",
+            emoji: "🌱",
+            x: 72,
+            y: 6,
+          },
+          { key: "ponte", title: "Carta à Ponte", emoji: "🌉", x: 24, y: 28 },
+          {
+            key: "fogueira",
+            title: "Carta à Fogueira",
+            emoji: "🔥",
+            x: 58,
+            y: 26,
+          },
+          { key: "raiz", title: "Carta à Raiz", emoji: "🌿", x: 80, y: 22 },
+          { key: "tempo", title: "Carta ao Tempo", emoji: "🧭", x: 10, y: 36 },
+        ];
+
+        const sea = document.getElementById("sea");
+        const backdrop = document.getElementById("backdrop");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalContent = document.getElementById("modalContent");
+        const toast = document.getElementById("toast");
+
+        function showToast(text) {
+          toast.textContent = text;
+          toast.classList.add("show");
+          clearTimeout(showToast._t);
+          showToast._t = setTimeout(() => toast.classList.remove("show"), 2000);
+        }
+
+        function renderBottles() {
+          sea.innerHTML = "";
+          const saved = getSavedPos();
+
+          BOTTLES.forEach((b, i) => {
+            const card = document.createElement("article");
+            card.className = "bottle-card";
+
+            // posição inicial (centralizada por %)
+            card.style.left = `${b.x}%`;
+            card.style.top = `${b.y}vh`;
+            card.style.animationDelay = `${(i % 5) * 0.6}s, ${(i % 7) * 0.4}s`;
+
+            card.innerHTML = `
+      <div class="bottle-head">
+        <img src="./img/engarrafada.png" alt="Carta engarrafada" class="bottle-img" />
+        <div>
+          <div class="bottle-title">${b.title}</div>
+          <div class="bottle-sub">Clique para ler</div>
+        </div>
+      </div>
+      <div class="bottle-cta">
+        <button class="btn small open" data-key="${b.key}">Abrir</button>
+      </div>
+    `;
+
+            sea.appendChild(card);
+
+            // centraliza pelo centro quando usando %
+            if (!saved[b.key]) {
+              card.style.marginLeft = `-${card.offsetWidth / 2}px`;
+            } else {
+              // restaura posição em px se o usuário já arrastou antes
+              card.style.left = saved[b.key].left;
+              card.style.top = saved[b.key].top;
+              card.style.marginLeft = "0";
+            }
+
+            // abre carta
+            card
+              .querySelector(".open")
+              .addEventListener("click", () => openLetter(b.key, b.title));
+
+            // acessível pelo teclado
+            card.tabIndex = 0;
+            card.addEventListener("keyup", (e) => {
+              if (e.key === "Enter" || e.key === " ")
+                openLetter(b.key, b.title);
+            });
+
+            // torna arrastável
+            makeDraggable(card, b.key);
+          });
+        }
+
+        function openLetter(key, title) {
+          const html = LETTERS[key];
+          if (!html) {
+            showToast("Carta não encontrada");
+            return;
+          }
+          modalTitle.textContent = title;
+          modalContent.innerHTML = html;
+          backdrop.classList.add("show");
+        }
+
+        document
+          .getElementById("closeModal")
+          .addEventListener("click", () => backdrop.classList.remove("show"));
+        backdrop.addEventListener("click", (e) => {
+          if (e.target === backdrop) backdrop.classList.remove("show");
+        });
+
+        // Tema com persistência
+        const THEME_KEY = "letters.theme";
+        applyTheme(localStorage.getItem(THEME_KEY) || "acustico");
+        document.getElementById("toggleTheme").addEventListener("click", () => {
+          const next = document.body.classList.contains("eletrico")
+            ? "acustico"
+            : "eletrico";
+          applyTheme(next);
+        });
+        function applyTheme(mode) {
+          document.body.classList.toggle("eletrico", mode === "eletrico");
+          localStorage.setItem(THEME_KEY, mode);
+        }
+
+        const POS_KEY = "letters.positions.v1";
+        let _z = 10; // topo da pilha enquanto arrasta
+
+        function clamp(n, min, max) {
+          return Math.max(min, Math.min(max, n));
+        }
+
+        function savePos(id, left, top) {
+          try {
+            const data = JSON.parse(localStorage.getItem(POS_KEY) || "{}");
+            data[id] = { left, top };
+            localStorage.setItem(POS_KEY, JSON.stringify(data));
+          } catch {}
+        }
+
+        function getSavedPos() {
+          try {
+            return JSON.parse(localStorage.getItem(POS_KEY) || "{}");
+          } catch {
+            return {};
+          }
+        }
+
+        // function makeDraggable(card, id) {
+        //   let dragging = false;
+        //   let startX = 0,
+        //     startY = 0;
+        //   let baseLeft = 0,
+        //     baseTop = 0;
+
+        //   // card.addEventListener("pointerdown", (e) => {
+        //   //   // só botão principal ou toque
+        //   //   if (e.button !== 0 && e.pointerType !== "touch") return;
+        //   //   dragging = true;
+        //   //   card.setPointerCapture(e.pointerId);
+        //   //   card.classList.add("dragging");
+        //   //   card.style.zIndex = ++_z;
+
+        //   //   const seaRect = sea.getBoundingClientRect();
+        //   //   const rect = card.getBoundingClientRect();
+
+        //   //   startX = e.clientX;
+        //   //   startY = e.clientY;
+
+        //   //   // trava a posição atual em px relativos ao .sea
+        //   //   baseLeft = rect.left - seaRect.left;
+        //   //   baseTop = rect.top - seaRect.top;
+
+        //   //   // passa a controlar por px (e não mais por % + margin-left)
+        //   //   card.style.left = baseLeft + "px";
+        //   //   card.style.top = baseTop + "px";
+        //   //   card.style.marginLeft = "0";
+        //   // });
+        //   card.addEventListener("pointerdown", (e) => {
+        //     // Se o toque/clique começou num botão/ link dentro do card, não arrasta
+        //     if (e.target.closest("button, a, .open")) return;
+
+        //     // só botão principal ou toque
+        //     if (e.button !== 0 && e.pointerType !== "touch") return;
+
+        //     dragging = true;
+        //     card.setPointerCapture(e.pointerId);
+        //     card.classList.add("dragging");
+        //     card.style.zIndex = ++_z;
+
+        //     const seaRect = sea.getBoundingClientRect();
+        //     const rect = card.getBoundingClientRect();
+
+        //     startX = e.clientX;
+        //     startY = e.clientY;
+
+        //     // trava a posição atual em px relativos ao .sea
+        //     baseLeft = rect.left - seaRect.left;
+        //     baseTop = rect.top - seaRect.top;
+
+        //     // passa a controlar por px (e não mais por % + margin-left)
+        //     card.style.left = baseLeft + "px";
+        //     card.style.top = baseTop + "px";
+        //     card.style.marginLeft = "0";
+        //   });
+
+        //   card.addEventListener("pointermove", (e) => {
+        //     if (!dragging) return;
+
+        //     const seaRect = sea.getBoundingClientRect();
+        //     const rect = card.getBoundingClientRect();
+
+        //     const dx = e.clientX - startX;
+        //     const dy = e.clientY - startY;
+
+        //     let left = baseLeft + dx;
+        //     let top = baseTop + dy;
+
+        //     // mantém dentro do mar
+        //     left = clamp(left, 0, seaRect.width - rect.width);
+        //     top = clamp(top, 0, seaRect.height - rect.height);
+
+        //     card.style.left = left + "px";
+        //     card.style.top = top + "px";
+        //   });
+
+        //   function endDrag(e) {
+        //     if (!dragging) return;
+        //     dragging = false;
+        //     card.releasePointerCapture?.(e.pointerId);
+        //     card.classList.remove("dragging");
+        //     savePos(id, card.style.left, card.style.top);
+        //   }
+
+        //   card.addEventListener("pointerup", endDrag);
+        //   card.addEventListener("pointercancel", endDrag);
+        // }
+
+        function makeDraggable(card, id) {
+          let dragging = false;
+          let maybeDrag = false;
+          let startX = 0,
+            startY = 0;
+          let baseLeft = 0,
+            baseTop = 0;
+
+          card.addEventListener("pointerdown", (e) => {
+            // se começou num botão/link, não arrasta
+            if (e.target.closest("button, a, .open")) return;
+            if (e.button !== 0 && e.pointerType !== "touch") return;
+
+            maybeDrag = true;
+            startX = e.clientX;
+            startY = e.clientY;
+
+            const seaRect = sea.getBoundingClientRect();
+            const rect = card.getBoundingClientRect();
+            baseLeft = rect.left - seaRect.left;
+            baseTop = rect.top - seaRect.top;
+          });
+
+          card.addEventListener("pointermove", (e) => {
+            if (!maybeDrag && !dragging) return;
+
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+
+            // inicia o arrasto só se o movimento for maior que 5px
+            if (maybeDrag && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+              dragging = true;
+              maybeDrag = false;
+              card.setPointerCapture(e.pointerId);
+              card.classList.add("dragging");
+              card.style.zIndex = ++_z;
+            }
+
+            if (!dragging) return;
+
+            const seaRect = sea.getBoundingClientRect();
+            const rect = card.getBoundingClientRect();
+
+            let left = baseLeft + dx;
+            let top = baseTop + dy;
+
+            left = clamp(left, 0, seaRect.width - rect.width);
+            top = clamp(top, 0, seaRect.height - rect.height);
+
+            card.style.left = left + "px";
+            card.style.top = top + "px";
+          });
+
+          function endDrag(e) {
+            if (!dragging && !maybeDrag) return;
+            maybeDrag = false;
+
+            if (dragging) {
+              dragging = false;
+              card.releasePointerCapture?.(e.pointerId);
+              card.classList.remove("dragging");
+              savePos(id, card.style.left, card.style.top);
+            }
+          }
+
+          card.addEventListener("pointerup", endDrag);
+          card.addEventListener("pointercancel", endDrag);
+        }
+
+        renderBottles();
+      })();
+    </script>
+  </body>
+</html>
