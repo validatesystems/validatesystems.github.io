@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Sexta de 12 Aulas — A Saga da Sereia Exausta</title>
+    <style>
+      /* =====================
+         Design Tokens
+         ===================== */
+      :root {
+        --bg1: #fff7f0;
+        --bg2: #f4f7ff;
+        --ink: #1c1530;
+        --muted: #6b6480;
+        --accent: #ff9d66; /* pôr do sol */
+        --accent-2: #8ab6ff; /* céu cansado */
+        --card: rgba(255, 255, 255, 0.9);
+        --ring: 0 0 0 2px rgba(255, 158, 102, 0.25);
+        --shadow: 0 18px 44px rgba(26, 18, 44, 0.14);
+        --good: #35c76a;
+        --warn: #ffb020;
+        --bad: #ff6b6b;
+        --surface: #ffffff;
+        --border: rgba(0, 0, 0, 0.08);
+        --hover: rgba(0, 0, 0, 0.04);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg1: #0f1222;
+          --bg2: #1a1f34;
+          --ink: #edf2ff;
+          --muted: #b9c4ff;
+          --accent: #ffc083;
+          --accent-2: #7cc2ff;
+          --card: rgba(18, 20, 40, 0.82);
+          --ring: 0 0 0 2px rgba(124, 194, 255, 0.28);
+          --shadow: 0 22px 50px rgba(0, 0, 0, 0.55);
+          --surface: #161b2b;
+          --border: rgba(255, 255, 255, 0.14);
+          --hover: rgba(255, 255, 255, 0.06);
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Inter,
+          Roboto, "Helvetica Neue", Arial;
+        color: var(--ink);
+        background: radial-gradient(
+            100% 100% at 0% 0%,
+            var(--bg1),
+            transparent 60%
+          ),
+          radial-gradient(100% 100% at 100% 100%, var(--bg2), transparent 55%),
+          linear-gradient(135deg, var(--bg1), var(--bg2));
+        display: grid;
+        place-items: center;
+        padding: 24px env(safe-area-inset-right) 24px env(safe-area-inset-left);
+      }
+
+      .shell {
+        width: min(860px, 100%);
+        background: var(--card);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 22px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 6px;
+      }
+      .title {
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .sky {
+        position: relative;
+        height: 120px;
+        margin: 4px 0 14px;
+        border-radius: 16px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 199, 153, 0.35),
+          rgba(138, 182, 255, 0.15)
+        );
+        overflow: hidden;
+        border: 1px solid var(--border);
+      }
+      .sun {
+        position: absolute;
+        left: 12px;
+        bottom: -32px;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 35% 35%,
+          #fff6e6,
+          #ffc083 60%,
+          #ff9d66 90%
+        );
+        filter: saturate(1.05) blur(0.2px);
+        box-shadow: 0 0 40px rgba(255, 160, 80, 0.55),
+          inset -8px -10px 30px rgba(255, 120, 50, 0.25);
+        animation: tryToRise 8s ease-in-out infinite;
+      }
+      @keyframes tryToRise {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-2deg);
+        }
+        50% {
+          transform: translateY(-10px) rotate(2deg);
+        }
+      }
+
+      .steam {
+        position: absolute;
+        right: 20px;
+        bottom: 10px;
+        width: 80px;
+        height: 80px;
+      }
+      .steam span {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: linear-gradient(
+          to top,
+          rgba(255, 255, 255, 0.3),
+          rgba(255, 255, 255, 0)
+        );
+        animation: puff 2.8s ease-in-out infinite;
+      }
+      .steam span:nth-child(2) {
+        animation-delay: 0.6s;
+      }
+      .steam span:nth-child(3) {
+        animation-delay: 1.2s;
+      }
+      @keyframes puff {
+        0% {
+          transform: translate(-50%, 0) scale(0.8);
+          opacity: 0;
+        }
+        20% {
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -90px) scale(1.4);
+          opacity: 0;
+        }
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 16px;
+      }
+      @media (max-width: 720px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+      }
+
+      .headline {
+        font-size: clamp(1.2rem, 1.3rem + 0.6vw, 1.8rem);
+        line-height: 1.25;
+        font-weight: 800;
+        margin: 4px 0 10px;
+      }
+
+      .msg {
+        font-size: 1.05rem;
+        line-height: 1.55;
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 0;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-weight: 700;
+        cursor: pointer;
+        user-select: none;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        color: #16131b;
+        box-shadow: 0 6px 14px rgba(124, 58, 237, 0.18);
+        transition: transform 0.18s ease, opacity 0.25s ease, filter 0.25s ease;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+        opacity: 0.96;
+      }
+      .btn.secondary {
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--border);
+        box-shadow: none;
+      }
+
+      .chips {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+        margin-top: 8px;
+      }
+      @media (max-width: 540px) {
+        .chips {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      .chip {
+        text-align: center;
+        padding: 8px 6px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 0.9rem;
+        border: 1px dashed var(--border);
+        background: rgba(0, 0, 0, 0.02);
+      }
+      .chip.done {
+        background: rgba(53, 199, 106, 0.12);
+        border-color: rgba(53, 199, 106, 0.35);
+        color: #1b5e36;
+      }
+      .chip.mid {
+        background: rgba(255, 176, 32, 0.12);
+        border-color: rgba(255, 176, 32, 0.35);
+        color: #7a4c00;
+      }
+      .chip.ko {
+        background: rgba(255, 107, 107, 0.12);
+        border-color: rgba(255, 107, 107, 0.35);
+        color: #7a1010;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 14px;
+        box-shadow: var(--shadow);
+        font-weight: 700;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translate(-50%, -4px);
+      }
+
+      .coffee {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .coffee i {
+        font-style: normal;
+        display: inline-block;
+      }
+      .coffee.shake i {
+        animation: shake 0.45s ease;
+      }
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0) rotate(0deg);
+        }
+        20% {
+          transform: translateX(-2px) rotate(-2deg);
+        }
+        40% {
+          transform: translateX(2px) rotate(2deg);
+        }
+        60% {
+          transform: translateX(-1px) rotate(-1deg);
+        }
+        80% {
+          transform: translateX(1px) rotate(1deg);
+        }
+      }
+
+      .footer {
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell" role="main">
+      <header>
+        <div class="title">😏 Sexta de 12 Aulas</div>
+        <div class="subtitle">Bom dia, Cléia — missão em modo insano</div>
+      </header>
+
+      <div class="sky" aria-hidden="true">
+        <div class="sun"></div>
+        <div class="steam"><span></span><span></span><span></span></div>
+      </div>
+
+      <section class="grid">
+        <!-- Mensagem principal -->
+        <article class="card">
+          <h2 class="headline" id="headline">
+            Bom dia, Cléia. Sexta-feira chegou — mas não pra você, né?
+          </h2>
+          <p class="msg" id="mainMsg">
+            Enquanto o resto do mundo posta <em>“partiu descanso”</em>, você
+            posta presença em 12 realidades paralelas chamadas
+            <strong>aulas</strong>. Mas respira (ou finge). Cada “bom dia,
+            professora” vale XP. No fim do dia, você não só sobreviveu —
+            <strong>você zerou a semana no modo insano</strong>.
+          </p>
+          <div
+            style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px"
+          >
+            <button class="btn" id="shuffle">Trocar humor do dia 🔄</button>
+            <button class="btn secondary coffee" id="coffee">
+              <i>☕</i> Dose de café
+            </button>
+          </div>
+        </article>
+
+        <!-- Painel gamificado das 12 aulas -->
+        <aside class="card">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 10px;
+            "
+          >
+            <strong>Chefe da Fase:</strong>
+            <span class="muted" id="phase">0 / 12 concluídas</span>
+          </div>
+          <div class="chips" id="chips"></div>
+          <div style="display: flex; gap: 8px; margin-top: 10px">
+            <button class="btn secondary" id="markOne">
+              Marcar +1 aula ✅
+            </button>
+            <button class="btn secondary" id="resetAll">Resetar</button>
+          </div>
+          <p class="muted" style="margin-top: 10px">
+            Dica do dia: se o sarcasmo pedir férias, aceite. Ele volta mais
+            forte na 10ª aula.
+          </p>
+        </aside>
+      </section>
+
+      <section class="card" style="margin-top: 12px">
+        <strong>Mensagens extras (alternam aleatoriamente):</strong>
+        <ul
+          id="extra"
+          class="muted"
+          style="margin: 8px 0 0 18px; line-height: 1.6"
+        ></ul>
+      </section>
+
+      <div class="footer">
+        <span
+          >“Nem todo herói usa capa — alguns usam caneta vermelha, sarcasmo e
+          tênis confortáveis.”</span
+        >
+        <span id="today" class="muted"></span>
+      </div>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">
+      Café aplicado. Força, sereia.
+    </div>
+
+    <script>
+      // =====================
+      // Utilitários
+      // =====================
+      const $ = (s) => document.querySelector(s);
+      const $$ = (s) => Array.from(document.querySelectorAll(s));
+      const fmt = new Intl.DateTimeFormat("pt-BR", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+      });
+      $("#today").textContent = fmt.format(new Date());
+
+      // =====================
+      // Conteúdo
+      // =====================
+      const MAIN_MESSAGES = [
+        {
+          h: "Bom dia, Cléia. Sexta-feira chegou — mas não pra você, né?",
+          p: "Enquanto o resto do mundo posta “partiu descanso”, você posta presença em 12 realidades paralelas chamadas aulas. Mas respira (ou finge). Cada “bom dia, professora” vale pontos. No fim do dia, você não só sobreviveu, você zerou a semana no modo insano.",
+        },
+        {
+          h: "Parabéns por acordar. O sol tentou e quase desistiu.",
+          p: "Hoje o milagre não é o dia nascer — é você não perder a postura diante de 420 alunos engraçadinhos. 12 aulas, dois turnos, e uma paciência que só existe por ciência: cafeína aplicada.",
+        },
+        {
+          h: "Sexta de 12 aulas: boss final detectado.",
+          p: "Entre uma aula e outra, você ainda corrige os trabalhos com a mesma alegria quando olha o contracheque. Respira: vai precisar!",
+        },
+        {
+          h: "Calma disfarçada, agenda cheia, humor caro.",
+          p: "O resto do mundo comemora sexta; você negocia como sábado. Spoiler: no final, a vitória é sua, de novo.",
+        },
+      ];
+
+      const EXTRA = [
+        "Dizem que sexta é o dia do descanso. No seu caso, é o teste do sistema nervoso.",
+        "Nem o café aguenta o que você aguenta.",
+        "Se sexta-feira tivesse um chefe de fase, ele daria aula das 7h às 18h.",
+        "Hoje é o dia em que até o sarcasmo pede férias.",
+        "Sobreviveu à sexta? Parabéns, você desbloqueou o direito de não responder mensagens até domingo.",
+        "Amanhã é sábado. Mas o trauma das 12 aulas vai sonhar com você.",
+        "Hoje o milagre não é o sol nascer — é você levantar.",
+        "Nem o Google Tradutor entende suas expressões entre a 10ª e a 12ª aula.",
+      ];
+
+      const CAFÉ = [
+        "Dose de coragem aplicada. Efeito colateral: risos involuntários.",
+        "Café reconhecido como EPI docente. Uso obrigatório hoje.",
+        "Cientificamente comprovado: 1 café = +3% de paciência.",
+        "Barista interno iniciando protocolo “sobrevivência elegante”.",
+        "Se eu fosse você, tomava dois. Mas um já ajuda.",
+      ];
+
+      // =====================
+      // DOM refs
+      // =====================
+      const elHeadline = $("#headline");
+      const elMainMsg = $("#mainMsg");
+      const elExtra = $("#extra");
+      const elChips = $("#chips");
+      const elPhase = $("#phase");
+      const btnShuffle = $("#shuffle");
+      const btnCoffee = $("#coffee");
+      const btnMarkOne = $("#markOne");
+      const btnReset = $("#resetAll");
+      const toast = $("#toast");
+
+      // =====================
+      // Funções
+      // =====================
+      const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+      function renderExtra() {
+        elExtra.innerHTML = "";
+        const pool = [...EXTRA];
+        // mostra 4 aleatórias por vez
+        for (let i = 0; i < 4; i++) {
+          const idx = Math.floor(Math.random() * pool.length);
+          const item = pool.splice(idx, 1)[0];
+          const li = document.createElement("li");
+          li.textContent = item;
+          elExtra.appendChild(li);
+        }
+      }
+
+      function setMainRandom() {
+        const { h, p } = pick(MAIN_MESSAGES);
+        elHeadline.textContent = h;
+        elMainMsg.textContent = p;
+      }
+
+      // gamificação das 12 aulas
+      let done = 0;
+      function renderChips() {
+        elChips.innerHTML = "";
+        for (let i = 1; i <= 12; i++) {
+          const div = document.createElement("div");
+          div.className = "chip" + (i <= done ? " done" : "");
+          div.textContent = i;
+          elChips.appendChild(div);
+        }
+        elPhase.textContent = `${done} / 12 concluídas`;
+      }
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 1800);
+      }
+
+      // =====================
+      // Eventos
+      // =====================
+      btnShuffle.addEventListener("click", () => {
+        setMainRandom();
+        renderExtra();
+      });
+
+      btnCoffee.addEventListener("click", () => {
+        // animar xícara
+        btnCoffee.classList.add("shake");
+        setTimeout(() => btnCoffee.classList.remove("shake"), 450);
+        // vibrar se suportado
+        if (navigator.vibrate) navigator.vibrate(50);
+        // toast
+        showToast(pick(CAFÉ));
+      });
+
+      btnMarkOne.addEventListener("click", () => {
+        if (done < 12) {
+          done++;
+          renderChips();
+          if (done === 12)
+            showToast("Boss final derrotado. Você zerou a semana.");
+        }
+      });
+
+      btnReset.addEventListener("click", () => {
+        done = 0;
+        renderChips();
+      });
+
+      // =====================
+      // Boot
+      // =====================
+      setMainRandom();
+      renderExtra();
+      renderChips();
+    </script>
+  </body>
+</html>

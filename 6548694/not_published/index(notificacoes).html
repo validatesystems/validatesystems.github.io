@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elogios de Outro Tempo</title>
+    <style>
+      :root {
+        --bg1: #0f0e17;
+        --bg2: #1a1825;
+        --accent: #ff8906;
+        --accent-2: #f25f4c;
+        --text: #fffffe;
+        --muted: #a7a9be;
+        --glow: 0 0 10px rgba(242, 95, 76, 0.6);
+      }
+
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: radial-gradient(circle at top left, var(--bg1), var(--bg2));
+        color: var(--text);
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+
+      h1 {
+        text-align: center;
+        margin-top: 60px;
+        font-size: 2.4rem;
+        color: var(--accent);
+        text-shadow: var(--glow);
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        padding: 60px 10%;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        position: relative;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 0 20px rgba(242, 95, 76, 0.3);
+      }
+
+      .emoji {
+        font-size: 2rem;
+        text-align: center;
+        display: block;
+        margin-bottom: 15px;
+      }
+
+      .card p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      .shine {
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+          120deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transform: skewX(-20deg);
+      }
+
+      .card:hover .shine {
+        animation: shineMove 1.5s forwards;
+      }
+
+      @keyframes shineMove {
+        from {
+          left: -75%;
+        }
+        to {
+          left: 125%;
+        }
+      }
+
+      footer {
+        text-align: center;
+        padding: 40px;
+        font-style: italic;
+        color: var(--muted);
+      }
+
+      @keyframes floaty {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      h1 span {
+        display: inline-block;
+        animation: floaty 3s ease-in-out infinite;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1><span>✨</span> Elogios de Outro Tempo <span>🧚‍♀️</span></h1>
+
+    <div class="cards">
+      <div class="card">
+        <div class="shine"></div>
+        <div class="emoji">😏</div>
+        <p>
+          Você tem o talento raro de transformar pauta séria em sessão de
+          risadas — e, no meio disso, ainda ensinar algo sem parecer que está
+          ensinando. É tipo stand-up pedagógico com trilha sonora emocional. 🎙️
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="shine"></div>
+        <div class="emoji">🌊</div>
+        <p>
+          Há quem traga calmaria, e há quem traga maré. Você traz as duas.
+          Inspira, bagunça, e depois arruma — do seu jeito. Intensidade não é
+          exagero quando é sincera. 💭
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="shine"></div>
+        <div class="emoji">💫</div>
+        <p>
+          Seu humor é tipo GPS emocional: sempre encontra o caminho pra leveza,
+          mesmo quando o assunto é sério. E o mais curioso é que, com você, até
+          o silêncio ri. 😌
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="shine"></div>
+        <div class="emoji">🌙</div>
+        <p>
+          Há luz em você — mas não dessas que cegam, e sim das que revelam o que
+          estava apagado nos outros. Uma espécie de farol sereno, que ilumina
+          até sem querer. ✨
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="shine"></div>
+        <div class="emoji">😈</div>
+        <p>
+          Você tem aquele dom irritante de deixar qualquer um sério repensando a
+          própria seriedade. É tipo um glitch de humor no sistema da lógica. E,
+          sinceramente, que sorte a de quem presenciou isso. 😌
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="shine"></div>
+        <div class="emoji">💌</div>
+        <p>
+          Algumas pessoas ensinam, outras encantam. Você faz os dois sem
+          esforço. E o mais bonito é que o encanto não vem do que você mostra —
+          vem do que você desperta. 🌹
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      Nem todos os elogios cabem em palavras, mas este é um bom começo. 🌕
+    </footer>
+  </body>
+</html>
