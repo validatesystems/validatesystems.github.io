@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Boa Noite — Cléia</title>
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694",
+      };
+    </script>
+
+    <style>
+      :root[data-theme="light"] {
+        --bg1: #f7f4ff;
+        --bg2: #dfe4ff;
+        --accent: #9a8cff;
+        --ink: #27233a;
+        --muted: #6e6887;
+        --card: rgba(255, 255, 255, 0.75);
+        --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      }
+      :root[data-theme="dark"] {
+        --bg1: #0f0c20;
+        --bg2: #1d1830;
+        --accent: #b3a1ff;
+        --ink: #f0ecff;
+        --muted: #aaa0cc;
+        --card: rgba(255, 255, 255, 0.1);
+        --shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      }
+
+      body {
+        margin: 0;
+        font-family: "Georgia", serif;
+        background: radial-gradient(800px at 50% 10%, var(--bg1), var(--bg2));
+        color: var(--ink);
+        transition: background 0.6s ease, color 0.6s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        text-align: center;
+      }
+
+      .container {
+        background: var(--card);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 40px 28px;
+        max-width: 650px;
+        margin: 0 20px;
+        animation: fadeUp 1.3s ease forwards;
+        opacity: 0;
+        transform: translateY(25px);
+      }
+
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h1 {
+        font-size: 2.1rem;
+        margin-bottom: 12px;
+        color: var(--accent);
+        letter-spacing: 0.5px;
+      }
+
+      p {
+        font-size: 1.2rem;
+        line-height: 1.7;
+        background: linear-gradient(
+          90deg,
+          var(--accent),
+          var(--muted),
+          var(--accent)
+        );
+        background-size: 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 9s ease-in-out infinite;
+      }
+
+      @keyframes shine {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      button,
+      .btn-comment {
+        margin-top: 20px;
+        background: transparent;
+        border: 2px solid var(--accent);
+        border-radius: 12px;
+        padding: 10px 16px;
+        font-size: 1rem;
+        color: var(--accent);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: "Georgia", serif;
+      }
+
+      button:hover,
+      .btn-comment:hover {
+        background: var(--accent);
+        color: var(--bg1);
+        transform: scale(1.04);
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      footer {
+        margin-top: 30px;
+        font-size: 0.9rem;
+        color: var(--muted);
+        letter-spacing: 0.5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>🌙 Boa Noite, Cléia</h1>
+      <p>
+        A noite chegou com calma, como quem entende o tempo de cada coisa. Que
+        ela te envolva em silêncio bom, daqueles que descansam o corpo e alinham
+        a alma. <br /><br />
+        Que o cansaço vire ternura, que o pensamento desacelere, e que a lua te
+        lembre: você não precisa ser forte o tempo todo — só verdadeira no seu
+        jeito de sentir e ser. <br /><br />
+        Boa noite, e que os sonhos sejam lindos como o seu sorriso.
+      </p>
+
+      <div class="btn-group">
+        <button id="btnTema">Alternar tema</button>
+        <button
+          id="openComment"
+          class="btn-comment"
+          aria-label="Abrir comentário"
+        >
+          💬 Comentar
+        </button>
+      </div>
+
+      <footer>Com carinho, ._.. ... 💜</footer>
+    </div>
+
+    <script>
+      const THEME_KEY = "noite.theme";
+      const btn = document.getElementById("btnTema");
+
+      function setTheme(theme) {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem(THEME_KEY, theme);
+        btn.textContent =
+          theme === "light" ? "🌙 Modo escuro" : "☀️ Modo claro";
+        btn.style.color = theme === "light" ? "#27233a" : "#f0ecff";
+      }
+
+      function toggleTheme() {
+        const current = document.documentElement.getAttribute("data-theme");
+        const next = current === "light" ? "dark" : "light";
+        setTheme(next);
+      }
+
+      const saved = localStorage.getItem(THEME_KEY) || "dark";
+      setTheme(saved);
+      btn.addEventListener("click", toggleTheme);
+    </script>
+  </body>
+</html>
