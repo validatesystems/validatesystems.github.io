@@ -639,12 +639,39 @@
         gap: 12px;
       }
 
-      .notif-card {
+      /* .notif-card {
         background: var(--card);
         border: 1px solid var(--input-border);
         border-radius: 16px;
         padding: 12px;
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      } */
+
+      .notif-card {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+
+      .notif-card {
+        background: var(--card, rgba(255, 255, 255, 0.75));
+        padding: 1rem 1.2rem;
+        border-radius: 14px;
+        margin-bottom: 0.9rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      /* Efeito sutil ao passar o mouse */
+      .notif-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+      }
+
+      /* Mantém cor do texto consistente */
+      .notif-card h3,
+      .notif-card p {
+        color: var(--fg, #222);
       }
 
       .notif-date {
@@ -887,6 +914,13 @@
       #openSentimentosBtn:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .notif-card.clickable {
+        cursor: pointer;
+      }
+      .notif-card.clickable:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
       }
     </style>
   </head>
@@ -1255,18 +1289,29 @@
           }
           const frag = document.createDocumentFragment();
           items.forEach((n) => {
-            const wrap = document.createElement("article");
+            const href = (n.href || "").trim();
+
+            // Se há href, usa <a>; caso contrário, <article>
+            const wrap = href
+              ? document.createElement("a")
+              : document.createElement("article");
             wrap.className = "notif-card";
+            if (href) wrap.href = href;
+
+            // Guardamos atributos para o rastreamento condicional
+            wrap.setAttribute("data-title", n.titulo ?? "Sem título");
+            wrap.setAttribute("data-href", href);
+
             const date = n.data ? new Date(n.data) : null;
             const pretty =
               date && !isNaN(date) ? fmtDate.format(date) : n.data || "";
+
             wrap.innerHTML = `
-                                <p class="notif-date">🗓️ ${pretty}</p>
-                                <h3 class="notif-item-title">${
-                                  n.titulo ?? "Sem título"
-                                }</h3>
-                                <p class="notif-msg">${n.mensagem ?? ""}</p>
-                              `;
+            <p class="notif-date">🗓️ ${pretty}</p>
+            <h3 class="notif-item-title">${n.titulo ?? "Sem título"}</h3>
+            <p class="notif-msg">${n.mensagem ?? ""}</p>
+          `;
+
             frag.appendChild(wrap);
           });
           notifList.innerHTML = "";
@@ -1315,11 +1360,11 @@
             renderNotifications(filtered);
           } catch (err) {
             notifList.innerHTML = `
-      <div class="notif-card">
-        <p class="notif-item-title">Não foi possível carregar</p>
-        <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
-      </div>
-    `;
+            <div class="notif-card">
+              <p class="notif-item-title">Não foi possível carregar</p>
+              <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
+            </div>
+          `;
           } finally {
             notifList.setAttribute("aria-busy", "false");
             notifList.focus();
@@ -1344,6 +1389,29 @@
         document.addEventListener("keydown", (e) => {
           if (e.key === "Escape" && notifBackdrop.classList.contains("open"))
             closeNotificationsModal();
+        });
+
+        // Clique: navega só se houver href
+        notifList.addEventListener("click", (e) => {
+          const card = e.target.closest(".notif-card");
+          if (!card) return;
+          const href = card.dataset.href;
+          if (href) {
+            closeNotificationsModal();
+            location.href = href;
+          }
+        });
+
+        // Teclado: Enter ou Espaço disparam a navegação quando houver href
+        notifList.addEventListener("keyup", (e) => {
+          if (e.key !== "Enter" && e.key !== " ") return;
+          const card = e.target.closest(".notif-card");
+          if (!card) return;
+          const href = card.dataset.href;
+          if (href) {
+            closeNotificationsModal();
+            location.href = href;
+          }
         });
 
         refreshNotificationBadgeFromJSON();
@@ -1410,25 +1478,25 @@
               }
 
               const dateHtml = `
-            <div class="card-meta">
-              <span class="card-date" title="Data de publicação">
-                <span aria-hidden="true">🗓️</span>
-                <span>${fmt.format(d)}</span>
-              </span>
-            </div>
-          `;
+                  <div class="card-meta">
+                    <span class="card-date" title="Data de publicação">
+                      <span aria-hidden="true">🗓️</span>
+                      <span>${fmt.format(d)}</span>
+                    </span>
+                  </div>
+                `;
 
               a.innerHTML = `
-            <div class="card-head">
-              <div class="art" aria-hidden="true">${c.emoji}</div>
-              <div>
-                <h3 class="card-title">${c.title}</h3>
-                <p class="card-sub">${c.sub}</p>
-                ${dateHtml}
-              </div>
-            </div>
-            <div class="card-body">${c.desc}</div>
-          `;
+                  <div class="card-head">
+                    <div class="art" aria-hidden="true">${c.emoji}</div>
+                    <div>
+                      <h3 class="card-title">${c.title}</h3>
+                      <p class="card-sub">${c.sub}</p>
+                      ${dateHtml}
+                    </div>
+                  </div>
+                  <div class="card-body">${c.desc}</div>
+                `;
 
               a.tabIndex = 0;
               a.addEventListener("click", (e) => {
@@ -1522,9 +1590,45 @@
         }
 
         // Listener genérico (mantenha apenas um)
+        //   document.addEventListener(
+        //     "click",
+        //     (ev) => {
+        //       const el = ev.target.closest("[data-title],[data-card]");
+        //       if (!el) return;
+        //       const title =
+        //         el.getAttribute("data-title") ||
+        //         el.getAttribute("data-card") ||
+        //         el.textContent?.trim();
+        //       if (title) notifyCardClickByTitle(title);
+        //     },
+        //     { capture: true }
+        //   );
+        // })();
+
         document.addEventListener(
           "click",
           (ev) => {
+            // 1) Clique vindo do modal de notificações?
+            const notifEl = ev.target.closest(".notif-card");
+            if (notifEl) {
+              const href = (notifEl.getAttribute("data-href") || "").trim();
+              if (!href) {
+                // Notificação sem página: não navega e não envia e-mail
+                return;
+              }
+              // Envia o mesmo e-mail dos cards da home
+              const title =
+                notifEl.getAttribute("data-title") ||
+                notifEl
+                  .querySelector(".notif-item-title")
+                  ?.textContent?.trim() ||
+                "";
+              if (title) notifyCardClickByTitle(title);
+              // (navegação padrão acontece sozinha se for <a href="...">)
+              return;
+            }
+
+            // 2) Demais cliques (cards da home etc.) mantêm o comportamento existente
             const el = ev.target.closest("[data-title],[data-card]");
             if (!el) return;
             const title =
@@ -1536,6 +1640,7 @@
           { capture: true }
         );
       })();
+
       /* ===== Efeito visual ao clicar/tocar em um card ===== */
       document.addEventListener("click", (ev) => {
         const card = ev.target.closest(".card");

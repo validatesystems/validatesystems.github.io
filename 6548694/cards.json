@@ -1,5 +1,20 @@
 [
   {
+    "emoji": "⏳",
+    "title": "Cápsula do Tempo Imediato",
+    "sub": "O Teste de 24 Horas",
+    "desc": "A aplicação principal: permite ao usuário selar uma mensagem pessoal no navegador, que fica indisponível para leitura por exatamente 24 horas, promovendo a reflexão e o contraste entre o humor presente e o futuro.",
+    "href": "./index(capsula_do_tempo).html",
+    "publishedAt": "2025-11-09T11:55:00-03:00",
+    "sentimento": "Expectativa",
+    "moods": [
+      "urgência",
+      "reflexão",
+      "curiosidade",
+      "paciência"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Boa Noite, Cléia",
     "sub": "Silêncio bom, alma leve",
