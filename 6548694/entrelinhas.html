@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Entrelinhas</title>
+    <style>
+      :root {
+        --bg1: #f7f3ff;
+        --bg2: #e9fbff;
+        --ink: #291c33;
+        --muted: #6e5b78;
+        --accent: #b07cff;
+        --glow: rgba(176, 124, 255, 0.35);
+        --card: rgba(255, 255, 255, 0.72);
+        --radius: 18px;
+        --blur: blur(10px);
+        --fs-sm: clamp(14px, 1.6vw, 16px);
+        --fs-md: clamp(16px, 2.2vw, 18px);
+        --fs-lg: clamp(20px, 3vw, 26px);
+        --fs-xl: clamp(24px, 5vw, 34px);
+      }
+
+      html[data-theme="dark"] {
+        --bg1: #151019;
+        --bg2: #0e1a24;
+        --ink: #efe9f6;
+        --muted: #bdaec8;
+        --card: rgba(20, 16, 25, 0.6);
+        --glow: rgba(176, 124, 255, 0.25);
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-serif, Georgia, serif;
+        color: var(--ink);
+        background: radial-gradient(
+            1200px 800px at 20% 10%,
+            var(--bg2),
+            transparent 60%
+          ),
+          radial-gradient(1200px 900px at 80% 90%, var(--bg1), transparent 60%),
+          linear-gradient(180deg, var(--bg1), var(--bg2));
+        padding: calc(env(safe-area-inset-top) + 14px)
+          calc(env(safe-area-inset-right) + 14px)
+          calc(env(safe-area-inset-bottom) + 14px)
+          calc(env(safe-area-inset-left) + 14px);
+        overflow-x: hidden;
+        position: relative;
+        transition: background 300ms ease, color 200ms ease;
+      }
+
+      .wrap {
+        max-width: 740px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      .card {
+        background: var(--card);
+        backdrop-filter: var(--blur);
+        border-radius: var(--radius);
+        padding: clamp(18px, 4vw, 28px);
+        border: 1px solid rgba(176, 124, 255, 0.18);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .brand {
+        font-size: var(--fs-sm);
+        color: var(--muted);
+        letter-spacing: 0.3px;
+      }
+      .theme-toggle {
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: var(--fs-sm);
+        font-weight: 700;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      h1 {
+        font-size: var(--fs-xl);
+        margin: 4px 0 10px;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: var(--fs-sm);
+        margin-bottom: 14px;
+      }
+      .poem {
+        font-size: var(--fs-lg);
+        line-height: 1.65;
+      }
+      .line {
+        display: block;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .line.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .anchor {
+        text-decoration: none;
+        color: currentColor;
+        box-shadow: inset 0 -0.4em 0 rgba(176, 124, 255, 0.22);
+        transition: box-shadow 0.3s ease;
+      }
+      .anchor:hover {
+        box-shadow: inset 0 -0.9em 0 rgba(176, 124, 255, 0.28);
+      }
+
+      .signature {
+        text-align: right;
+        margin-top: 32px;
+        font-family: "Courier New", monospace;
+        font-size: clamp(18px, 4vw, 26px);
+        color: var(--muted);
+        letter-spacing: 6px;
+        opacity: 0.8;
+        animation: pulse 4s ease-in-out infinite;
+        user-select: none;
+        cursor: pointer;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          text-shadow: 0 0 4px transparent;
+          opacity: 0.75;
+        }
+        50% {
+          text-shadow: 0 0 12px var(--glow);
+          opacity: 1;
+        }
+      }
+
+      .heart {
+        position: fixed;
+        font-size: 1.6rem;
+        pointer-events: none;
+        animation: floatUp 3.2s ease-out forwards;
+        filter: drop-shadow(0 0 6px var(--glow));
+      }
+      @keyframes floatUp {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-120px) scale(1.6);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <div class="topbar">
+          <div class="brand">entrelinhas</div>
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-pressed="false"
+            title="Alternar tema"
+          >
+            <span id="themeIcon">🌙</span>
+            <span id="themeLabel">Escuro</span>
+          </button>
+        </div>
+
+        <h1>Quando o tempo aprende a ouvir</h1>
+        <p class="sub">um texto sobre instantes que viram casa</p>
+
+        <article class="poem" id="poem">
+          <span class="line">Há dias que passam depressa,</span>
+          <span class="line">como se o tempo tivesse pressa de ir embora.</span>
+          <span class="line">E há outros que se alongam,</span>
+          <span class="line"
+            >como se quisessem guardar um pouco mais do que sentimos.</span
+          >
+          <span class="line">&nbsp;</span>
+          <span class="line">O tempo é curioso…</span>
+          <span class="line"
+            >muda de ritmo conforme o olhar que o atravessa,</span
+          >
+          <span class="line">conforme a presença que o preenche.</span>
+          <span class="line">Meu Deus, como isso desafia a Física.</span>
+          <span class="line">&nbsp;</span>
+          <span class="line">Mas existem pessoas que…</span>
+          <span class="line">ah, que fazem o mundo silenciar.</span>
+          <span class="line">Não importa o lugar, nem a hora,</span>
+          <span class="line">basta o instante.</span>
+          <span class="line">A ciência explica com reações químicas,</span>
+          <span class="line"
+            >mas há coisas que só se entendem com o coração.</span
+          >
+          <span class="line"
+            >Eu chamo de <a href="#" class="anchor">colo</a>.</span
+          >
+          <span class="line">&nbsp;</span>
+          <span class="line">E há colos que não se oferecem, acontecem.</span>
+          <span class="line">São abrigo em meio ao tumulto,</span>
+          <span class="line">calmaria no meio da pressa.</span>
+          <span class="line">Mesmo que durem poucos segundos,</span>
+          <span class="line">deixam uma eternidade inteira por dentro.</span>
+        </article>
+
+        <div class="signature" id="signature">._.. ...</div>
+      </div>
+    </div>
+
+    <script>
+      const htmlEl = document.documentElement;
+      const metaColorScheme = document.querySelector(
+        'meta[name="color-scheme"]'
+      );
+      const themeToggle = document.getElementById("themeToggle");
+      const themeIcon = document.getElementById("themeIcon");
+      const themeLabel = document.getElementById("themeLabel");
+
+      function applyTheme(theme) {
+        htmlEl.setAttribute("data-theme", theme);
+        localStorage.setItem("entrelinhas.theme", theme);
+        const isDark = theme === "dark";
+        themeToggle.setAttribute("aria-pressed", String(isDark));
+        themeIcon.textContent = isDark ? "☀️" : "🌙";
+        themeLabel.textContent = isDark ? "Claro" : "Escuro";
+        if (metaColorScheme)
+          metaColorScheme.setAttribute(
+            "content",
+            isDark ? "dark light" : "light dark"
+          );
+      }
+
+      (function initTheme() {
+        const saved = localStorage.getItem("entrelinhas.theme");
+        if (saved === "light" || saved === "dark") return applyTheme(saved);
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        applyTheme(prefersDark ? "dark" : "light");
+      })();
+
+      themeToggle.addEventListener("click", () => {
+        const current =
+          htmlEl.getAttribute("data-theme") === "dark" ? "dark" : "light";
+        applyTheme(current === "dark" ? "light" : "dark");
+        if (navigator.vibrate) navigator.vibrate(8);
+      });
+
+      const lines = [...document.querySelectorAll(".line")];
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("show");
+          });
+        },
+        { threshold: 0.6 }
+      );
+      lines.forEach((l) => io.observe(l));
+
+      const signature = document.getElementById("signature");
+      signature.addEventListener("click", (e) => {
+        const numHearts = 18 + Math.floor(Math.random() * 10);
+        for (let i = 0; i < numHearts; i++) {
+          const heart = document.createElement("div");
+          heart.className = "heart";
+          heart.textContent = "💜";
+          heart.style.left = e.clientX + (Math.random() * 100 - 50) + "px";
+          heart.style.top = e.clientY + (Math.random() * 20 - 10) + "px";
+          heart.style.fontSize = 1.2 + Math.random() * 1.5 + "rem";
+          heart.style.animationDuration = 2.5 + Math.random() * 1.5 + "s";
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 3500);
+        }
+        if (navigator.vibrate) navigator.vibrate(10);
+      });
+    </script>
+  </body>
+</html>
