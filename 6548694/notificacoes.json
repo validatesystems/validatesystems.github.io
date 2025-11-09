@@ -6,12 +6,6 @@
     "href": "./index(capsula_do_tempo).html"
   },
   {
-    "data": "2025-11-09T11:55:00-03:00",
-    "titulo": "Cápsula do Tempo Imediato (24h)",
-    "mensagem": "Um experimento com o tempo. Sele uma verdade, um pensamento urgente ou uma pergunta do 'eu de hoje' para ser revelada ao 'eu de amanhã'. Apenas 24 horas de espera.",
-    "href": "./index(capsula_do_tempo).html"
-  },
-  {
     "data": "2025-11-09T00:00:00-03:00",
     "titulo": "Card não lido 08/11/2025 - Boa Noite, Cléia",
     "mensagem": "Uma página suave para encerrar o dia com calma e verdade — onde o silêncio descansa, a alma se aquieta e os sonhos chegam devagar, iluminados pela serenidade dela.",
@@ -104,4 +98,5 @@
     "titulo": "Novo card disponível",
     "mensagem": "O card 'Domingos com Você' foi adicionado — uma experiência que explica o motivo para que o tempo pareça gostar mais quando passa ao teu lado."
   }
+
 ]
