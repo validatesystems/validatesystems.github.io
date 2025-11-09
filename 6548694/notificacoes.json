@@ -1,7 +1,7 @@
 [
   {
-    "data": "2025-11-08T20:20:20-03:00",
-    "titulo": "Novo card - Boa Noite, Cléia",
+    "data": "2025-11-09T00:00:00-03:00",
+    "titulo": "Card não lido 08/11/2025 - Boa Noite, Cléia",
     "mensagem": "Uma página suave para encerrar o dia com calma e verdade — onde o silêncio descansa, a alma se aquieta e os sonhos chegam devagar, iluminados pela serenidade dela."
   },
   {
@@ -10,8 +10,8 @@
     "mensagem": "Uma página suave e luminosa — sobre acordar leve, respirar fundo e deixar o dia fluir com liberdade. Um bom domingo feito de calma, arte e alma livre, do jeito que só ela tem."
   },
   {
-    "data": "2025-11-08T18:52:00-03:00",
-    "titulo": "Novo card - Espelho de Ironias",
+    "data": "2025-11-09T00:00:00-03:00",
+    "titulo": "Card não lido 08/11/2025 - Espelho de Ironias",
     "mensagem": "Uma página interativa que reflete o lado divertido e sincero das palavras — onde a ironia encontra a verdade, e o sarcasmo revela afeto. Um espelho leve e provocante, feito sob medida para ela."
   },
   {
@@ -89,4 +89,5 @@
     "titulo": "Novo card disponível",
     "mensagem": "O card 'Domingos com Você' foi adicionado — uma experiência que explica o motivo para que o tempo pareça gostar mais quando passa ao teu lado."
   }
+
 ]
