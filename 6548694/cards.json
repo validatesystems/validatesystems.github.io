@@ -1,5 +1,21 @@
 [
   {
+    "emoji": "🌤️",
+    "title": "Bom dia, Cléia",
+    "sub": "Entre ironia e calma, o encanto de começar o dia",
+    "desc": "Poema que celebra o jeito único dela de transformar o caos em leveza — com humor, elegância e um brilho discreto que ilumina até as segundas-feiras.",
+    "href": "./index(bom_dia_cleia).html",
+    "publishedAt": "2025-11-10T04:03:23-03:00",
+    "sentimento": "Admiração serena",
+    "moods": [
+      "leveza",
+      "ironia sutil",
+      "calma",
+      "encanto matinal",
+      "afeição contida"
+    ]
+  },
+  {
     "emoji": "💫",
     "title": "Entrelinhas",
     "sub": "O que é sentido não precisa ser explicado",
