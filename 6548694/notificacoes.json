@@ -17,6 +17,12 @@
     "mensagem": "Uma página sutil, feita para quem entende o que não é dito. Um texto sobre o tempo, a presença e os instantes que se transformam em abrigo.",
     "href": "./entrelinhas.html"
   },
+   {
+    "data": "2025-11-10T00:00:00-03:00",
+    "titulo": "Entrelinhas",
+    "mensagem": "Uma página sutil, feita para quem entende o que não é dito. Um texto sobre o tempo, a presença e os instantes que se transformam em abrigo.",
+    "href": "./entrelinhas.html"
+  },
   {
     "data": "2025-11-08T00:00:00-03:00",
     "titulo": "Novo card - Bem Me Queira",
@@ -92,4 +98,5 @@
     "titulo": "Novo card disponível",
     "mensagem": "O card 'Domingos com Você' foi adicionado — uma experiência que explica o motivo para que o tempo pareça gostar mais quando passa ao teu lado."
   }
+
 ]
