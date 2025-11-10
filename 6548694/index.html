@@ -191,19 +191,6 @@
         opacity: 0.75;
         font-size: 14px;
       }
-
-      /* .btn {
-        appearance: none;
-        border: none;
-        border-radius: 12px;
-        padding: 10px 14px;
-        font-weight: 700;
-        cursor: pointer;
-        background: var(--accent);
-        color: #fff;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-        transition: transform 0.08s ease, filter 0.2s ease;
-      } */
       .btn {
         appearance: none;
         border: none;
@@ -639,14 +626,6 @@
         gap: 12px;
       }
 
-      /* .notif-card {
-        background: var(--card);
-        border: 1px solid var(--input-border);
-        border-radius: 16px;
-        padding: 12px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-        } */
-
       .notif-card {
         text-decoration: none;
         color: inherit;
@@ -1031,9 +1010,9 @@
         </div>
 
         <div class="actions">
-          <button id="openSentimentosBtn" class="btn">
+          <!-- <button id="openSentimentosBtn" class="btn">
             💭 Como você está se sentindo?
-          </button>
+          </button> -->
 
           <!-- Botão Notificações -->
           <a
@@ -1589,22 +1568,6 @@
           }
         }
 
-        // Listener genérico (mantenha apenas um)
-        //   document.addEventListener(
-        //     "click",
-        //     (ev) => {
-        //       const el = ev.target.closest("[data-title],[data-card]");
-        //       if (!el) return;
-        //       const title =
-        //         el.getAttribute("data-title") ||
-        //         el.getAttribute("data-card") ||
-        //         el.textContent?.trim();
-        //       if (title) notifyCardClickByTitle(title);
-        //     },
-        //     { capture: true }
-        //   );
-        // })();
-
         document.addEventListener(
           "click",
           (ev) => {
@@ -1759,7 +1722,14 @@
           id: "inspirado",
           label: "Inspirada",
           polarity: "pos",
-          tags: ["inspirado", "criativo", "esperança", "brilho"],
+          tags: [
+            "inspirado",
+            "criativo",
+            "esperança",
+            "brilho",
+            "carinho",
+            "humor do dia",
+          ],
         },
         {
           id: "ironico",
