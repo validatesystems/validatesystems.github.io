@@ -4,7 +4,7 @@
     "title": "Bilhetinhos para alguém",
     "sub": "Carinho, ironia e morde & assopra no ritmo do dia",
     "desc": "Uma coleção viva de bilhetes, ora provocam, ora acalmam, com filtros de Favoritos/Não lidos, 'Sugerido do dia' e tema claro/escuro. Cada nota pode ser aberta, favoritada, copiada ou enviada por WhatsApp.",
-    "href": "./index(bilhetinhos).html",
+    "href": "./bilhetinhos.html",
     "publishedAt": "2025-11-10T05:04:02-03:00",
     "sentimento": "Afeto brincalhão",
     "moods": [
@@ -20,7 +20,7 @@
     "title": "Bom dia, Cléia",
     "sub": "Entre ironia e calma, o encanto de começar o dia",
     "desc": "Poema que celebra o jeito único dela de transformar o caos em leveza — com humor, elegância e um brilho discreto que ilumina até as segundas-feiras.",
-    "href": "./index(bom_dia_cleia).html",
+    "href": "./bom_dia_cleia.html",
     "publishedAt": "2025-11-10T04:03:23-03:00",
     "sentimento": "Admiração serena",
     "moods": [
@@ -36,7 +36,7 @@
     "title": "Entrelinhas",
     "sub": "O que é sentido não precisa ser explicado",
     "desc": "Um espaço poético que fala sobre o tempo e as presenças que o desafiam — quando o instante se torna casa e o silêncio, companhia.",
-    "href": "./index(entrelinhas).html",
+    "href": "./entrelinhas.html",
     "publishedAt": "2025-11-09T18:50:00-03:00",
     "sentimento": "Serenidade",
     "moods": [
