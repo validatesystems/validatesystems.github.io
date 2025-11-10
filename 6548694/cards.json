@@ -1,5 +1,21 @@
 [
   {
+    "emoji": "💌",
+    "title": "Bilhetinhos para alguém",
+    "sub": "Carinho, ironia e morde & assopra no ritmo do dia",
+    "desc": "Uma coleção viva de bilhetes, ora provocam, ora acalmam, com filtros de Favoritos/Não lidos, 'Sugerido do dia' e tema claro/escuro. Cada nota pode ser aberta, favoritada, copiada ou enviada por WhatsApp.",
+    "href": "./index(bilhetinhos).html",
+    "publishedAt": "2025-11-10T05:04:02-03:00",
+    "sentimento": "Afeto brincalhão",
+    "moods": [
+      "carinho",
+      "ironia sutil",
+      "morde e assopra",
+      "leveza",
+      "humor do dia"
+    ]
+  },
+  {
     "emoji": "🌤️",
     "title": "Bom dia, Cléia",
     "sub": "Entre ironia e calma, o encanto de começar o dia",
