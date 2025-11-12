@@ -5,7 +5,7 @@
     "sub": "Um texto que fica aqui em silêncio.",
     "desc": "Entre o que sinto e o que posso dizer",
     "href": "./fim.html",
-    "publishedAt": "2025-11-12T20:00:00-03:00",
+    "publishedAt": "2025-11-12T19:26:00-03:00",
     "sentimento": "Despedida",
     "moods": ["adeus", "despedida", "tempo", "silêncio"]
   },
@@ -502,3 +502,4 @@
     "moods": ["contentamento", "feliz", "leve"]
   }
 ]
+
