@@ -1,6 +1,12 @@
 [
   {
     "data": "2025-11-12T20:00:00-03:00",
+    "titulo": "Novo card - Registro de um tempo",
+    "mensagem": "Um texto que fica aqui em silêncio.",
+    "href": "./fim.html"
+  },
+  {
+    "data": "2025-11-12T20:00:00-03:00",
     "titulo": "Novo card - Boa noite",
     "mensagem": "Uma boa noite leve e irônica que termina com um pensamento sutil sobre quem faz o dia valer mais.",
     "href": "./boanoite121125.html"
