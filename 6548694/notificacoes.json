@@ -1,5 +1,41 @@
 [
   {
+    "data": "2025-11-12T20:00:00-03:00",
+    "titulo": "Novo card - Boa noite",
+    "mensagem": "Uma boa noite leve e irônica que termina com um pensamento sutil sobre quem faz o dia valer mais.",
+    "href": "./boanoite121125.html"
+  },
+  {
+    "data": "2025-11-12T18:00:00-03:00",
+    "titulo": "Novo card — 18h: terminou, mas ainda não",
+    "mensagem": "Um fim de tarde com humor e leve ironia — pra quem já desligou o computador, mas continua online na cabeça.",
+    "href": "./18hterminou.html"
+  },
+  {
+    "data": "2025-11-12T15:00:00-03:00",
+    "titulo": "Novo card — Meio da tarde",
+    "mensagem": "Uma pausa com leve ironia — pra quem tá sobrevivendo ao meio da tarde com café e pensamentos disfarçados.",
+    "href": "./meiodatarde.html"
+  },
+  {
+    "data": "2025-11-12T12:23:00-03:00",
+    "titulo": "Novo card — Depois do almoço",
+    "mensagem": "Uma pausa entre o foco e o devaneio, pra quem jura que abriu o celular só pra ver a hora.",
+    "href": "./depoisdoalmoco.html"
+  },
+  {
+    "data": "2025-11-12T09:30:00-03:00",
+    "titulo": "Novo card — No meio do dia",
+    "mensagem": "Uma pausa disfarçada de produtividade — pra quem abriu o celular dizendo que era só um minuto.",
+    "href": "./nomeiododia.html"
+  },
+  {
+    "data": "2025-11-12T04:23:12-03:00",
+    "titulo": "Novo card — Bora encarar o dia?",
+    "mensagem": "Bom dia para quem está negociando com o despertador.",
+    "href": "./bomdia_12_11_25.html"
+  },
+  {
     "data": "2025-11-11T19:11:40-03:00",
     "titulo": "Novo card — Boa noite - depois de um dia puxado",
     "mensagem": "Uma página para desejar uma boa noite especial, feita com carinho.",

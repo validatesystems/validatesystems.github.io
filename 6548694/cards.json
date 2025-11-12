@@ -1,6 +1,96 @@
 [
   {
     "emoji": "🌙",
+    "title": "Boa noite",
+    "sub": "Leve, engraçada e com indiretas sutis",
+    "desc": "Uma boa noite que admite o cansaço, brinca com a ironia e deixa um pensamento leve no ar.",
+    "href": "./boanoite121125.html",
+    "publishedAt": "2025-11-12T20:00:00-03:00",
+    "sentimento": "Calma irônica",
+    "moods": [
+      "leveza",
+      "ironia",
+      "serenidade",
+      "lembrança"
+    ]
+  },
+  {
+    "emoji": "🕕",
+    "title": "18h: terminou, mas ainda não",
+    "sub": "Fim de expediente (na teoria)",
+    "desc": "Um fim de tarde com humor e leve ironia — pra quem já desligou o computador, mas continua online na cabeça.",
+    "href": "./18hterminou.html",
+    "publishedAt": "2025-11-12T18:00:00-03:00",
+    "sentimento": "Cansaço bem-humorado",
+    "moods": [
+      "ironia",
+      "leveza",
+      "cansaço",
+      "pensamento solto"
+    ]
+  },
+  {
+    "emoji": "☕",
+    "title": "Meio da tarde",
+    "sub": "Entre o foco e a desistência (com humor e cafeína)",
+    "desc": "Uma pausa com leve ironia — pra quem tá sobrevivendo ao meio da tarde com café e pensamentos disfarçados.",
+    "href": "./meiodatarde.html",
+    "publishedAt": "2025-11-12T15:00:00-03:00",
+    "sentimento": "Leveza com ironia",
+    "moods": [
+      "cansaço",
+      "humor",
+      "leveza",
+      "lembrança"
+    ]
+  },
+  {
+    "emoji": "🥱",
+    "title": "Depois do almoço",
+    "sub": "Tentando parecer produtivo (e disfarçar o sono)",
+    "desc": "Uma pausa entre o foco e o devaneio, pra quem jura que abriu o celular só pra ver a hora.",
+    "href": "./depoisdoalmoco.html",
+    "publishedAt": "2025-11-12T12:23:00-03:00",
+    "sentimento": "Distração sincera",
+    "moods": [
+      "preguiça boa",
+      "ironia",
+      "leveza",
+      "saudade"
+    ]
+  },
+  {
+    "emoji": "📱",
+    "title": "No meio do dia",
+    "sub": "Entre tarefas, pensamentos e notificações que não chegam",
+    "desc": "Uma pausa disfarçada de produtividade — pra quem abriu o celular dizendo que era só um minuto.",
+    "href": "./nomeiododia.html",
+    "publishedAt": "2025-11-12T09:30:00-03:00",
+    "sentimento": "Saudade disfarçada",
+    "moods": [
+      "saudade",
+      "ironia",
+      "curiosidade",
+      "leveza"
+    ]
+  },
+  {
+    "emoji": "☀️",
+    "title": "Bora encarar o dia?",
+    "sub": "Bom dia, com palavras leves.",
+    "desc": "Uma página de bom dia para quem está negociando com o despertador.",
+    "href": "./bomdia_12_11_25.html",
+    "publishedAt": "2025-11-12T04:23:12-03:00",
+    "sentimento": "Carinho",
+    "moods": [
+      "carinho",
+      "afeto",
+      "leveza",
+      "paz"
+    ]
+  },
+  {
+    "emoji": "🌙",
     "title": "Boa noite - depois de um dia puxado.",
     "sub": "Boa noite com carinho.",
     "desc": "Uma página para desejar uma boa noite especial, feita com carinho.",
