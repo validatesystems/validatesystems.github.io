@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Quatro momentos de um pensamento</title>
+    <style>
+      :root {
+        --bg1: #f5f3ff;
+        --bg2: #e0f2fe;
+        --fg: #111827;
+        --muted: #6b7280;
+        --card: rgba(255, 255, 255, 0.94);
+        --accent: #7c3aed;
+        --accent-soft: rgba(124, 58, 237, 0.12);
+        --shadow: 0 18px 50px rgba(15, 23, 42, 0.22);
+        --badge-bg: rgba(15, 23, 42, 0.04);
+      }
+
+      [data-theme="dark"] {
+        --bg1: #020617;
+        --bg2: #111827;
+        --fg: #e5e7eb;
+        --muted: #9ca3af;
+        --card: rgba(15, 23, 42, 0.96);
+        --accent: #a855f7;
+        --accent-soft: rgba(168, 85, 247, 0.16);
+        --shadow: 0 18px 50px rgba(0, 0, 0, 0.9);
+        --badge-bg: rgba(15, 23, 42, 0.8);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--fg);
+        background: radial-gradient(circle at top left, var(--bg2), var(--bg1));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .wrapper {
+        width: 100%;
+        max-width: 880px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 780px;
+        background: var(--card);
+        border-radius: 26px;
+        padding: 22px 20px 18px;
+        box-shadow: var(--shadow);
+        position: relative;
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(148, 163, 184, 0.26);
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at top right,
+          var(--accent-soft),
+          transparent 55%
+        );
+        pointer-events: none;
+        opacity: 0.9;
+      }
+
+      .card-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      header.card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .title-group {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .label {
+        font-size: 0.74rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .title {
+        font-size: 1.18rem;
+        font-weight: 600;
+      }
+
+      .subtitle {
+        font-size: 0.85rem;
+        color: var(--muted);
+        max-width: 520px;
+      }
+
+      .theme-toggle {
+        border: none;
+        outline: none;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.06);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.15s ease,
+          box-shadow 0.15s ease;
+        box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.4);
+        font-size: 0.9rem;
+      }
+
+      .theme-toggle:hover {
+        transform: translateY(-1px);
+        background: rgba(15, 23, 42, 0.12);
+      }
+
+      .theme-toggle:active {
+        transform: translateY(0);
+        box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.7);
+      }
+
+      [data-theme="dark"] .theme-toggle {
+        background: rgba(15, 23, 42, 0.85);
+      }
+
+      .theme-toggle span {
+        pointer-events: none;
+      }
+
+      .hint {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+
+      .stages {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .stage {
+        padding: 12px 12px 10px;
+        border-radius: 16px;
+        background: rgba(248, 250, 252, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        position: relative;
+        overflow: hidden;
+      }
+
+      [data-theme="dark"] .stage {
+        background: rgba(15, 23, 42, 0.9);
+      }
+
+      .stage-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
+
+      .stage-time {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .badge-time {
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: var(--badge-bg);
+        border: 1px solid rgba(148, 163, 184, 0.4);
+      }
+
+      .stage-status {
+        font-size: 0.78rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.7);
+      }
+
+      .stage.unlocked .dot {
+        background: #22c55e;
+      }
+
+      .stage.locked .dot {
+        background: #fbbf24;
+      }
+
+      .stage-body {
+        font-size: 0.94rem;
+        line-height: 1.6;
+      }
+
+      .stage-body p {
+        margin: 0 0 0.6rem;
+        text-align: justify;
+      }
+
+      .stage-body p:last-of-type {
+        margin-bottom: 0.1rem;
+      }
+
+      .small-note {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 18px;
+        text-align: right;
+      }
+
+      .small-note span {
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        background: var(--badge-bg);
+      }
+
+      @media (max-width: 640px) {
+        .card {
+          padding: 16px 14px 14px;
+          border-radius: 20px;
+        }
+
+        .title {
+          font-size: 1.05rem;
+        }
+
+        .subtitle {
+          font-size: 0.8rem;
+        }
+
+        .stage-body {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <main class="card">
+        <div class="card-inner">
+          <header class="card-header">
+            <div class="title-group">
+              <span class="label">Mensagens em quatro horários</span>
+              <h1 class="title">Quando o dia lembra de alguém</h1>
+              <p class="subtitle">
+                Uma mensagem que não aparece de uma vez: ela se constrói em
+                quatro momentos do dia. Se você estiver aqui em um deles, talvez
+                perceba que não é sobre o dia em si.
+              </p>
+            </div>
+            <button
+              class="theme-toggle"
+              type="button"
+              id="themeToggle"
+              aria-label="Alternar tema claro ou escuro"
+            >
+              <span id="themeIcon">🌙</span>
+            </button>
+          </header>
+
+          <p class="hint">
+            As partes desta mensagem aparecem de acordo com o horário do seu
+            aparelho. Se algo ainda não apareceu, talvez seja porque ainda não
+            chegou a hora.
+          </p>
+
+          <section class="stages" aria-label="Etapas da mensagem">
+            <article class="stage locked" data-hour="9">
+              <div class="stage-header">
+                <div class="stage-time">
+                  <span class="badge-time">09h</span>
+                  <span>Primeiro momento</span>
+                </div>
+                <div class="stage-status">
+                  <span class="dot"></span>
+                  <span class="status-text">Aguardando horário</span>
+                </div>
+              </div>
+              <div class="stage-body" data-stage-body="9"></div>
+            </article>
+
+            <article class="stage locked" data-hour="12">
+              <div class="stage-header">
+                <div class="stage-time">
+                  <span class="badge-time">12h</span>
+                  <span>Metade do dia</span>
+                </div>
+                <div class="stage-status">
+                  <span class="dot"></span>
+                  <span class="status-text">Aguardando horário</span>
+                </div>
+              </div>
+              <div class="stage-body" data-stage-body="12"></div>
+            </article>
+
+            <article class="stage locked" data-hour="15">
+              <div class="stage-header">
+                <div class="stage-time">
+                  <span class="badge-time">15h</span>
+                  <span>Entre pausas e pensamentos</span>
+                </div>
+                <div class="stage-status">
+                  <span class="dot"></span>
+                  <span class="status-text">Aguardando horário</span>
+                </div>
+              </div>
+              <div class="stage-body" data-stage-body="15"></div>
+            </article>
+
+            <article class="stage locked" data-hour="18">
+              <div class="stage-header">
+                <div class="stage-time">
+                  <span class="badge-time">18h</span>
+                  <span>Quando o dia desacelera</span>
+                </div>
+                <div class="stage-status">
+                  <span class="dot"></span>
+                  <span class="status-text">Aguardando horário</span>
+                </div>
+              </div>
+              <div class="stage-body" data-stage-body="18"></div>
+            </article>
+          </section>
+
+          <div class="small-note">
+            <span
+              >Se você chegou aqui em qualquer um desses horários, talvez o dia
+              esteja sendo mais sincero do que parece.</span
+            >
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        // Tema claro/escuro
+        const root = document.documentElement;
+        const toggle = document.getElementById("themeToggle");
+        const icon = document.getElementById("themeIcon");
+
+        function applyTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          localStorage.setItem("saudade-theme", theme);
+          icon.textContent = theme === "dark" ? "☀️" : "🌙";
+        }
+
+        const saved = localStorage.getItem("saudade-theme");
+        if (saved === "dark" || saved === "light") {
+          applyTheme(saved);
+        } else {
+          applyTheme("light");
+        }
+
+        toggle.addEventListener("click", () => {
+          const current =
+            root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          applyTheme(current);
+        });
+
+        // Conteúdo por horário
+        const stagesConfig = {
+          9: {
+            text: `
+              <p>
+                Cléia, hoje o dia me acordou com aquela saudade inesperada. 
+                Não pela ausência, mas pelos momentos em que aquela preseça marcante te encanta com seus sorrizos e energia contagiante.
+                Não importa se são minutos ou horas (presencial ou virtual), cada momento com você fica eternizado e resolve brincar de saudade comigo.
+              </p>
+              <p>
+                <em>A mensagem continua mais tarde. Volte aqui as 12h para ver a próxima parte.</em>
+              </p>
+            `,
+            nextHour: "12h",
+          },
+          12: {
+            text: `
+            <p>
+              As vezes, no meio do dia, me pego lembrando de detalhes simples:
+              um jeito de falar, um olhar rapido, uma ironia que só você sabe usar.
+              Coisas pequenas, mas que ficam.
+            </p>
+              <p>
+                Você tem um jeito encantador de ser. Admiro o ser humano que você é, mas me encanto com a sua alma. Posso sentir e não posso negar isso. (já expliquei como isso funciona pra mim).
+                Por isso, você tem e sempre terá o melhor de mim (a menos que você não queira). Falo isso racionalmente pois eu funciono assim. Só peço para não se aproveitar muito disso (rs), brincadeira, você pode.
+              </p>
+              <p>
+                Coisas que dizem muito, mesmo sem precisar de muita explicacao.
+              </p>
+              <p>
+                <em>A mensagem continua mais tarde. Volte aqui as 15h para ver a próxima parte.</em>
+              </p>
+            `,
+            nextHour: "15h",
+          },
+          15: {
+            text: `
+              <p>
+                É curioso como certas pessoas ocupam um espaço que nao pediram,
+                um espaço que se faz sozinho.
+                Discreto, silencioso, mas impossivel de ignorar.
+              </p>
+              <p>
+                É como se o dia tivesse um ponto fixo, mesmo quando tudo em volta muda.
+              </p>
+              <p>
+                <em>A mensagem continua mais tarde. Volte aqui as 18h para ver a próxima parte.</em>
+              </p>
+            `,
+            nextHour: "18h",
+          },
+          18: {
+            text: `
+              <p>
+                No fim do dia essa sensação sempre volta:
+                o mundo parece um pouco mais cheio quando você aparece nele.
+                E um pouco mais vazio quando não.
+              </p>
+              <p>
+                Nao é sobre drama, nem exagero. É só sobre perceber que algumas presenças
+                fazem falta mesmo quando fingimos que esta tudo sob controle.
+              </p>
+            `,
+          },
+        };
+
+        const teaserTemplate = (hourLabel) =>
+          `Cleía, tem mais mensagem pra você. Volte aqui as ${hourLabel} para visualizar!`;
+
+        const now = new Date();
+        const currentHour = now.getHours(); // horário do dispositivo
+
+        const stageElements = document.querySelectorAll(".stage");
+        stageElements.forEach((stageEl) => {
+          const hour = Number(stageEl.getAttribute("data-hour"));
+          const bodyEl = stageEl.querySelector("[data-stage-body]");
+          const statusText = stageEl.querySelector(".status-text");
+
+          if (currentHour >= hour) {
+            // etapa liberada
+            stageEl.classList.remove("locked");
+            stageEl.classList.add("unlocked");
+
+            const cfg = stagesConfig[hour];
+            if (cfg && cfg.text) {
+              bodyEl.innerHTML = cfg.text;
+            } else {
+              bodyEl.textContent =
+                "Algo deveria estar aqui, mas ainda nao escrevi esta parte.";
+            }
+
+            statusText.textContent = "Disponivel para ler";
+          } else {
+            // etapa ainda nao chegou
+            stageEl.classList.remove("unlocked");
+            stageEl.classList.add("locked");
+            const label = hour.toString().padStart(2, "0") + "h";
+            bodyEl.textContent = teaserTemplate(label);
+            statusText.textContent = "Aguarde o horario";
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
