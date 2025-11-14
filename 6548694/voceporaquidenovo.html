@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Você por aqui de novo?</title>
+    <style>
+      :root {
+        --bg1: #020617;
+        --bg2: #0b1120;
+        --bg3: #1f2937;
+        --fg: #e5e7eb;
+        --muted: #9ca3af;
+        --accent: #a855f7;
+        --accent-soft: rgba(168, 85, 247, 0.18);
+        --card: rgba(15, 23, 42, 0.96);
+        --shadow: 0 22px 60px rgba(0, 0, 0, 0.9);
+        --ring: 0 0 0 1px rgba(148, 163, 184, 0.55);
+      }
+
+      [data-theme="light"] {
+        --bg1: #f5f3ff;
+        --bg2: #e0f2fe;
+        --bg3: #e5e7eb;
+        --fg: #111827;
+        --muted: #6b7280;
+        --accent: #7c3aed;
+        --accent-soft: rgba(124, 58, 237, 0.16);
+        --card: rgba(255, 255, 255, 0.98);
+        --shadow: 0 22px 60px rgba(15, 23, 42, 0.28);
+        --ring: 0 0 0 1px rgba(148, 163, 184, 0.5);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--fg);
+        background: radial-gradient(circle at top, var(--bg3), var(--bg1) 55%),
+          radial-gradient(circle at bottom, var(--bg2), var(--bg1) 60%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        position: relative;
+        overflow: auto;
+      }
+
+      /* Fundo com "profundidade" suave */
+
+      .glow,
+      .glow-2 {
+        position: fixed;
+        inset: -120px;
+        pointer-events: none;
+        opacity: 0.9;
+      }
+
+      .glow::before,
+      .glow-2::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-repeat: no-repeat;
+      }
+
+      .glow::before {
+        background-image: radial-gradient(
+          circle at 10% 0%,
+          rgba(129, 140, 248, 0.5),
+          transparent 60%
+        );
+        animation: float-glow-1 32s linear infinite;
+      }
+
+      .glow-2::before {
+        background-image: radial-gradient(
+          circle at 90% 100%,
+          rgba(244, 114, 182, 0.45),
+          transparent 60%
+        );
+        animation: float-glow-2 46s linear infinite;
+      }
+
+      @keyframes float-glow-1 {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        50% {
+          transform: translate3d(-40px, 35px, 0);
+        }
+        100% {
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      @keyframes float-glow-2 {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        50% {
+          transform: translate3d(35px, -30px, 0);
+        }
+        100% {
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      .wrapper {
+        width: 100%;
+        max-width: 960px;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 760px;
+        background: var(--card);
+        border-radius: 26px;
+        padding: 22px 20px 18px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fade-in 0.8s ease-out forwards;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -20%;
+        background: radial-gradient(
+            circle at top right,
+            var(--accent-soft),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(56, 189, 248, 0.18),
+            transparent 65%
+          );
+        pointer-events: none;
+      }
+
+      .card-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      @keyframes fade-in {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      header.card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .title-group {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .label {
+        font-size: 0.74rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .title {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .subtitle {
+        font-size: 0.86rem;
+        color: var(--muted);
+        max-width: 520px;
+      }
+
+      .theme-toggle {
+        border: none;
+        outline: none;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.7);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.15s ease,
+          box-shadow 0.15s ease;
+        box-shadow: var(--ring);
+        font-size: 0.92rem;
+        color: var(--fg);
+      }
+
+      [data-theme="light"] .theme-toggle {
+        background: rgba(255, 255, 255, 0.96);
+      }
+
+      .theme-toggle:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.7);
+      }
+
+      .theme-toggle:active {
+        transform: translateY(0);
+      }
+
+      .message {
+        margin-top: 10px;
+        font-size: 0.98rem;
+        line-height: 1.7;
+      }
+
+      .message p {
+        margin: 0 0 0.95rem;
+        text-align: justify;
+      }
+
+      .message p:last-of-type {
+        margin-bottom: 0.3rem;
+      }
+
+      .closing {
+        margin-top: 1.3rem;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .footer-row {
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .note {
+        font-size: 0.78rem;
+        color: var(--muted);
+        opacity: 0.9;
+      }
+
+      .note span {
+        display: inline-block; /* ou block */
+        width: 100%;
+        padding: 6px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        background: rgba(15, 23, 42, 0.4);
+        box-sizing: border-box;
+        line-height: 1.4;
+      }
+
+
+      [data-theme="light"] .note span {
+        background: rgba(255, 255, 255, 0.96);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border-radius: 999px;
+        border: none;
+        outline: none;
+        padding: 7px 14px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: transform 0.12s ease, box-shadow 0.12s ease,
+          background 0.12s ease, color 0.12s ease;
+        white-space: nowrap;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), #38bdf8);
+        color: #0b1120;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.7);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.85);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
+      }
+
+      .btn-ghost {
+        background: rgba(15, 23, 42, 0.45);
+        color: var(--fg);
+        box-shadow: var(--ring);
+      }
+
+      [data-theme="light"] .btn-ghost {
+        background: rgba(255, 255, 255, 0.98);
+      }
+
+      .btn-ghost:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.7);
+      }
+
+      .btn-ghost:active {
+        transform: translateY(0);
+      }
+
+      .btn span {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .pulse {
+        animation: pulse-soft 0.6s ease-out;
+      }
+
+      @keyframes pulse-soft {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.015);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .card {
+          padding: 16px 14px 14px;
+          border-radius: 20px;
+        }
+
+        .title {
+          font-size: 1.08rem;
+        }
+
+        .subtitle {
+          font-size: 0.8rem;
+        }
+
+        .message {
+          font-size: 0.95rem;
+        }
+
+        .footer-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow"></div>
+    <div class="glow-2"></div>
+
+    <div class="wrapper">
+      <main class="card" id="card">
+        <div class="card-inner">
+          <header class="card-header">
+            <div class="title-group">
+              <span class="label">Surpresa discreta</span>
+              <h1 class="title">Você por aqui de novo?</h1>
+              <p class="subtitle">
+                Uma página para quando você entra só para ver se tem algo novo
+                e, sem querer, encontra uma reflexão que talvez estivesse
+                esperando você chegar.
+              </p>
+            </div>
+            <button
+              class="theme-toggle"
+              type="button"
+              id="themeToggle"
+              aria-label="Alternar tema claro ou escuro">
+              <span id="themeIcon">☀️</span>
+            </button>
+          </header>
+
+          <section class="message" aria-label="Reflexão">
+            <p>Olá, Cléia. Você por aqui de novo?</p>
+            <p>
+              Engraçado como certas páginas acabam virando um pequeno desvio na
+              rotina, né? Às vezes a gente entra só para ver se tem algo novo,
+              outras vezes é só para respirar um pouco diferente do resto do
+              dia.
+            </p>
+            <p>
+              Mas já que você chegou até aqui, deixa eu te deixar uma coisa para
+              pensar, nada demais, só uma daquelas reflexões que passam quietas,
+              mas ficam.
+            </p>
+            <p>
+              Tem momentos da vida em que tudo parece estável por fora, mas por
+              dentro existe aquela sensação discreta de que algo não encaixa tão
+              bem quanto deveria. Não é exatamente tristeza, nem algo dramático.
+              É só aquela percepção suave de que a gente merece mais leveza do
+              que tem recebido.
+            </p>
+            <p>
+              E não falo de grandes mudanças ou decisões repentinas. Falo do
+              simples ato de se observar com sinceridade, como você se sente
+              quando está sozinha, o que o seu silêncio te conta quando ninguém
+              está olhando, o que ainda te aquece e o que já não faz nenhum
+              sentido permanecer.
+            </p>
+            <p>
+              A gente aprende cedo demais a se acostumar com o que não deveria
+              ser confortável. E, quando vê, está chamando de normal o que só
+              exige muito de nós e devolve pouco.
+            </p>
+            <p>
+              Cuidar de si não significa romper nada, abandonar nada ou desafiar
+              o mundo inteiro. Às vezes, significa apenas admitir que você
+              merece um espaço onde a alma não precise caminhar na ponta dos
+              pés, um lugar onde o coração não se encolha para caber.
+            </p>
+            <p>
+              Só isso. Uma reflexão. Daquelas que chegam mansinhas e vão embora
+              depois, mas que de algum modo continuam ecoando por dentro.
+            </p>
+            <p>
+              Se esse texto te encontrar no momento certo, ótimo. Se não for o
+              momento ainda, tudo bem também. Algumas verdades só florescem
+              quando a gente finalmente respira fundo.
+            </p>
+            <p>E você, por favor, não esquece: você merece respirar bem.</p>
+          </section>
+
+          <div class="closing">
+            Se um dia você voltar aqui sem saber exatamente o porquê, talvez
+            seja só o seu coração te lembrando de olhar com carinho para você
+            mesma.
+          </div>
+
+          <div class="footer-row">
+            <div class="note">
+              <span>
+                Esta página não pede resposta. Ela existe só para te lembrar de
+                não se esquecer de você.
+              </span>
+            </div>
+            <div class="note">
+              <span>Com 💜 ._.. ...</span>
+            </div>
+            <div class="actions">
+              <button
+                class="btn-comment"
+                type="button"
+                id="openComment"
+                aria-label="Abrir comentário">
+                <span>💬 COMENTAR (SE QUISER)</span>
+              </button>
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        const root = document.documentElement;
+        const toggle = document.getElementById("themeToggle");
+        const icon = document.getElementById("themeIcon");
+        const card = document.getElementById("card");
+        const btnReread = document.getElementById("btnReread");
+        const btnComment = document.getElementById("btnComment");
+
+        function applyTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          localStorage.setItem("voce-por-aqui-theme", theme);
+          icon.textContent = theme === "dark" ? "☀️" : "🌙";
+        }
+
+        const saved = localStorage.getItem("voce-por-aqui-theme");
+        if (saved === "dark" || saved === "light") {
+          applyTheme(saved);
+        } else {
+          applyTheme("dark");
+        }
+
+        toggle.addEventListener("click", function () {
+          const current =
+            root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          applyTheme(current);
+        });
+
+        btnReread.addEventListener("click", function () {
+          card.classList.remove("pulse");
+          void card.offsetWidth;
+          card.classList.add("pulse");
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+
+        // Integração opcional com seu sistema de comentários já existente
+        btnComment.addEventListener("click", function () {
+          const modalTrigger = document.querySelector("[data-open-comment]");
+          if (modalTrigger) {
+            modalTrigger.click();
+          } else {
+            alert(
+              "Se quiser, aqui você pode chamar o mesmo modal de comentários que usa nas outras páginas."
+            );
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

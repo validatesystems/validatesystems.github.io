@@ -1,5 +1,15 @@
 [
   {
+    "emoji": "🌟",
+    "title": "Olá, Cléia. Você por aqui de novo?",
+    "sub": "Para refletirmos juntos.",
+    "desc": "Uma página como notificação extra antes de você dormir.",
+    "href": "./voceporaquidenovo.html",
+    "publishedAt": "2025-11-14T19:30:00-03:00",
+    "sentimento": "Reflexão",
+    "moods": ["leveza", "serenidade", "reflexão"]
+  },
+  {
     "emoji": "🌙",
     "title": "Boa noite",
     "sub": "Para não passar despercebido",

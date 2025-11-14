@@ -1,6 +1,12 @@
 [
   {
     "data": "2025-11-14T19:30:00-03:00",
+    "titulo": "Olá, Cléia. Você por aqui de novo?",
+    "mensagem": "Quer refletir um pouco comigo?.",
+    "href": "./voceporaquidenovo.html"
+  },
+  {
+    "data": "2025-11-14T19:30:00-03:00",
     "titulo": "Novo card - Boa noite",
     "mensagem": "Uma mensagem escrita especialmente para você.",
     "href": "./boanoite14112025.html"
