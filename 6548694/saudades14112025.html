@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
+      content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
     <title>Quatro momentos de um pensamento</title>
     <style>
@@ -277,6 +276,7 @@
       }
     </style>
   </head>
+
   <body>
     <div class="wrapper">
       <main class="card">
@@ -295,8 +295,7 @@
               class="theme-toggle"
               type="button"
               id="themeToggle"
-              aria-label="Alternar tema claro ou escuro"
-            >
+              aria-label="Alternar tema claro ou escuro">
               <span id="themeIcon">🌙</span>
             </button>
           </header>
@@ -462,17 +461,33 @@
               </p>
               <p>
                 Nao é sobre drama, nem exagero. É só sobre perceber que algumas presenças
-                fazem falta mesmo quando fingimos que esta tudo sob controle, como a sua.
+                fazem falta mesmo quando fingimos que esta tudo sob controle, assim é a sua.
+              </p>
+              <p>
+                Eu havia dito que talvez não fizesse mais os cards, mas aqui estou porque acredito que você
+                deva saber desses sentimentos. Mas é só pra saber, nada mais do que isso.
+              </p>
+              <p>
+                Não sei se algo é recíproco da sua parte, embora às vezes eu ache que percebi sinais que apontam para isso.
+                Se for verdade, nada seria mais bonito do que viver esse sentimento de fato.
+                Mas eu sei que não é tão simples; queria que fosse, mas entendo.
+                E, se não for recíproco, tudo bem: 
+                pelo menos você vai acompanhar um cara fazendo declarações 
+                disfarçadas de mensagens que parecem apenas bonitas, 
+                mas carregam o que não cabe em voz alta até o dia em que ele 
+                simplesmente parar de sentir.
               </p>
               <p>
                 De verdade, queria que você estivesse lendo essas mensagens.
+                Se leu ou não, espero que tudo permaneça igual, como deve ser!
+                Essa conversa unilateral deverá permanecer no silêncio da dúvida.
               </p>
             `,
           },
         };
 
         const teaserTemplate = (hourLabel) =>
-          `Cleía, tem mais mensagem pra você. Volte aqui as ${hourLabel} para visualizar!`;
+          `Cléia, tem mais mensagem pra você. Volte aqui as ${hourLabel} para visualizar!`;
 
         const now = new Date();
         const currentHour = now.getHours(); // horário do dispositivo
@@ -503,11 +518,10 @@
             stageEl.classList.add("locked");
             const label = hour.toString().padStart(2, "0") + "h";
             bodyEl.textContent = teaserTemplate(label);
-            statusText.textContent = "Aguarde o horario";
+            statusText.textContent = "Aguarde o horário";
           }
         });
       })();
     </script>
   </body>
 </html>
-
