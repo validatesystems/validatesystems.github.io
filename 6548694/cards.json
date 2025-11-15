@@ -1,5 +1,21 @@
 [
   {
+    "emoji": "🌊",
+    "title": "Bem Me Queira, Cléia",
+    "sub": "A leitura que enxerga você por inteiro",
+    "desc": "Uma interpretação verso por verso da música 'Bem Me Queira', revelando a profundidade, a sensibilidade e a luz que existem em você - do mar ao céu, do vento à coragem.",
+    "href": "./bemmequeira.html",
+    "publishedAt": "2025-11-15T13:30:24-03:00",
+    "sentimento": "Admiração profunda",
+    "moods": [
+      "encanto",
+      "profundidade",
+      "serenidade",
+      "carinho",
+      "contemplação"
+    ]
+  },
+  {
     "emoji": "☀️",
     "title": "Sábado 15h",
     "sub": "Sábado à tarde.",
