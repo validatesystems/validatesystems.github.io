@@ -129,6 +129,39 @@
           border-radius: 14px;
         }
 
+        /* Botão de alternar tema em formato de ícone */
+        /* Botão de alternar tema em formato de ícone, igual ao sino */
+        .icon-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 56px;
+          height: 56px;
+          border-radius: 16px;
+          background: #fff;
+          border: none;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.7);
+          cursor: pointer;
+          padding: 0;
+          outline: none;
+          transition: transform 0.08s ease, box-shadow 0.2s ease,
+            filter 0.2s ease;
+        }
+
+        .icon-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .icon-btn:active {
+          transform: translateY(0) scale(0.96);
+        }
+
+        .icon-btn .theme-icon {
+          font-size: 22px;
+        }
+
         .topbar .actions .btn {
           height: 48px;
           border-radius: 14px;
@@ -503,6 +536,37 @@
         position: relative;
       }
 
+      /* Botão de alternar tema em formato de ícone, igual ao sino */
+      .icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: #fff;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        padding: 0;
+        outline: none;
+        transition: transform 0.08s ease, box-shadow 0.2s ease, filter 0.2s ease;
+      }
+
+      .icon-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      }
+
+      .icon-btn:active {
+        transform: translateY(0) scale(0.96);
+      }
+
+      .icon-btn .theme-icon {
+        font-size: 22px;
+      }
+
       .bell {
         font-size: 28px;
         color: #facc15;
@@ -859,7 +923,8 @@
       #moodModal a:focus-visible {
         outline: 2px solid var(--accent, #b675ff);
         outline-offset: 2px;
-        border-radius: 0.5rem;
+        /* border-radius: rem; */
+        /* border-radius: 0.5rem; */
       }
 
       /* Dark mode: acompanha seu esquema existente */
@@ -936,7 +1001,15 @@
         <div id="gateErr" class="gate-error" aria-live="polite"></div>
         <div class="gate-actions">
           <button id="gateEnter" class="btn">Entrar</button>
-          <button id="gateTheme" class="btn ghost">Alternar tema</button>
+          <button
+            id="gateTheme"
+            class="icon-btn"
+            type="button"
+            aria-label="Alternar tema"
+            title="Alternar tema"
+          >
+            <span class="theme-icon" aria-hidden="true">🌤️</span>
+          </button>
         </div>
       </div>
     </div>
@@ -1028,8 +1101,14 @@
             </div>
           </a>
 
-          <button id="toggleTheme" class="btn ghost" type="button">
-            Alternar tema
+          <button
+            id="toggleTheme"
+            class="icon-btn"
+            type="button"
+            aria-label="Alternar tema"
+            title="Alternar tema"
+          >
+            <span class="theme-icon" aria-hidden="true">🌤️</span>
           </button>
         </div>
       </header>
@@ -1074,9 +1153,13 @@
           document.body.classList.toggle("eletrico", mode === "eletrico");
           localStorage.setItem(THEME_KEY, mode);
           currentTheme = mode;
-          const btn = $("#toggleTheme");
-          if (btn) btn.textContent = "Alternar tema";
+
+          const iconChar = mode === "eletrico" ? "🌙" : "🌤️";
+          document
+            .querySelectorAll(".theme-icon")
+            .forEach((el) => (el.textContent = iconChar));
         }
+
         function toggleTheme() {
           applyTheme(currentTheme === "eletrico" ? "acustico" : "eletrico");
         }
