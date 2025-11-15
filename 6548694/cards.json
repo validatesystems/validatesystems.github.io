@@ -1,5 +1,35 @@
 [
   {
+    "emoji": "🌘",
+    "title": "Bom dia de domingo, Cléia",
+    "sub": "A única mensagem do dia... ou quase",
+    "desc": "Uma página tranquila feita para o amanhecer dela. Um bom dia suave que respeita o descanso de domingo, mas que esconde um pequeno detalhe para quem resolve voltar aqui.",
+    "href": "./bomdomingo15112025.html",
+    "publishedAt": "2025-11-16T04:38:20-03:00",
+    "sentimento": "Cuidado suave",
+    "moods": [
+      "calma",
+      "amanhecer",
+      "carinho contido",
+      "mistério leve"
+    ]
+  },
+  {
+    "emoji": "🌆",
+    "title": "Sábado, 18h",
+    "sub": "Quando o sábado começa a virar lembrança",
+    "desc": "Um fim de tarde introspectivo sobre presenças que fazem falta, sobre pausas necessárias e sobre como certas companhias mudam o clima do dia sem esforço.",
+    "href": "./18hsabado15112025.html",
+    "publishedAt": "2025-11-15T18:00:00-03:00",
+    "sentimento": "Desejo",
+    "moods": [
+      "leveza",
+      "serenidade",
+      "reflexão",
+      "desejo"
+    ]
+  },
+  {
     "emoji": "🌊",
     "title": "Bem Me Queira, Cléia",
     "sub": "A leitura que enxerga você por inteiro",
