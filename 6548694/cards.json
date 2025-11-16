@@ -1,5 +1,20 @@
 [
   {
+    "emoji": "💗",
+    "title": "Olha quem voltou",
+    "sub": "Um card que só existe porque você voltou",
+    "desc": "Uma mensagem leve, carinhosa e divertida sobre essa coincidência suspeita de você dizer que não queria mais cards, mas voltar procurando exatamente isso.",
+    "href": "./vocevoltouaqui16112025.html",
+    "publishedAt": "2025-11-16T14:45:00-03:00",
+    "sentimento": "Afeto leve e divertido",
+    "moods": [
+      "leveza",
+      "carinho",
+      "ironia suave",
+      "encanto discreto"
+    ]
+  },
+  {
     "emoji": "🛣️",
     "title": "Estrada de CAF",
     "sub": "Uma manhã de viagem, leveza e sinais silenciosos",
