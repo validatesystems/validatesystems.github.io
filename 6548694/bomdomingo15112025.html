@@ -134,15 +134,6 @@
         color: var(--fg);
       }
 
-      .view {
-        display: none;
-      }
-
-      .view.active {
-        display: block;
-        animation: fadeInUp 0.45s ease-out;
-      }
-
       .btn-row {
         display: flex;
         justify-content: flex-end;
@@ -170,17 +161,6 @@
         transform: translateY(0);
         box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3);
       }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(8px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
     </style>
   </head>
 
@@ -189,95 +169,49 @@
       <div class="card">
         <div class="aura"></div>
         <div class="content">
-          <!-- PRIMEIRO ACESSO -->
-          <div id="view-first" class="view">
-            <div class="chip">
-              <span class="emoji">🌘</span>
-              <span>Domingo cedo</span>
-            </div>
+          <div class="chip">
+            <span class="emoji">🌘</span>
+            <span>Domingo cedo</span>
+          </div>
 
-            <h1>Bom dia, Cléia</h1>
-            <p class="subtitle">
-              O dia ainda está quieto, quase escuro... mas você combina até com
-              esse começo.
+          <h1>Bom dia, Cléia</h1>
+          <p class="subtitle">
+            O dia ainda está quieto, quase escuro... mas você combina até com
+            esse começo.
+          </p>
+
+          <div class="message">
+            <p>
+              Hoje eu queria só te desejar um domingo que comece com calma,
+              daquele jeito que a alma acorda antes da pressa.
             </p>
-
-            <div class="message">
-              <p>
-                Hoje eu queria só te desejar um domingo que comece com calma,
-                daquele jeito que a alma acorda antes da pressa.
-              </p>
-              <p>
-                Você tem essa presença bonita, mesmo em silêncio. E por isso,
-                esta vai ser
-                <strong>a única mensagem do dia</strong>. Não quero roubar seu
-                descanso.
-              </p>
-              <p>
-                Que seu domingo seja seu, inteiro, do jeitinho que você precisa.
-              </p>
-            </div>
-
-            <p class="closing">Respira devagar. O dia está só começando.</p>
-            <p class="closing">
-              Dica: Nada impede de você voltar aqui depois. 😉
+            <p>
+              Você tem essa presença bonita, mesmo em silêncio. E por isso, esta
+              poderia ser a única mensagem do dia. Não quero roubar seu
+              descanso, nem disputar espaço com o que te faz bem.
+            </p>
+            <p>
+              Mas se você chegou até aqui, então eu não vou te deixar sair de
+              mãos vazias. Tem algo esperando você.
             </p>
           </div>
 
-          <!-- SEGUNDO ACESSO -->
-          <div id="view-second" class="view">
-            <div class="chip">
-              <span class="emoji">👀</span>
-              <span>Você voltou...</span>
-            </div>
-
-            <h1>Ei, Cléia...</h1>
-            <p class="subtitle">
-              Eu avisei que não teria mais nada hoje. Mas você veio conferir,
-              né?
-            </p>
-
-            <div class="message">
-              <p>
-                Já que voltou aqui, mesmo com o aviso, eu não vou te deixar sair
-                de mãos vazias.
-              </p>
-              <p>Tem algo esperando você.</p>
-            </div>
-
-            <div class="btn-row">
-              <button id="btn">🌟 Continuar</button>
-            </div>
-
-            <p class="closing">Vai. Clique antes que eu mude de ideia.</p>
-            <p class="closing">Dica: O comentário é especial</p>
+          <div class="btn-row">
+            <button id="btn">🌟 Continuar</button>
           </div>
+
+          <p class="closing">Respira devagar. O dia está só começando.</p>
+          <p class="closing">Dica: O comentário é especial.</p>
         </div>
         <footer>._.. ...</footer>
       </div>
     </div>
 
     <script>
-      (function () {
-        const KEY = "bom_dia_domingo_cleia_visitado_v2";
-
-        const first = document.getElementById("view-first");
-        const second = document.getElementById("view-second");
-        const btn = document.getElementById("btn");
-
-        const visited = localStorage.getItem(KEY) === "1";
-
-        if (visited) {
-          second.classList.add("active");
-        } else {
-          first.classList.add("active");
-          localStorage.setItem(KEY, "1");
-        }
-
-        btn.addEventListener("click", () => {
-          window.location.href = "https://www.youtube.com/watch?v=OtQktWvfqzE";
-        });
-      })();
+      const btn = document.getElementById("btn");
+      btn.addEventListener("click", () => {
+        window.location.href = "https://www.youtube.com/watch?v=OtQktWvfqzE";
+      });
     </script>
   </body>
 </html>
