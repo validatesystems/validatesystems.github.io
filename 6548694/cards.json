@@ -1,5 +1,23 @@
 [
   {
+    "emoji": "🌤️",
+    "title": "Estrada de Hoje",
+    "sub": "Um amanhecer leve para quem já começou o dia na estrada",
+    "desc": "Uma página feita para desejar um dia iluminado, com humor discreto e um carinho sutil. Um lembrete para aproveitar o caminho, o vento, a companhia e as pessoas que fazem a viagem valer a pena.",
+    "href": "./estradadehoje16112025.html",
+    "publishedAt": "2025-11-16T08:19:37-03:00",
+    "sentimento": "Cuidado sereno",
+    "moods": [
+      "leveza",
+      "proteção",
+      "calma da manhã",
+      "afeto discreto",
+      "humor suave",
+      "energia de viagem",
+      "dia iluminado"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Boa noite de sábado, Cléia",
     "sub": "Uma noite que poderia ser mais leve que o dia",
