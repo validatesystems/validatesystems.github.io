@@ -280,6 +280,38 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 14px;
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.22s ease, transform 0.22s ease;
+        align-items: stretch; /* garante que as células estiquem na linha */
+      }
+
+      .grid.is-updating {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      .empty-grid-message {
+        grid-column: 1 / -1;
+        text-align: center;
+        font-size: 14px;
+        color: var(--muted);
+        padding: 16px 8px;
+      }
+
+      @keyframes fadeInUpCard {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .card.fade-in {
+        animation: fadeInUpCard 0.26s ease forwards;
       }
 
       .card {
@@ -290,13 +322,23 @@
         backdrop-filter: var(--glass);
         padding: 14px;
         box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
-        transition: transform 0.12s ease, box-shadow 0.2s ease;
+        border: 1px solid transparent; /* permite realce suave no hover */
+        transition: transform 0.12s ease, box-shadow 0.2s ease,
+          border-color 0.2s ease, background 0.2s ease;
         overflow: hidden;
+
+        /* NOVO: ocupa toda a altura da célula da grid */
+        height: 100%;
+        display: flex;
+        flex-direction: column;
       }
 
       .card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16),
+          0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent);
+        border-color: color-mix(in srgb, var(--accent) 65%, transparent);
+        background: color-mix(in srgb, var(--card) 88%, #ffffff 12%);
       }
 
       .card-head {
@@ -1084,23 +1126,10 @@
 
         <div class="actions">
           <!-- <button id="openSentimentosBtn" class="btn">
-            💭 Como você está se sentindo?
-          </button> -->
+    💭 Como você está se sentindo?
+  </button> -->
 
-          <!-- Botão Notificações -->
-          <a
-            id="notifBtn"
-            class="notif-btn"
-            href="./notificacoes.json"
-            aria-label="Notificações"
-            title="Ver notificações"
-          >
-            <div class="notif-icon-wrap">
-              <span class="bell" aria-hidden="true">🔔</span>
-              <span id="notifBadge" class="notif-badge">0</span>
-            </div>
-          </a>
-
+          <!-- Apenas o botão de tema permanece -->
           <button
             id="toggleTheme"
             class="icon-btn"
@@ -1113,7 +1142,16 @@
         </div>
       </header>
 
-      <nav class="toolbar" aria-label="ações rápidas"></nav>
+      <nav class="toolbar" aria-label="ações rápidas">
+        <button type="button" class="btn secondary" id="filterToday">
+          Só de hoje
+        </button>
+
+        <button type="button" class="btn ghost" id="filterAll">
+          Todos os cards
+        </button>
+      </nav>
+
       <section class="grid" id="grid" aria-label="lista de páginas"></section>
       <footer>Developed with 💜 by ._.. ...</footer>
     </main>
@@ -1132,7 +1170,7 @@
         // ];
         const KEYS = [
           { id: "rede", pass: "REDE", hint: "O que o vento balança?" },
-          { id: "dj", pass: "SEREIA", hint: "DJ do mar" },
+          { id: "dj", pass: "QUATI", hint: "DJ que arranha" },
         ];
         /* ================================================================== */
 
@@ -1485,95 +1523,154 @@
           return new Date(y, m - 1, d);
         }
 
-        /* ===== Renderização dos cards ===== */
-        function render() {
-          document.addEventListener("cards:ready", async () => {
-            const cards = await (window.cards ? window.cards : []);
-            grid.innerHTML = "";
+        /* ===== Renderização dos cards + filtros (hoje / todos) ===== */
+        (function setupCardsRendering() {
+          const grid = document.getElementById("grid");
+          const filterTodayBtn = document.getElementById("filterToday");
+          const filterAllBtn = document.getElementById("filterAll");
 
-            // Formatação com dia/mês/ano + horário no fuso LOCAL do usuário
-            const fmt = new Intl.DateTimeFormat("pt-BR", {
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
+          const fmt = new Intl.DateTimeFormat("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          function parsePublishedAt(s) {
+            if (!s) return null;
+            const dt = new Date(s);
+            if (!isNaN(dt)) return dt;
+            const only = s.slice(0, 10);
+            const [y, m, d] = only.split("-").map(Number);
+            if (!y || !m || !d) return null;
+            return new Date(y, m - 1, d);
+          }
+
+          function isToday(d, ref) {
+            if (!d) return false;
+            const r = ref || new Date();
+            return (
+              d.getFullYear() === r.getFullYear() &&
+              d.getMonth() === r.getMonth() &&
+              d.getDate() === r.getDate()
+            );
+          }
+
+          let baseCards = [];
+          let currentFilter = "today";
+
+          function createCardElement(c) {
+            const a = document.createElement("article");
+            a.className = "card";
+            a.dataset.title = c.title;
+
+            const d = c.__dt;
+            const hoje = new Date();
+            if (isToday(d, hoje)) {
+              a.classList.add("card-hoje");
+            }
+
+            const dateHtml = `
+      <div class="card-meta">
+        <span class="card-date" title="Data de publicação">
+          <span aria-hidden="true">🗓️</span>
+          <span>${fmt.format(d)}</span>
+        </span>
+      </div>
+    `;
+
+            a.innerHTML = `
+      <div class="card-head">
+        <div class="art" aria-hidden="true">${c.emoji}</div>
+        <div>
+          <h3 class="card-title">${c.title}</h3>
+          <p class="card-sub">${c.sub}</p>
+          ${dateHtml}
+        </div>
+      </div>
+      <div class="card-body">${c.desc}</div>
+    `;
+
+            a.tabIndex = 0;
+            a.addEventListener("click", (e) => {
+              const isButton = e.target.closest("a,button");
+              if (!isButton) location.href = c.href;
+            });
+            a.addEventListener("keyup", (e) => {
+              if (e.key === "Enter" || e.key === " ") location.href = c.href;
             });
 
-            // Parser que preserva horário quando vier em ISO completo (com fuso)
-            const parsePublishedAt = (s) => {
-              if (!s) return null;
-              const dt = new Date(s); // ex: 2025-11-02T07:30:00-03:00
-              if (!isNaN(dt)) return dt;
-              // fallback para YYYY-MM-DD (interpreta como 00:00 no horário local)
-              const only = s.slice(0, 10);
-              const [y, m, d] = only.split("-").map(Number);
-              if (!y || !m || !d) return null;
-              return new Date(y, m - 1, d);
-            };
+            return a;
+          }
 
-            // "Agora" no horário local do usuário
+          function applyFilter(filter) {
+            if (!grid) return;
+            currentFilter = filter;
+
+            // estado visual nos botões
+            if (filterTodayBtn && filterAllBtn) {
+              filterTodayBtn.classList.toggle("secondary", filter === "today");
+              filterTodayBtn.classList.toggle("ghost", filter !== "today");
+              filterAllBtn.classList.toggle("secondary", filter === "all");
+              filterAllBtn.classList.toggle("ghost", filter !== "all");
+            }
+
+            // efeito suave
+            grid.classList.add("is-updating");
+
+            setTimeout(() => {
+              grid.innerHTML = "";
+
+              let list = baseCards.slice();
+              const now = new Date();
+
+              if (filter === "today") {
+                list = list.filter((c) => isToday(c.__dt, now));
+              }
+
+              if (!list.length) {
+                const msg =
+                  filter === "today"
+                    ? "Não há cards publicados para hoje (por enquanto)."
+                    : "Não há cards disponíveis neste momento.";
+                const p = document.createElement("p");
+                p.className = "empty-grid-message";
+                p.textContent = msg;
+                grid.appendChild(p);
+              } else {
+                list.forEach((c, index) => {
+                  const cardEl = createCardElement(c);
+                  cardEl.classList.add("fade-in");
+                  cardEl.style.animationDelay = index * 40 + "ms";
+                  grid.appendChild(cardEl);
+                });
+              }
+
+              setTimeout(() => {
+                grid.classList.remove("is-updating");
+              }, 220);
+            }, 180);
+          }
+
+          document.addEventListener("cards:ready", async () => {
+            const cards = await (window.cards ? window.cards : []);
             const now = new Date();
 
-            // Filtra (<= agora) e ordena do mais recente ao mais antigo
-            const visibleCards = cards
+            baseCards = cards
               .map((c) => ({ ...c, __dt: parsePublishedAt(c.publishedAt) }))
               .filter((c) => c.__dt && c.__dt <= now)
               .sort((a, b) => b.__dt - a.__dt);
 
-            for (const c of visibleCards) {
-              const a = document.createElement("article");
-              a.className = "card";
-              a.dataset.title = c.title;
-
-              const d = c.__dt; // data/hora já parseada e válida
-
-              // Destaque para cards do "hoje" (comparação em local time)
-              const hoje = new Date();
-              if (
-                d.getFullYear() === hoje.getFullYear() &&
-                d.getMonth() === hoje.getMonth() &&
-                d.getDate() === hoje.getDate()
-              ) {
-                a.classList.add("card-hoje");
-              }
-
-              const dateHtml = `
-                  <div class="card-meta">
-                    <span class="card-date" title="Data de publicação">
-                      <span aria-hidden="true">🗓️</span>
-                      <span>${fmt.format(d)}</span>
-                    </span>
-                  </div>
-                `;
-
-              a.innerHTML = `
-                  <div class="card-head">
-                    <div class="art" aria-hidden="true">${c.emoji}</div>
-                    <div>
-                      <h3 class="card-title">${c.title}</h3>
-                      <p class="card-sub">${c.sub}</p>
-                      ${dateHtml}
-                    </div>
-                  </div>
-                  <div class="card-body">${c.desc}</div>
-                `;
-
-              a.tabIndex = 0;
-              a.addEventListener("click", (e) => {
-                const isButton = e.target.closest("a,button");
-                if (!isButton) location.href = c.href;
-              });
-              a.addEventListener("keyup", (e) => {
-                if (e.key === "Enter" || e.key === " ") location.href = c.href;
-              });
-
-              grid.appendChild(a);
-            }
+            // começa mostrando os cards de hoje
+            applyFilter("today");
           });
-        }
 
-        render();
+          filterTodayBtn?.addEventListener("click", () => applyFilter("today"));
+          filterAllBtn?.addEventListener("click", () => applyFilter("all"));
+        })();
+
+        // render();
 
         /* ===== Rastreamento por título (envia para GAS) ===== */
         const EMAIL_WEBHOOK =
