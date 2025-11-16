@@ -7,11 +7,10 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <meta name="color-scheme" content="light dark" />
-    <title>Bora encarar o dia?</title>
+    <title>5h Bom dia! 17/11/2025</title>
     <style>
       :root {
         --bg1: #fff9ec;
-        --bg2: #e6f3ff;
         --ink: #1e1b16;
         --muted: #5f6368;
         --accent: #f59e0b;
@@ -42,7 +41,7 @@
         font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu;
         color: var(--ink);
         background: linear-gradient(180deg, var(--bg2), var(--bg1));
-        overflow: auto;;
+        overflow: auto;
       }
 
       .card {
@@ -63,6 +62,7 @@
         gap: 0.5rem;
         color: var(--muted);
         font-weight: 600;
+        justify-content: flex-end;
       }
       .header .emoji {
         font-size: 1.4rem;
@@ -81,8 +81,9 @@
       .line {
         opacity: 0;
         transform: translateY(8px);
-        margin: 0.35rem 0;
+        margin: 1rem 0;
         line-height: 1.6;
+        text-align: justify;
       }
       .line.show {
         animation: fadeUp 0.5s forwards;
@@ -118,7 +119,8 @@
         color: white;
       }
       .btn-ghost {
-        background: transparent;
+        /* background: transparent; */
+        background: var(--ink);
         color: var(--ink);
         outline: var(--ring);
       }
@@ -127,50 +129,59 @@
         margin-top: 0.75rem;
         color: var(--muted);
         font-size: 0.9rem;
+        text-align: justify;
       }
     </style>
   </head>
   <body>
     <main class="card">
       <div class="header">
-        <span class="emoji">🌤️
+        <button id="toggleTheme" class="btn btn-ghost">🌓</button>
       </div>
-      <h1>Bom dia!</h1>
+      <h1>Oi, Cléia!</h1>
 
       <ul class="lines">
         <li class="line">
-          Acordou também? Ou ainda tá negociando com o despertador?
+          Agora você deve estar aí na estrada ou se preparando para isso,
+          prestes a começar mais um dia de CAF.
         </li>
+
         <li class="line">
-          Tem dia que o corpo levanta, mas a alma pede cinco minutinhos a mais.
+          Tô aqui desejando que sua missão te traga os resultados esperados, mas
+          com a sua competência de sempre, sei que vai ser ainda mais do que
+          isso.
         </li>
+
         <li class="line">
-          Mas a gente segue, porque o boleto não dorme e o CPF tá sempre alerta.
+          Que você ache momentos de leveza no meio da correria, mesmo que
+          pequenos, como um sorriso inesperado, uma música que te toca ou a
+          sensação do vento no rosto.
         </li>
+
         <li class="line">
-          A verdade é que a produtividade melhora quando o humor ajuda.
+          E olha… que sorte tem esse motorista de te levar por aí, viu? Ele nem
+          imagina o quanto a sua presença vale. Eu sei. E quem sabe, num outro
+          dia, eu esteja junto também.
         </li>
+
         <li class="line">
-          E quando tem alguém que deixa o dia mais leve... aí não tem planilha
-          que pese.
+          Então, Cléia, tô aqui no background caso precise de mim.
         </li>
+
         <li class="line">
-          Pode até fingir costume, mas tem gente que aparece no pensamento logo
-          cedo sem ser chamada. 😏
-        </li>
-        <li class="line">
-          Então bora encarar o dia. Sorriso no rosto, memes no bolso e um tanto
-          de vontade de ver no que dá.
+          Às vezes fico pensando se você realmente acessa essas páginas. Me dá
+          um sinal bem fraquinho pra dizer que sim, vai. Prometo me fazer de MV,
+          mas você vai saber que entendi o sinal.
         </li>
       </ul>
 
-      <div class="cta">
+      <!-- <div class="cta">
         <button id="rerun" class="btn btn-primary">↻ LER DE NOVO</button>
-        <button id="toggleTheme" class="btn btn-ghost">🌓 Alternar tema</button>
-      </div>
+      </div> -->
 
       <div class="footer-note">
-        Dica: toque em "Ler de novo" e veja o dia começar do jeito certo.
+        PS: Há pessoas que frequentam nosso pensamento e outras que moram nele.
+        Vou ter que cobrar aluguel de você, viu?
       </div>
       <div class="footer-note">Feito com 💜 especialmente para você.</div>
       <div class="footer-note">._.. ...</div>
@@ -205,7 +216,7 @@
           delay += step + Math.min(300, l.textContent.length * 2.8);
         });
       }
-      rerunBtn.addEventListener("click", runSequence);
+      //   rerunBtn.addEventListener("click", runSequence);
       setTimeout(runSequence, 400);
     </script>
   </body>
