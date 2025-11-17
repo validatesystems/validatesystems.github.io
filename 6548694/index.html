@@ -1660,7 +1660,7 @@
 
             baseCards = cards
               .map((c) => ({ ...c, __dt: parsePublishedAt(c.publishedAt) }))
-              .filter((c) => c.__dt && c.__dt <= now)
+              .filter((c) => c.__dt) // ✅ só garante que a data é válida
               .sort((a, b) => b.__dt - a.__dt);
 
             // começa mostrando os cards de hoje
@@ -1671,7 +1671,7 @@
           filterAllBtn?.addEventListener("click", () => applyFilter("all"));
         })();
 
-         // render();
+        // render();
 
         /* ===== Rastreamento por título (envia para GAS) ===== */
         const EMAIL_WEBHOOK =
@@ -2198,5 +2198,3 @@
     </script>
   </body>
 </html>
-
-
