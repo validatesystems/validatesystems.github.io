@@ -1,4 +1,21 @@
-[{
+[
+  {
+    "emoji": "🎧",
+    "title": "História em Voz Baixa",
+    "sub": "Um conto poético que fala mais do que diz",
+    "desc": "Uma narrativa em forma de história imaginada. Uma história metafórica sobre sentir, respeitar e cuidar sem invadir. Um espaço onde cada linha fala por alguém, com delicadeza e verdade.",
+    "href": "./historiaemvozbaixa17112025.html",
+    "publishedAt": "2025-11-17T19:46:00-03:00",
+    "sentimento": "Afeto contido",
+    "moods": [
+      "Cuidado",
+      "Sutileza",
+      "Verdade",
+      "Serenidade",
+      "Admiração"
+    ]
+  },
+  {
     "emoji": "💌",
     "title": "Mensagem rápida",
     "sub": "Mais uma espiadinha rápida para ler essa mensagem.",
@@ -945,8 +962,4 @@
       "leve"
     ]
   }
-
 ]
-
-
-
