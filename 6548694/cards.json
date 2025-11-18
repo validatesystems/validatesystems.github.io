@@ -1,5 +1,35 @@
 [
   {
+    "emoji": "🌤️",
+    "title": "Bom Dia, Cléia",
+    "sub": "Quando o dia deveria jogar a toalha primeiro",
+    "desc": "Uma mensagem especial para você, Cléia.",
+    "href": "./mensagemrapida18112025.html",
+    "publishedAt": "2025-11-17T05:57:00-03:00",
+    "sentimento": "Cuidado leve",
+    "moods": [
+      "Força",
+      "Gentileza",
+      "Leveza",
+      "Cotidiano"
+    ]
+  },
+  {
+    "emoji": "🌙",
+    "title": "Uma Boa Noite Leve",
+    "sub": "Um cuidado simples, direto e sem exageros",
+    "desc": "Uma mensagem carinhosa",
+    "href": "./mensagemrapida(3)17112025.html",
+    "publishedAt": "2025-11-17T21:23:00-03:00",
+    "sentimento": "Cuidado leve",
+    "moods": [
+      "Calma",
+      "Carinho",
+      "Cotidiano",
+      "Sutileza"
+    ]
+  },
+  {
     "emoji": "🎧",
     "title": "História em Voz Baixa",
     "sub": "Um conto poético que fala mais do que diz",
