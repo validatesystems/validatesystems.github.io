@@ -1,5 +1,20 @@
 [
   {
+    "emoji": "🖥️",
+    "title": "Você Vê?",
+    "sub": "Sobre não saber, mas fazer mesmo assim",
+    "desc": "Uma mensagem curta e leve sobre a dúvida de saber se ela realmente acessa as páginas feitas para ela. Um gesto sincero que existe independente de retorno.",
+    "href": "./mensagemrapida18112025(2).html",
+    "publishedAt": "2025-11-18T06:16:00-03:00",
+    "sentimento": "Cuidado silencioso",
+    "moods": [
+      "Sutileza",
+      "Verdade",
+      "Calma",
+      "Cotidiano"
+    ]
+  },
+  {
     "emoji": "🌤️",
     "title": "Bom Dia, Cléia",
     "sub": "Quando o dia deveria jogar a toalha primeiro",
@@ -992,5 +1007,4 @@
       "leve"
     ]
   }
-
 ]
