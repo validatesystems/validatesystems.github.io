@@ -1,5 +1,33 @@
 [
   {
+    "emoji": "📜",
+    "title": "Das Utopias",
+    "sub": "Um Quintana que combina com você",
+    "desc": "Uma página num estilo íntimo e delicado que combina com o seu jeito, Cléia.",
+    "href": "./poema18112025(2).html",
+    "publishedAt": "2025-11-18T15:00:00-03:00",
+    "sentimento": "Admiração calma",
+    "moods": [
+      "poético",
+      "leve",
+      "afetuoso"
+    ]
+  },
+  {
+    "emoji": "📝",
+    "title": "Poema em papel",
+    "sub": "Um Quintana escrito à mão",
+    "desc": "Uma página que entrega um poema de Mário Quintana em estilo de bilhete, escrito à mão, do jeito simples e bonito que combina com você, Cléia.",
+    "href": "./poema18112025.html",
+    "publishedAt": "2025-11-18T12:01:00-03:00",
+    "sentimento": "Admiração suave",
+    "moods": [
+      "leve",
+      "afetuoso",
+      "poético"
+    ]
+  },
+  {
     "emoji": "💜",
     "title": "Atualização Surpresa",
     "sub": "Uma viradinha que melhora o dia",
