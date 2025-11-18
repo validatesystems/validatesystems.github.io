@@ -1,5 +1,19 @@
 [
   {
+  "emoji": "🌇",
+  "title": "Fim de tarde que não compete",
+  "sub": "Quando o pôr do sol perde fácil para o teu sorriso",
+  "desc": "Uma boa tarde de fim de dia dizendo o óbvio que ninguém fala: nenhuma paisagem, por mais bonita que seja, consegue competir com o jeito que o sorriso dela ilumina tudo ao redor.",
+  "href": "./boatarde_fimdetarde18112025.html",
+  "publishedAt": "2025-11-18T17:12:00-03:00",
+  "sentimento": "Admiração luminosa",
+  "moods": [
+    "fim de tarde",
+    "admiração discreta",
+    "afeto calmo"
+  ]
+},
+  {
     "emoji": "✨",
     "title": "Pedaços que não deveriam",
     "sub": "Carinhos que escapam mesmo quando eu digo que não",
@@ -1063,4 +1077,5 @@
       "leve"
     ]
   }
+
 ]
