@@ -1,11 +1,25 @@
 [
   {
+    "emoji": "✨",
+    "title": "Pedaços que não deveriam",
+    "sub": "Carinhos que escapam mesmo quando eu digo que não",
+    "desc": "Uma mensagem sobre os gestos que eu ofereço a você sem querer, tentando disfarçar o quanto significam, e sobre o motivo de eu ter dito para não se acostumar com esses pedaços de carinho.",
+    "href": "./pedacosdecarinho18112025.html",
+    "publishedAt": "2025-11-18T13:06:00-03:00",
+    "sentimento": "Admiração contida",
+    "moods": [
+      "delicado",
+      "afeto discreto",
+      "confissão em silêncio"
+    ]
+  },
+  {
     "emoji": "📜",
     "title": "Das Utopias",
     "sub": "Um Quintana que combina com você",
     "desc": "Uma página num estilo íntimo e delicado que combina com o seu jeito, Cléia.",
     "href": "./poema18112025(2).html",
-    "publishedAt": "2025-11-18T15:00:00-03:00",
+    "publishedAt": "2025-11-18T08:00:00-03:00",
     "sentimento": "Admiração calma",
     "moods": [
       "poético",
@@ -19,7 +33,7 @@
     "sub": "Um Quintana escrito à mão",
     "desc": "Uma página que entrega um poema de Mário Quintana em estilo de bilhete, escrito à mão, do jeito simples e bonito que combina com você, Cléia.",
     "href": "./poema18112025.html",
-    "publishedAt": "2025-11-18T12:01:00-03:00",
+    "publishedAt": "2025-11-18T09:01:00-03:00",
     "sentimento": "Admiração suave",
     "moods": [
       "leve",
@@ -33,7 +47,7 @@
     "sub": "Uma viradinha que melhora o dia",
     "desc": "Uma experiência divertida onde o card vira e revela um comentário irônico e carinhoso sobre você, Cléia — leve, curto e direto, do jeito que você entende.",
     "href": "./mensagemrapida18112025(3).html",
-    "publishedAt": "2025-11-18T12:01:00-03:00",
+    "publishedAt": "2025-11-18T09:01:00-03:00",
     "sentimento": "Humor afetivo",
     "moods": [
       "leve",
