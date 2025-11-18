@@ -1626,8 +1626,18 @@
               let list = baseCards.slice();
               const now = new Date();
 
+              // if (filter === "today") {
+              //   list = list.filter((c) => isToday(c.__dt, now));
+              // }
+
               if (filter === "today") {
-                list = list.filter((c) => isToday(c.__dt, now));
+                list = list.filter((c) => {
+                  return isToday(c.__dt, now) && c.__dt <= now;
+                });
+              }
+
+              if (filter === "all") {
+                list = list.filter((c) => c.__dt <= now);
               }
 
               if (!list.length) {
