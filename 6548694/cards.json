@@ -1,18 +1,32 @@
 [
   {
-  "emoji": "🌇",
-  "title": "Fim de tarde que não compete",
-  "sub": "Quando o pôr do sol perde fácil para o teu sorriso",
-  "desc": "Uma boa tarde de fim de dia dizendo o óbvio que ninguém fala: nenhuma paisagem, por mais bonita que seja, consegue competir com o jeito que o seu sorriso ilumina tudo ao redor.",
-  "href": "./boatarde_fimdetarde18112025.html",
-  "publishedAt": "2025-11-18T17:12:00-03:00",
-  "sentimento": "Admiração luminosa",
-  "moods": [
-    "fim de tarde",
-    "admiração discreta",
-    "afeto calmo"
-  ]
-},
+    "emoji": "🌙",
+    "title": "Noite calma e bagunça boa",
+    "sub": "Entre a leveza da noite e o caos que você provoca",
+    "desc": "Uma boa noite inspirada em Cecília Meireles e Drummond, misturando calma, ironia e aquele tipo de carinho que tenta ser discreto, mas acaba aparecendo nos detalhes.",
+    "href": "./boanoite18112025.html",
+    "publishedAt": "2025-11-18T21:08:00-03:00",
+    "sentimento": "Carinho discreto",
+    "moods": [
+      "noturno",
+      "leveza",
+      "afeto irônico"
+    ]
+  },
+  {
+    "emoji": "🌇",
+    "title": "Fim de tarde que não compete",
+    "sub": "Quando o pôr do sol perde fácil para o teu sorriso",
+    "desc": "Uma boa tarde de fim de dia dizendo o óbvio que ninguém fala: nenhuma paisagem, por mais bonita que seja, consegue competir com o jeito que o seu sorriso ilumina tudo ao redor.",
+    "href": "./boatarde_fimdetarde18112025.html",
+    "publishedAt": "2025-11-18T17:12:00-03:00",
+    "sentimento": "Admiração luminosa",
+    "moods": [
+      "fim de tarde",
+      "admiração discreta",
+      "afeto calmo"
+    ]
+  },
   {
     "emoji": "✨",
     "title": "Pedaços que não deveriam",
@@ -1077,6 +1091,4 @@
       "leve"
     ]
   }
-
 ]
-
