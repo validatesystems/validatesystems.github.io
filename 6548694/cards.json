@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "🌙",
+    "title": "Boa noite, Cléia",
+    "sub": "Um descanso que conversa com seu ritmo",
+    "desc": "Uma mensagem simples, direta e carregada daquele cuidado silencioso que você entende sem precisar explicar. Do jeito que só você capta.",
+    "href": "./boanoite19112025.html",
+    "publishedAt": "2025-11-19T19:00:00-03:00",
+    "sentimento": "Calma afetiva",
+    "moods": [
+      "suave",
+      "noturno",
+      "carinho quieto"
+    ]
+  },
+  {
     "emoji": "🎧",
     "title": "Ouça isso aqui, Cléia",
     "sub": "Uma música que combina com o jeito que você mexe comigo",
@@ -15,21 +29,20 @@
     ]
   },
   {
-  "emoji": "🔥",
-  "title": "Pessoinha e o feriadão",
-  "sub": "Um pensamento que escapou sem querer",
-  "desc": "Uma mensagem íntima, leve e sincera para aquela pessoinha curiosa que sempre volta aqui. Um registro sobre vontade, sentimento e o jeito bagunçado e calmo que ela provoca.",
-  "href": "./voceporaquidenovo19112025.html",
-  "publishedAt": "2025-11-19T16:35:00-03:00",
-  "sentimento": "Afeto leve",
-  "moods": [
-    "íntimo",
-    "reflexivo",
-    "suave",
-    "engraçadinho"
-  ]
-},
-
+    "emoji": "🔥",
+    "title": "Pessoinha e o feriadão",
+    "sub": "Um pensamento que escapou sem querer",
+    "desc": "Uma mensagem íntima, leve e sincera para aquela pessoinha curiosa que sempre volta aqui. Um registro sobre vontade, sentimento e o jeito bagunçado e calmo que ela provoca.",
+    "href": "./voceporaquidenovo19112025.html",
+    "publishedAt": "2025-11-19T16:35:00-03:00",
+    "sentimento": "Afeto leve",
+    "moods": [
+      "íntimo",
+      "reflexivo",
+      "suave",
+      "engraçadinho"
+    ]
+  },
   {
     "emoji": "💌",
     "title": "Bilhetes que chegam devagar",
@@ -1165,13 +1178,4 @@
       "leve"
     ]
   }
-
 ]
-
-
-
-
-
-
-
-
