@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Pessoinha e Feriadão</title>
+
+    <style>
+      :root {
+        --bg1: #0f172a;
+        --bg2: #1f2937;
+        --accent: #f97316;
+        --accent-soft: rgba(249, 115, 22, 0.12);
+        --card-bg: rgba(15, 23, 42, 0.85);
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --badge-bg: rgba(148, 163, 184, 0.2);
+        --shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+        --radius-lg: 22px;
+        --radius-pill: 999px;
+      }
+
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg1: #f9fafb;
+          --bg2: #e5e7eb;
+          --card-bg: rgba(255, 255, 255, 0.95);
+          --text: #111827;
+          --muted: #6b7280;
+          --shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
+          --badge-bg: rgba(209, 213, 219, 0.6);
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
+          "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top, var(--bg1), var(--bg2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .wrapper {
+        max-width: 820px;
+        width: 100%;
+      }
+
+      .card {
+        position: relative;
+        background: var(--card-bg);
+        box-shadow: var(--shadow);
+        border-radius: var(--radius-lg);
+        padding: 26px 22px 24px;
+        color: var(--text);
+        overflow: hidden;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        animation: fadeInCard 0.7s ease-out forwards;
+        transform: translateY(10px);
+        opacity: 0;
+      }
+
+      @keyframes fadeInCard {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .glow {
+        position: absolute;
+        inset: -80px;
+        background: radial-gradient(
+            circle at top left,
+            rgba(249, 115, 22, 0.2),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(56, 189, 248, 0.15),
+            transparent 55%
+          );
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      .content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .badge-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .badge-main {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: var(--radius-pill);
+        background: var(--badge-bg);
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .badge-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 6px var(--accent-soft);
+      }
+
+      h1 {
+        margin: 0 0 14px;
+        font-size: 1.65rem;
+        letter-spacing: 0.03em;
+      }
+
+      .subtitle {
+        margin: 0 0 20px;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+
+      .message {
+        font-size: 1rem;
+        line-height: 1.7;
+        display: grid;
+        gap: 12px;
+        text-align: justify;
+      }
+
+      .message p {
+        margin: 0;
+      }
+
+      .footer-note {
+        margin-top: 22px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        text-align: right;
+        font-style: italic;
+      }
+
+      @media (min-width: 640px) {
+        .card {
+          padding: 30px 32px 26px;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        .message {
+          font-size: 1.02rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <article class="card">
+        <div class="glow" aria-hidden="true"></div>
+
+        <div class="content">
+          <div class="badge-row">
+            <span class="badge-main">
+              <span class="badge-dot"></span>
+              PENSAMENTO SOLTO PARA UMA CERTA PESSOINHA
+            </span>
+          </div>
+
+          <h1>Ei pessoinha, vem cá um instantinho</h1>
+          <p class="subtitle">
+            Nenhum sermão. Só um registro sincero do que esse feriadão e a sua
+            existência andaram provocando por aqui.
+          </p>
+
+          <div class="message">
+            <p>
+              Ei pessoinha, você por aqui de novo? Já que voltou aqui, quero te
+              dizer que não tenho "sermões" pra você. kkk
+            </p>
+
+            <p>
+              O que posso te dizer é que com um feriadão desses que teremos, dá
+              aquela vontade de pegar aquela pessoinha pelo braço e sumir (no
+              bom sentido). Sabe, me pego tendo essas vontades quando, há um
+              tempo, havia decidido não tê-las.
+            </p>
+
+            <p>
+              Aí o universo me manda um furacãozinho que derrubou todas as
+              minhas defesas, mas que eu não posso sequer propor algo assim para
+              ela. Entende agora que o universo tá de sacanagem comigo?
+            </p>
+
+            <p>
+              Eu poderia dizer que você apenas desencadeou uma reação em mim de
+              tal forma que me abriria sentimentalmente para alguém não
+              específico. No início imaginei que seria isso, mas não. É algo em
+              você que não sei explicar, já tentei, sem sucesso.
+            </p>
+
+            <p>
+              Seria mais fácil pedir pra eu resolver um problema matemático
+              complexo. No entanto, toda vez que tento entender, eu acabo
+              percebendo que não é pra entender, é pra sentir.
+            </p>
+
+            <p>
+              E eu sinto. Mesmo tentando não sentir, sinto. Mesmo tentando agir
+              racionalmente, você faz a minha racionalidade tropeçar.
+            </p>
+
+            <p>
+              E o mais curioso é que eu não quero fugir disso. Eu só fico aqui,
+              lidando com essa mistura de calma e bagunça que você me causa.
+              Pensando nas coisas que eu jamais diria pessoalmente, mas que
+              deixo escapar aqui, nesse cantinho que você insiste em visitar.
+            </p>
+
+            <p>
+              Então, já que você voltou, fica mais um pouco. Nem que seja só pra
+              ler essas verdades que escapam quando você não está olhando.
+            </p>
+          </div>
+
+          <div class="footer-note">
+            Uma página perdida no meio de tantas, mas que você sabe bem que é
+            sobre você.
+          </div>
+          <div class="footer-note">._.. ...</div>
+        </div>
+      </article>
+    </div>
+  </body>
+</html>
