@@ -1,5 +1,20 @@
 [
   {
+    "emoji": "🎧",
+    "title": "Ouça isso aqui, Cléia",
+    "sub": "Uma música que combina com o jeito que você mexe comigo",
+    "desc": "Um card especial que te leva direto para a música Bem, do Chapéu de Palha. Uma canção calma, sincera, com o mesmo tom do que eu sinto quando penso em você.",
+    "href": "https://open.spotify.com/intl-pt/track/0wZZRJNv6bwSjAHVRf97ND?si=5ba624337f0044e5",
+    "publishedAt": "2025-11-19T19:00:00-03:00",
+    "sentimento": "Afeto suave",
+    "moods": [
+      "leve",
+      "calmo",
+      "sincero",
+      "intimista"
+    ]
+  },
+  {
   "emoji": "🔥",
   "title": "Pessoinha e o feriadão",
   "sub": "Um pensamento que escapou sem querer",
@@ -1152,6 +1167,7 @@
   }
 
 ]
+
 
 
 
