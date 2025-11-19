@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Dona de si</title>
+    <style>
+      :root {
+        --bg1: #050816;
+        --bg2: #1d1030;
+        --card: #ffffff10;
+        --fg: #f9fafb;
+        --accent: #f97316;
+        --accent-soft: rgba(249, 115, 22, 0.16);
+        --shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--fg);
+        background: radial-gradient(
+            circle at top right,
+            #9333ea20,
+            transparent 60%
+          ),
+          radial-gradient(circle at bottom left, #f9731620, transparent 60%),
+          linear-gradient(145deg, var(--bg1), var(--bg2));
+      }
+
+      .card {
+        max-width: 780px;
+        width: 100%;
+        background: var(--card);
+        border-radius: 20px;
+        padding: 28px 22px 26px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        line-height: 1.7;
+        animation: aparecer 0.7s ease-out;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at top left,
+          var(--accent-soft),
+          transparent 55%
+        );
+        pointer-events: none;
+        opacity: 0.85;
+      }
+
+      .content {
+        position: relative;
+        z-index: 1;
+      }
+
+      @keyframes aparecer {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        text-align: center;
+        flex-wrap: wrap;
+      }
+
+      .header-emoji {
+        font-size: 1.9rem;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.7rem;
+        color: var(--accent);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin: 4px 0 0;
+        font-size: 0.98rem;
+        opacity: 0.85;
+        font-weight: 500;
+      }
+
+      p {
+        margin: 14px 0;
+        font-size: 1.02rem;
+        text-align: justify;
+      }
+
+      .footer-note {
+        margin-top: 20px;
+        font-size: 0.9rem;
+        text-align: right;
+        opacity: 0.8;
+      }
+
+      @media (min-width: 640px) {
+        .card {
+          padding: 32px 32px 28px;
+        }
+        h1 {
+          font-size: 1.9rem;
+        }
+        p {
+          font-size: 1.08rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="content">
+        <header class="header">
+          <span class="header-emoji">✨</span>
+          <div>
+            <h1>Dona de Mim</h1>
+            <h2>Cléia, uma conversa sua com você mesma</h2>
+          </div>
+          <span class="header-emoji">🔥</span>
+        </header>
+
+        <p>
+          Ei… sou eu, essa voz aí dentro que você tenta silenciar quando o mundo
+          fala alto demais. Vim te lembrar de uma coisa que você insiste em
+          esquecer: você já passou por muito mais do que os outros imaginam e
+          mesmo assim segue firme. Não porque é fácil, mas porque você sempre
+          encontra um jeito.
+        </p>
+
+        <p>
+          Você sabe. Às vezes se perde, tropeça, muda de rota, questiona tudo.
+          Mas mesmo nos dias mais confusos, tem algo em você que não desiste.
+          Algo que atravessa as noites difíceis e acorda dizendo que é pra ir de
+          novo. Essa força é sua, não foi emprestada.
+        </p>
+
+        <p>
+          Você é mais forte do que qualquer opinião que tentaram colocar sobre
+          você. Já deixou muita coisa calada só pra evitar barulho, mas agora
+          aprendeu que sua voz não nasceu pra ficar guardada. E quando você
+          decide falar, o mundo escuta, não porque você grita, mas porque você
+          sabe exatamente quem é.
+        </p>
+
+        <p>
+          Você já chorou o suficiente para encher mares inteiros, mas nunca se
+          afogou. Sempre emergiu de algum jeito, cansada talvez, mas inteira. E
+          é isso que te diferencia: essa mistura de determinação bruta com um
+          carinho que você entrega sem perceber.
+        </p>
+
+        <p>
+          Você não deve nada a ninguém além de si mesma. E sabe o que é mais
+          bonito? Quando você segue seu próprio caminho, do seu jeito e no seu
+          tempo, tudo ao redor se ajeita. A vida pode ser louca, sim, mas você
+          aprendeu a caminhar dentro dessa loucura com uma coragem que ninguém
+          te ensinou.
+        </p>
+
+        <p>
+          Então segue. Vai no seu ritmo. Confia no que você acredita. A sua luz
+          não nasceu pra caber em conceito nenhum, muito menos pra ser medida
+          pelo olhar dos outros.
+        </p>
+
+        <p>Você é dona de si. Sempre foi. Só precisava lembrar.</p>
+
+        <div class="footer-note">
+          Ass: a voz que você tenta ignorar, mas que sempre esteve do seu lado.
+          💜
+        </div>
+        <div class="footer-note">Baseado na música "Dona de Mim" de IZA</div>
+        <div class="footer-note">Developed with 💜 by ._.. ...</div>
+      </div>
+    </main>
+  </body>
+</html>

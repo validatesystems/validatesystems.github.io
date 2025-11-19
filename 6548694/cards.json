@@ -1,5 +1,48 @@
 [
   {
+    "emoji": "💌",
+    "title": "Bilhetes que chegam devagar",
+    "sub": "Uma página leve, sem sermão, só pequenos sinais ao longo do tempo",
+    "desc": "Uma experiência com 6 bilhetes que aparecem aos poucos.",
+    "href": "./semsermao19112025.html",
+    "publishedAt": "2025-11-19T12:02:00-03:00",
+    "sentimento": "Afeto leve",
+    "moods": [
+      "delicado",
+      "bem humorado",
+      "suave",
+      "carinho discreto"
+    ]
+  },
+  {
+    "emoji": "🔥",
+    "title": "Dona de si",
+    "sub": "Quando sua voz interior decide falar",
+    "desc": "Uma mensagem inspirada na essência da música 'Dona de Mim', como se o seu eu interior sentasse ao lado e lembrasse quem você sempre foi.",
+    "href": "./donademim19112025.html",
+    "publishedAt": "2025-11-19T07:00:00-03:00",
+    "sentimento": "Força suave",
+    "moods": [
+      "empoderamento discreto",
+      "noturno",
+      "voz interior"
+    ]
+  },
+  {
+    "emoji": "☀️",
+    "title": "Bom dia poético",
+    "sub": "Cecília, Drummond e o seu jeito de iluminar a manhã",
+    "desc": "Um bom dia inspirado em versos reais de Cecília Meireles e Drummond, misturado ao seu jeito único de transformar qualquer manhã comum em algo que realmente existe.",
+    "href": "./bomdia19112025.html",
+    "publishedAt": "2025-11-19T04:12:00-03:00",
+    "sentimento": "Leveza matinal",
+    "moods": [
+      "poético",
+      "afeto discreto",
+      "manhã suave"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Noite calma e bagunça boa",
     "sub": "Entre a leveza da noite e o caos que você provoca",
