@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "🛣️",
+    "title": "De volta ao interior",
+    "sub": "Um lembrete que chega depois da estrada",
+    "desc": "Uma página que conversa com a visita de hoje, reacende memórias e convida você a revisitar aquela outra jornada entre cidade e interior.",
+    "href": "./devoltaaointerior.html",
+    "publishedAt": "2025-11-20T11:16:00-03:00",
+    "sentimento": "Nostalgia calma",
+    "moods": [
+      "estrada",
+      "origem",
+      "reflexão"
+    ]
+  },
+  {
     "emoji": "💭",
     "title": "Fala comigo, menina",
     "sub": "Um pensamento que não deu mais pra guardar",
