@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "💜",
+    "title": "Coisas que eu queria te dizer",
+    "sub": "Uma verdade suave que fica guardada",
+    "desc": "Uma página com aquelas palavras que quase nunca são ditas, mas que existem do mesmo jeito. Sentidas, quietas e sinceras.",
+    "href": "./coisasqueeuqueriadizer.html",
+    "publishedAt": "2025-11-20T04:45:00-03:00",
+    "sentimento": "Confissão suave",
+    "moods": [
+      "intimidade",
+      "calma emocional",
+      "sentimento guardado"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Boa noite, Cléia",
     "sub": "Um descanso que conversa com seu ritmo",
