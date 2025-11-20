@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "💭",
+    "title": "Fala comigo, menina",
+    "sub": "Um pensamento que não deu mais pra guardar",
+    "desc": "Uma mensagem diferente, mais direta e sincera, como quem precisa finalmente perguntar aquilo que ficou preso por tempo demais.",
+    "href": "./falamemenina20112025.html",
+    "publishedAt": "2025-11-20T05:00:00-03:00",
+    "sentimento": "Confissão reflexiva",
+    "moods": [
+      "sinceridade",
+      "intimidade",
+      "questionamento"
+    ]
+  },
+  {
     "emoji": "💜",
     "title": "Coisas que eu queria te dizer",
     "sub": "Uma verdade suave que fica guardada",
