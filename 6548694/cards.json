@@ -1,5 +1,36 @@
 [
   {
+    "emoji": "💌",
+    "title": "Mensagem rápida",
+    "sub": "Mais uma espiadinha rápida para ler essa mensagem.",
+    "desc": "Uma mensagem simples, mas carregada de intensidade.",
+    "href": "./mensagemrapida21112025.html",
+    "publishedAt": "2025-11-21T07:00:00-03:00",
+    "sentimento": "Afeto silencioso",
+    "moods": [
+      "Cuidado",
+      "Sutileza",
+      "Admiração",
+      "Presença",
+      "Calma"
+    ]
+  },
+  {
+    "emoji": "🌅",
+    "title": "Bom dia",
+    "sub": "Uma verdade sobre você",
+    "desc": "Uma mensagem suave.",
+    "href": "./bomdia21112025.html",
+    "publishedAt": "2025-11-21T03:58:00-03:00",
+    "sentimento": "Cuidado sereno",
+    "moods": [
+      "leve",
+      "elegante",
+      "afeto discreto",
+      "acolhedor"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Boa noite no interior",
     "sub": "Um descanso que encontra você onde estiver",
