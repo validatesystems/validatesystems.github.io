@@ -1735,19 +1735,47 @@
                 );
               }
 
+              // if (!list.length) {
+              //   let msg = "Não há cards disponíveis neste momento.";
+
+              //   if (filter === "today") {
+              //     msg = "Não há cards publicados para hoje (por enquanto).";
+              //   } else if (filter === "unread") {
+              //     msg = "Não há cards não lidos. Olha você em dia com tudo!";
+              //   }
+
+              //   const p = document.createElement("p");
+              //   p.className = "empty-grid-message";
+              //   p.textContent = msg;
+              //   grid.appendChild(p);
+              // } else {
+              //   list.forEach((c, index) => {
+              //     const cardEl = createCardElement(c);
+              //     cardEl.classList.add("fade-in");
+              //     cardEl.style.animationDelay = index * 40 + "ms";
+              //     grid.appendChild(cardEl);
+              //   });
+              // }
+
               if (!list.length) {
-                let msg = "Não há cards disponíveis neste momento.";
+                const msg =
+                  filter === "today"
+                    ? "Não há cards publicados para hoje (por enquanto)."
+                    : "Não há cards disponíveis neste momento.";
 
-                if (filter === "today") {
-                  msg = "Não há cards publicados para hoje (por enquanto).";
-                } else if (filter === "unread") {
-                  msg = "Não há cards não lidos. Olha você em dia com tudo!";
-                }
+                const btn = document.createElement("button");
+                btn.type = "button";
+                // reaproveita o estilo de mensagem vazia + estilo de botão
+                btn.className = "btn secondary empty-grid-message";
+                btn.textContent = "Atualizar página";
+                // se quiser, mantém o texto antigo como tooltip
+                btn.title = msg;
 
-                const p = document.createElement("p");
-                p.className = "empty-grid-message";
-                p.textContent = msg;
-                grid.appendChild(p);
+                btn.addEventListener("click", () => {
+                  window.location.reload();
+                });
+
+                grid.appendChild(btn);
               } else {
                 list.forEach((c, index) => {
                   const cardEl = createCardElement(c);
@@ -3370,14 +3398,11 @@
         );
       })();
 
-
-
       window.addEventListener("pageshow", (event) => {
-  if (event.persisted) {
-    window.location.reload();
-  }
-});
+        if (event.persisted) {
+          window.location.reload();
+        }
+      });
     </script>
   </body>
 </html>
-
