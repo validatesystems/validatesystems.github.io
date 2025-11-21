@@ -9,10 +9,15 @@
     <meta name="color-scheme" content="light dark" />
     <title>Mensagem</title>
 
+    <!-- <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap"
+    /> -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Homemade+Apple&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600&display=swap"
     />
+
     <style>
       :root {
         --bg-light1: #faf8ff;
@@ -320,15 +325,16 @@
 
       /* texto manuscrito */
       .msg {
-        font-family: "Homemade Apple", cursive;
-        font-size: 1.06rem;
-        line-height: 1.85;
+        /* font-family: "Caveat", cursive; */
+        font-family: "Dancing Script", cursive;
+        font-size: 1.5rem;
+        line-height: 1.5;
         margin: 0 0 14px 0;
         color: #3a2f1c; /* marrom grafite, forte e elegante */
         text-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
       }
 
-      .footer-row {
+      /* .footer-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -338,7 +344,7 @@
         gap: 6px;
         position: relative;
         z-index: 1;
-      }
+      } */
 
       .status {
         display: inline-flex;
@@ -362,10 +368,6 @@
           padding: 13px 12px 12px;
         }
 
-        .msg {
-          font-size: 0.98rem;
-        }
-
         .footer-row {
           flex-direction: column;
           align-items: flex-end;
@@ -382,7 +384,7 @@
           rgba(110, 85, 40, 0.28) 1px,
           transparent 1px
         );
-        background-size: 100% 33px;
+        background-size: 100% 28px;
       }
 
       html[data-theme="dark"] .msg {
