@@ -1,5 +1,20 @@
 [
   {
+    "emoji": "📜",
+    "title": "Carta de sexta",
+    "sub": "Um sextou diferente",
+    "desc": "Uma carta curtinha, com cara de escrita à mão, falando desse sextou.",
+    "href": "./cartadesexta21112025.html",
+    "publishedAt": "2025-11-21T09:11:00-03:00",
+    "sentimento": "Saudade feliz",
+    "moods": [
+      "leve",
+      "afeto discreto",
+      "saudade boa",
+      "gratidão silenciosa"
+    ]
+  },
+  {
     "emoji": "💌",
     "title": "Mensagem rápida",
     "sub": "Mais uma espiadinha rápida para ler essa mensagem.",
