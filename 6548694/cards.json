@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "💌",
+    "title": "Mensagem rápida",
+    "sub": "Uma carta que quase fala sozinha",
+    "desc": "Uma mensagem curtinha em formato de carta, com trilha sonora e aquele toque suave que sabe que é só pra você, Cléia.",
+    "href": "./mensagemrapida_carta21112025.html",
+    "publishedAt": "2025-11-21T10:37:00-03:00",
+    "sentimento": "afeto quieto",
+    "moods": [
+      "leve",
+      "silencioso",
+      "carinho discreto"
+    ]
+  },
+  {
     "emoji": "📜",
     "title": "Carta de sexta",
     "sub": "Um sextou diferente",
