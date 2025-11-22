@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Presenças Raras</title>
+    <style>
+      :root {
+        --bg1: #050816;
+        --bg2: #120c24;
+        --accent: #ff7aa2;
+        --accent-soft: rgba(255, 122, 162, 0.2);
+        --accent-2: #7dd3fc;
+        --card: rgba(10, 10, 25, 0.9);
+        --fg: #f9fafb;
+        --muted: #a5b4fc;
+        --border: rgba(148, 163, 184, 0.35);
+        --glow: 0 0 30px rgba(129, 140, 248, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--fg);
+        background: radial-gradient(circle at top, #1d2240 0, #050816 55%),
+          radial-gradient(circle at bottom, #0b1b3d 0, #050816 55%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        text-align: justify;
+      }
+
+      .stars {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(
+            circle at 10% 20%,
+            #ffffff22 1px,
+            transparent 0
+          ),
+          radial-gradient(circle at 80% 10%, #ffffff11 1px, transparent 0),
+          radial-gradient(circle at 50% 80%, #ffffff18 1px, transparent 0);
+        opacity: 0.7;
+        mix-blend-mode: screen;
+      }
+
+      .container {
+        position: relative;
+        max-width: 480px;
+        width: 100%;
+        border-radius: 24px;
+        padding: 20px 18px 18px;
+        background: linear-gradient(
+            135deg,
+            rgba(148, 163, 253, 0.06),
+            rgba(244, 114, 182, 0.08)
+          ),
+          var(--card);
+        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.85);
+        border: 1px solid var(--border);
+        backdrop-filter: blur(18px);
+        overflow: hidden;
+      }
+
+      .orb {
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 999px;
+        background: radial-gradient(
+          circle,
+          rgba(244, 114, 182, 0.3),
+          transparent 60%
+        );
+        filter: blur(5px);
+        top: -80px;
+        right: -60px;
+        opacity: 0.5;
+      }
+
+      .orb-blue {
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border-radius: 999px;
+        background: radial-gradient(
+          circle,
+          rgba(56, 189, 248, 0.28),
+          transparent 65%
+        );
+        filter: blur(4px);
+        bottom: -120px;
+        left: -100px;
+        opacity: 0.6;
+      }
+
+      header {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 12px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        color: var(--muted);
+      }
+
+      .tag-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: radial-gradient(
+          circle,
+          var(--accent) 0,
+          #f97316 40%,
+          transparent 70%
+        );
+        box-shadow: 0 0 12px rgba(248, 113, 113, 0.7);
+      }
+
+      h1 {
+        margin: 10px 0 4px;
+        font-size: 1.4rem;
+        letter-spacing: 0.02em;
+      }
+
+      .subtitle {
+        font-size: 0.86rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .subtitle strong {
+        color: #e5e7eb;
+      }
+
+      .hint {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+        font-size: 0.8rem;
+        color: #e5e7eb;
+      }
+
+      .hint span {
+        font-size: 1rem;
+      }
+
+      .hint em {
+        font-style: normal;
+        color: var(--accent-2);
+      }
+
+      .card {
+        position: relative;
+        z-index: 1;
+        margin-top: 16px;
+        padding: 18px 14px 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        background: radial-gradient(
+            circle at top left,
+            rgba(148, 163, 253, 0.16),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(96, 165, 250, 0.16),
+            transparent 60%
+          ),
+          rgba(15, 23, 42, 0.95);
+        box-shadow: var(--glow);
+        overflow: hidden;
+      }
+
+      .card-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #c7d2fe;
+        margin-bottom: 10px;
+      }
+
+      .card-label-badge {
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(31, 41, 55, 0.9);
+        border: 1px solid rgba(129, 140, 248, 0.7);
+      }
+
+      .card-label-index {
+        opacity: 0.9;
+      }
+
+      .message-text {
+        font-size: 0.98rem;
+        line-height: 1.6;
+        position: relative;
+        transition: opacity 0.35s ease, transform 0.35s ease;
+      }
+
+      /* Parágrafos dentro da mensagem */
+      .message-text p {
+        margin: 0 0 10px;
+      }
+
+      .message-text p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Estado de saída suave */
+      .message-text.fade-out {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      /* Estado de entrada suave */
+      .message-text.fade-in {
+        opacity: 0;
+        transform: translateY(-10px);
+        animation: fadeInUp 0.35s ease forwards;
+      }
+
+      /* Animação de entrada */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .progress {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 14px;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .progress-bar {
+        position: relative;
+        flex: 1;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.94);
+        overflow: hidden;
+      }
+
+      .progress-bar-fill {
+        position: absolute;
+        inset: 0;
+        transform-origin: left;
+        transform: scaleX(0);
+        background: linear-gradient(
+          to right,
+          var(--accent),
+          #f97316,
+          var(--accent-2)
+        );
+      }
+
+      .status-line {
+        margin-top: 8px;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .status-line strong {
+        color: #e5e7eb;
+      }
+
+      .status-line .ok {
+        color: #4ade80;
+      }
+
+      .status-line .wait {
+        color: #facc15;
+      }
+
+      .button-row {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 9px 12px;
+        border-radius: 999px;
+        border: 0;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: transform 0.16s ease, box-shadow 0.16s ease,
+          background 0.16s ease, opacity 0.16s ease;
+      }
+
+      .btn-primary {
+        background: radial-gradient(circle at top left, #f97316, var(--accent));
+        color: white;
+        box-shadow: 0 10px 30px rgba(248, 113, 113, 0.45);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 40px rgba(248, 113, 113, 0.6);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 0 6px 20px rgba(248, 113, 113, 0.5);
+      }
+
+      .btn-primary[disabled] {
+        opacity: 0.55;
+        cursor: default;
+        box-shadow: none;
+      }
+
+      .btn-ghost {
+        background: rgba(15, 23, 42, 0.9);
+        color: var(--muted);
+        border: 1px solid rgba(148, 163, 184, 0.7);
+      }
+
+      .btn-ghost span {
+        font-size: 1.1rem;
+      }
+
+      .btn-ghost:hover {
+        background: rgba(15, 23, 42, 1);
+        color: #e5e7eb;
+      }
+
+      .playlist-section {
+        position: relative;
+        z-index: 1;
+        margin-top: 16px;
+        padding: 14px 12px 12px;
+        border-radius: 18px;
+        background: linear-gradient(
+          135deg,
+          rgba(34, 197, 94, 0.15),
+          rgba(16, 185, 129, 0.12)
+        );
+        border: 1px solid rgba(74, 222, 128, 0.7);
+        display: none;
+      }
+
+      .playlist-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .playlist-title span {
+        font-size: 1.1rem;
+      }
+
+      .playlist-text {
+        font-size: 0.82rem;
+        color: #dcfce7;
+        line-height: 1.5;
+        margin-bottom: 8px;
+      }
+
+      .playlist-text strong {
+        color: #bbf7d0;
+      }
+
+      footer {
+        position: relative;
+        z-index: 1;
+        margin-top: 10px;
+        font-size: 0.72rem;
+        color: rgba(148, 163, 184, 0.9);
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      footer span {
+        opacity: 0.9;
+      }
+
+      footer .dot {
+        display: inline-block;
+        width: 4px;
+        height: 4px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.9);
+        margin: 0 4px;
+      }
+
+      .tiny {
+        opacity: 0.7;
+      }
+
+      @media (min-width: 640px) {
+        .container {
+          padding: 22px 20px 18px;
+        }
+
+        h1 {
+          font-size: 1.55rem;
+        }
+
+        /* .message-text {
+          font-size: 1.02rem;
+        } */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars"></div>
+    <div class="orb"></div>
+    <div class="orb-blue"></div>
+
+    <main class="container" aria-live="polite">
+      <header>
+        <div class="tag">
+          <span class="tag-dot"></span>
+          <span>Mensagens feitas só pra você</span>
+        </div>
+        <h1>Cléia, entre uma mensagem e outra, você</h1>
+        <p class="subtitle">
+          Aqui, cada mensagem chega com tempo, calma e intenção. Uma de cada
+          vez, para você ler devagar, do jeito que seu dia merece. No fim desse
+          caminho tem um <strong>bônus</strong> te esperando.
+        </p>
+        <p class="hint">
+          <span>✨</span>
+          <span>
+            A próxima mensagem só aparece
+            <em>15 minutos depois</em> de você ler a anterior.
+          </span>
+        </p>
+      </header>
+
+      <section class="card" aria-label="Mensagem atual">
+        <div class="card-label">
+          <span class="card-label-badge" id="stepLabel">Mensagem 1</span>
+          <span class="card-label-index" id="positionLabel"> 1 de 3 </span>
+        </div>
+        <div class="message-text" id="messageContent">
+          <!-- Mensagem será inserida pelo script -->
+        </div>
+
+        <div class="progress">
+          <span id="timeStatus">Tempo para a próxima</span>
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-bar-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <p class="status-line" id="statusLine">
+          A próxima mensagem ainda está guardada. Falta um pouquinho.
+        </p>
+
+        <div class="button-row">
+          <button class="btn btn-primary" id="prevButton">
+            <span>Voltar mensagem</span>
+            <span>⬅️</span>
+          </button>
+
+          <button class="btn btn-primary" id="nextButton" disabled>
+            <span>Ver próxima mensagem</span>
+            <span>⏱️</span>
+          </button>
+
+          <button class="btn btn-ghost" id="restartButton">
+            <span>🔁</span>
+            <span>Recomeçar desde a primeira</span>
+          </button>
+        </div>
+      </section>
+
+      <section
+        class="playlist-section"
+        id="playlistSection"
+        aria-label="Bônus final"
+      >
+        <div class="playlist-title">
+          <span>🎧</span>
+          <span>Bônus para quando você chegar ao fim</span>
+        </div>
+        <p class="playlist-text">
+          Se você chegou até aqui, já sabe. Essas mensagens só existem porque
+          você é uma pessoa especial. Então, o mínimo que eu podia fazer era te
+          deixar uma trilha sonora pra acompanhar tudo isso.
+          <br />
+          <strong>Clica quando sentir vontade</strong>, sem pressa.
+        </p>
+        <button class="btn btn-primary" id="playlistButton" type="button">
+          <span>Abrir playlist no Spotify</span>
+          <span>💚</span>
+        </button>
+      </section>
+
+      <footer>
+        <span>Entre pausas e mensagens, é sobre você ser lembrada.</span>
+        <span class="tiny">
+          ⏳
+          <span class="dot"></span>
+          Tempo mínimo entre mensagens:
+          <strong>15 minutos</strong>
+        </span>
+        <span> Com muito 💜 ._.. ... </span>
+      </footer>
+    </main>
+
+    <script>
+      // Configurações principais
+      const INTERVALO_MINUTOS = 15;
+      const INTERVALO_MS = INTERVALO_MINUTOS * 60 * 1000;
+      const STORAGE_KEY = "cleia_mensagens_timed_v1";
+
+      // Mensagens - troque pelos seus textos, mantendo o formato
+      const mensagens = [
+        {
+          id: 1,
+          tituloEtapa: "Primeira parada",
+          texto: [
+            "Cléia, às vezes eu fico pensando que a vida anda tão corrida que quase não dá tempo de sentir as coisas com calma.",
+            "Então esta página é isso: um espaço em que o tempo desacelera só para você. Uma mensagem por vez, como se cada uma fosse um abraço ao longo do dia.",
+            "Se você está lendo isso, já valeu a pena escrever.",
+          ],
+        },
+        {
+          id: 2,
+          tituloEtapa: "Presença em pensamentos",
+          texto: [
+            "Sabia que você vem nos meus pensamentos me mostrar como sorrir mais?",
+            "É como se fosse meu lembrete secreto de que a vida não precisa ser tão séria.",
+            "Você aparece e pronto: já estou rindo sozinho, lembrando das piadas sem graça, das histórias que nunca acabam e das conversas que parecem maratonas de risadas.",
+            "É quase como ter um aplicativo de alegria instalado na mente, e você é a notificação favorita!",
+          ],
+        },
+        {
+          id: 3,
+          tituloEtapa: "Pessoas e instantes",
+          texto: [
+            "Algumas pessoas têm esse poder:",
+            "Elas não resolvem nossos problemas, mas fazem o mundo pesar menos por um instante.",
+            "É como se trouxessem uma pausa mágica, um respiro entre as corridas da vida.",
+            "Com elas, até o silêncio vira companhia boa, e qualquer conversa simples se transforma em lembrança guardada.",
+            "São aquelas presenças que não precisam de grandes gestos, basta estarem ali, e tudo já parece mais fácil de carregar.",
+          ],
+        },
+        {
+          id: 4,
+          tituloEtapa: "Paz e companhia",
+          texto: [
+            "Tem quem traz paz sem nenhum esforço, sem discurso bonito, sem manual. Só sendo quem é.",
+            "Não precisa de grandes gestos, porque o simples já basta: um sorriso, uma presença, um jeito de estar e aquele sorriso.",
+            "É como se o coração entendesse antes mesmo das palavras: “aqui é seguro, aqui é leve, é aqui que quero estar”.",
+            "E no fim, você percebe que algumas pessoas são exatamente isso, paz disfarçada de companhia.",
+          ],
+        },
+        {
+          id: 5,
+          tituloEtapa: "Um dia, quem sabe!",
+          texto: [
+            "Cléia, você é tudo isso e muito mais. Não foi difícil te escrever essas mensagens.",
+            "Sinceramente, difícil é não poder te dizer tudo o que penso e desejo em relação a você.",
+            "Um dia, quem sabe!",
+          ],
+        },
+      ];
+
+      // Elementos da página
+      const messageContent = document.getElementById("messageContent");
+      const stepLabel = document.getElementById("stepLabel");
+      const positionLabel = document.getElementById("positionLabel");
+      const timeStatus = document.getElementById("timeStatus");
+      const statusLine = document.getElementById("statusLine");
+      const progressFill = document.getElementById("progressFill");
+      const prevButton = document.getElementById("prevButton");
+      const nextButton = document.getElementById("nextButton");
+      const restartButton = document.getElementById("restartButton");
+      const playlistSection = document.getElementById("playlistSection");
+      const playlistButton = document.getElementById("playlistButton");
+
+      // Estado
+      let state = {
+        currentIndex: 0, // índice da mensagem atual
+        viewTimes: {}, // { "0": timestamp, "1": timestamp, ... }
+      };
+
+      // Carrega estado do localStorage
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (
+              typeof parsed.currentIndex === "number" &&
+              typeof parsed.viewTimes === "object"
+            ) {
+              state = parsed;
+            }
+          }
+        } catch (e) {
+          console.error("Erro ao carregar estado:", e);
+        }
+      }
+
+      // Salva estado no localStorage
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {
+          console.error("Erro ao salvar estado:", e);
+        }
+      }
+
+      // Renderiza a mensagem atual
+      function renderCurrentMessage() {
+        const total = mensagens.length;
+        let index = state.currentIndex;
+
+        // Garante limites
+        if (index < 0) index = 0;
+        if (index >= total) index = total - 1;
+        state.currentIndex = index;
+
+        const msg = mensagens[index];
+
+        // Se ainda não há tempo de visualização para esta mensagem, registra agora
+        if (!state.viewTimes[index]) {
+          state.viewTimes[index] = Date.now();
+          saveState();
+        }
+
+        // Atualiza textos
+        stepLabel.textContent = msg.tituloEtapa;
+        positionLabel.textContent = index + 1 + " de " + total;
+
+        // Monta os parágrafos da mensagem
+        messageContent.innerHTML = msg.texto
+          .map((par) => "<p>" + par + "</p>")
+          .join("");
+
+        // Atualiza playlist (mostrar apenas se for a última mensagem)
+        if (index === total - 1) {
+          playlistSection.style.display = "block";
+        } else {
+          playlistSection.style.display = "none";
+        }
+
+        // Atualiza controles de tempo
+        updateTimerAndButtons();
+      }
+
+      // Atualiza barra, contagem e botão de próxima mensagem
+      function updateTimerAndButtons() {
+        const index = state.currentIndex;
+        const total = mensagens.length;
+        const viewedAt = state.viewTimes[index];
+
+        // Controle do botão de voltar
+        if (state.currentIndex > 0) {
+          prevButton.style.display = "inline-flex";
+        } else {
+          //   prevButton.disabled = true;
+          prevButton.style.display = "none";
+        }
+
+        // Última mensagem não precisa de espera para "próxima"
+        if (index === total - 1) {
+          nextButton.disabled = true;
+          nextButton.innerHTML =
+            "<span>Não há próxima, você chegou ao fim</span><span>🌙</span>";
+          timeStatus.textContent = "Fim das mensagens escritas aqui";
+          statusLine.innerHTML =
+            'Agora o bônus é seu. A playlist está logo abaixo. <span class="ok">Pode abrir quando quiser.</span>';
+          progressFill.style.transform = "scaleX(1)";
+          return;
+        }
+
+        if (!viewedAt) {
+          // Segurança: se por algum motivo não houver viewedAt, define agora
+          state.viewTimes[index] = Date.now();
+          saveState();
+        }
+
+        const now = Date.now();
+        const elapsed = now - state.viewTimes[index];
+        const remaining = INTERVALO_MS - elapsed;
+
+        if (remaining <= 0) {
+          // Já pode liberar a próxima mensagem
+          nextButton.disabled = false;
+          nextButton.innerHTML =
+            "<span>Ver próxima mensagem</span><span>💌</span>";
+          timeStatus.textContent = "Próxima mensagem liberada";
+          statusLine.innerHTML =
+            '<span class="ok">Se quiser, você já pode seguir para a próxima.</span>';
+          progressFill.style.transform = "scaleX(1)";
+        } else {
+          // Ainda falta tempo
+          nextButton.disabled = true;
+          nextButton.innerHTML =
+            "<span>Próxima mensagem em breve</span><span>⏳</span>";
+
+          const totalSeconds = Math.ceil(remaining / 1000);
+          const minutes = Math.floor(totalSeconds / 60);
+          const seconds = totalSeconds % 60;
+
+          const minLabel =
+            minutes > 0 ? minutes + " min" + (minutes > 1 ? "s" : "") : "";
+          const secLabel = seconds + " s";
+
+          timeStatus.textContent =
+            "Faltam aproximadamente " +
+            (minLabel ? minLabel + " e " : "") +
+            secLabel;
+
+          statusLine.innerHTML =
+            'A próxima mensagem ainda está guardada. <span class="wait">Ela chega quando o tempo fizer sentido.</span>';
+
+          // Preenche a barra proporcionalmente ao tempo decorrido
+          const progress = Math.min(elapsed / INTERVALO_MS, 1);
+          progressFill.style.transform = "scaleX(" + progress.toFixed(3) + ")";
+        }
+      }
+
+      // Troca suave entre mensagens
+      function smoothChangeTo(targetIndex) {
+        const total = mensagens.length;
+
+        // Garante que o índice alvo está dentro dos limites
+        if (targetIndex < 0) targetIndex = 0;
+        if (targetIndex >= total) targetIndex = total - 1;
+
+        // Aplica classe de saída
+        messageContent.classList.remove("fade-in");
+        messageContent.classList.add("fade-out");
+
+        // Espera a saída terminar antes de trocar o conteúdo
+        setTimeout(() => {
+          state.currentIndex = targetIndex;
+          saveState();
+
+          // Renderiza a nova mensagem
+          renderCurrentMessage();
+
+          // Remove a classe de saída e aplica a de entrada
+          messageContent.classList.remove("fade-out");
+          messageContent.classList.add("fade-in");
+
+          // Depois da animação de entrada, limpa a classe
+          setTimeout(() => {
+            messageContent.classList.remove("fade-in");
+          }, 400);
+        }, 220);
+      }
+
+      // Vai para a próxima mensagem (se liberado)
+      function goToNextMessage() {
+        const total = mensagens.length;
+        if (state.currentIndex >= total - 1) return;
+
+        // Garante que o tempo mínimo foi respeitado
+        const viewedAt = state.viewTimes[state.currentIndex];
+        const now = Date.now();
+        const elapsed = now - viewedAt;
+
+        if (elapsed < INTERVALO_MS) {
+          // Segurança extra, se alguém tentar avançar antes da hora
+          updateTimerAndButtons();
+          return;
+        }
+
+        // Troca suave para a próxima mensagem
+        smoothChangeTo(state.currentIndex + 1);
+      }
+
+      function goToPreviousMessage() {
+        if (state.currentIndex > 0) {
+          smoothChangeTo(state.currentIndex - 1);
+        }
+      }
+
+      // Recomeça tudo do zero
+      function restartJourney() {
+        if (!confirm("Quer recomeçar desde a primeira mensagem?")) return;
+
+        state = {
+          currentIndex: 0,
+          viewTimes: {},
+        };
+        saveState();
+
+        // Volta suavemente para a primeira
+        smoothChangeTo(0);
+      }
+
+      // Abre playlist
+      function openPlaylist() {
+        const url =
+          "https://open.spotify.com/playlist/0WYxnFzvsKFMMTAxD8VeR9?si=a4b8ba68949b4388";
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+
+      // Inicialização
+      loadState();
+      renderCurrentMessage();
+
+      // Atualiza o timer em tempo real enquanto a página estiver aberta
+      setInterval(updateTimerAndButtons, 1000);
+
+      // Eventos
+      nextButton.addEventListener("click", goToNextMessage);
+      restartButton.addEventListener("click", restartJourney);
+      playlistButton.addEventListener("click", openPlaylist);
+      prevButton.addEventListener("click", goToPreviousMessage);
+    </script>
+  </body>
+</html>
