@@ -1053,6 +1053,56 @@
         color: #bdbdbd;
         border: 1px solid rgba(160, 160, 160, 0.3);
       }
+      /* ===============================
+   Círculos dos contadores
+   =============================== */
+      .filter-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-width: 22px;
+        height: 22px;
+
+        padding: 0 6px;
+        border-radius: 50%;
+
+        font-size: 12px;
+        font-weight: 600;
+
+        margin-left: 6px;
+        line-height: 1;
+        transition: background 0.25s ease, border-color 0.25s ease;
+      }
+
+      /* ===============================
+   Tema Acústico — claro, suave
+   =============================== */
+      body:not(.eletrico) .filter-count {
+        background: rgba(0, 0, 0, 0.08);
+        border: 2px solid rgba(0, 0, 0, 0.18);
+        color: #111827;
+      }
+
+      /* ===============================
+   Tema Elétrico — escuro, brilhante
+   =============================== */
+      body.eletrico .filter-count {
+        background: rgba(255, 255, 255, 0.18);
+        border: 2px solid rgba(255, 255, 255, 0.35);
+        color: #fdfdfd;
+      }
+
+      /* ===============================
+   Quando o botão está ativo
+   (tema claro e escuro)
+   =============================== */
+      button.active .filter-count,
+      button.active:focus .filter-count {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
     </style>
   </head>
 
@@ -1187,19 +1237,41 @@
         </div>
       </header>
 
-      <nav class="toolbar" aria-label="ações rápidas">
+      <!-- <nav class="toolbar" aria-label="ações rápidas">
         <button type="button" class="btn ghost" id="filterUnread">
           <i class="fa-solid fa-eye-slash"></i>
           <span>Não lidos</span>
+          <span class="filter-count" id="countUnread"></span>
         </button>
+
+        <button type="button" class="btn secondary" id="filterToday">
+          <span>Só de hoje</span>
+          <span class="filter-count" id="countToday"></span>
+        </button>
+
+        <button type="button" class="btn ghost" id="filterAll">
+          <span>Todos os cards</span>
+          <span class="filter-count" id="countAll"></span>
+        </button>
+      </nav> -->
+
+      <nav class="toolbar" aria-label="ações rápidas">
+        <button type="button" class="btn ghost" id="filterUnread">
+          <i class="fa-solid fa-eye-slash"></i>
+          <span class="filter-label">Não lidos</span>
+          <span class="filter-count" id="countUnread"></span>
+        </button>
+
         <button type="button" class="btn secondary" id="filterToday">
           <i class="fa-solid fa-calendar-day"></i>
-          <span>Só de hoje</span>
+          <span class="filter-label">Só de hoje</span>
+          <span class="filter-count" id="countToday"></span>
         </button>
 
         <button type="button" class="btn ghost" id="filterAll">
           <i class="fa-solid fa-layer-group"></i>
-          <span>Todos os cards</span>
+          <span class="filter-label">Todos os cards</span>
+          <span class="filter-count" id="countAll"></span>
         </button>
       </nav>
 
@@ -1581,6 +1653,11 @@
           const filterAllBtn = document.getElementById("filterAll");
           const filterUnreadBtn = document.getElementById("filterUnread");
 
+          // Spans de contagem nos botões
+          const countUnreadEl = document.getElementById("countUnread");
+          const countTodayEl = document.getElementById("countToday");
+          const countAllEl = document.getElementById("countAll");
+
           const fmt = new Intl.DateTimeFormat("pt-BR", {
             day: "2-digit",
             month: "2-digit",
@@ -1611,6 +1688,49 @@
 
           let baseCards = [];
           let currentFilter = "today";
+
+          // Atualiza a contagem dos filtros com base em baseCards e no horário atual
+          function updateFilterCounts() {
+            if (!Array.isArray(baseCards) || !baseCards.length) {
+              if (countUnreadEl) countUnreadEl.textContent = "";
+              if (countTodayEl) countTodayEl.textContent = "";
+              if (countAllEl) countAllEl.textContent = "";
+              return;
+            }
+
+            const now = new Date();
+
+            // Todos os cards cujo horário já chegou
+            const allCards = baseCards.filter((c) => c.__dt && c.__dt <= now);
+
+            // Só de hoje (e já "no tempo")
+            const todayCards = allCards.filter((c) => isToday(c.__dt, now));
+
+            // Não lidos: já no tempo E não marcados como lidos
+            let unreadCards = allCards;
+            if (typeof window.isCardRead === "function") {
+              unreadCards = allCards.filter((c) => !window.isCardRead(c.href));
+            }
+
+            if (countAllEl) {
+              countAllEl.textContent = allCards.length
+                ? String(allCards.length)
+                : "";
+            }
+            if (countTodayEl) {
+              countTodayEl.textContent = todayCards.length
+                ? String(todayCards.length)
+                : "";
+            }
+            if (countUnreadEl) {
+              countUnreadEl.textContent = unreadCards.length
+                ? String(unreadCards.length)
+                : "";
+            }
+          }
+
+          // Deixa acessível globalmente para outros scripts chamarem
+          window.updateFilterCounts = updateFilterCounts;
 
           function createCardElement(c) {
             const a = document.createElement("article");
@@ -1725,13 +1845,16 @@
               }
 
               // filtro "Não lidos"
-              if (
-                filter === "unread" &&
-                typeof window.isCardRead === "function"
-              ) {
-                // só entra quem já "existe no tempo" E ainda não foi lido
+              if (filter === "unread") {
+                const readSet =
+                  window.__cardsRead instanceof Set
+                    ? window.__cardsRead
+                    : typeof window.getReadCards === "function"
+                    ? new Set(window.getReadCards())
+                    : new Set();
+
                 list = list.filter(
-                  (c) => c.__dt <= now && !window.isCardRead(c.href)
+                  (c) => c.__dt <= now && !readSet.has(c.href)
                 );
               }
 
@@ -1802,6 +1925,7 @@
 
             // começa mostrando os cards de hoje
             applyFilter("today");
+            updateFilterCounts();
           });
 
           filterTodayBtn?.addEventListener("click", () => applyFilter("today"));
@@ -2337,7 +2461,135 @@
       });
     </script>
     <script>
+      // (function () {
+      //   const STORAGE_KEY = "cardsRead.v1";
+
+      //   function loadReadSet() {
+      //     try {
+      //       const raw = localStorage.getItem(STORAGE_KEY);
+      //       if (!raw) return new Set();
+      //       const arr = JSON.parse(raw);
+      //       if (!Array.isArray(arr)) return new Set();
+      //       return new Set(arr);
+      //     } catch (e) {
+      //       console.warn("[cardsRead] erro ao carregar:", e);
+      //       return new Set();
+      //     }
+      //   }
+
+      //   function saveReadSet(set) {
+      //     try {
+      //       localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
+      //     } catch (e) {
+      //       console.warn("[cardsRead] erro ao salvar:", e);
+      //     }
+      //   }
+
+      //   const readSet = loadReadSet();
+
+      //   // Helpers globais para o "Leone do futuro"
+      //   window.__cardsRead = readSet;
+      //   window.isCardRead = function (cardId) {
+      //     return readSet.has(cardId);
+      //   };
+      //   window.getReadCards = function () {
+      //     return [...readSet];
+      //   };
+
+      //   // Mapeia um <article.card> para um ID estável (href do card)
+      //   function getCardIdFromElement(el) {
+      //     if (!el) return null;
+      //     const title = el.dataset.title;
+      //     if (!title || !Array.isArray(window.cards)) return null;
+
+      //     const card = window.cards.find((c) => c.title === title);
+      //     if (!card || !card.href) return null;
+
+      //     // usamos o href como identificador único do card
+      //     return card.href;
+      //   }
+
+      //   function markCardAsReadFromElement(el) {
+      //     const id = getCardIdFromElement(el);
+      //     if (!id) return;
+
+      //     if (!readSet.has(id)) {
+      //       readSet.add(id);
+      //       saveReadSet(readSet);
+      //     }
+
+      //     // visual: lido
+      //     el.classList.add("card-lido");
+
+      //     // se estava destacado como "não lido", tira o brilho
+      //     el.classList.remove("card-hoje");
+
+      //     const tag = el.querySelector(".card-status-tag");
+      //     if (tag) {
+      //       tag.textContent = "Lido";
+      //       tag.classList.remove("nao-lido");
+      //       tag.classList.add("lido");
+      //     }
+      //   }
+
+      //   // Função para sincronizar o visual com o que já está salvo
+      //   function syncVisualReadState() {
+      //     const cardsEls = document.querySelectorAll(".card[data-title]");
+      //     cardsEls.forEach((el) => {
+      //       const id = getCardIdFromElement(el);
+      //       if (id && readSet.has(id)) {
+      //         el.classList.add("card-lido");
+      //       }
+      //     });
+      //     document.querySelectorAll(".card[data-title]").forEach((el) => {
+      //       const id = getCardIdFromElement(el);
+      //       const tag = el.querySelector(".card-status-tag");
+
+      //       if (!tag) return;
+
+      //       if (id && window.isCardRead(id)) {
+      //         tag.textContent = "Lido";
+      //         tag.classList.remove("nao-lido");
+      //         tag.classList.add("lido");
+      //       } else {
+      //         tag.textContent = "Não lido";
+      //         tag.classList.remove("lido");
+      //         tag.classList.add("nao-lido");
+      //       }
+      //     });
+      //   }
+
+      //   // Quando os cards forem carregados pela primeira vez
+      //   document.addEventListener("cards:ready", () => {
+      //     // aguarda o render do grid
+      //     setTimeout(syncVisualReadState, 250);
+      //   });
+
+      //   // Quando mudar o filtro (Hoje / Todos os cards),
+      //   // o grid é redesenhado, então sincronizamos de novo
+      //   const filterTodayBtn = document.getElementById("filterToday");
+      //   const filterAllBtn = document.getElementById("filterAll");
+
+      //   [filterTodayBtn, filterAllBtn].forEach((btn) => {
+      //     if (!btn) return;
+      //     btn.addEventListener("click", () => {
+      //       setTimeout(syncVisualReadState, 260);
+      //     });
+      //   });
+
+      //   // Registrar leitura: qualquer clique em card conta como lido
+      //   document.addEventListener(
+      //     "click",
+      //     (ev) => {
+      //       const cardEl = ev.target.closest(".card[data-title]");
+      //       if (!cardEl) return;
+      //       markCardAsReadFromElement(cardEl);
+      //     },
+      //     { capture: true }
+      //   );
+      // })();
       (function () {
+        // Usa a mesma chave do seed (PRE_READ_CARDS)
         const STORAGE_KEY = "cardsRead.v1";
 
         function loadReadSet() {
@@ -2355,7 +2607,8 @@
 
         function saveReadSet(set) {
           try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
+            // salva como array simples de hrefs
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(set)));
           } catch (e) {
             console.warn("[cardsRead] erro ao salvar:", e);
           }
@@ -2363,16 +2616,16 @@
 
         const readSet = loadReadSet();
 
-        // Helpers globais para o "Leone do futuro"
+        // Helpers globais
         window.__cardsRead = readSet;
         window.isCardRead = function (cardId) {
           return readSet.has(cardId);
         };
         window.getReadCards = function () {
-          return [...readSet];
+          return Array.from(readSet);
         };
 
-        // Mapeia um <article.card> para um ID estável (href do card)
+        // Mapeia um <article.card> para um ID (href)
         function getCardIdFromElement(el) {
           if (!el) return null;
           const title = el.dataset.title;
@@ -2381,7 +2634,6 @@
           const card = window.cards.find((c) => c.title === title);
           if (!card || !card.href) return null;
 
-          // usamos o href como identificador único do card
           return card.href;
         }
 
@@ -2396,8 +2648,6 @@
 
           // visual: lido
           el.classList.add("card-lido");
-
-          // se estava destacado como "não lido", tira o brilho
           el.classList.remove("card-hoje");
 
           const tag = el.querySelector(".card-status-tag");
@@ -2406,21 +2656,33 @@
             tag.classList.remove("nao-lido");
             tag.classList.add("lido");
           }
+
+          // se você estiver usando contadores nos botões:
+          if (typeof window.updateFilterCounts === "function") {
+            window.updateFilterCounts();
+          }
+          // Atualiza os números dos filtros (se a função existir)
+          if (typeof window.updateFilterCounts === "function") {
+            window.updateFilterCounts();
+          }
         }
 
-        // Função para sincronizar o visual com o que já está salvo
         function syncVisualReadState() {
           const cardsEls = document.querySelectorAll(".card[data-title]");
+
+          // aplica classe visual de lido
           cardsEls.forEach((el) => {
             const id = getCardIdFromElement(el);
             if (id && readSet.has(id)) {
               el.classList.add("card-lido");
+              el.classList.remove("card-hoje");
             }
           });
-          document.querySelectorAll(".card[data-title]").forEach((el) => {
+
+          // ajusta tag "Lido / Não lido"
+          cardsEls.forEach((el) => {
             const id = getCardIdFromElement(el);
             const tag = el.querySelector(".card-status-tag");
-
             if (!tag) return;
 
             if (id && window.isCardRead(id)) {
@@ -2437,23 +2699,27 @@
 
         // Quando os cards forem carregados pela primeira vez
         document.addEventListener("cards:ready", () => {
-          // aguarda o render do grid
-          setTimeout(syncVisualReadState, 250);
+          setTimeout(() => {
+            syncVisualReadState();
+            if (typeof window.updateFilterCounts === "function") {
+              window.updateFilterCounts();
+            }
+          }, 250);
         });
 
-        // Quando mudar o filtro (Hoje / Todos os cards),
-        // o grid é redesenhado, então sincronizamos de novo
+        // Quando mudar o filtro (Hoje / Todos / Não lidos)
         const filterTodayBtn = document.getElementById("filterToday");
         const filterAllBtn = document.getElementById("filterAll");
+        const filterUnreadBtn = document.getElementById("filterUnread");
 
-        [filterTodayBtn, filterAllBtn].forEach((btn) => {
+        [filterTodayBtn, filterAllBtn, filterUnreadBtn].forEach((btn) => {
           if (!btn) return;
           btn.addEventListener("click", () => {
             setTimeout(syncVisualReadState, 260);
           });
         });
 
-        // Registrar leitura: qualquer clique em card conta como lido
+        // Qualquer clique em card marca como lido
         document.addEventListener(
           "click",
           (ev) => {
@@ -3402,6 +3668,51 @@
         if (event.persisted) {
           window.location.reload();
         }
+      });
+    </script>
+    <script>
+      document.addEventListener("cards:ready", () => {
+        const totalCards = window.cards || [];
+
+        // Lidos (LocalStorage)
+        const readStr = localStorage.getItem("cardsRead") || "[]";
+        let readArr = [];
+        try {
+          readArr = JSON.parse(readStr);
+        } catch (e) {}
+
+        // Quantidade Não Lidos
+        const notReadCount = totalCards.filter(
+          (c) => !readArr.includes(c.href)
+        ).length;
+
+        // Só de Hoje
+        const now = new Date();
+        const isToday = (d) =>
+          d.getDate() === now.getDate() &&
+          d.getMonth() === now.getMonth() &&
+          d.getFullYear() === now.getFullYear();
+
+        const todayCount = totalCards.filter((c) => {
+          const dt = c.__dt instanceof Date ? c.__dt : new Date(c.publishedAt);
+          return isToday(dt) && dt <= now;
+        }).length;
+
+        // Todos disponíveis (até agora)
+        const allAvailableCount = totalCards.filter((c) => {
+          const dt = c.__dt instanceof Date ? c.__dt : new Date(c.publishedAt);
+          return dt <= now;
+        }).length;
+
+        // Atualizar botões
+        const btnUnread = document.querySelector("#filterUnread span");
+        const btnToday = document.querySelector("#filterToday span");
+        const btnAll = document.querySelector("#filterAll span");
+
+        // if (btnUnread) btnUnread.textContent = `Não lido (${notReadCount})`;
+        // if (btnToday) btnToday.textContent = `Só de hoje (${todayCount})`;
+        // if (btnAll)
+        //   btnAll.textContent = `Todos os cards (${allAvailableCount})`;
       });
     </script>
   </body>
