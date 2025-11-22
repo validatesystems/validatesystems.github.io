@@ -1,5 +1,47 @@
 [
   {
+    "emoji": "📝",
+    "title": "Lembrete silencioso",
+    "sub": "Um recado que existe porque você existe",
+    "desc": "Um bilhete em silêncio.",
+    "href": "./lembrete_silencioso22112025.html",
+    "publishedAt": "2025-11-22T10:00:00-03:00",
+    "sentimento": "Carinho contido",
+    "moods": [
+      "silêncio",
+      "saudade leve",
+      "confissão discreta"
+    ]
+  },
+  {
+    "emoji": "🌤️",
+    "title": "A luz que te encontra",
+    "sub": "Um recado entre o caos e o descanso",
+    "desc": "Uma mensagem leve e bem-humorada sobre a luz que segue você, seja queimando lá fora ou entrando macia pela casa da sua mãe.",
+    "href": "./mensagemrapida22112025.html",
+    "publishedAt": "2025-11-22T07:00:00-03:00",
+    "sentimento": "Carinho leve",
+    "moods": [
+      "luz",
+      "calma",
+      "humor suave"
+    ]
+  },
+  {
+    "emoji": "☀️",
+    "title": "Bom dia, Cléia!",
+    "sub": "Entre códigos e pensamentos, você apareceu",
+    "desc": "Um bom dia especial, escrito entre linhas de código e pensamentos soltos, que surgiu quando menos esperei e me fez sorrir ao lembrar de você.",
+    "href": "./bomdia22112025.html",
+    "publishedAt": "2025-11-22T04:37:00-03:00",
+    "sentimento": "Leveza matinal",
+    "moods": [
+      "poético",
+      "afeto discreto",
+      "manhã suave"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Boa noite no interior",
     "sub": "Um descanso que encontra você onde estiver",
