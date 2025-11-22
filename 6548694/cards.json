@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "☀️",
+    "title": "Bom Dia Especial",
+    "sub": "Um amanhecer cheio de energia e luz",
+    "desc": "Uma mensagem especialmente para você, Cléia.",
+    "href": "./bomdia22112025.html",
+    "publishedAt": "2025-11-23T04:12:00-03:00",
+    "sentimento": "Carinho radiante",
+    "moods": [
+      "ensolarado",
+      "afetuoso",
+      "revigorante"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Boa Noite Especial",
     "sub": "Um abraço silencioso que aquece",
