@@ -1056,7 +1056,7 @@
       /* ===============================
    Círculos dos contadores
    =============================== */
-      .filter-count {
+      /* .filter-count {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -1073,6 +1073,60 @@
         margin-left: 6px;
         line-height: 1;
         transition: background 0.25s ease, border-color 0.25s ease;
+      } */
+
+      @keyframes pulseIn {
+        0% {
+          transform: scale(0.6);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .filter-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        min-width: calc(1ch + 12px);
+        padding: 4px;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        overflow: hidden;
+
+        background: #444;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1;
+        margin-left: 6px;
+
+        animation: pulseIn 0.4s ease-out;
+        transition: width 0.3s ease, min-width 0.3s ease, background 0.25s ease,
+          border-color 0.25s ease;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.15);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      #filterUnread .filter-count {
+        background: #ffd54f; /* amarelo suave */
+        color: #000; /* texto escuro para contraste */
+        animation: pulse 1.2s infinite ease-in-out;
       }
 
       /* ===============================
@@ -1291,9 +1345,10 @@
         //   { id: "mare", pass: "MARE", hint: "Sobe e desce sem pedir licença." },
         //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
         // ];
+
+        /* ======================22/11/2025 - 19:02======================= */
         const KEYS = [
-          { id: "rede", pass: "REDE", hint: "O que o vento balança?" },
-          { id: "dj", pass: "QUATI", hint: "DJ que arranha" },
+          { id: "perfume", pass: "CRAZY", hint: "O perfume. Aquele perfume!" },
         ];
         /* ================================================================== */
 
@@ -3717,4 +3772,3 @@
     </script>
   </body>
 </html>
-
