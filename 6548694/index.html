@@ -289,7 +289,7 @@
         opacity: 1;
         transform: translateY(0);
         transition: opacity 0.22s ease, transform 0.22s ease;
-        align-items: stretch; /* garante que as células estiquem na linha */
+        align-items: center; /* garante que as células estiquem na linha */
       }
 
       .grid.is-updating {
@@ -301,7 +301,7 @@
         grid-column: 1 / -1;
         text-align: center;
         font-size: 14px;
-        color: var(--muted);
+        color: #f0f0f0;
         padding: 16px 8px;
       }
 
@@ -334,7 +334,7 @@
         overflow: hidden;
 
         /* NOVO: ocupa toda a altura da célula da grid */
-        height: 100%;
+        height: fit-content;
         display: flex;
         flex-direction: column;
       }
@@ -1767,7 +1767,7 @@
                 btn.type = "button";
                 // reaproveita o estilo de mensagem vazia + estilo de botão
                 btn.className = "btn secondary empty-grid-message";
-                btn.textContent = "Atualizar página";
+                btn.textContent = "🔄 Atualizar página";
                 // se quiser, mantém o texto antigo como tooltip
                 btn.title = msg;
 
