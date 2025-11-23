@@ -10,7 +10,7 @@
     //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
     // ];
 
-    /* ======================23/11/2025 - 19:40======================= */
+    /* ======================   23/11/2025 - 19:40   ======================= */
     const KEYS = [
         { id: "vila", pass: "VILA", hint: "Onde o morador mora..." },
     ];
@@ -91,8 +91,15 @@
         try {
             sessionStorage.setItem(ACCESS_TAG, "ok:" + (currentKey?.id || ""));
         } catch { }
+
         hideGate();
+
+        // pequena pausa opcional, só para deixar a animação do gate terminar
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
     }
+
     function hasAccess() {
         try {
             const v = sessionStorage.getItem(ACCESS_TAG) || "";
