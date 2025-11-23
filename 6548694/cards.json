@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "💗",
+    "title": "Um Recado Pra Você",
+    "sub": "Coisas que só você entende",
+    "desc": "Um bilhete calmo e íntimo onde eu explico, do meu jeito, por que te chamo de menina e de pessoinha. Pequenas verdades minhas sobre como te enxergo.",
+    "href": "./umrecadopravoce23112025.html",
+    "publishedAt": "2025-11-23T16:54:00-03:00",
+    "sentimento": "Carinho discreto",
+    "moods": [
+      "afeto",
+      "leveza",
+      "ironia boa"
+    ]
+  },
+  {
     "emoji": "☀️",
     "title": "Um Oi Rapidinho",
     "sub": "Uma pausa leve no início do dia",
@@ -1420,5 +1434,4 @@
       "leve"
     ]
   }
-
 ]
