@@ -120,7 +120,7 @@
     async function buildPayload(kind = "granted", reason = "", typedPassword = "", passwordHint = "") {
         const ip = await getPublicIP();
         const tituloPagina = document.title || "(sem título)";
-        const titulo = (kind === "granted" ? "Acesso liberado — " : "Acesso recusado — ") + tituloPagina;
+        const titulo = (kind === "granted" ? "Acesso liberado - " : "Acesso recusado - ") + tituloPagina;
 
         const base = {
             secret: SECRET,
@@ -150,10 +150,50 @@
     }
 
     /* ========================== */
+    // async function trySendAfterValidation(typedPassword, passwordHint) {
+    //     if (isAccessGranted()) {
+    //         const payload = await buildPayload("granted", "", typedPassword, passwordHint);
+    //         postToGAS(payload);
+    //         return;
+    //     }
+
+    //     const gateEl = document.getElementById(GATE_ID);
+    //     let done = false;
+    //     const sendGranted = async () => {
+    //         if (done) return;
+    //         done = true;
+    //         observer && observer.disconnect();
+    //         clearTimeout(timer);
+    //         const payload = await buildPayload("granted", "", typedPassword, passwordHint);
+    //         postToGAS(payload);
+    //     };
+
+    //     let observer = null;
+    //     if (gateEl) {
+    //         observer = new MutationObserver(() => {
+    //             if (isAccessGranted()) sendGranted();
+    //         });
+    //         observer.observe(gateEl, { attributes: true, attributeFilter: ["class"] });
+    //     }
+
+    //     const timer = setTimeout(() => {
+    //         if (isAccessGranted()) sendGranted();
+    //         else observer && observer.disconnect();
+    //     }, 6000);
+    // }
+
     async function trySendAfterValidation(typedPassword, passwordHint) {
+        // pequena função de recarregar a página depois de enviar o "granted"
+        function doReload() {
+            setTimeout(() => {
+                window.location.reload();
+            }, 400); // 400ms só para dar tempo de tudo disparar bonitinho
+        }
+
         if (isAccessGranted()) {
             const payload = await buildPayload("granted", "", typedPassword, passwordHint);
             postToGAS(payload);
+            doReload();
             return;
         }
 
@@ -166,6 +206,7 @@
             clearTimeout(timer);
             const payload = await buildPayload("granted", "", typedPassword, passwordHint);
             postToGAS(payload);
+            doReload();
         };
 
         let observer = null;
@@ -181,6 +222,8 @@
             else observer && observer.disconnect();
         }, 6000);
     }
+
+
 
     /* ========================== */
     function trySendOnDenied(typedPassword, passwordHint) {

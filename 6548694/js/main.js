@@ -91,15 +91,8 @@
         try {
             sessionStorage.setItem(ACCESS_TAG, "ok:" + (currentKey?.id || ""));
         } catch { }
-
         hideGate();
-
-        // pequena pausa opcional, só para deixar a animação do gate terminar
-        setTimeout(() => {
-            window.location.reload();
-        }, 100);
     }
-
     function hasAccess() {
         try {
             const v = sessionStorage.getItem(ACCESS_TAG) || "";
