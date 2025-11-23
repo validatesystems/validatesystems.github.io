@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Boa noite, pessoinha</title>
+
+    <!-- Fonte manuscrita -->
+    <!-- <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap"
+      rel="stylesheet"
+    /> -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg1: #020617;
+        --bg2: #0b1120;
+        --card: rgba(15, 23, 42, 0.92);
+        --ink: #f9fafb;
+        --muted: #e5e7eb;
+        --accent: #f97316;
+        --shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Patrick Hand", cursive;
+        color: var(--ink);
+        background: radial-gradient(
+            circle at 15% 15%,
+            #1d285099 0,
+            transparent 55%
+          ),
+          radial-gradient(circle at 85% 85%, #172554aa 0, transparent 55%),
+          radial-gradient(circle at 50% 0%, #0f172a 0, #020617 60%);
+        position: relative;
+        overflow: auto;
+      }
+
+      /* estrelas suaves */
+      .stars {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(
+            2px 2px at 10% 20%,
+            #e5e7ebaa 0,
+            transparent 60%
+          ),
+          radial-gradient(2px 2px at 80% 30%, #e5e7ebaa 0, transparent 60%),
+          radial-gradient(1.5px 1.5px at 30% 80%, #e5e7eb80 0, transparent 60%),
+          radial-gradient(1.5px 1.5px at 60% 60%, #e5e7eb80 0, transparent 60%);
+        opacity: 0.8;
+      }
+
+      .card {
+        position: relative;
+        width: 100%;
+        max-width: 520px;
+        background: var(--card);
+        border-radius: 18px;
+        padding: 28px 24px 30px;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(249, 250, 251, 0.08);
+        backdrop-filter: blur(10px);
+        line-height: 1.7;
+        z-index: 1;
+      }
+
+      .card::before {
+        content: "🌙 ✨ 🤭  💭";
+        position: absolute;
+        top: -28px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 3vh;
+        letter-spacing: 6px;
+        opacity: 0.9;
+      }
+
+      h1 {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 18px;
+        color: var(--accent);
+      }
+
+      p {
+        font-size: 18px;
+        margin-bottom: 14px;
+        color: var(--muted);
+        white-space: pre-line;
+      }
+
+      p span.label {
+        font-size: 19px;
+        color: var(--ink);
+      }
+
+      .footnote {
+        margin-top: 18px;
+        font-size: 16px;
+        text-align: right;
+        color: rgba(249, 250, 251, 0.7);
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 24px 18px 24px;
+          border-radius: 16px;
+        }
+
+        h1 {
+          font-size: 22px;
+        }
+
+        p {
+          font-size: 17px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars"></div>
+
+    <div class="card">
+      <h1>Boa noite, pessoinha</h1>
+
+      <p>
+        <span class="label">Menina…</span><br />
+        Hoje é domingo… não tem relatório, nem correria, nem aquele festival de
+        mensagens no grupo. Amanhã nem trabalho tem.
+      </p>
+
+      <p>
+        <!-- <span class="label">Pessoinha…</span><br /> -->
+        Mas, curioso, mesmo com zero obrigação… existe um certo ser que insiste
+        em aparecer nos meus pensamentos como se ponto facultativo não valesse
+        pra ele.
+      </p>
+
+      <p>
+        E eu fico pensando: por que não sai da minha cabeça nem quando o mundo
+        tá quieto? Faz alguma coisa bem ruim pra eu sentir raiva de ti. Vai…
+        tenta.
+      </p>
+
+      <p>(Spoiler: não vai funcionar.)</p>
+
+      <div class="footnote">
+        Boa noite, menina. Se cuida pois o universo reserva surpresas boas pra
+        você.
+      </div>
+      <div class="footnote">Com 💜 ._.. ...</div>
+    </div>
+  </body>
+</html>

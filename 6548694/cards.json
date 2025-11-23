@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "🌙",
+    "title": "Boa Noite de Domingo",
+    "sub": "Um recado que não era pra ser um recado",
+    "desc": "Uma mensagem de domingo à noite.",
+    "href": "./boanoite23112025.html",
+    "publishedAt": "2025-11-23T19:38:00-03:00",
+    "sentimento": "Afeto discreto",
+    "moods": [
+      "leve",
+      "ironia boa",
+      "entrelinhas"
+    ]
+  },
+  {
     "emoji": "💗",
     "title": "Um Recado Pra Você",
     "sub": "Coisas que só você entende",
