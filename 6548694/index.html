@@ -77,7 +77,6 @@
       html,
       body {
         height: 100%;
-        /* width: 97%; */
       }
 
       body {
@@ -95,8 +94,6 @@
         background-size: 400% 400%;
         animation: bgShift 16s ease infinite;
         text-align: justify;
-        /* align-items: stretch; */
-        /* vertical-align: middle; */
       }
 
       /* ===== EFEITO DE CLIQUE NOS CARDS ===== */
@@ -184,6 +181,10 @@
         display: grid;
         grid-template-rows: auto auto 1fr auto;
         gap: 18px;
+
+        /* NOVO: centralização */
+        max-width: 1200px; /* limite de largura */
+        margin: 0 auto; /* centraliza horizontalmente */
       }
 
       /* Header */
@@ -3775,4 +3776,3 @@
     </script>
   </body>
 </html>
-
