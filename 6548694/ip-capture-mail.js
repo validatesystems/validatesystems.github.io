@@ -4,7 +4,7 @@
     /* ==========================
      * CONFIGURAÇÃO (edite aqui)
      * ========================== */
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxWbunjPmLJvhf1lUbwtlPcrIExFbrbRhCBk6MjauJSv8xV_nyCsBXuroBcn2pRKlEo3A/exec"; // <- sua URL /exec
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx1Saml2tXxfFm4MWzJXprDFdSe_44An5O48qZ_Jrq0uwU0LNIR-2K0ynS-UMsM83AyVA/exec"; // <- sua URL /exec
     // const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwEJfhv2EzzDr3wZ0fCgNe-HHZV6f0VZqVw37O_gSAofFFk2QKeCWIdhVQVN-b5-6AzMQ/exec"; // <- sua URL /exec
     const SECRET = "6548694"; // deve combinar com EXPECTED_SECRET no GAS
 
