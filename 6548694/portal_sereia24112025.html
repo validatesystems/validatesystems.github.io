@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Portal da sereia</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap"
+    />
+
+    <style>
+      :root {
+        --bg1: #050811;
+        --bg2: #0b1020;
+        --card-bg: rgba(12, 16, 32, 0.88);
+        --accent: #f5e6ff;
+        --accent-soft: #c4b3ff;
+        --muted: #b8c0d7;
+        --text: #fdfbff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            circle at 0% 0%,
+            rgba(255, 255, 255, 0.08),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            rgba(0, 0, 0, 0.6),
+            transparent 65%
+          ),
+          linear-gradient(135deg, var(--bg1), var(--bg2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: url("https://www.transparenttextures.com/patterns/noisy.png");
+        opacity: 0.16;
+        mix-blend-mode: soft-light;
+        z-index: 0;
+      }
+
+      .shell {
+        position: relative;
+        z-index: 1;
+        max-width: 480px;
+        width: 100%;
+      }
+
+      .card {
+        background: radial-gradient(
+            circle at 0 0,
+            rgba(255, 255, 255, 0.04),
+            transparent 60%
+          ),
+          var(--card-bg);
+        border-radius: 24px;
+        padding: 26px 22px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75),
+          0 0 0 1px rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        animation: card-in 650ms ease-out;
+      }
+
+      @keyframes card-in {
+        0% {
+          opacity: 0;
+          transform: translateY(18px) scale(0.97);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        margin-bottom: 18px;
+      }
+
+      .tag-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        box-shadow: 0 0 10px rgba(196, 179, 255, 0.9);
+      }
+
+      .message {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        text-wrap: balance;
+        margin-bottom: 22px;
+      }
+
+      .message span {
+        color: var(--accent-soft);
+      }
+
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 4px;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 9px 18px;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: rgba(15, 23, 42, 0.9);
+        color: var(--text);
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.95),
+          0 0 0 1px rgba(15, 23, 42, 0.8);
+        transition: transform 150ms ease, box-shadow 150ms ease,
+          background 150ms ease, filter 150ms ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.95),
+          0 0 0 1px rgba(191, 219, 254, 0.7);
+        filter: brightness(1.05);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9),
+          0 0 0 1px rgba(148, 163, 184, 0.9);
+        filter: brightness(0.98);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border-color: rgba(148, 163, 184, 0.7);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9),
+          0 0 0 1px rgba(30, 64, 175, 0.4);
+      }
+
+      .btn-primary {
+        background: radial-gradient(
+          circle at 0 0,
+          rgba(245, 230, 255, 0.3),
+          rgba(79, 70, 229, 0.96)
+        );
+        border-color: rgba(209, 213, 219, 0.75);
+      }
+
+      .btn-primary .arrow {
+        font-size: 0.9rem;
+        translate: 0 0;
+        transition: translate 150ms ease;
+      }
+
+      .btn-primary:hover .arrow {
+        translate: 2px 0;
+      }
+
+      .hint {
+        margin-top: 18px;
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+
+      .hint span {
+        color: var(--accent);
+      }
+
+      .signature {
+        margin-top: 18px;
+        font-size: 0.7rem;
+        color: rgba(226, 232, 240, 0.85);
+        text-align: right;
+      }
+
+      .signature span {
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-size: 0.68rem;
+        color: rgba(148, 163, 184, 0.95);
+      }
+
+      /* Overlay do vídeo em tela cheia */
+      .video-overlay {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+      }
+
+      .video-overlay.active {
+        display: flex;
+      }
+
+      .video-overlay video {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 22px 18px 16px;
+          border-radius: 20px;
+        }
+
+        .message {
+          font-size: 1.05rem;
+        }
+
+        .buttons {
+          justify-content: stretch;
+        }
+
+        .btn {
+          flex: 1 1 calc(50% - 6px);
+        }
+
+        .btn-primary {
+          flex: 1 1 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="shell">
+      <div class="card" id="card">
+        <div class="tag">
+          <span class="tag-dot"></span>
+          <span>pequena pausa pra você</span>
+        </div>
+
+        <p class="message" id="message">
+          Oi pessoinha, você veio aqui para se descontrair um pouco?
+        </p>
+
+        <div class="buttons" id="buttons">
+          <button class="btn btn-primary" id="btnYes">
+            sim
+            <span class="arrow">⟶</span>
+          </button>
+          <button class="btn btn-outline" id="btnNo">não</button>
+        </div>
+
+        <p class="hint" id="hint">
+          Escolha com calma. Prometo que nenhuma das duas respostas é errada.
+        </p>
+
+        <p class="signature">
+          <span>de não tão longe,</span><br />
+          ._.. ...
+        </p>
+      </div>
+    </div>
+
+    <!-- Overlay de vídeo em tela cheia -->
+    <div class="video-overlay" id="videoOverlay">
+      <video
+        id="teleportVideo"
+        src="./video/sereia.mp4"
+        loop
+        playsinline
+      ></video>
+    </div>
+
+    <script>
+      const card = document.getElementById("card");
+      const messageEl = document.getElementById("message");
+      const buttonsEl = document.getElementById("buttons");
+      const hintEl = document.getElementById("hint");
+
+      const btnYes = document.getElementById("btnYes");
+      const btnNo = document.getElementById("btnNo");
+
+      const videoOverlay = document.getElementById("videoOverlay");
+      const teleportVideo = document.getElementById("teleportVideo");
+
+      function prepararSimFluxo() {
+        messageEl.textContent =
+          "Então tenho algo que vai te fazer se teletransportar para um lugar especial. Quer ir? Use o fone de ouvido ou aumente o volume do seu aparelho.";
+        hintEl.textContent = "Quando você estiver pronta, é só tocar em sim.";
+        buttonsEl.innerHTML = "";
+
+        const btnSimFinal = document.createElement("button");
+        btnSimFinal.className = "btn btn-primary";
+        btnSimFinal.innerHTML = 'sim, me leva <span class="arrow">⟶</span>';
+        btnSimFinal.addEventListener("click", abrirVideo);
+
+        buttonsEl.appendChild(btnSimFinal);
+      }
+
+      function prepararNaoFluxo() {
+        messageEl.textContent =
+          "Bom, se não foi para se descontrair, quero te oferecer uma viagem rápida para outro plano. Use o fone de ouvido ou aumente o volume do seu dispositivo.";
+        hintEl.textContent =
+          "Nada de preocupação aqui. Só um atalho para um lugar que combina com você.";
+        buttonsEl.innerHTML = "";
+
+        const btnAvancar = document.createElement("button");
+        btnAvancar.className = "btn btn-primary";
+        btnAvancar.innerHTML = 'avançar <span class="arrow">⟶</span>';
+        btnAvancar.addEventListener("click", abrirVideo);
+
+        buttonsEl.appendChild(btnAvancar);
+      }
+
+      function abrirVideo() {
+        card.style.display = "none";
+        videoOverlay.classList.add("active");
+
+        // tenta abrir em tela cheia
+        if (videoOverlay.requestFullscreen) {
+          videoOverlay.requestFullscreen().catch(() => {});
+        } else if (videoOverlay.webkitRequestFullscreen) {
+          videoOverlay.webkitRequestFullscreen();
+        }
+
+        teleportVideo.currentTime = 0;
+        teleportVideo.play().catch(() => {
+          // caso algum navegador bloqueie, o vídeo já estará em tela cheia esperando um toque
+        });
+      }
+
+      btnYes.addEventListener("click", prepararSimFluxo);
+      btnNo.addEventListener("click", prepararNaoFluxo);
+    </script>
+  </body>
+</html>
