@@ -1,5 +1,33 @@
 [
   {
+    "emoji": "🌌",
+    "title": "Sonho revelado",
+    "sub": "A parte que eu quase não te contaria",
+    "desc": "Um pedaço de sonho que saiu das entrelinhas e virou bilhete pra você.",
+    "href": "./sonho_revelado24112025.html",
+    "publishedAt": "2025-11-24T07:10:00-03:00",
+    "sentimento": "Afeto revelado em silêncio",
+    "moods": [
+      "sonhos",
+      "confissão suave",
+      "entrelinhas"
+    ]
+  },
+  {
+    "emoji": "☀️",
+    "title": "Bom Dia de Segunda",
+    "sub": "Um daqueles sonhos que deixam marcas boas",
+    "desc": "Uma mensagem suave sobre sonhos e sensações boas ao acordar.",
+    "href": "./bomdia24112025.html",
+    "publishedAt": "2025-11-24T04:12:00-03:00",
+    "sentimento": "Afeto discreto",
+    "moods": [
+      "leve",
+      "sonhos",
+      "entrelinhas"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Boa Noite de Domingo",
     "sub": "Um recado que não era pra ser um recado",
