@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Fragmentos musicais</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap"
+    />
+
+    <style>
+      :root {
+        --text: #fdfbff;
+        --muted: #d3cfda;
+        --texture: url("https://www.transparenttextures.com/patterns/white-paperboard.png");
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        color: --text;
+        background: linear-gradient(135deg, #1a1a1f, #101014 60%),
+          var(--texture);
+        background-blend-mode: overlay;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* granulação suave sobreposta */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: url("https://www.transparenttextures.com/patterns/noisy.png");
+        opacity: 0.16;
+        mix-blend-mode: soft-light;
+        z-index: 0;
+      }
+
+      /* luz irregular de parede antiga */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+            circle at 22% 18%,
+            rgba(255, 255, 255, 0.06),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 80% 82%,
+            rgba(0, 0, 0, 0.25),
+            transparent 70%
+          );
+        mix-blend-mode: overlay;
+        opacity: 0.4;
+        z-index: 0;
+      }
+
+      .shell {
+        position: relative;
+        z-index: 2;
+        max-width: 540px;
+        width: 100%;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 24px;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 30px 26px 22px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45),
+          0 0 0 1px rgba(255, 255, 255, 0.03);
+        animation: fadecard 0.8s ease-out;
+      }
+
+      @keyframes fadecard {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .chip {
+        display: inline-flex;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        margin-bottom: 18px;
+        text-transform: uppercase;
+      }
+
+      .fragment {
+        font-size: 1.28rem;
+        line-height: 1.65;
+        text-wrap: balance;
+        opacity: 0;
+        animation: fragmentIn 700ms ease-out forwards;
+        color: var(--text);
+      }
+
+      @keyframes fragmentIn {
+        0% {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fragment.fade-out,
+      .origin.fade-out {
+        animation: fragmentOut 260ms ease-in forwards;
+      }
+
+      @keyframes fragmentOut {
+        0% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-10px) scale(0.98);
+          filter: blur(3px);
+        }
+      }
+
+      .origin {
+        font-size: 0.82rem;
+        color: rgba(211, 207, 218, 0.85);
+        margin-top: 10px;
+        font-style: italic;
+        opacity: 0;
+        animation: fragmentIn 700ms ease-out forwards;
+      }
+
+      .footer {
+        margin-top: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .hint {
+        font-size: 0.8rem;
+        color: var(--muted);
+        opacity: 0.9;
+      }
+
+      .row-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        flex-wrap: wrap; /* permite quebrar linha quando faltar espaço */
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 8px 18px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        transition: background 0.2s ease, transform 0.2s ease,
+          box-shadow 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        transform: translateY(-1px);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+
+      .btn-playlist {
+        padding-inline: 20px;
+        background: rgba(19, 22, 18, 0.8);
+        border-color: rgba(163, 230, 53, 0.4);
+      }
+
+      .btn-playlist:hover {
+        background: rgba(29, 35, 24, 0.95);
+      }
+
+      .icon-spotify {
+        width: 17px;
+        height: 17px;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 30%, #b8ff6b, #5bbf22);
+        box-shadow: 0 0 8px rgba(190, 242, 100, 0.7),
+          0 0 0 1px rgba(0, 0, 0, 0.3);
+        padding: 2px;
+        fill: #031602;
+        animation: softPulse 4s ease-in-out infinite;
+      }
+
+      @keyframes softPulse {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 6px rgba(190, 242, 100, 0.4),
+            0 0 0 1px rgba(0, 0, 0, 0.35);
+        }
+        50% {
+          transform: scale(1.06);
+          box-shadow: 0 0 10px rgba(217, 249, 157, 0.9),
+            0 0 0 1px rgba(0, 0, 0, 0.35);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 6px rgba(190, 242, 100, 0.4),
+            0 0 0 1px rgba(0, 0, 0, 0.35);
+        }
+      }
+
+      .signature {
+        margin-top: 22px;
+        text-align: right;
+        font-size: 0.7rem;
+        color: var(--muted);
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 24px 18px 18px;
+          border-radius: 20px;
+        }
+
+        .fragment {
+          font-size: 1.1rem;
+        }
+
+        .footer {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 10px;
+        }
+
+        .row-buttons {
+          width: 100%;
+          justify-content: flex-end;
+          gap: 8px;
+        }
+
+        .btn {
+          flex: 1 1 0;
+          justify-content: center;
+        }
+
+        .btn-playlist {
+          white-space: nowrap; /* evita quebrar a palavra 'playlist' em duas linhas */
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="shell">
+      <div class="card">
+        <div class="chip">fragmentos musicais</div>
+
+        <p id="fragment" class="fragment"></p>
+        <p id="origin" class="origin"></p>
+
+        <div class="footer">
+          <p class="hint">Toque para outro trecho</p>
+
+          <div class="row-buttons">
+            <button class="btn" id="nextBtn">trocar</button>
+            <button class="btn btn-playlist" id="playlistBtn">
+              <svg class="icon-spotify" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 1.8A10.2 10.2 0 1 0 22.2 12 10.2 10.2 0 0 0 12 1.8Zm4.66 14.88a.72.72 0 0 1-1-.24c-2-1.23-4.53-1.5-7.48-.79a.72.72 0 0 1-.32-1.4c3.3-.75 6.16-.42 8.46 1a.72.72 0 0 1-.24 1.43ZM17 13a.86.86 0 0 1-1.18-.29c-2.29-1.41-5.79-1.82-8.5-.93a.86.86 0 1 1-.51-1.65c3.18-1 7.12-.52 10 1.22A.86.86 0 0 1 17 13Zm.2-2.93C14.4 8 9.8 7.68 6.86 8.64a1 1 0 0 1-.6-1.9c3.43-1.1 8.66-.75 12 1.46a1 1 0 1 1-1.06 1.74Z"
+                />
+              </svg>
+              playlist
+            </button>
+          </div>
+        </div>
+
+        <p class="signature">trechos que lembram você, Cléia.</p>
+        <p class="signature">._.. ...</p>
+      </div>
+    </div>
+
+    <script>
+      // Link da playlist (preencher depois)
+      const PLAYLIST_URL =
+        "https://open.spotify.com/playlist/30plvuyAkE3h1D2OGTMzqu?si=fac43261ad584e2c";
+
+      // Fragmentos com trecho, artista e música
+      const fragments = [
+        {
+          text: "“Existe um mundo que só a gente sente.”",
+          artist: "Silva",
+          song: "A Cor É Rosa",
+        },
+        {
+          text: "“Tem dias que a gente se encontra até sem se procurar.”",
+          artist: "Lagum",
+          song: "Deixa",
+        },
+        {
+          text: "“Você é uma lembrança boa num dia comum.”",
+          artist: "Melim",
+          song: "Meu Abrigo",
+        },
+        {
+          text: "“Te ver me acalma, mesmo quando eu não te vejo.”",
+          artist: "Jão",
+          song: "Imaturo",
+        },
+        {
+          text: "“Tem coisa que o peito sabe antes da mente.”",
+          artist: "Rubel",
+          song: "Partilhar",
+        },
+        {
+          text: "“Eu gosto do jeito que você acende o que é meu.”",
+          artist: "Anavitória",
+          song: "Trevo (Tu)",
+        },
+        {
+          text: "“Tem gente que toca sem encostar.”",
+          artist: "Tiago Iorc",
+          song: "Amei Te Ver",
+        },
+        {
+          text: "“Seu nome cabe em qualquer pensamento bonito meu.”",
+          artist: "OutroEu",
+          song: "Ai de Mim",
+        },
+        {
+          text: "“Até no silêncio você diz alguma coisa boa.”",
+          artist: "Céu",
+          song: "Chegar em Mim",
+        },
+        {
+          text: "“Meus dias respiram melhor quando lembram de você.”",
+          artist: "Vitor Kley",
+          song: "O Sol",
+        },
+      ];
+
+      let lastIndex = -1;
+      const fragmentEl = document.getElementById("fragment");
+      const originEl = document.getElementById("origin");
+      const nextBtn = document.getElementById("nextBtn");
+      const playlistBtn = document.getElementById("playlistBtn");
+
+      function getRandomIndex() {
+        let index;
+        do {
+          index = Math.floor(Math.random() * fragments.length);
+        } while (index === lastIndex);
+        lastIndex = index;
+        return index;
+      }
+
+      function showFragment() {
+        fragmentEl.classList.add("fade-out");
+        originEl.classList.add("fade-out");
+
+        setTimeout(() => {
+          const data = fragments[getRandomIndex()];
+
+          fragmentEl.textContent = data.text;
+          originEl.textContent = data.artist + ', "' + data.song + '"';
+
+          fragmentEl.classList.remove("fade-out");
+          originEl.classList.remove("fade-out");
+
+          fragmentEl.style.animation = "none";
+          originEl.style.animation = "none";
+          void fragmentEl.offsetWidth;
+          fragmentEl.style.animation = "";
+          originEl.style.animation = "";
+        }, 260);
+      }
+
+      document.addEventListener("DOMContentLoaded", showFragment);
+      nextBtn.addEventListener("click", showFragment);
+      fragmentEl.addEventListener("click", showFragment);
+      originEl.addEventListener("click", showFragment);
+
+      playlistBtn.addEventListener("click", () => {
+        if (!PLAYLIST_URL) {
+          alert("A playlist ainda não foi definida.");
+          return;
+        }
+        window.open(PLAYLIST_URL, "_blank");
+      });
+    </script>
+  </body>
+</html>

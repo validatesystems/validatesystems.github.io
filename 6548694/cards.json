@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "🎼",
+    "title": "Fragmentos musicais",
+    "sub": "Cléia, pequenos trechos que respiram o que sinto",
+    "desc": "Versos soltos, vindos de músicas que te lembram sem te chamar. Fragmentos que encontram você quando o dia pede silêncio.",
+    "href": "./fragmentos_musicais24112025.html",
+    "publishedAt": "2025-11-24T15:00:00-03:00",
+    "sentimento": "Calmaria que toca sem pressa",
+    "moods": [
+      "parede antiga",
+      "versos guardados",
+      "poesia que respira"
+    ]
+  },
+  {
     "emoji": "✨",
     "title": "Fragmentos que te encontram",
     "sub": "Cléia, pequenos pedaços de você acendendo aqui",
