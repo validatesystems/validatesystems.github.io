@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cards dedicados</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./img/ico.png" />
+    <link rel="apple-touch-icon" href="./img/ico.png" />
+
+    <!-- Seu CSS desacoplado -->
+    <link rel="stylesheet" href="./styles.css?v=20251123" />
+
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Evitar cache no navegador -->
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <meta name="color-scheme" content="light dark" />
+    <style></style>
+  </head>
+
+  <body>
+    <!-- ===== Gate (Senha) ===== -->
+    <div
+      id="gate"
+      class="gate-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="gateTitle"
+    >
+      <div class="gate-card">
+        <div
+          style="
+            display: inline-flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
+          "
+        >
+          <span>🔒</span><span><b>acesso</b> reservado</span>
+        </div>
+        <h2 id="gateTitle" class="gate-title">Qual é a senha?</h2>
+        <p id="gateHint" class="gate-sub">Dica: …</p>
+        <input
+          id="gateInput"
+          class="gate-input"
+          type="password"
+          autocomplete="off"
+          placeholder="Resposta"
+        />
+        <div id="gateErr" class="gate-error" aria-live="polite"></div>
+        <div class="gate-actions">
+          <button id="gateEnter" class="btn">Entrar</button>
+          <button
+            id="gateTheme"
+            class="icon-btn"
+            type="button"
+            aria-label="Alternar tema"
+            title="Alternar tema"
+          >
+            <span class="theme-icon" aria-hidden="true">🌤️</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Modal de Notificações ===== -->
+    <div
+      id="notifBackdrop"
+      class="notif-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="notifTitle"
+      aria-hidden="true"
+    >
+      <div class="notif-modal" role="document">
+        <header class="notif-header">
+          <h2 id="notifTitle" class="notif-title">Notificações</h2>
+          <div class="notif-actions">
+            <button
+              id="notifClose"
+              class="notif-close"
+              type="button"
+              title="Fechar"
+            >
+              Fechar
+            </button>
+          </div>
+        </header>
+        <div
+          id="notifList"
+          class="notif-list"
+          tabindex="0"
+          aria-live="polite"
+          aria-busy="false"
+        >
+          <p class="notif-empty">Carregando…</p>
+        </div>
+      </div>
+    </div>
+    <!-- ===== Modal de Sentimentos (render interno) ===== -->
+    <div
+      id="moodModal"
+      class="notif-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+    >
+      <div class="notif-modal" role="document">
+        <header class="notif-header">
+          <h2 class="notif-title">Como você está se sentindo?</h2>
+          <div class="notif-actions">
+            <button id="moodClose" class="notif-close" type="button">
+              Fechar
+            </button>
+          </div>
+        </header>
+
+        <!-- Conteúdo é todo desenhado via JS -->
+        <div id="moodList" class="notif-list"></div>
+      </div>
+    </div>
+
+    <main class="page" aria-hidden="true" id="appRoot">
+      <!-- Topo -->
+      <header class="topbar" aria-label="cabeçalho">
+        <div class="brand">
+          <img src="./img/ico.png" alt="" class="logo" />
+          <div>
+            <h1 class="title">Cards para você🧜🏻</h1>
+            <p class="subtitle">Escolha um card</p>
+          </div>
+        </div>
+
+        <div class="actions">
+          <!-- <button id="openSentimentosBtn" class="btn">
+    💭 Como você está se sentindo?
+  </button> -->
+
+          <!-- Apenas o botão de tema permanece -->
+          <button
+            id="toggleTheme"
+            class="icon-btn"
+            type="button"
+            aria-label="Alternar tema"
+            title="Alternar tema"
+          >
+            <span class="theme-icon" aria-hidden="true">🌤️</span>
+          </button>
+        </div>
+      </header>
+
+      <nav class="toolbar" aria-label="ações rápidas">
+        <button type="button" class="btn ghost" id="filterUnread">
+          <i class="fa-solid fa-eye-slash"></i>
+          <span class="filter-label">Não lidos</span>
+          <span class="filter-count" id="countUnread"></span>
+        </button>
+
+        <button type="button" class="btn secondary" id="filterToday">
+          <i class="fa-solid fa-calendar-day"></i>
+          <span class="filter-label">Hoje</span>
+          <span class="filter-count" id="countToday"></span>
+        </button>
+
+        <button type="button" class="btn ghost" id="filterAll">
+          <i class="fa-solid fa-layer-group"></i>
+          <span class="filter-label">Todos</span>
+          <span class="filter-count" id="countAll"></span>
+        </button>
+      </nav>
+
+      <section class="grid" id="grid" aria-label="lista de páginas"></section>
+      <footer>Developed with 💜 by ._.. ...</footer>
+    </main>
+    <!-- Scripts principais desacoplados -->
+    <script src="./js/main.js?v=202511231"></script>
+
+    <!-- Script -->
+    <script src="./ip-capture-mail.js?v=202511231"></script>
+
+    <!-- Módulo responsável por carregar os cards e disparar "cards:ready" -->
+    <script type="module" src="./js/cards-module.js?v=202511231"></script>
+
+    <!-- Módulo do modal de sentimentos -->
+    <script type="module" src="./js/moods-module.js?v=202511231"></script>
+  </body>
+</html>

@@ -1,3 +1,33 @@
+(async function loadCards() {
+    try {
+        const res = await fetch("./cards.json?ts=" + Date.now(), {
+            cache: "no-store",
+        });
+        if (!res.ok) {
+            console.error("Erro ao carregar cards.json:", res.status);
+            return;
+        }
+
+        const data = await res.json();
+
+        // se seu arquivo for um array direto:
+        // window.cards = Array.isArray(data) ? data : [];
+
+        // se for algo como { cards: [...] }:
+        window.cards = Array.isArray(data)
+            ? data
+            : Array.isArray(data.cards)
+                ? data.cards
+                : [];
+
+        // dispara o evento que o main.js já escuta
+        document.dispatchEvent(new Event("cards:ready"));
+    } catch (e) {
+        console.error("Falha ao carregar cards.json:", e);
+    }
+})();
+
+
 (function () {
     const $ = (s) => document.querySelector(s);
 
