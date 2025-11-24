@@ -1,11 +1,25 @@
 [
   {
+    "emoji": "✨",
+    "title": "Fragmentos que te encontram",
+    "sub": "Cléia, pequenos pedaços de você acendendo aqui",
+    "desc": "Um fragmento simples, desses que aparecem quando a gente não espera… mas que dizem mais do que deveriam.",
+    "href": "./fragmentos24112025.html",
+    "publishedAt": "2025-11-24T12:17:00-03:00",
+    "sentimento": "Suavidade que permanece",
+    "moods": [
+      "silêncio bonito",
+      " presença leve",
+      "suspiro guardado"
+    ]
+  },
+  {
     "emoji": "🌌",
     "title": "Sonho revelado",
     "sub": "A parte que eu quase não te contaria",
     "desc": "Um pedaço de sonho que saiu das entrelinhas e virou bilhete pra você.",
     "href": "./sonho_revelado24112025.html",
-    "publishedAt": "2025-11-24T06:59:00-03:00",
+    "publishedAt": "2025-11-24T07:10:00-03:00",
     "sentimento": "Afeto revelado em silêncio",
     "moods": [
       "sonhos",
@@ -1476,5 +1490,4 @@
       "leve"
     ]
   }
-
 ]
