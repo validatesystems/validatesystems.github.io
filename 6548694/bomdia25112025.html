@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Bom dia, Cléia</title>
+
+    <!-- Fontes elegantes -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&family=Inter:wght@300;400;500;600&display=swap"
+    />
+
+    <style>
+      :root {
+        --bg1: #f8f3ff;
+        --bg2: #fdf0e4;
+        --bg3: #e5f4ff;
+        --card: #ffffffee;
+        --text-main: #252534;
+        --text-muted: #727282;
+        --accent: #7b5cff;
+        --accent-soft: #f2e9ff;
+        --shadow: rgba(15, 23, 42, 0.12);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.8), transparent 60%),
+          radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.7), transparent 65%),
+          linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        color: var(--text-main);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* textura leve para dar sensação de papel suave */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background-image: url("https://www.transparenttextures.com/patterns/white-diamond.png");
+        mix-blend-mode: soft-light;
+        z-index: 0;
+      }
+
+      .shell {
+        position: relative;
+        z-index: 1;
+        max-width: 520px;
+        width: 100%;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 20px;
+        padding: 26px 24px 22px;
+        box-shadow:
+          0 18px 40px var(--shadow),
+          0 0 0 1px rgba(148, 163, 184, 0.18);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        animation: card-in 750ms ease-out;
+      }
+
+      @keyframes card-in {
+        0% {
+          opacity: 0;
+          transform: translateY(18px) scale(0.98);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 11px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        border: 1px solid rgba(123, 92, 255, 0.18);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #6b6680;
+        margin-bottom: 16px;
+      }
+
+      .tag-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--accent);
+      }
+
+      .title {
+        font-family: "DM Serif Text", serif;
+        font-size: 1.7rem;
+        margin-bottom: 12px;
+        color: var(--text-main);
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 18px;
+      }
+
+      .message {
+        font-size: 1.02rem;
+        line-height: 1.7;
+        color: var(--text-main);
+        text-wrap: balance;
+        margin-bottom: 22px;
+      }
+
+      .message strong {
+        font-weight: 600;
+        color: #35354a;
+      }
+
+      .highlight {
+        margin-top: 4px;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--text-main);
+      }
+
+      .highlight span {
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      .footer-note {
+        margin-top: 12px;
+        font-size: 0.86rem;
+        color: var(--text-muted);
+      }
+
+      .signature {
+        margin-top: 26px;
+        text-align: right;
+        font-size: 0.82rem;
+        color: var(--text-muted);
+      }
+
+      .signature-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        color: rgba(100, 116, 139, 0.9);
+      }
+
+      .signature-line {
+        display: inline-block;
+        min-width: 160px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.8);
+        padding-top: 6px;
+        height: 18px;
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 22px 18px 18px;
+          border-radius: 18px;
+        }
+
+        .title {
+          font-size: 1.5rem;
+        }
+
+        .message {
+          font-size: 0.98rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="shell">
+      <div class="card">
+        <div class="tag">
+          <span class="tag-dot"></span>
+          <span>bom dia, cleia</span>
+        </div>
+
+        <h1 class="title">Um bom dia depois da pausa</h1>
+
+        <p class="subtitle">
+          Entre o fim de uma folga longa e o começo de mais um dia de trabalho.
+        </p>
+
+        <p class="message">
+          Cléia, mais um dia começou. A semana que passou trouxe uma folga extensa, dessas
+          que a gente nem sempre tem, mas que veio na medida certa para reajustar
+          a cabeça e o coração.<br /><br />
+          Serviu para reorganizar o corpo, alinhar a alma, respirar diferente
+          e lembrar, com mais consciência, de onde você quer chegar e de como
+          está agora, exatamente neste momento.
+        </p>
+
+        <p class="highlight">
+          Hoje o trabalho continua, sim, mas eu queria que o seu dia fosse
+          <strong>excepcional</strong>, leve e muito bom com você.  
+          Da mesma forma que você deixa o dia incrível só por existir
+          e ser quem você é, exatamente do jeito que você é.
+        </p>
+
+        <p class="footer-note">
+          Que esta manhã te encontre em paz, com o coração um pouco mais no lugar
+          e com a certeza de que seguir em frente faz sentido quando a gente se
+          respeita no caminho.
+        </p>
+
+        <div class="signature">
+          <div class="signature-label">Com 💜</div>
+          <div class="signature-line">._.. ...</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
