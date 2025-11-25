@@ -1,17 +1,31 @@
 [
   {
-  "emoji": "🌤️",
-  "title": "Bom dia depois da pausa",
-  "sub": "Cléia, que sua manhã comece leve e consciente de si",
-  "desc": "Um bom dia suave, depois de uma folga que alinhou corpo, mente e coração para seguir em frente com mais clareza.",
-  "href": "./bomdia25112025.html",
-  "publishedAt": "2025-11-25T04:18:00-03:00",
-  "sentimento": "Amanhecer consciente e cheio de calma",
-  "moods": [
-    "manhã tranquila",
-    "retorno suave",
-    "clareza interior"
-  ]
+    "emoji": "💌",
+    "title": "Um bilhete só para você",
+    "sub": "Cléia, abra devagar… tem carinho dobrado aqui dentro",
+    "desc": "Um bilhete suave, desses que guardam um cuidado silencioso e chegam como um respiro escondido no meio do dia.",
+    "href": "./bilheteparavoce_25112025.html",
+    "publishedAt": "2025-11-25T06:46:00-03:00",
+    "sentimento": "Carinho tranquilo e silencioso",
+    "moods": [
+      "afeto suave",
+      "cuidado discreto",
+      "mensagem dobrada"
+    ]
+  },
+  {
+    "emoji": "🌤️",
+    "title": "Bom dia depois da pausa",
+    "sub": "Cléia, que sua manhã comece leve e consciente de si",
+    "desc": "Um bom dia suave, depois de uma folga que alinhou corpo, mente e coração para seguir em frente com mais clareza.",
+    "href": "./bomdia25112025.html",
+    "publishedAt": "2025-11-25T04:18:00-03:00",
+    "sentimento": "Amanhecer consciente e cheio de calma",
+    "moods": [
+      "manhã tranquila",
+      "retorno suave",
+      "clareza interior"
+    ]
   },
   {
     "emoji": "🌙",
@@ -1546,5 +1560,4 @@
       "leve"
     ]
   }
-
 ]
