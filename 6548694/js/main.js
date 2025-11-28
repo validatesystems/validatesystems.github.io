@@ -42,7 +42,7 @@
 
     /* ======================   25/11/2025 - 06:48   ======================= */
     const KEYS = [
-        { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
+        { id: "dj", pass: "SEREIA", hint: "Encanta as águas" },
     ];
     /* ================================================================== */
 
@@ -991,4 +991,5 @@ window.addEventListener("pageshow", (event) => {
     if (event.persisted) {
         window.location.reload();
     }
+
 });
