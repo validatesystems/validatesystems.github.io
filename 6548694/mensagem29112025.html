@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Mensagem</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500&display=swap"
+    />
+
+    <style>
+      :root {
+        --paper: #fdfaf3;
+        --ink: #2b2b2b;
+        --soft-ink: #6b6b6b;
+        --shadow: rgba(0, 0, 0, 0.18);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        background: #ece9df;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        font-family: "Inter", sans-serif;
+      }
+
+      .sheet {
+        width: 100%;
+        max-width: 560px;
+        background: var(--paper);
+        padding: 32px 26px 26px;
+        border-radius: 6px;
+        box-shadow: 0 20px 40px var(--shadow), 0 0 0 1px rgba(0, 0, 0, 0.06);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* textura suave de papel */
+      .sheet::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("https://www.transparenttextures.com/patterns/paper-1.png");
+        opacity: 0.38;
+        pointer-events: none;
+      }
+
+      h1 {
+        font-family: "DM Serif Display", serif;
+        font-size: 1.7rem;
+        margin-bottom: 14px;
+        color: var(--ink);
+        position: relative;
+        z-index: 1;
+      }
+
+      .msg-block {
+        position: relative;
+        z-index: 1;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      .msg-block.fade-out {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      .msg-block.fade-in {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .msg {
+        font-size: 1.12rem;
+        line-height: 1.72;
+        color: var(--ink);
+        text-wrap: pretty;
+        margin-bottom: 10px;
+      }
+
+      .signature {
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: var(--soft-ink);
+        text-align: right;
+        font-style: italic;
+        position: relative;
+        z-index: 1;
+      }
+
+      .controls {
+        margin-top: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .btn {
+        border: 1px solid rgba(0, 0, 0, 0.14);
+        background: #f5f0e5;
+        color: #44403c;
+        border-radius: 999px;
+        padding: 6px 16px;
+        font-size: 0.8rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 0.2s ease, transform 0.2s ease,
+          box-shadow 0.2s ease;
+        white-space: nowrap;
+      }
+
+      .btn:hover:not([disabled]) {
+        background: #f2e7d4;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+      }
+
+      .btn:active:not([disabled]) {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+
+      .btn[disabled] {
+        opacity: 0.45;
+        cursor: default;
+        box-shadow: none;
+        transform: none;
+      }
+
+      .btn span.arrow {
+        font-size: 0.9rem;
+      }
+
+      .page-indicator {
+        font-size: 0.76rem;
+        color: var(--soft-ink);
+        text-align: center;
+        flex: 1;
+      }
+
+      @media (max-width: 480px) {
+        .sheet {
+          padding: 26px 20px 22px;
+        }
+
+        h1 {
+          font-size: 1.45rem;
+        }
+
+        .msg {
+          font-size: 1.02rem;
+          text-align: justify;
+        }
+
+        .controls {
+          gap: 6px;
+        }
+
+        .btn {
+          padding: 6px 10px;
+          font-size: 0.74rem;
+        }
+
+        .page-indicator {
+          font-size: 0.72rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="sheet">
+      <h1>Cléia…</h1>
+
+      <div id="msgBlock" class="msg-block">
+        <!-- As mensagens serão inseridas aqui via JavaScript -->
+      </div>
+
+      <p class="signature">._.. ...</p>
+
+      <div class="controls">
+        <button id="prevBtn" class="btn">
+          <span class="arrow">⬅</span>
+          <span>voltar</span>
+        </button>
+
+        <span id="pageIndicator" class="page-indicator"></span>
+
+        <button id="nextBtn" class="btn">
+          <span>avançar</span>
+          <span class="arrow">➡</span>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // CADASTRE SUAS MENSAGENS AQUI
+      // cada item do array é uma "página" com vários parágrafos
+      const messages = [
+        [
+          "Sabia que aqui você ouve meus pensamentos?",
+          "Eu penso e escrevo, não sabendo se está lendo, mas imaginando que sim.",
+          "Isso não parece normal 🤣🤣🤣, mas a experiência está sendo interessante pra mim.",
+        ],
+        [
+          "Às vezes eu acho engraçado como você aparece nos meus pensamentos em momentos aleatórios.",
+          "Não é sempre sobre trabalho, nem sempre sobre algo importante.",
+          "Às vezes é só uma lembrança boba e boa de alguma coisa que você falou, e pronto: um sorriso surge do nada.",
+        ],
+        [
+          "Se em algum momento tudo aí dentro estiver barulhento demais, considera isso aqui como um minutinho de pausa.",
+          "Não resolve a vida, mas talvez alivie um tipo específico de cansaço que nem sempre dá pra explicar.",
+        ],
+      ];
+
+      let currentIndex = 0;
+
+      const msgBlock = document.getElementById("msgBlock");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const pageIndicator = document.getElementById("pageIndicator");
+
+      function renderMessage(index) {
+        const group = messages[index];
+        msgBlock.innerHTML = "";
+
+        group.forEach((text) => {
+          const p = document.createElement("p");
+          p.className = "msg";
+          p.textContent = text;
+          msgBlock.appendChild(p);
+        });
+
+        pageIndicator.textContent = index + 1 + " de " + messages.length;
+
+        // controlando estado dos botões
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === messages.length - 1;
+      }
+
+      function changeMessage(direction) {
+        const newIndex = currentIndex + direction;
+
+        if (newIndex < 0 || newIndex >= messages.length) return;
+
+        msgBlock.classList.add("fade-out");
+
+        setTimeout(() => {
+          currentIndex = newIndex;
+          renderMessage(currentIndex);
+          msgBlock.classList.remove("fade-out");
+          msgBlock.classList.add("fade-in");
+
+          setTimeout(() => {
+            msgBlock.classList.remove("fade-in");
+          }, 300);
+        }, 250);
+      }
+
+      prevBtn.addEventListener("click", () => changeMessage(-1));
+      nextBtn.addEventListener("click", () => changeMessage(1));
+
+      // inicializa com a primeira mensagem
+      renderMessage(currentIndex);
+    </script>
+  </body>
+</html>

@@ -1,32 +1,45 @@
 [
   {
-  "emoji": "🌙",
-  "title": "O estranho bonito que é você",
-  "sub": "Cléia, esse jeito que só você tem",
-  "desc": "Um pedacinho sincero sobre o seu ‘não ser normal’, do jeito que só combina com você.",
-  "href": "./mensagem28112025.html",
-  "publishedAt": "2025-11-28T23:09:00-03:00",
-  "sentimento": "carinho sem floreio",
-  "moods": [
-    "sinceridade leve",
-    "humor suave",
-    "encanto discreto"
-  ]
-}
-,
+    "emoji": "📜",
+    "title": "Páginas que só você lê",
+    "sub": "Cléia, pequenos pedaços que eu deixo aqui",
+    "desc": "Uma sequência de bilhetes suaves, escritos como quem pensa e sorri ao mesmo tempo.",
+    "href": "./mensagem29112025.html",
+    "publishedAt": "2025-11-29T04:19:00-03:00",
+    "sentimento": "intimidade leve",
+    "moods": [
+      "bilhete suave",
+      "pensamentos soltos",
+      "leveza silenciosa"
+    ]
+  },
   {
-  "emoji": "🌤️",
-  "title": "Ainda estou aqui",
-  "sub": "Sexta-feira de pensamentos altos?",
-  "desc": "Um bom dia para lembrar do que nãodeveria ser esquecido",
-  "href": "./aindaestouaqui_28112025.html",
-  "publishedAt": "2025-11-28T04:18:00-03:00",
-  "sentimento": "leveza matinal",
-  "moods": [
-    "humor suave",
-    "respiro cedo",
-    "manhã tranquila"
-  ]
+    "emoji": "🌙",
+    "title": "O estranho bonito que é você",
+    "sub": "Cléia, esse jeito que só tu tem",
+    "desc": "Um pedacinho sincero sobre o teu ‘não ser normal’, do jeito que só combina contigo.",
+    "href": "./mensagem28112025.html",
+    "publishedAt": "2025-11-28T23:09:00-03:00",
+    "sentimento": "carinho sem floreio",
+    "moods": [
+      "sinceridade leve",
+      "humor suave",
+      "encanto discreto"
+    ]
+  },
+  {
+    "emoji": "🌤️",
+    "title": "Ainda estou aqui",
+    "sub": "Sexta-feira de pensamentos altos?",
+    "desc": "Um bom dia para lembrar do que nãodeveria ser esquecido",
+    "href": "./aindaestouaqui_28112025.html",
+    "publishedAt": "2025-11-28T04:18:00-03:00",
+    "sentimento": "leveza matinal",
+    "moods": [
+      "humor suave",
+      "respiro cedo",
+      "manhã tranquila"
+    ]
   },
   {
     "emoji": "💌",
@@ -1589,8 +1602,4 @@
       "leve"
     ]
   }
-
 ]
-
-
-
