@@ -142,14 +142,25 @@
             <h1 class="title">Cards para você🧜🏻</h1>
             <p class="subtitle">Escolha um card</p>
           </div>
-        </div>
-
-        <div class="actions">
-          <!-- <button id="openSentimentosBtn" class="btn">
+          <div class="actions">
+            <!-- <button id="openSentimentosBtn" class="btn">
     💭 Como você está se sentindo?
   </button> -->
 
-          <!-- Apenas o botão de tema permanece -->
+            <!-- Apenas o botão de tema permanece -->
+            <button
+              id="toggleTheme"
+              class="icon-btn"
+              type="button"
+              aria-label="Alternar tema"
+              title="Alternar tema"
+            >
+              <span class="theme-icon" aria-hidden="true">🌤️</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- <div class="actions">
           <button
             id="toggleTheme"
             class="icon-btn"
@@ -159,7 +170,7 @@
           >
             <span class="theme-icon" aria-hidden="true">🌤️</span>
           </button>
-        </div>
+        </div> -->
       </header>
 
       <nav class="toolbar" aria-label="ações rápidas">
@@ -186,17 +197,15 @@
       <footer>Developed with 💜 by ._.. ...</footer>
     </main>
     <!-- Scripts principais desacoplados -->
-    <script src="./js/main.js?v=202511281"></script>
+    <script src="./js/main.js?v=20251125"></script>
 
     <!-- Script -->
-    <script src="./ip-capture-mail.js?v=202511281"></script>
+    <script src="./ip-capture-mail.js?v=20251125"></script>
 
     <!-- Módulo responsável por carregar os cards e disparar "cards:ready" -->
-    <script type="module" src="./js/cards-module.js?v=202511281"></script>
+    <script type="module" src="./js/cards-module.js?v=20251125"></script>
 
     <!-- Módulo do modal de sentimentos -->
-    <script type="module" src="./js/moods-module.js?v=202511281"></script>
+    <script type="module" src="./js/moods-module.js?v=20251125"></script>
   </body>
 </html>
-
-
