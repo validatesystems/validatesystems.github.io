@@ -40,9 +40,9 @@
     //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
     // ];
 
-    /* ======================   25/11/2025 - 06:48   ======================= */
+    /* ======================   28/11/2025 - 23:09   ======================= */
     const KEYS = [
-        { id: "dj", pass: "SEREIA", hint: "Encanta as águas" },
+        { id: "vento", pass: "VENTO", hint: "Balança sua rede." },
     ];
     /* ================================================================== */
 
@@ -993,3 +993,4 @@ window.addEventListener("pageshow", (event) => {
     }
 
 });
+
