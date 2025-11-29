@@ -1,11 +1,25 @@
 [
   {
+    "emoji": "🗺️",
+    "title": "Mapa de Refúgios",
+    "sub": "Cléia, teus lugares de respiro espalhados aqui",
+    "desc": "Sete pontinhos de luz onde sua cabeça descansa, sua alma desacelera e o mundo fica mais possível.",
+    "href": "./mapaderefugios.html",
+    "publishedAt": "2025-11-29T23:59:00-03:00",
+    "sentimento": "acolhimento silencioso",
+    "moods": [
+      "calma profunda",
+      "refúgio emocional",
+      "silêncio que abraça"
+    ]
+  },
+  {
     "emoji": "📜",
     "title": "Páginas que só você lê",
     "sub": "Cléia, pequenos pedaços que eu deixo aqui",
     "desc": "Uma sequência de bilhetes suaves, escritos como quem pensa e sorri ao mesmo tempo.",
     "href": "./mensagem29112025.html",
-    "publishedAt": "2025-11-29T04:19:00-03:00",
+    "publishedAt": "2025-11-30T04:19:00-03:00",
     "sentimento": "intimidade leve",
     "moods": [
       "bilhete suave",
