@@ -162,11 +162,11 @@ body {
   display: grid;
   grid-template-rows: auto auto 1fr auto;
   gap: 18px;
-
+  align-items: baseline;
   max-width: 1200px; /* limite de largura */
   margin: 0 auto; /* centraliza horizontalmente */
-  width: 100%;
-  /* max-width: 1200px; controla largura */
+  width: 99%;
+  max-width: 1200px;
 }
 
 /* Header */
@@ -1353,3 +1353,4 @@ button.active:focus .filter-count {
     font-size: 13px;
   }
 }
+
