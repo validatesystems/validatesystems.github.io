@@ -1,5 +1,33 @@
 [
   {
+    "emoji": "🗺️",
+    "title": "Mapa de Refúgios",
+    "sub": "Cléia, teus lugares de respiro espalhados aqui",
+    "desc": "Sete pontinhos de luz onde sua cabeça descansa, sua alma desacelera e o mundo fica mais possível.",
+    "href": "./mapaderefugios.html",
+    "publishedAt": "2025-12-01T12:15:00-03:00",
+    "sentimento": "acolhimento silencioso",
+    "moods": [
+      "calma profunda",
+      "refúgio emocional",
+      "silêncio que abraça"
+    ]
+  },
+  {
+    "emoji": "🌤️",
+    "title": "Bom dia, Cléia",
+    "sub": "Começar o dia no teu próprio ritmo",
+    "desc": "Um recado simples para te desejar leveza, força e calma onde você precisar hoje.",
+    "href": "./bomdia01122025.html",
+    "publishedAt": "2025-12-01T04:12:00-03:00",
+    "sentimento": "cuidado leve",
+    "moods": [
+      "manhã tranquila",
+      "força silenciosa",
+      "presença suave"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Boa noite, Cléia",
     "sub": "Um cuidado dito baixinho",
@@ -11,20 +39,6 @@
       "oração",
       "noite tranquila",
       "acolhimento suave"
-    ]
-  },
-  {
-    "emoji": "🗺️",
-    "title": "Mapa de Refúgios",
-    "sub": "Cléia, teus lugares de respiro espalhados aqui",
-    "desc": "Sete pontinhos de luz onde sua cabeça descansa, sua alma desacelera e o mundo fica mais possível.",
-    "href": "./mapaderefugios.html",
-    "publishedAt": "2025-12-01T04:59:00-03:00",
-    "sentimento": "acolhimento silencioso",
-    "moods": [
-      "calma profunda",
-      "refúgio emocional",
-      "silêncio que abraça"
     ]
   },
   {

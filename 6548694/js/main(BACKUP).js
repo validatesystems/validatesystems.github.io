@@ -439,7 +439,50 @@
         let currentFilter = "today";
 
         // Atualiza a contagem dos filtros com base em baseCards e no horário atual
+        // function updateFilterCounts() {
+        //     if (!Array.isArray(baseCards) || !baseCards.length) {
+        //         if (countUnreadEl) countUnreadEl.textContent = "";
+        //         if (countTodayEl) countTodayEl.textContent = "";
+        //         if (countAllEl) countAllEl.textContent = "";
+        //         return;
+        //     }
+
+        //     const now = new Date();
+
+        //     // Todos os cards cujo horário já chegou
+        //     const allCards = baseCards.filter((c) => c.__dt && c.__dt <= now);
+
+        //     // Só de hoje (e já "no tempo")
+        //     const todayCards = allCards.filter((c) => isToday(c.__dt, now));
+
+        //     // Não lidos: já no tempo E não marcados como lidos
+        //     let unreadCards = allCards;
+        //     if (typeof window.isCardRead === "function") {
+        //         unreadCards = allCards.filter((c) => !window.isCardRead(c.href));
+        //     }
+
+        //     if (countAllEl) {
+        //         countAllEl.textContent = allCards.length
+        //             ? String(allCards.length)
+        //             : "";
+        //     }
+        //     if (countTodayEl) {
+        //         countTodayEl.textContent = todayCards.length
+        //             ? String(todayCards.length)
+        //             : "";
+        //     }
+        //     if (countUnreadEl) {
+        //         countUnreadEl.textContent = unreadCards.length
+        //             ? String(unreadCards.length)
+        //             : "";
+        //     }
+        // }
+
         function updateFilterCounts() {
+            const countUnreadEl = document.getElementById("countUnread");
+            const countTodayEl = document.getElementById("countToday");
+            const countAllEl = document.getElementById("countAll");
+
             if (!Array.isArray(baseCards) || !baseCards.length) {
                 if (countUnreadEl) countUnreadEl.textContent = "";
                 if (countTodayEl) countTodayEl.textContent = "";
@@ -449,13 +492,15 @@
 
             const now = new Date();
 
-            // Todos os cards cujo horário já chegou
+            // Todos os cards cujo horário já chegou (mantém lógica atual)
             const allCards = baseCards.filter((c) => c.__dt && c.__dt <= now);
 
-            // Só de hoje (e já "no tempo")
-            const todayCards = allCards.filter((c) => isToday(c.__dt, now));
+            // Hoje: TODOS os cards do dia de hoje, mesmo se o horário ainda não chegou
+            const todayCards = baseCards.filter(
+                (c) => c.__dt && isToday(c.__dt, now)
+            );
 
-            // Não lidos: já no tempo E não marcados como lidos
+            // Não lidos: já no tempo E não marcados como lidos (mantém)
             let unreadCards = allCards;
             if (typeof window.isCardRead === "function") {
                 unreadCards = allCards.filter((c) => !window.isCardRead(c.href));
@@ -478,8 +523,79 @@
             }
         }
 
+
         // Deixa acessível globalmente para outros scripts chamarem
         window.updateFilterCounts = updateFilterCounts;
+
+        // function createCardElement(c) {
+        //     const a = document.createElement("article");
+        //     a.className = "card";
+        //     a.dataset.title = c.title;
+
+        //     const d = c.__dt;
+        //     const hoje = new Date();
+
+        //     // Destaque agora é para "não lidos"
+        //     if (typeof window.isCardRead === "function") {
+        //         if (!window.isCardRead(c.href)) {
+        //             a.classList.add("card-hoje");
+        //         }
+        //     } else {
+        //         // fallback: se por algum motivo o rastreador não estiver disponível,
+        //         // ainda dá para usar o destaque antigo (opcional)
+        //         if (isToday(d, hoje)) {
+        //             a.classList.add("card-hoje");
+        //         }
+        //     }
+
+        //     const dateHtml = `
+        //   <div class="card-meta">
+        //     <span class="card-date" title="Data de publicação">
+        //       <span aria-hidden="true">🗓️</span>
+        //       <span>${fmt.format(d)}</span>
+        //     </span>
+        //   </div>
+        // `;
+
+        //     a.innerHTML = `
+        //   <div class="card-head">
+        //     <div class="art" aria-hidden="true">${c.emoji}</div>
+        //     <div>
+        //       <h3 class="card-title">${c.title}</h3>
+        //       <p class="card-sub">${c.sub}</p>
+        //       ${dateHtml}
+        //     </div>
+        //   </div>
+        //   <div class="card-body">${c.desc}</div>
+        // `;
+
+        //     const statusTag = document.createElement("span");
+        //     statusTag.className = "card-status-tag";
+
+        //     // define o texto inicial
+        //     if (
+        //         typeof window.isCardRead === "function" &&
+        //         window.isCardRead(c.href)
+        //     ) {
+        //         statusTag.textContent = "Lido";
+        //         statusTag.classList.add("lido");
+        //     } else {
+        //         statusTag.textContent = "Não lido";
+        //         statusTag.classList.add("nao-lido");
+        //     }
+        //     a.appendChild(statusTag);
+
+        //     a.tabIndex = 0;
+        //     a.addEventListener("click", (e) => {
+        //         const isButton = e.target.closest("a,button");
+        //         if (!isButton) location.href = c.href;
+        //     });
+        //     a.addEventListener("keyup", (e) => {
+        //         if (e.key === "Enter" || e.key === " ") location.href = c.href;
+        //     });
+
+        //     return a;
+        // }
 
         function createCardElement(c) {
             const a = document.createElement("article");
@@ -495,7 +611,7 @@
                     a.classList.add("card-hoje");
                 }
             } else {
-                // fallback: se por algum motivo o rastreador não estiver disponível,
+                // fallback: se o rastreador não estiver disponível,
                 // ainda dá para usar o destaque antigo (opcional)
                 if (isToday(d, hoje)) {
                     a.classList.add("card-hoje");
@@ -503,53 +619,138 @@
             }
 
             const dateHtml = `
-          <div class="card-meta">
-            <span class="card-date" title="Data de publicação">
-              <span aria-hidden="true">🗓️</span>
-              <span>${fmt.format(d)}</span>
-            </span>
-          </div>
-        `;
+      <div class="card-meta">
+        <span class="card-date" title="Data de publicação">
+          <span aria-hidden="true">🗓️</span>
+          <span>${fmt.format(d)}</span>
+        </span>
+      </div>
+    `;
 
             a.innerHTML = `
-          <div class="card-head">
-            <div class="art" aria-hidden="true">${c.emoji}</div>
-            <div>
-              <h3 class="card-title">${c.title}</h3>
-              <p class="card-sub">${c.sub}</p>
-              ${dateHtml}
-            </div>
-          </div>
-          <div class="card-body">${c.desc}</div>
-        `;
+      <div class="card-head">
+        <div class="art" aria-hidden="true">${c.emoji}</div>
+        <div>
+          <h3 class="card-title">${c.title}</h3>
+          <p class="card-sub">${c.sub}</p>
+          ${dateHtml}
+        </div>
+      </div>
+      <div class="card-body">${c.desc}</div>
+    `;
 
             const statusTag = document.createElement("span");
             statusTag.className = "card-status-tag";
 
-            // define o texto inicial
-            if (
-                typeof window.isCardRead === "function" &&
-                window.isCardRead(c.href)
-            ) {
+            const isRead =
+                typeof window.isCardRead === "function" && window.isCardRead(c.href);
+            const isTodayCard = isToday(d, hoje);
+            const isFutureToday = isTodayCard && d > hoje;
+
+            if (isFutureToday) {
+                // Card de hoje cujo horário ainda não chegou
+                const timeStr = d.toLocaleTimeString("pt-BR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                });
+
+                statusTag.textContent = `Estará disponível às ${timeStr}`;
+                statusTag.classList.add("agendado-hoje");
+
+                // Marca como bloqueado para outras lógicas respeitarem
+                a.dataset.locked = "true";
+                a.dataset.availableAt = timeStr;
+            } else if (isRead) {
+                // Card lido
                 statusTag.textContent = "Lido";
                 statusTag.classList.add("lido");
             } else {
-                statusTag.textContent = "Não lido";
+                // Card disponível e ainda não lido
+                statusTag.textContent = "Disponível";
                 statusTag.classList.add("nao-lido");
             }
+
             a.appendChild(statusTag);
 
             a.tabIndex = 0;
+
             a.addEventListener("click", (e) => {
-                const isButton = e.target.closest("a,button");
-                if (!isButton) location.href = c.href;
+                const isInnerInteractive = e.target.closest("a,button");
+
+                // Se for card bloqueado (hoje e horário no futuro), não navega
+                if (a.dataset.locked === "true") {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const timeStr =
+                        a.dataset.availableAt ||
+                        d.toLocaleTimeString("pt-BR", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                        });
+
+                    // alert(
+                    //     `Esse card ainda está em construção e estará disponível às ${timeStr}.`
+                    // );
+                    // return;
+                    // Abrir modal personalizado
+                    const modal = document.getElementById("lockedCardModal");
+                    const timeSpan = document.getElementById("lockedTime");
+                    const closeBtn = document.getElementById("lockedCloseBtn");
+
+                    timeSpan.textContent = timeStr;
+
+                    modal.classList.add("open");
+                    document.body.style.overflow = "hidden"; // bloqueia scroll do fundo
+
+                    // fechar modal
+                    closeBtn.onclick = () => {
+                        modal.classList.remove("open");
+                        document.body.style.overflow = "";
+                    };
+
+                    modal.onclick = (ev) => {
+                        if (ev.target === modal) {
+                            modal.classList.remove("open");
+                            document.body.style.overflow = "";
+                        }
+                    };
+
+                    return;
+
+
+                }
+
+                if (!isInnerInteractive) {
+                    location.href = c.href;
+                }
             });
+
             a.addEventListener("keyup", (e) => {
-                if (e.key === "Enter" || e.key === " ") location.href = c.href;
+                if (a.dataset.locked === "true") {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        const timeStr =
+                            a.dataset.availableAt ||
+                            d.toLocaleTimeString("pt-BR", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                            });
+                        alert(
+                            `Esse card ainda está em construção e estará disponível às ${timeStr}.`
+                        );
+                    }
+                    return;
+                }
+
+                if (e.key === "Enter" || e.key === " ") {
+                    location.href = c.href;
+                }
             });
 
             return a;
         }
+
 
         function applyFilter(filter) {
             if (!grid) return;
@@ -583,11 +784,18 @@
                 let list = baseCards.slice();
                 const now = new Date();
 
+                // if (filter === "today") {
+                //     list = list.filter((c) => {
+                //         return isToday(c.__dt, now) && c.__dt <= now;
+                //     });
+                // }
+
                 if (filter === "today") {
-                    list = list.filter((c) => {
-                        return isToday(c.__dt, now) && c.__dt <= now;
-                    });
+                    // Todos os cards do dia atual, mesmo que o horário ainda não tenha chegado
+                    list = list.filter((c) => isToday(c.__dt, now));
                 }
+
+
 
                 if (filter === "all") {
                     list = list.filter((c) => c.__dt <= now);
@@ -847,7 +1055,42 @@
         return card.href;
     }
 
+    // function markCardAsReadFromElement(el) {
+    //     const id = getCardIdFromElement(el);
+    //     if (!id) return;
+
+    //     if (!readSet.has(id)) {
+    //         readSet.add(id);
+    //         saveReadSet(readSet);
+    //     }
+
+    //     // visual: lido
+    //     el.classList.add("card-lido");
+    //     el.classList.remove("card-hoje");
+
+    //     const tag = el.querySelector(".card-status-tag");
+    //     if (tag) {
+    //         tag.textContent = "Lido";
+    //         tag.classList.remove("nao-lido");
+    //         tag.classList.add("lido");
+    //     }
+
+    //     // se você estiver usando contadores nos botões:
+    //     if (typeof window.updateFilterCounts === "function") {
+    //         window.updateFilterCounts();
+    //     }
+    //     // Atualiza os números dos filtros (se a função existir)
+    //     if (typeof window.updateFilterCounts === "function") {
+    //         window.updateFilterCounts();
+    //     }
+    // }
+
     function markCardAsReadFromElement(el) {
+        // Não marca como lido se for card ainda bloqueado para o horário de hoje
+        if (el && el.dataset.locked === "true") {
+            return;
+        }
+
         const id = getCardIdFromElement(el);
         if (!id) return;
 
@@ -871,11 +1114,41 @@
         if (typeof window.updateFilterCounts === "function") {
             window.updateFilterCounts();
         }
-        // Atualiza os números dos filtros (se a função existir)
         if (typeof window.updateFilterCounts === "function") {
             window.updateFilterCounts();
         }
     }
+
+
+    // function syncVisualReadState() {
+    //     const cardsEls = document.querySelectorAll(".card[data-title]");
+
+    //     // aplica classe visual de lido
+    //     cardsEls.forEach((el) => {
+    //         const id = getCardIdFromElement(el);
+    //         if (id && readSet.has(id)) {
+    //             el.classList.add("card-lido");
+    //             el.classList.remove("card-hoje");
+    //         }
+    //     });
+
+    //     // ajusta tag "Lido / Não lido"
+    //     cardsEls.forEach((el) => {
+    //         const id = getCardIdFromElement(el);
+    //         const tag = el.querySelector(".card-status-tag");
+    //         if (!tag) return;
+
+    //         if (id && window.isCardRead(id)) {
+    //             tag.textContent = "Lido";
+    //             tag.classList.remove("nao-lido");
+    //             tag.classList.add("lido");
+    //         } else {
+    //             tag.textContent = "Não lido";
+    //             tag.classList.remove("lido");
+    //             tag.classList.add("nao-lido");
+    //         }
+    //     });
+    // }
 
     function syncVisualReadState() {
         const cardsEls = document.querySelectorAll(".card[data-title]");
@@ -889,23 +1162,32 @@
             }
         });
 
-        // ajusta tag "Lido / Não lido"
+        // ajusta tag de status
         cardsEls.forEach((el) => {
-            const id = getCardIdFromElement(el);
             const tag = el.querySelector(".card-status-tag");
             if (!tag) return;
+
+            // Não mexe nas tags dos cards bloqueados (mensagem "Estará disponível às ...")
+            if (el.dataset.locked === "true") {
+                return;
+            }
+
+            const id = getCardIdFromElement(el);
 
             if (id && window.isCardRead(id)) {
                 tag.textContent = "Lido";
                 tag.classList.remove("nao-lido");
                 tag.classList.add("lido");
             } else {
-                tag.textContent = "Não lido";
+                tag.textContent = "Disponível";
                 tag.classList.remove("lido");
                 tag.classList.add("nao-lido");
             }
         });
     }
+
+
+
 
     // Quando os cards forem carregados pela primeira vez
     document.addEventListener("cards:ready", () => {
@@ -929,16 +1211,33 @@
         });
     });
 
-    // Qualquer clique em card marca como lido
+    // // Qualquer clique em card marca como lido
+    // document.addEventListener(
+    //     "click",
+    //     (ev) => {
+    //         const cardEl = ev.target.closest(".card[data-title]");
+    //         if (!cardEl) return;
+    //         markCardAsReadFromElement(cardEl);
+    //     },
+    //     { capture: true }
+    // );
+    // Qualquer clique em card marca como lido (exceto cards bloqueados)
     document.addEventListener(
         "click",
         (ev) => {
             const cardEl = ev.target.closest(".card[data-title]");
             if (!cardEl) return;
+
+            if (cardEl.dataset.locked === "true") {
+                // Card de hoje ainda não liberado: não marca como lido
+                return;
+            }
+
             markCardAsReadFromElement(cardEl);
         },
         { capture: true }
     );
+
 })();
 
 
@@ -993,3 +1292,4 @@ window.addEventListener("pageshow", (event) => {
     }
 
 });
+
