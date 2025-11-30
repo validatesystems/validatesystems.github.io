@@ -1014,7 +1014,7 @@ body.gate-open {
   vertical-align: middle;
 }
 
-.card-status-tag {
+/* .card-status-tag {
   display: inline-block;
   margin-top: 8px;
   padding: 3px 8px;
@@ -1023,21 +1023,51 @@ body.gate-open {
   font-weight: 500;
   letter-spacing: 0.3px;
   width: fit-content;
+} */
+
+.card-status-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 8px;
+  width: fit-content;
 }
 
 /* Tag de NÃO lido */
-.card-status-tag.nao-lido {
+/* .card-status-tag.nao-lido {
   background: rgba(255, 215, 0, 0.8);
   color: #000;
   border: 1px solid rgba(255, 215, 0, 0.35);
+} */
+
+/* Tag de card disponível (verde) */
+.card-status-tag.nao-lido {
+  background-color: #16a34a;
+  color: #f9fafb;
 }
 
 /* Tag de Lido */
-.card-status-tag.lido {
+/* .card-status-tag.lido {
   background: rgba(180, 180, 180, 0.15);
   color: #bdbdbd;
   border: 1px solid rgba(160, 160, 160, 0.3);
+} */
+
+/* Tag de card lido (cinza / neutro) */
+.card-status-tag.lido {
+  background-color: #4b5563;
+  color: #f9fafb;
 }
+
+/* Tag de card de hoje ainda em construção (vermelho) */
+.card-status-tag.agendado-hoje {
+  background-color: #dc2626;
+  color: #fef2f2;
+}
+
 /* ===============================
    Círculos dos contadores
    =============================== */
@@ -1354,3 +1384,94 @@ button.active:focus .filter-count {
   }
 }
 
+/* ===== Modal de Card Bloqueado ===== */
+.locked-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: none;
+  place-items: center;
+  z-index: 9999;
+  padding: 16px;
+}
+
+.locked-backdrop.open {
+  display: grid;
+}
+
+.locked-modal {
+  width: min(420px, 92vw);
+  background: var(--card);
+  color: var(--fg);
+  border-radius: 20px;
+  padding: 22px;
+  text-align: center;
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.35);
+  transform: translateY(10px) scale(0.97);
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.locked-backdrop.open .locked-modal {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.locked-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.locked-message {
+  font-size: 15px;
+  opacity: 0.9;
+  margin: 0 0 22px;
+}
+
+.locked-btn {
+  padding: 12px 18px;
+  font-weight: 700;
+  border-radius: 12px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.locked-btn:hover {
+  transform: translateY(-2px);
+}
+
+.locked-btn:active {
+  transform: scale(0.96);
+}
+
+/* ===== Estilo para cards bloqueados ===== */
+.card[data-locked="true"] {
+  opacity: 0.45; /* deixa o card inteiro mais apagado */
+  filter: grayscale(85%); /* tira cor, deixando "neutro" */
+  pointer-events: auto; /* continua clicável para abrir o modal */
+}
+
+/* Esmaece o conteúdo interno sem ocultar */
+.card[data-locked="true"] .art,
+.card[data-locked="true"] .card-title,
+.card[data-locked="true"] .card-sub,
+.card[data-locked="true"] .card-body,
+.card[data-locked="true"] .card-meta {
+  opacity: 0.28; /* conteúdo quase escondido, mas ainda sugerido */
+  filter: blur(7px); /* leve desfoque para não dar spoiler */
+  user-select: none; /* impede seleção do texto */
+  pointer-events: none; /* evita cliques em links internos */
+}
+
+/* A tag (Estará disponível às ...) deve permanecer visível */
+.card[data-locked="true"] .card-status-tag {
+  opacity: 1 !important; /* garante contraste total */
+  filter: none !important;
+}

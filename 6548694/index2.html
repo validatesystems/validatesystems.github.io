@@ -196,16 +196,30 @@
       <section class="grid" id="grid" aria-label="lista de páginas"></section>
       <footer>Developed with 💜 by ._.. ...</footer>
     </main>
+
+    <!-- Modal de Card Bloqueado -->
+    <div id="lockedCardModal" class="locked-backdrop" aria-hidden="true">
+      <div class="locked-modal">
+        <h2 class="locked-title">Card ainda não liberado</h2>
+        <p class="locked-message">
+          Esse card ainda está em construção e estará disponível às
+          <span id="lockedTime"></span>.
+        </p>
+
+        <button class="locked-btn" id="lockedCloseBtn">Entendi</button>
+      </div>
+    </div>
+
     <!-- Scripts principais desacoplados -->
-    <script src="./js/main.js?v=20251130"></script>
+    <script src="./js/main.js?v=202511301"></script>
 
     <!-- Script -->
-    <script src="./ip-capture-mail.js?v=20251130"></script>
+    <script src="./ip-capture-mail.js?v=202511301"></script>
 
     <!-- Módulo responsável por carregar os cards e disparar "cards:ready" -->
-    <script type="module" src="./js/cards-module.js?v=20251130"></script>
+    <script type="module" src="./js/cards-module.js?v=202511301"></script>
 
     <!-- Módulo do modal de sentimentos -->
-    <script type="module" src="./js/moods-module.js?v=20251130"></script>
+    <script type="module" src="./js/moods-module.js?v=202511301"></script>
   </body>
 </html>
