@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Sobre esse "ódio" aí</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Homemade+Apple&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg1: #020617;
+        --bg2: #020617;
+        --ring: rgba(148, 163, 184, 0.3);
+        --card: rgba(15, 23, 42, 0.94);
+        --border: rgba(148, 163, 184, 0.4);
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --accent: #38bdf8;
+        --accent-soft: rgba(56, 189, 248, 0.12);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: radial-gradient(circle at 10% 0%, #0f172a, transparent 60%),
+          radial-gradient(circle at 90% 100%, #020617, transparent 60%),
+          linear-gradient(150deg, var(--bg1), var(--bg2));
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        position: relative;
+        overflow: auto;
+      }
+
+      /* grão leve */
+      .noise {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: url("https://www.transparenttextures.com/patterns/noisy.png");
+        opacity: 0.18;
+        mix-blend-mode: soft-light;
+        z-index: 0;
+      }
+
+      /* halo de luz */
+      .halo {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+            circle at 20% 10%,
+            rgba(56, 189, 248, 0.18),
+            transparent 65%
+          ),
+          radial-gradient(
+            circle at 90% 80%,
+            rgba(129, 140, 248, 0.18),
+            transparent 70%
+          );
+        opacity: 0.9;
+        z-index: 0;
+        animation: haloMove 18s ease-in-out infinite alternate;
+      }
+
+      @keyframes haloMove {
+        from {
+          transform: translateY(0px);
+        }
+        to {
+          transform: translateY(-22px);
+        }
+      }
+
+      .shell {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 520px;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 24px;
+        border: 1px solid var(--border);
+        padding: 26px 22px 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7),
+          0 0 0 1px rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        animation: cardIn 700ms ease-out;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -40%;
+        background: radial-gradient(
+            circle at 10% 0%,
+            rgba(56, 189, 248, 0.12),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 90% 100%,
+            rgba(129, 140, 248, 0.12),
+            transparent 65%
+          );
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      .card-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      @keyframes cardIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px) scale(0.97);
+          filter: blur(2px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--ring);
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+        background: rgba(15, 23, 42, 0.92);
+        margin-bottom: 14px;
+      }
+
+      .chip-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 6px var(--accent-soft);
+        animation: pulse 3.2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 6px var(--accent-soft);
+        }
+        50% {
+          transform: scale(1.08);
+          box-shadow: 0 0 0 10px rgba(56, 189, 248, 0.07);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 6px var(--accent-soft);
+        }
+      }
+
+      h1 {
+        font-family: "Homemade Apple", cursive;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        color: #f9fafb;
+        letter-spacing: 0.6px;
+      }
+
+      .sub {
+        font-size: 0.9rem;
+        color: var(--muted);
+        margin-bottom: 20px;
+        text-wrap: balance;
+      }
+
+      .message {
+        font-size: 1.02rem;
+        line-height: 1.7;
+        color: var(--text);
+        text-wrap: balance;
+        margin-bottom: 20px;
+      }
+
+      .message strong {
+        font-weight: 500;
+        color: #e5e7eb;
+      }
+
+      .footnote {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 6px;
+        text-wrap: balance;
+      }
+
+      .signature {
+        margin-top: 24px;
+        border-top: 1px solid rgba(148, 163, 184, 0.5);
+        padding-top: 12px;
+        font-family: "Homemade Apple", cursive;
+        font-size: 1.05rem;
+        color: #e5e7eb;
+        text-align: right;
+        opacity: 0.9;
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 16px;
+        }
+
+        .card {
+          padding: 22px 16px 18px;
+          border-radius: 20px;
+        }
+
+        h1 {
+          font-size: 1.6rem;
+        }
+
+        .message {
+          font-size: 0.98rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="noise"></div>
+    <div class="halo"></div>
+
+    <div class="shell">
+      <article class="card">
+        <div class="card-inner">
+          <div class="chip">
+            <span class="chip-dot"></span>
+            sobre esse "ódio" aí
+          </div>
+
+          <h1>Eu te odeio de outro jeito</h1>
+
+          <p class="sub">
+            Cléia, você disse, em algum momento, que percebeu que eu te odeio.
+            Eu só não contei ainda que é exatamente o contrário.
+          </p>
+
+          <p class="message">
+            Te odeio do jeito de quem presta atenção demais. De quem guarda
+            frase, gesto, mania e silêncio.<br /><br />
+
+            Te odeio do jeito de quem sente quando o teu dia não está legal,
+            mesmo quando você diz que está tudo bem (eu sei quando não está). Do
+            jeito de quem repara na forma como você entrou na minha vida e eu
+            nem percebi.<br /><br />
+
+            Não é ódio que afasta. É esse "ódio" que puxa para perto, que faz o
+            dia ficar menos caótico só porque você existe dentro dele.<br /><br />
+
+            No fundo, quando parece que te odeio, é só o meu jeito torto de
+            admitir que você ocupa um espaço aqui que eu não dou para qualquer
+            pessoa.
+          </p>
+
+          <p class="footnote">
+            Então, se for para dar nome a isso, pode chamar como quiser. Eu
+            continuo te "odiando" assim: com carinho, com respeito e com um
+            afeto que não sabe mais fingir que é só implicância.
+          </p>
+
+          <p class="signature">
+            <!-- espaço para a sua assinatura -->
+            ._.. ...
+          </p>
+        </div>
+      </article>
+    </div>
+  </body>
+</html>
