@@ -283,13 +283,13 @@ body {
   transform: translateY(4px);
 }
 
-.empty-grid-message {
+/* .empty-grid-message {
   grid-column: 1 / -1;
   text-align: center;
   font-size: 14px;
   color: #f0f0f0;
   padding: 16px 8px;
-}
+} */
 
 @keyframes fadeInUpCard {
   from {
@@ -1347,15 +1347,6 @@ button.active:focus .filter-count {
     padding: 10px;
   }
 
-  /* Botão "Atualizar página" quando não há cards */
-  .empty-grid-message.btn {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    font-size: 14px;
-  }
-
   /* Badge dos filtros não passa da largura do botão */
   .filter-count {
     margin-left: 4px;
@@ -1474,4 +1465,28 @@ button.active:focus .filter-count {
 .card[data-locked="true"] .card-status-tag {
   opacity: 1 !important; /* garante contraste total */
   filter: none !important;
+}
+
+/* Container da grade quando estiver mostrando só a mensagem vazia */
+#grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Mensagem quando não há cards */
+.empty-grid-message {
+  text-align: center;
+  margin: 3rem auto;
+  max-width: 28rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+/* Se quiser deixar ainda mais central em telas altas */
+@media (min-height: 600px) {
+  #grid:has(.empty-grid-message) {
+    min-height: 260px;
+    align-content: center; /* centraliza vertical na área da grid */
+  }
 }

@@ -1,5 +1,32 @@
 [
-  
+  {
+    "emoji": "🌙",
+    "title": "Boa noite silenciosa",
+    "sub": "Um aceno leve antes do fim do dia",
+    "desc": "Um último boa noite desse ciclo — só um gesto quieto, sem encostar demais.",
+    "href": "./boanoite01122025.html",
+    "publishedAt": "2025-11-29T22:00:00-03:00",
+    "sentimento": "encerramento calmo",
+    "moods": [
+      "silêncio",
+      "leveza madura",
+      "noite tranquila"
+    ]
+  },
+  {
+    "emoji": "🌀",
+    "title": "Eu te odeio de outro jeito",
+    "sub": "Cléia, sobre aquela sua fala sobre ódio",
+    "desc": "Um recado leve e sincero sobre esse tal 'ódio' que nunca foi ódio.",
+    "href": "./mensagem01122025.html",
+    "publishedAt": "2025-12-01T18:01:00-03:00",
+    "sentimento": "afeto disfarçado de implicância",
+    "moods": [
+      "ironia romântica",
+      "aproximação suave",
+      "carinho entrelinhado"
+    ]
+  },
   {
     "emoji": "🖋️",
     "title": "Um recado pra você",
@@ -1659,5 +1686,4 @@
       "leve"
     ]
   }
-
 ]
