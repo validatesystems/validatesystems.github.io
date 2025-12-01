@@ -31,7 +31,7 @@
 (function () {
     const $ = (s) => document.querySelector(s);
 
-    /* ==================== CONFIGURE AQUI AS CHAVES ==================== */
+    /* ============================== CHAVES ============================== */
     // const KEYS = [
     //   { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
     //   { id: "vento", pass: "VENTO", hint: "Balança sua rede." },
@@ -40,9 +40,9 @@
     //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
     // ];
 
-    /* ======================   30/11/2025 - 10:05   ======================= */
+    /* ======================   01/12/2025 - 06:26   ======================= */
     const KEYS = [
-        { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
+        { id: "dj", pass: "SEREIA", hint: "DJ do mar" },
     ];
     /* ================================================================== */
 

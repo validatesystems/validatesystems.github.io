@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "🖋️",
+    "title": "Um recado pra você",
+    "sub": "Cléia, escrevo porque senti que precisava registrar isso",
+    "desc": "Um recado simples, mas cheio de verdade, do jeito que você merece ler.",
+    "href": "./recado01122025.html",
+    "publishedAt": "2025-02-09T18:42:00-03:00",
+    "sentimento": "Romantismo sereno e maduro",
+    "moods": [
+      "calma íntima",
+      "afeição silenciosa",
+      "presença que conforta"
+    ]
+  },
+  {
     "emoji": "🗺️",
     "title": "Mapa de Refúgios",
     "sub": "Cléia, teus lugares de respiro espalhados aqui",
@@ -1644,5 +1658,4 @@
       "leve"
     ]
   }
-
 ]
