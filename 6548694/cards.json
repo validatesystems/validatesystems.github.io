@@ -1,11 +1,25 @@
 [
   {
+    "emoji": "🫧",
+    "title": "Sendo sincero",
+    "sub": "Cléia, isso é só verdade dita com cuidado",
+    "desc": "Não é um pedido, nem uma cobrança.",
+    "href": "./mensagem02122025(3).html",
+    "publishedAt": "2025-12-02T19:20:00-03:00",
+    "sentimento": "Confissão serena sem expectativa",
+    "moods": [
+      "entrelinhas suaves",
+      "verdade sem pressão",
+      "afeto quieto"
+    ]
+  },
+  {
     "emoji": "✨",
     "title": "Quando uma estrela parece pequena demais",
     "sub": "Mas só até alguém chegar perto o suficiente para ver sua imensidão",
     "desc": "Uma metáfora sobre estrelas?",
     "href": "./mensagem02122025(2).html",
-    "publishedAt": "2025-12-02T11:36:00-03:00",
+    "publishedAt": "2025-12-02T11:12:00-03:00",
     "sentimento": "Brilho silencioso que guia",
     "moods": [
       "imensidão discreta",
@@ -1716,5 +1730,4 @@
       "leve"
     ]
   }
-
 ]
