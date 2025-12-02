@@ -1,5 +1,20 @@
 [
   {
+    "emoji": "🌤️",
+    "title": "Bom dia, Cléia",
+    "sub": "Um começo do jeito que você consegue",
+    "desc": "Que o seu dia seja maravilhoso",
+    "href": "./bomdia02122025.html",
+    "publishedAt": "2025-12-02T06:04:00-03:00",
+    "sentimento": "manhã suave, carinho discreto, afeto que acende por dentro",
+    "moods": [
+      "amanhecer calmo",
+      "leveza",
+      "silêncio bom",
+      "carinho que não pesa"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Boa noite silenciosa",
     "sub": "Um aceno leve antes do fim do dia",
@@ -61,7 +76,7 @@
     "sub": "Começar o dia no teu próprio ritmo",
     "desc": "Quero te dar um recado simples.",
     "href": "./bomdia01122025.html",
-    "publishedAt": "2025-12-01T04:12:00-03:00",
+    "publishedAt": "2025-12-0T04:12:00-03:00",
     "sentimento": "cuidado leve",
     "moods": [
       "manhã tranquila",
@@ -1686,6 +1701,4 @@
       "leve"
     ]
   }
-
 ]
-
