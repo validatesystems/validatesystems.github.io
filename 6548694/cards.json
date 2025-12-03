@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "🌅",
+    "title": "Um amanhecer que sorri pra você",
+    "sub": "Cléia, hoje o dia guarda algo bonito",
+    "desc": "Um bom dia especial.",
+    "href": "./bomdia03122025.html",
+    "publishedAt": "2025-12-03T04:11:00-03:00",
+    "sentimento": "Amanhecer com ternura",
+    "moods": [
+      "manhã suave",
+      "aconchego discreto",
+      "surpresa boa"
+    ]
+  },
+  {
     "emoji": "🌙",
     "title": "Oi",
     "sub": "Um oi breve",
