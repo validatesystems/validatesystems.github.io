@@ -1,33 +1,5 @@
 [
   {
-    "emoji": "🌅",
-    "title": "Um amanhecer que sorri pra você",
-    "sub": "Cléia, hoje o dia guarda algo bonito",
-    "desc": "Um bom dia especial.",
-    "href": "./bomdia03122025.html",
-    "publishedAt": "2025-12-03T04:11:00-03:00",
-    "sentimento": "Amanhecer com ternura",
-    "moods": [
-      "manhã suave",
-      "aconchego discreto",
-      "surpresa boa"
-    ]
-  },
-  {
-    "emoji": "🌙",
-    "title": "Oi, boa noite!",
-    "sub": "Um oi breve",
-    "desc": "Um boa noite rapidinho.",
-    "href": "./boanoite02122025.html",
-    "publishedAt": "2025-12-02T20:18:00-03:00",
-    "sentimento": "encerramento calmo",
-    "moods": [
-      "silêncio",
-      "leveza madura",
-      "noite tranquila"
-    ]
-  },
-  {
     "emoji": "🫧",
     "title": "Sendo sincero",
     "sub": "Cléia, isso é só verdade dita com cuidado",
@@ -1760,3 +1732,4 @@
   }
 
 ]
+
