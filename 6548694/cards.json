@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "📜",
+    "title": "Um lugar que fica",
+    "sub": "Quando o silêncio vira abrigo",
+    "desc": "Tem lugares que moram em nós",
+    "href": "./mensagem05122025.html",
+    "publishedAt": "2025-12-05T21:45:00-03:00",
+    "sentimento": "Lugar que acolhe",
+    "moods": [
+      "delicadeza quieta",
+      "afeto discreto",
+      "calma profunda"
+    ]
+  },
+  {
     "emoji": "🫧",
     "title": "Sendo sincero",
     "sub": "Cléia, isso é só verdade dita com cuidado",
@@ -1730,6 +1744,4 @@
       "leve"
     ]
   }
-
 ]
-
