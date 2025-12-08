@@ -1,19 +1,5 @@
 [
   {
-    "emoji": "🎬",
-    "title": "Um Reels que sou eu pensando em você",
-    "sub": "30 segundos que dizem mais que um texto inteiro",
-    "desc": "Clique para abrir um Reels que traduz algo que eu queria te falar sem palavras.",
-    "href": "./reels06122025.html",
-    "publishedAt": "2025-12-07T06:44:00-03:00",
-    "sentimento": "https://www.instagram.com/p/DM6h5CYxK3A/",
-    "moods": [
-      "vídeo",
-      "realidade",
-      "entrelinhas"
-    ]
-  },
-  {
     "emoji": "📜",
     "title": "Um lugar que fica",
     "sub": "Quando o silêncio vira abrigo",
@@ -1758,4 +1744,5 @@
       "leve"
     ]
   }
+
 ]
