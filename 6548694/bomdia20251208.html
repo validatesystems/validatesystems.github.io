@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Bom dia, Cléia</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap"
+    />
+
+    <style>
+      :root {
+        --bg1: #050608;
+        --bg2: #0c0c10;
+        --paper: #1f1914;
+        --paper-soft: #241e18;
+        --paper-edge: rgba(0, 0, 0, 0.5);
+        --text-main: #f5eee2;
+        --text-soft: #d0c3af;
+        --accent: #fbbf77;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: radial-gradient(
+            circle at 10% 0%,
+            #111827 0,
+            transparent 55%
+          ),
+          radial-gradient(circle at 90% 100%, #020617 0, transparent 55%),
+          linear-gradient(135deg, var(--bg1), var(--bg2));
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* granulação suave de fundo */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: url("https://www.transparenttextures.com/patterns/noisy.png");
+        opacity: 0.16;
+        mix-blend-mode: soft-light;
+        z-index: 0;
+      }
+
+      .shell {
+        position: relative;
+        z-index: 1;
+        max-width: 520px;
+        width: 100%;
+      }
+
+      .paper {
+        background: radial-gradient(
+            circle at 18% 0%,
+            rgba(248, 250, 252, 0.05),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 90% 100%,
+            rgba(0, 0, 0, 0.5),
+            transparent 60%
+          ),
+          linear-gradient(135deg, var(--paper), var(--paper-soft));
+        border-radius: 22px;
+        padding: 26px 22px 20px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), 0 0 0 1px var(--paper-edge);
+        position: relative;
+        overflow: hidden;
+        animation: paperIn 0.8s ease-out;
+      }
+
+      /* textura leve sobre o papel */
+      .paper::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("https://www.transparenttextures.com/patterns/old-wall.png");
+        opacity: 0.22;
+        mix-blend-mode: soft-light;
+        pointer-events: none;
+      }
+
+      /* vinheta nas bordas do papel */
+      .paper::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at 50% 0%,
+            transparent 40%,
+            rgba(0, 0, 0, 0.55)
+          ),
+          radial-gradient(
+            circle at 0% 100%,
+            transparent 40%,
+            rgba(0, 0, 0, 0.55)
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            transparent 40%,
+            rgba(0, 0, 0, 0.55)
+          );
+        opacity: 0.6;
+        pointer-events: none;
+      }
+
+      @keyframes paperIn {
+        from {
+          opacity: 0;
+          transform: translateY(14px) scale(0.98);
+          filter: blur(2px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
+      }
+
+      .content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .chip {
+        display: inline-flex;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--text-soft);
+        border: 1px solid rgba(248, 250, 252, 0.12);
+        margin-bottom: 16px;
+      }
+
+      h1 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        color: var(--accent);
+        letter-spacing: 0.03em;
+      }
+
+      .greeting {
+        font-size: 0.95rem;
+        color: var(--text-main);
+        margin-bottom: 18px;
+      }
+
+      .message {
+        font-size: 0.96rem;
+        line-height: 1.7;
+        color: var(--text-soft);
+        text-wrap: balance;
+      }
+
+      .message p + p {
+        margin-top: 12px;
+      }
+
+      .closing {
+        margin-top: 18px;
+        font-size: 0.95rem;
+        color: var(--text-main);
+      }
+
+      .signature {
+        margin-top: 22px;
+        text-align: right;
+        font-size: 0.75rem;
+        color: var(--text-soft);
+      }
+
+      @media (max-width: 480px) {
+        .paper {
+          padding: 22px 16px 18px;
+          border-radius: 18px;
+        }
+
+        h1 {
+          font-size: 1.02rem;
+        }
+
+        .message {
+          font-size: 0.94rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <article class="paper">
+        <div class="content">
+          <div class="chip">bom dia</div>
+
+          <h1>Olá, Cléia. Bom dia.</h1>
+
+          <p class="greeting">
+            Às vezes eu ainda me pergunto se você continua vindo aqui, acessar
+            os cards.
+          </p>
+
+          <div class="message">
+            <p>
+              Se você está lendo isto agora, provavelmente já passou pelos
+              outros cards. Não estou esperando respostas, nem mudanças. Só
+              queria que você escutasse o que insiste em viver aqui dentro.
+            </p>
+
+            <p>
+              É um grito em silêncio. Uma tentativa de te mostrar como eu te
+              enxergo. Se eu pudesse te emprestar meus olhos por alguns
+              segundos, acho que você se surpreenderia. Você iria gostar do que
+              eles veem em você.
+            </p>
+          </div>
+
+          <p class="closing">
+            Que o seu dia seja maravilhoso e, de algum jeito bonito, saiba que
+            alguém aqui guarda um bem-querer quietinho e discreto por você.
+          </p>
+
+          <p class="signature">._.. ...</p>
+        </div>
+      </article>
+    </div>
+  </body>
+</html>

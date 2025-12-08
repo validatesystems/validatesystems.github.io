@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "🌅",
+    "title": "Bom dia, Cléia",
+    "sub": "Quando o silêncio decide falar",
+    "desc": "Um instante calmo de manhã onde só quero que você saiba que pensei em você.",
+    "href": "./bomdia20251208.html",
+    "publishedAt": "2025-12-08T04:25:00-03:00",
+    "sentimento": "afeto sereno e presença silenciosa",
+    "moods": [
+      "manhã suave",
+      "pensamento leve",
+      "carinho discreto"
+    ]
+  },
+  {
     "emoji": "📜",
     "title": "Um lugar que fica",
     "sub": "Quando o silêncio vira abrigo",
@@ -1744,5 +1758,4 @@
       "leve"
     ]
   }
-
 ]

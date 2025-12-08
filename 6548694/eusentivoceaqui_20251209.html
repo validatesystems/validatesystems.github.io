@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Eu senti você aqui</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Homemade+Apple&display=swap"
+    />
+
+    <style>
+      :root {
+        --bg1: #020617;
+        --bg2: #020617;
+        --orb: rgba(148, 163, 255, 0.16);
+        --card: rgba(15, 23, 42, 0.96);
+        --card-border: rgba(148, 163, 184, 0.55);
+        --text-main: #e5e7eb;
+        --text-soft: #9ca3af;
+        --accent: #f97316;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: radial-gradient(
+            circle at 18% 0%,
+            #111827 0,
+            transparent 55%
+          ),
+          radial-gradient(circle at 82% 100%, #020617 0, transparent 55%),
+          linear-gradient(135deg, var(--bg1), var(--bg2));
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* granulação suave */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: url("https://www.transparenttextures.com/patterns/noisy.png");
+        opacity: 0.22;
+        mix-blend-mode: soft-light;
+        z-index: 0;
+      }
+
+      /* aurora suave no fundo */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+            circle at 18% 20%,
+            var(--orb),
+            transparent 65%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(248, 113, 22, 0.12),
+            transparent 70%
+          );
+        mix-blend-mode: screen;
+        opacity: 0.9;
+        z-index: 0;
+      }
+
+      .shell {
+        position: relative;
+        z-index: 2;
+        max-width: 540px;
+        width: 100%;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 26px;
+        border: 1px solid var(--card-border);
+        box-shadow: 0 20px 55px rgba(15, 23, 42, 0.95),
+          0 0 0 1px rgba(15, 23, 42, 0.85);
+        padding: 26px 24px 20px;
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        animation: fadeInCard 0.7s ease-out;
+      }
+
+      @keyframes fadeInCard {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .chip {
+        display: inline-flex;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--text-soft);
+        border: 1px solid rgba(148, 163, 184, 0.6);
+        margin-bottom: 14px;
+      }
+
+      .title {
+        font-size: 1.25rem;
+        margin-bottom: 6px;
+        letter-spacing: 0.02em;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: var(--text-soft);
+        margin-bottom: 18px;
+      }
+
+      .body-text {
+        font-size: 0.98rem;
+        line-height: 1.8;
+        color: var(--text-main);
+        opacity: 0.95;
+        text-wrap: pretty;
+      }
+
+      .body-text p + p {
+        margin-top: 10px;
+      }
+
+      .highlight {
+        color: #e5e7eb;
+        font-weight: 500;
+      }
+
+      .closing {
+        margin-top: 18px;
+        font-size: 0.98rem;
+        line-height: 1.7;
+      }
+
+      .name {
+        margin-top: 12px;
+        font-size: 0.92rem;
+        color: var(--text-soft);
+      }
+
+      .signature-block {
+        margin-top: 22px;
+        border-top: 1px dashed rgba(148, 163, 184, 0.4);
+        padding-top: 14px;
+      }
+
+      .signature-label {
+        font-size: 0.75rem;
+        color: var(--text-soft);
+        margin-bottom: 4px;
+      }
+
+      .signature-line {
+        min-height: 22px;
+        border-bottom: 1px solid rgba(156, 163, 175, 0.5);
+        margin-bottom: 6px;
+      }
+
+      .signature-dots {
+        text-align: right;
+        font-family: "Homemade Apple", cursive;
+        font-size: 0.8rem;
+        color: rgba(156, 163, 175, 0.9);
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 22px 16px 18px;
+          border-radius: 22px;
+        }
+
+        .title {
+          font-size: 1.15rem;
+        }
+
+        .body-text {
+          font-size: 0.94rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="shell">
+      <article class="card">
+        <div class="chip">entre presença e silêncio</div>
+
+        <h1 class="title">Eu senti você aqui</h1>
+        <p class="subtitle">
+          Tem dias em que você não aparece em tela nenhuma, mas o coração jura
+          que te viu passar por perto.
+        </p>
+
+        <div class="body-text">
+          <p>
+            Hoje o dia seguiu normal, daqueles em que a vida finge que está no
+            controle de tudo. Trânsito, tarefas, conversas, prazos. Mesmo assim,
+            em meio a esse barulho todo, teve um instante em que tudo ficou um
+            pouco mais quieto por dentro e eu só consegui pensar em você.
+          </p>
+
+          <p>
+            Não teve mensagem especial, notificação diferente ou sinal evidente.
+            Foi só um
+            <span class="highlight">sentir</span>, desses que encostam de leve,
+            quase sem fazer barulho, mas mudam o jeito que a gente respira por
+            alguns segundos.
+          </p>
+
+          <p>
+            Às vezes parece que existe um lugar discreto onde nossas presenças
+            se encontram, mesmo quando cada um está cuidando do próprio mundo.
+            Um canto calmo que não exige resposta, explicação ou decisão. Só
+            pede sinceridade quieta, essa que não faz cena, mas fica.
+          </p>
+
+          <p>
+            Se em algum momento de hoje você sentiu uma paz repentina, um
+            pensamento bom sem motivo claro, um sorriso quase escapando no meio
+            da rotina, pode ter sido isso: o caminho invisível onde eu te
+            encontrei sem te chamar, só por sentir que você ainda é um lugar que
+            acende dentro de mim.
+          </p>
+
+          <p class="closing">
+            Eu não te peço nada, Cléia. Só deixo registrado que, mesmo no
+            silêncio de sempre, hoje eu senti você aqui.
+          </p>
+
+          <p class="name">Com carinho quieto, sempre.</p>
+        </div>
+
+        <div class="signature-block">
+          <p class="signature-label">._.. ...</p>
+          <div class="signature-line"></div>
+          <!-- <p class="signature-dots">._.. ...</p> -->
+        </div>
+      </article>
+    </div>
+  </body>
+</html>
