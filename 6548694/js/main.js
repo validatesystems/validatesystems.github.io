@@ -959,95 +959,95 @@ window.addEventListener("pageshow", (event) => {
     window.location.reload();
   }
 });
-(function () {
-  const STORAGE_KEY = "cardsRead.v1";
+// (function () {
+//   const STORAGE_KEY = "cardsRead.v1";
 
-  function markCardHrefAsRead(href) {
-    if (!href) return;
+//   function markCardHrefAsRead(href) {
+//     if (!href) return;
 
-    // Usa o Set global já criado pelo outro IIFE
-    let set =
-      window.__cardsRead instanceof Set ? window.__cardsRead : new Set();
+//     // Usa o Set global já criado pelo outro IIFE
+//     let set =
+//       window.__cardsRead instanceof Set ? window.__cardsRead : new Set();
 
-    if (!set.has(href)) {
-      set.add(href);
-      window.__cardsRead = set;
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(set)));
-      } catch (e) {
-        console.warn("[autoOpen] erro ao salvar lidos:", e);
-      }
-    }
+//     if (!set.has(href)) {
+//       set.add(href);
+//       window.__cardsRead = set;
+//       try {
+//         localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(set)));
+//       } catch (e) {
+//         console.warn("[autoOpen] erro ao salvar lidos:", e);
+//       }
+//     }
 
-    // Atualiza contadores se a função existir
-    if (typeof window.updateFilterCounts === "function") {
-      window.updateFilterCounts();
-    }
-  }
+//     // Atualiza contadores se a função existir
+//     if (typeof window.updateFilterCounts === "function") {
+//       window.updateFilterCounts();
+//     }
+//   }
 
-  function isSameDay(d1, d2) {
-    return (
-      d1.getFullYear() === d2.getFullYear() &&
-      d1.getMonth() === d2.getMonth() &&
-      d1.getDate() === d2.getDate()
-    );
-  }
+//   function isSameDay(d1, d2) {
+//     return (
+//       d1.getFullYear() === d2.getFullYear() &&
+//       d1.getMonth() === d2.getMonth() &&
+//       d1.getDate() === d2.getDate()
+//     );
+//   }
 
-  function ensureDate(c) {
-    if (c.__dt instanceof Date && !isNaN(c.__dt)) return c.__dt;
-    if (!c.publishedAt) return null;
-    const dt = new Date(c.publishedAt);
-    return isNaN(dt) ? null : dt;
-  }
+//   function ensureDate(c) {
+//     if (c.__dt instanceof Date && !isNaN(c.__dt)) return c.__dt;
+//     if (!c.publishedAt) return null;
+//     const dt = new Date(c.publishedAt);
+//     return isNaN(dt) ? null : dt;
+//   }
 
-  document.addEventListener("cards:ready", () => {
-    const cards = Array.isArray(window.cards) ? window.cards.slice() : [];
-    if (!cards.length) return;
+//   document.addEventListener("cards:ready", () => {
+//     const cards = Array.isArray(window.cards) ? window.cards.slice() : [];
+//     if (!cards.length) return;
 
-    const now = new Date();
+//     const now = new Date();
 
-    // Só cards com data/hora válida, já "liberados" (<= agora) e com href
-    const available = cards
-      .map((c) => {
-        const dt = ensureDate(c);
-        return { ...c, __dt: dt };
-      })
-      .filter((c) => c.__dt && c.__dt <= now && c.href);
+//     // Só cards com data/hora válida, já "liberados" (<= agora) e com href
+//     const available = cards
+//       .map((c) => {
+//         const dt = ensureDate(c);
+//         return { ...c, __dt: dt };
+//       })
+//       .filter((c) => c.__dt && c.__dt <= now && c.href);
 
-    if (!available.length) return;
+//     if (!available.length) return;
 
-    const isRead =
-      typeof window.isCardRead === "function"
-        ? (href) => window.isCardRead(href)
-        : () => false;
+//     const isRead =
+//       typeof window.isCardRead === "function"
+//         ? (href) => window.isCardRead(href)
+//         : () => false;
 
-    // 1) cards de HOJE não lidos, ordenados do mais antigo para o mais recente
-    const todaysUnread = available
-      .filter((c) => isSameDay(c.__dt, now) && !isRead(c.href))
-      .sort((a, b) => a.__dt - b.__dt);
+//     // 1) cards de HOJE não lidos, ordenados do mais antigo para o mais recente
+//     const todaysUnread = available
+//       .filter((c) => isSameDay(c.__dt, now) && !isRead(c.href))
+//       .sort((a, b) => a.__dt - b.__dt);
 
-    let target = todaysUnread[0];
+//     let target = todaysUnread[0];
 
-    // 2) se não houver de hoje, pega o mais antigo não lido de outros dias
-    if (!target) {
-      const othersUnread = available
-        .filter((c) => !isSameDay(c.__dt, now) && !isRead(c.href))
-        .sort((a, b) => a.__dt - b.__dt);
+//     // 2) se não houver de hoje, pega o mais antigo não lido de outros dias
+//     if (!target) {
+//       const othersUnread = available
+//         .filter((c) => !isSameDay(c.__dt, now) && !isRead(c.href))
+//         .sort((a, b) => a.__dt - b.__dt);
 
-      target = othersUnread[0];
-    }
+//       target = othersUnread[0];
+//     }
 
-    if (!target || !target.href) return;
+//     if (!target || !target.href) return;
 
-    // Evita redirecionar se já estamos na própria página do card
-    const current = location.pathname.split("/").pop() || "";
-    const cleanHref = target.href.replace(/^\.\//, "");
-    if (current === cleanHref) return;
+//     // Evita redirecionar se já estamos na própria página do card
+//     const current = location.pathname.split("/").pop() || "";
+//     const cleanHref = target.href.replace(/^\.\//, "");
+//     if (current === cleanHref) return;
 
-    // Marca como lido ANTES de ir para o card
-    markCardHrefAsRead(target.href);
+//     // Marca como lido ANTES de ir para o card
+//     markCardHrefAsRead(target.href);
 
-    // Redireciona para o card escolhido
-    window.location.href = target.href;
-  });
-})();
+//     // Redireciona para o card escolhido
+//     window.location.href = target.href;
+//   });
+// })();
