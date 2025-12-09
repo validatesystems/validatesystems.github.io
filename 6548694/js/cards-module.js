@@ -121,7 +121,79 @@ document.addEventListener("pointerdown", (ev) => {
 
     // Lista completa dos cards que devem ser marcados como lidos
     const PRE_READ_CARDS = [
-        // {
+        //   {
+        //     "emoji": "🌅",
+        //     "title": "Bom dia, Cléia",
+        //     "sub": "Quando o silêncio decide falar",
+        //     "desc": "Um instante calmo de manhã onde só quero que você saiba que pensei em você.",
+        //     "href": "./bomdia20251208.html",
+        //     "publishedAt": "2025-12-08T04:25:00-03:00",
+        //     "sentimento": "afeto sereno e presença silenciosa",
+        //     "moods": [
+        //       "manhã suave",
+        //       "pensamento leve",
+        //       "carinho discreto"
+        //     ]
+        //   },
+        //   {
+        //     "emoji": "📜",
+        //     "title": "Um lugar que fica",
+        //     "sub": "Quando o silêncio vira abrigo",
+        //     "desc": "Tem lugares que moram em nós",
+        //     "href": "./mensagem05122025.html",
+        //     "publishedAt": "2025-12-05T21:45:00-03:00",
+        //     "sentimento": "Lugar que acolhe",
+        //     "moods": [
+        //       "delicadeza quieta",
+        //       "afeto discreto",
+        //       "calma profunda"
+        //     ]
+        //   },
+        //   {
+        //     "emoji": "🫧",
+        //     "title": "Sendo sincero",
+        //     "sub": "Cléia, isso é só verdade dita com cuidado",
+        //     "desc": "Não é um pedido, nem uma cobrança.",
+        //     "href": "./mensagem02122025(3).html",
+        //     "publishedAt": "2025-12-02T19:20:00-03:00",
+        //     "sentimento": "Confissão serena sem expectativa",
+        //     "moods": [
+        //       "entrelinhas suaves",
+        //       "verdade sem pressão",
+        //       "afeto quieto"
+        //     ]
+        //   },
+        //   {
+        //     "emoji": "✨",
+        //     "title": "Quando uma estrela parece pequena demais",
+        //     "sub": "Mas só até alguém chegar perto o suficiente para ver sua imensidão",
+        //     "desc": "Uma metáfora sobre estrelas?",
+        //     "href": "./mensagem02122025(2).html",
+        //     "publishedAt": "2025-12-02T11:12:00-03:00",
+        //     "sentimento": "Brilho silencioso que guia",
+        //     "moods": [
+        //       "imensidão discreta",
+        //       "caos bonito",
+        //       "farol involuntário",
+        //       "luz que guia sem saber"
+        //     ]
+        //   },
+        //   {
+        //     "emoji": "🌤️",
+        //     "title": "Bom dia, Cléia",
+        //     "sub": "Um começo do jeito que você consegue",
+        //     "desc": "Que o seu dia seja maravilhoso",
+        //     "href": "./bomdia02122025.html",
+        //     "publishedAt": "2025-12-02T06:04:00-03:00",
+        //     "sentimento": "manhã suave, carinho discreto, afeto que acende por dentro",
+        //     "moods": [
+        //       "amanhecer calmo",
+        //       "leveza",
+        //       "silêncio bom",
+        //       "carinho que não pesa"
+        //     ]
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite silenciosa",
         //     "sub": "Um aceno leve antes do fim do dia",
@@ -130,12 +202,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-12-01T19:00:00-03:00",
         //     "sentimento": "encerramento calmo",
         //     "moods": [
-        //         "silêncio",
-        //         "leveza madura",
-        //         "noite tranquila"
+        //       "silêncio",
+        //       "leveza madura",
+        //       "noite tranquila"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌀",
         //     "title": "Eu te odeio de outro jeito",
         //     "sub": "Cléia, sobre aquela sua fala sobre ódio",
@@ -144,12 +216,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-12-01T18:01:00-03:00",
         //     "sentimento": "afeto disfarçado de implicância",
         //     "moods": [
-        //         "ironia romântica",
-        //         "aproximação suave",
-        //         "carinho entrelinhado"
+        //       "ironia romântica",
+        //       "aproximação suave",
+        //       "carinho entrelinhado"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🖋️",
         //     "title": "Um recado pra você",
         //     "sub": "Cléia, escrevo porque senti que precisava registrar isso",
@@ -158,12 +230,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-12-01T07:00:00-03:00",
         //     "sentimento": "Romantismo sereno e maduro",
         //     "moods": [
-        //         "calma íntima",
-        //         "afeição silenciosa",
-        //         "presença que conforta"
+        //       "calma íntima",
+        //       "afeição silenciosa",
+        //       "presença que conforta"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🗺️",
         //     "title": "Mapa de Refúgios",
         //     "sub": "Cléia, teus lugares de respiro espalhados aqui",
@@ -172,26 +244,26 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-12-01T12:15:00-03:00",
         //     "sentimento": "acolhimento silencioso",
         //     "moods": [
-        //         "calma profunda",
-        //         "refúgio emocional",
-        //         "silêncio que abraça"
+        //       "calma profunda",
+        //       "refúgio emocional",
+        //       "silêncio que abraça"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "Bom dia, Cléia",
         //     "sub": "Começar o dia no teu próprio ritmo",
         //     "desc": "Quero te dar um recado simples.",
         //     "href": "./bomdia01122025.html",
-        //     "publishedAt": "2025-12-01T04:12:00-03:00",
+        //     "publishedAt": "2025-12-0T04:12:00-03:00",
         //     "sentimento": "cuidado leve",
         //     "moods": [
-        //         "manhã tranquila",
-        //         "força silenciosa",
-        //         "presença suave"
+        //       "manhã tranquila",
+        //       "força silenciosa",
+        //       "presença suave"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite, Cléia",
         //     "sub": "Um cuidado dito baixinho",
@@ -200,12 +272,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-30T20:00:00-03:00",
         //     "sentimento": "cuidado discreto",
         //     "moods": [
-        //         "oração",
-        //         "noite tranquila",
-        //         "acolhimento suave"
+        //       "oração",
+        //       "noite tranquila",
+        //       "acolhimento suave"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "📜",
         //     "title": "Páginas que só você lê",
         //     "sub": "Cléia, pequenos pedaços que eu deixo aqui",
@@ -214,12 +286,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-30T04:19:00-03:00",
         //     "sentimento": "intimidade leve",
         //     "moods": [
-        //         "bilhete suave",
-        //         "pensamentos soltos",
-        //         "leveza silenciosa"
+        //       "bilhete suave",
+        //       "pensamentos soltos",
+        //       "leveza silenciosa"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "O estranho bonito que é você",
         //     "sub": "Cléia, esse jeito que só tu tem",
@@ -228,12 +300,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-29T00:09:00-03:00",
         //     "sentimento": "carinho sem floreio",
         //     "moods": [
-        //         "sinceridade leve",
-        //         "humor suave",
-        //         "encanto discreto"
+        //       "sinceridade leve",
+        //       "humor suave",
+        //       "encanto discreto"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "Ainda estou aqui",
         //     "sub": "Sexta-feira de pensamentos altos?",
@@ -242,12 +314,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-28T04:18:00-03:00",
         //     "sentimento": "leveza matinal",
         //     "moods": [
-        //         "humor suave",
-        //         "respiro cedo",
-        //         "manhã tranquila"
+        //       "humor suave",
+        //       "respiro cedo",
+        //       "manhã tranquila"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💌",
         //     "title": "Um bilhete só para você",
         //     "sub": "Cléia, abra devagar… tem carinho dobrado aqui dentro",
@@ -256,12 +328,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-25T06:46:00-03:00",
         //     "sentimento": "Carinho tranquilo e silencioso",
         //     "moods": [
-        //         "afeto suave",
-        //         "cuidado discreto",
-        //         "mensagem dobrada"
+        //       "afeto suave",
+        //       "cuidado discreto",
+        //       "mensagem dobrada"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "Bom dia depois da pausa",
         //     "sub": "Cléia, que sua manhã comece leve e consciente de si",
@@ -270,12 +342,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-25T04:18:00-03:00",
         //     "sentimento": "Amanhecer consciente e cheio de calma",
         //     "moods": [
-        //         "manhã tranquila",
-        //         "retorno suave",
-        //         "clareza interior"
+        //       "manhã tranquila",
+        //       "retorno suave",
+        //       "clareza interior"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite, Cléia",
         //     "sub": "Uma carta silenciosa deixada para você",
@@ -284,12 +356,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-24T18:00:00-03:00",
         //     "sentimento": "Calmaria suave antes do sono",
         //     "moods": [
-        //         "noite tranquila",
-        //         "silêncio bom",
-        //         "carinho suave"
+        //       "noite tranquila",
+        //       "silêncio bom",
+        //       "carinho suave"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🧜🏻‍♀️",
         //     "title": "Portal da Sereia",
         //     "sub": "Cléia, um convite para escapar por um instante",
@@ -298,12 +370,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-24T17:02:00-03:00",
         //     "sentimento": "Fuga suave e encantada",
         //     "moods": [
-        //         "teletransporte sensorial",
-        //         "brincadeira leve",
-        //         "imersão silenciosa"
+        //       "teletransporte sensorial",
+        //       "brincadeira leve",
+        //       "imersão silenciosa"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🎼",
         //     "title": "Fragmentos musicais",
         //     "sub": "Cléia, pequenos trechos que respiram o que sinto",
@@ -312,12 +384,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-24T15:00:00-03:00",
         //     "sentimento": "Calmaria que toca sem pressa",
         //     "moods": [
-        //         "parede antiga",
-        //         "versos guardados",
-        //         "poesia que respira"
+        //       "parede antiga",
+        //       "versos guardados",
+        //       "poesia que respira"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "✨",
         //     "title": "Fragmentos que te encontram",
         //     "sub": "Cléia, pequenos pedaços de você acendendo aqui",
@@ -326,12 +398,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-24T12:17:00-03:00",
         //     "sentimento": "Suavidade que permanece",
         //     "moods": [
-        //         "silêncio bonito",
-        //         " presença leve",
-        //         "suspiro guardado"
+        //       "silêncio bonito",
+        //       " presença leve",
+        //       "suspiro guardado"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌌",
         //     "title": "Sonho revelado",
         //     "sub": "A parte que eu quase não te contaria",
@@ -340,12 +412,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-24T07:10:00-03:00",
         //     "sentimento": "Afeto revelado em silêncio",
         //     "moods": [
-        //         "sonhos",
-        //         "confissão suave",
-        //         "entrelinhas"
+        //       "sonhos",
+        //       "confissão suave",
+        //       "entrelinhas"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Bom Dia de Segunda",
         //     "sub": "Um daqueles sonhos que deixam marcas boas",
@@ -354,12 +426,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-24T04:12:00-03:00",
         //     "sentimento": "Afeto discreto",
         //     "moods": [
-        //         "leve",
-        //         "sonhos",
-        //         "entrelinhas"
+        //       "leve",
+        //       "sonhos",
+        //       "entrelinhas"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa Noite de Domingo",
         //     "sub": "Um recado que não era pra ser um recado",
@@ -368,12 +440,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-23T19:38:00-03:00",
         //     "sentimento": "Afeto discreto",
         //     "moods": [
-        //         "leve",
-        //         "ironia boa",
-        //         "entrelinhas"
+        //       "leve",
+        //       "ironia boa",
+        //       "entrelinhas"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💗",
         //     "title": "Um Recado Pra Você",
         //     "sub": "Coisas que só você entende",
@@ -382,12 +454,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-23T16:54:00-03:00",
         //     "sentimento": "Carinho discreto",
         //     "moods": [
-        //         "afeto",
-        //         "leveza",
-        //         "ironia boa"
+        //       "afeto",
+        //       "leveza",
+        //       "ironia boa"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Um Oi Rapidinho",
         //     "sub": "Uma pausa leve no início do dia",
@@ -396,12 +468,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-23T07:00:00-03:00",
         //     "sentimento": "Carinho espontâneo",
         //     "moods": [
-        //         "leve",
-        //         "afetuoso",
-        //         "revigorante"
+        //       "leve",
+        //       "afetuoso",
+        //       "revigorante"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Bom Dia Especial",
         //     "sub": "Um amanhecer cheio de energia e luz",
@@ -410,12 +482,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-23T04:12:00-03:00",
         //     "sentimento": "Carinho radiante",
         //     "moods": [
-        //         "ensolarado",
-        //         "afetuoso",
-        //         "revigorante"
+        //       "ensolarado",
+        //       "afetuoso",
+        //       "revigorante"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa Noite Especial",
         //     "sub": "Um abraço silencioso que aquece",
@@ -424,12 +496,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-22T18:18:00-03:00",
         //     "sentimento": "Carinho profundo",
         //     "moods": [
-        //         "sereno",
-        //         "afetuoso",
-        //         "intimista"
+        //       "sereno",
+        //       "afetuoso",
+        //       "intimista"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌿",
         //     "title": "Presenças Raras",
         //     "sub": "Um tipo de leveza que não se explica",
@@ -438,12 +510,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-22T13:00:00-03:00",
         //     "sentimento": "Aconchego suave",
         //     "moods": [
-        //         "leve",
-        //         "emocional",
-        //         "afetuoso"
+        //       "leve",
+        //       "emocional",
+        //       "afetuoso"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "📝",
         //     "title": "Lembrete silencioso",
         //     "sub": "Um recado que existe porque você existe",
@@ -452,12 +524,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-22T10:00:00-03:00",
         //     "sentimento": "Carinho contido",
         //     "moods": [
-        //         "silêncio",
-        //         "saudade leve",
-        //         "confissão discreta"
+        //       "silêncio",
+        //       "saudade leve",
+        //       "confissão discreta"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "A luz que te encontra",
         //     "sub": "Um recado entre o caos e o descanso",
@@ -466,12 +538,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-22T07:00:00-03:00",
         //     "sentimento": "Carinho leve",
         //     "moods": [
-        //         "luz",
-        //         "calma",
-        //         "humor suave"
+        //       "luz",
+        //       "calma",
+        //       "humor suave"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Bom dia, Cléia!",
         //     "sub": "Entre códigos e pensamentos, você apareceu",
@@ -480,12 +552,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-22T04:37:00-03:00",
         //     "sentimento": "Leveza matinal",
         //     "moods": [
-        //         "poético",
-        //         "afeto discreto",
-        //         "manhã suave"
+        //       "poético",
+        //       "afeto discreto",
+        //       "manhã suave"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite no interior",
         //     "sub": "Um descanso que encontra você onde estiver",
@@ -494,12 +566,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-21T19:00:00-03:00",
         //     "sentimento": "Calma afetiva",
         //     "moods": [
-        //         "noite tranquila",
-        //         "aconchego",
-        //         "saudade boa"
+        //       "noite tranquila",
+        //       "aconchego",
+        //       "saudade boa"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "Pensamento de fim de tarde",
         //     "sub": "Uma nuvem que te encontra onde você está",
@@ -508,12 +580,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-21T17:59:00-03:00",
         //     "sentimento": "Saudade suave",
         //     "moods": [
-        //         "fim de tarde",
-        //         "lembrança",
-        //         "cuidado quieto"
+        //       "fim de tarde",
+        //       "lembrança",
+        //       "cuidado quieto"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💌",
         //     "title": "Mensagem rápida",
         //     "sub": "Uma carta que quase fala sozinha",
@@ -522,12 +594,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-21T10:37:00-03:00",
         //     "sentimento": "afeto quieto",
         //     "moods": [
-        //         "leve",
-        //         "silencioso",
-        //         "carinho discreto"
+        //       "leve",
+        //       "silencioso",
+        //       "carinho discreto"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "📜",
         //     "title": "Carta de sexta",
         //     "sub": "Um sextou diferente",
@@ -536,13 +608,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-21T09:11:00-03:00",
         //     "sentimento": "Saudade feliz",
         //     "moods": [
-        //         "leve",
-        //         "afeto discreto",
-        //         "saudade boa",
-        //         "gratidão silenciosa"
+        //       "leve",
+        //       "afeto discreto",
+        //       "saudade boa",
+        //       "gratidão silenciosa"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💌",
         //     "title": "Mensagem rápida",
         //     "sub": "Mais uma espiadinha rápida para ler essa mensagem.",
@@ -551,14 +623,14 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-21T07:00:00-03:00",
         //     "sentimento": "Afeto silencioso",
         //     "moods": [
-        //         "Cuidado",
-        //         "Sutileza",
-        //         "Admiração",
-        //         "Presença",
-        //         "Calma"
+        //       "Cuidado",
+        //       "Sutileza",
+        //       "Admiração",
+        //       "Presença",
+        //       "Calma"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌅",
         //     "title": "Bom dia",
         //     "sub": "Uma verdade sobre você",
@@ -567,13 +639,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-21T03:58:00-03:00",
         //     "sentimento": "Cuidado sereno",
         //     "moods": [
-        //         "leve",
-        //         "elegante",
-        //         "afeto discreto",
-        //         "acolhedor"
+        //       "leve",
+        //       "elegante",
+        //       "afeto discreto",
+        //       "acolhedor"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌾",
         //     "title": "O interior que mora em você",
         //     "sub": "Um caminho entre o lugar que te acolhe e o que você guarda aí dentro",
@@ -582,12 +654,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-20T11:48:00-03:00",
         //     "sentimento": "Calma afetiva",
         //     "moods": [
-        //         "origens",
-        //         "introspecção",
-        //         "afeto quieto"
+        //       "origens",
+        //       "introspecção",
+        //       "afeto quieto"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🛣️",
         //     "title": "De volta ao interior",
         //     "sub": "Um lembrete que chega depois da estrada",
@@ -596,12 +668,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-20T11:16:00-03:00",
         //     "sentimento": "Nostalgia calma",
         //     "moods": [
-        //         "estrada",
-        //         "origem",
-        //         "reflexão"
+        //       "estrada",
+        //       "origem",
+        //       "reflexão"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💭",
         //     "title": "Fala comigo, menina",
         //     "sub": "Um pensamento que não deu mais pra guardar",
@@ -610,12 +682,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-20T05:00:00-03:00",
         //     "sentimento": "Confissão reflexiva",
         //     "moods": [
-        //         "sinceridade",
-        //         "intimidade",
-        //         "questionamento"
+        //       "sinceridade",
+        //       "intimidade",
+        //       "questionamento"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💜",
         //     "title": "Coisas que eu queria te dizer",
         //     "sub": "Uma verdade suave que fica guardada",
@@ -624,12 +696,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-20T04:45:00-03:00",
         //     "sentimento": "Confissão suave",
         //     "moods": [
-        //         "intimidade",
-        //         "calma emocional",
-        //         "sentimento guardado"
+        //       "intimidade",
+        //       "calma emocional",
+        //       "sentimento guardado"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite, Cléia",
         //     "sub": "Um descanso que conversa com seu ritmo",
@@ -638,12 +710,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-19T19:00:00-03:00",
         //     "sentimento": "Calma afetiva",
         //     "moods": [
-        //         "suave",
-        //         "noturno",
-        //         "carinho quieto"
+        //       "suave",
+        //       "noturno",
+        //       "carinho quieto"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🎧",
         //     "title": "Ouça isso aqui, Cléia",
         //     "sub": "Uma música que combina com o jeito que você mexe comigo",
@@ -652,13 +724,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-19T19:00:00-03:00",
         //     "sentimento": "Afeto suave",
         //     "moods": [
-        //         "leve",
-        //         "calmo",
-        //         "sincero",
-        //         "intimista"
+        //       "leve",
+        //       "calmo",
+        //       "sincero",
+        //       "intimista"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🔥",
         //     "title": "Pessoinha e o feriadão",
         //     "sub": "Um pensamento que escapou sem querer",
@@ -667,13 +739,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-19T16:35:00-03:00",
         //     "sentimento": "Afeto leve",
         //     "moods": [
-        //         "íntimo",
-        //         "reflexivo",
-        //         "suave",
-        //         "engraçadinho"
+        //       "íntimo",
+        //       "reflexivo",
+        //       "suave",
+        //       "engraçadinho"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💌",
         //     "title": "Bilhetes que chegam devagar",
         //     "sub": "Uma página leve, sem sermão, só pequenos sinais ao longo do tempo",
@@ -682,13 +754,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-19T11:02:00-03:00",
         //     "sentimento": "Afeto leve",
         //     "moods": [
-        //         "delicado",
-        //         "bem humorado",
-        //         "suave",
-        //         "carinho discreto"
+        //       "delicado",
+        //       "bem humorado",
+        //       "suave",
+        //       "carinho discreto"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🔥",
         //     "title": "Dona de si",
         //     "sub": "Quando sua voz interior decide falar",
@@ -697,12 +769,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-19T07:00:00-03:00",
         //     "sentimento": "Força suave",
         //     "moods": [
-        //         "empoderamento discreto",
-        //         "noturno",
-        //         "voz interior"
+        //       "empoderamento discreto",
+        //       "noturno",
+        //       "voz interior"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Bom dia poético",
         //     "sub": "Cecília, Drummond e o seu jeito de iluminar a manhã",
@@ -711,12 +783,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-19T00:00:00-03:00",
         //     "sentimento": "Leveza matinal",
         //     "moods": [
-        //         "poético",
-        //         "afeto discreto",
-        //         "manhã suave"
+        //       "poético",
+        //       "afeto discreto",
+        //       "manhã suave"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Noite calma e bagunça boa",
         //     "sub": "Entre a leveza da noite e o caos que você provoca",
@@ -725,12 +797,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-18T21:08:00-03:00",
         //     "sentimento": "Carinho discreto",
         //     "moods": [
-        //         "noturno",
-        //         "leveza",
-        //         "afeto irônico"
+        //       "noturno",
+        //       "leveza",
+        //       "afeto irônico"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌇",
         //     "title": "Fim de tarde que não compete",
         //     "sub": "Quando o pôr do sol perde fácil para o teu sorriso",
@@ -739,12 +811,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-18T17:12:00-03:00",
         //     "sentimento": "Admiração luminosa",
         //     "moods": [
-        //         "fim de tarde",
-        //         "admiração discreta",
-        //         "afeto calmo"
+        //       "fim de tarde",
+        //       "admiração discreta",
+        //       "afeto calmo"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "✨",
         //     "title": "Pedaços que não deveriam",
         //     "sub": "Carinhos que escapam mesmo quando eu digo que não",
@@ -753,12 +825,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-18T13:06:00-03:00",
         //     "sentimento": "Admiração contida",
         //     "moods": [
-        //         "delicado",
-        //         "afeto discreto",
-        //         "confissão em silêncio"
+        //       "delicado",
+        //       "afeto discreto",
+        //       "confissão em silêncio"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "📜",
         //     "title": "Das Utopias",
         //     "sub": "Um Quintana que combina com você",
@@ -767,12 +839,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-18T08:00:00-03:00",
         //     "sentimento": "Admiração calma",
         //     "moods": [
-        //         "poético",
-        //         "leve",
-        //         "afetuoso"
+        //       "poético",
+        //       "leve",
+        //       "afetuoso"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "📝",
         //     "title": "Poema em papel",
         //     "sub": "Um Quintana escrito à mão",
@@ -781,12 +853,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-18T09:01:00-03:00",
         //     "sentimento": "Admiração suave",
         //     "moods": [
-        //         "leve",
-        //         "afetuoso",
-        //         "poético"
+        //       "leve",
+        //       "afetuoso",
+        //       "poético"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💜",
         //     "title": "Atualização Surpresa",
         //     "sub": "Uma viradinha que melhora o dia",
@@ -795,12 +867,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-18T09:01:00-03:00",
         //     "sentimento": "Humor afetivo",
         //     "moods": [
-        //         "leve",
-        //         "irônico",
-        //         "carinho discreto"
+        //       "leve",
+        //       "irônico",
+        //       "carinho discreto"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🖥️",
         //     "title": "Você Vê?",
         //     "sub": "Sobre não saber, mas fazer mesmo assim",
@@ -809,13 +881,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-18T06:16:00-03:00",
         //     "sentimento": "Cuidado silencioso",
         //     "moods": [
-        //         "Sutileza",
-        //         "Verdade",
-        //         "Calma",
-        //         "Cotidiano"
+        //       "Sutileza",
+        //       "Verdade",
+        //       "Calma",
+        //       "Cotidiano"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "Bom Dia, Cléia",
         //     "sub": "Quando o dia deveria jogar a toalha primeiro",
@@ -824,13 +896,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-18T05:57:00-03:00",
         //     "sentimento": "Cuidado leve",
         //     "moods": [
-        //         "Força",
-        //         "Gentileza",
-        //         "Leveza",
-        //         "Cotidiano"
+        //       "Força",
+        //       "Gentileza",
+        //       "Leveza",
+        //       "Cotidiano"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Uma Boa Noite Leve",
         //     "sub": "Um cuidado simples, direto e sem exageros",
@@ -839,13 +911,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-17T21:23:00-03:00",
         //     "sentimento": "Cuidado leve",
         //     "moods": [
-        //         "Calma",
-        //         "Carinho",
-        //         "Cotidiano",
-        //         "Sutileza"
+        //       "Calma",
+        //       "Carinho",
+        //       "Cotidiano",
+        //       "Sutileza"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🎧",
         //     "title": "História em Voz Baixa",
         //     "sub": "Um conto poético que fala mais do que diz",
@@ -854,14 +926,14 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-17T19:46:00-03:00",
         //     "sentimento": "Afeto contido",
         //     "moods": [
-        //         "Cuidado",
-        //         "Sutileza",
-        //         "Verdade",
-        //         "Serenidade",
-        //         "Admiração"
+        //       "Cuidado",
+        //       "Sutileza",
+        //       "Verdade",
+        //       "Serenidade",
+        //       "Admiração"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💌",
         //     "title": "Mensagem rápida",
         //     "sub": "Mais uma espiadinha rápida para ler essa mensagem.",
@@ -870,14 +942,14 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-17T16:51:00-03:00",
         //     "sentimento": "Afeto silencioso",
         //     "moods": [
-        //         "Cuidado",
-        //         "Sutileza",
-        //         "Admiração",
-        //         "Presença",
-        //         "Calma"
+        //       "Cuidado",
+        //       "Sutileza",
+        //       "Admiração",
+        //       "Presença",
+        //       "Calma"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💌",
         //     "title": "Mensagem rápida",
         //     "sub": "Uma espiadinha rápida para ler essa mensagem.",
@@ -886,14 +958,14 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-17T06:55:00-03:00",
         //     "sentimento": "Afeto silencioso",
         //     "moods": [
-        //         "Cuidado",
-        //         "Sutileza",
-        //         "Admiração",
-        //         "Presença",
-        //         "Calma"
+        //       "Cuidado",
+        //       "Sutileza",
+        //       "Admiração",
+        //       "Presença",
+        //       "Calma"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite, Cléia",
         //     "sub": "Um abraço aconchegante antes de dormir",
@@ -902,13 +974,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-16T19:01:12-03:00",
         //     "sentimento": "Cuidado e admiração tranquila",
         //     "moods": [
-        //         "calma noturna",
-        //         "carinho",
-        //         "admiração",
-        //         "acolhimento"
+        //       "calma noturna",
+        //       "carinho",
+        //       "admiração",
+        //       "acolhimento"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💗",
         //     "title": "Olha quem voltou",
         //     "sub": "Um card que só existe porque você voltou",
@@ -917,13 +989,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-16T14:45:00-03:00",
         //     "sentimento": "Afeto leve e divertido",
         //     "moods": [
-        //         "leveza",
-        //         "carinho",
-        //         "ironia suave",
-        //         "encanto discreto"
+        //       "leveza",
+        //       "carinho",
+        //       "ironia suave",
+        //       "encanto discreto"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🛣️",
         //     "title": "Estrada e CAF",
         //     "sub": "Uma manhã de viagem, leveza e sinais silenciosos",
@@ -932,13 +1004,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-17T05:00:00-03:00",
         //     "sentimento": "Afeto leve",
         //     "moods": [
-        //         "cumplicidade suave",
-        //         "leveza matinal",
-        //         "humor interno",
-        //         "carinho discreto"
+        //       "cumplicidade suave",
+        //       "leveza matinal",
+        //       "humor interno",
+        //       "carinho discreto"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "Estrada de Hoje",
         //     "sub": "Um amanhecer leve para quem já começou o dia na estrada",
@@ -947,16 +1019,16 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-16T08:19:37-03:00",
         //     "sentimento": "Cuidado sereno",
         //     "moods": [
-        //         "leveza",
-        //         "proteção",
-        //         "calma da manhã",
-        //         "afeto discreto",
-        //         "humor suave",
-        //         "energia de viagem",
-        //         "dia iluminado"
+        //       "leveza",
+        //       "proteção",
+        //       "calma da manhã",
+        //       "afeto discreto",
+        //       "humor suave",
+        //       "energia de viagem",
+        //       "dia iluminado"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite de sábado, Cléia",
         //     "sub": "Uma noite que poderia ser mais leve que o dia",
@@ -965,13 +1037,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-15T19:35:00-03:00",
         //     "sentimento": "Cuidado profundo",
         //     "moods": [
-        //         "calma",
-        //         "acolhimento",
-        //         "noite suave",
-        //         "afeto silencioso"
+        //       "calma",
+        //       "acolhimento",
+        //       "noite suave",
+        //       "afeto silencioso"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌘",
         //     "title": "Bom dia de domingo, Cléia",
         //     "sub": "A única mensagem do dia... ou quase",
@@ -980,13 +1052,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-16T04:38:20-03:00",
         //     "sentimento": "Cuidado suave",
         //     "moods": [
-        //         "calma",
-        //         "amanhecer",
-        //         "carinho contido",
-        //         "mistério leve"
+        //       "calma",
+        //       "amanhecer",
+        //       "carinho contido",
+        //       "mistério leve"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌆",
         //     "title": "Sábado, 18h",
         //     "sub": "Quando o sábado começa a virar lembrança",
@@ -995,13 +1067,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-15T18:00:00-03:00",
         //     "sentimento": "Desejo",
         //     "moods": [
-        //         "leveza",
-        //         "serenidade",
-        //         "reflexão",
-        //         "desejo"
+        //       "leveza",
+        //       "serenidade",
+        //       "reflexão",
+        //       "desejo"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌊",
         //     "title": "Bem Me Queira, Cléia",
         //     "sub": "A leitura que enxerga você por inteiro",
@@ -1010,14 +1082,14 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-15T13:30:24-03:00",
         //     "sentimento": "Admiração profunda",
         //     "moods": [
-        //         "encanto",
-        //         "profundidade",
-        //         "serenidade",
-        //         "carinho",
-        //         "contemplação"
+        //       "encanto",
+        //       "profundidade",
+        //       "serenidade",
+        //       "carinho",
+        //       "contemplação"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Sábado 15h",
         //     "sub": "Sábado à tarde.",
@@ -1026,13 +1098,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-15T08:43:00-03:00",
         //     "sentimento": "Desejo",
         //     "moods": [
-        //         "leveza",
-        //         "serenidade",
-        //         "reflexão",
-        //         "desejo"
+        //       "leveza",
+        //       "serenidade",
+        //       "reflexão",
+        //       "desejo"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Sábado 12h",
         //     "sub": "Cenário imaginado.",
@@ -1041,12 +1113,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-15T04:12:00-03:00",
         //     "sentimento": "Reflexão",
         //     "moods": [
-        //         "leveza",
-        //         "serenidade",
-        //         "reflexão"
+        //       "leveza",
+        //       "serenidade",
+        //       "reflexão"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Bom dia de sábado",
         //     "sub": "Para inicar o sábado com leveza.",
@@ -1055,12 +1127,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-15T04:12:00-03:00",
         //     "sentimento": "Reflexão",
         //     "moods": [
-        //         "leveza",
-        //         "serenidade",
-        //         "reflexão"
+        //       "leveza",
+        //       "serenidade",
+        //       "reflexão"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌟",
         //     "title": "Olá, Cléia. Você por aqui de novo?",
         //     "sub": "Para refletirmos juntos.",
@@ -1069,12 +1141,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-14T19:30:00-03:00",
         //     "sentimento": "Reflexão",
         //     "moods": [
-        //         "leveza",
-        //         "serenidade",
-        //         "reflexão"
+        //       "leveza",
+        //       "serenidade",
+        //       "reflexão"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite",
         //     "sub": "Para não passar despercebido",
@@ -1083,12 +1155,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-14T19:30:00-03:00",
         //     "sentimento": "Calma",
         //     "moods": [
-        //         "leveza",
-        //         "serenidade",
-        //         "lembrança"
+        //       "leveza",
+        //       "serenidade",
+        //       "lembrança"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🕊️",
         //     "title": "Saudades",
         //     "sub": "Um texto que te lembra o que representa.",
@@ -1097,10 +1169,10 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-14T09:00:00-03:00",
         //     "sentimento": "Saudade",
         //     "moods": [
-        //         "saudade"
+        //       "saudade"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "",
         //     "title": "Registro de um tempo",
         //     "sub": "Um texto que fica aqui em silêncio.",
@@ -1109,13 +1181,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-12T19:26:00-03:00",
         //     "sentimento": "Despedida",
         //     "moods": [
-        //         "adeus",
-        //         "despedida",
-        //         "tempo",
-        //         "silêncio"
+        //       "adeus",
+        //       "despedida",
+        //       "tempo",
+        //       "silêncio"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite",
         //     "sub": "Leve, engraçada e com indiretas sutis",
@@ -1124,13 +1196,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-12T19:26:00-03:00",
         //     "sentimento": "Calma irônica",
         //     "moods": [
-        //         "leveza",
-        //         "ironia",
-        //         "serenidade",
-        //         "lembrança"
+        //       "leveza",
+        //       "ironia",
+        //       "serenidade",
+        //       "lembrança"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🕕",
         //     "title": "18h: terminou, mas ainda não",
         //     "sub": "Fim de expediente (na teoria)",
@@ -1139,13 +1211,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-12T18:00:00-03:00",
         //     "sentimento": "Cansaço bem-humorado",
         //     "moods": [
-        //         "ironia",
-        //         "leveza",
-        //         "cansaço",
-        //         "pensamento solto"
+        //       "ironia",
+        //       "leveza",
+        //       "cansaço",
+        //       "pensamento solto"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☕",
         //     "title": "Meio da tarde",
         //     "sub": "Entre o foco e a desistência (com humor e cafeína)",
@@ -1154,13 +1226,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-12T15:00:00-03:00",
         //     "sentimento": "Leveza com ironia",
         //     "moods": [
-        //         "cansaço",
-        //         "humor",
-        //         "leveza",
-        //         "lembrança"
+        //       "cansaço",
+        //       "humor",
+        //       "leveza",
+        //       "lembrança"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🥱",
         //     "title": "Depois do almoço",
         //     "sub": "Tentando parecer produtivo (e disfarçar o sono)",
@@ -1169,13 +1241,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-12T12:23:00-03:00",
         //     "sentimento": "Distração sincera",
         //     "moods": [
-        //         "preguiça boa",
-        //         "ironia",
-        //         "leveza",
-        //         "saudade"
+        //       "preguiça boa",
+        //       "ironia",
+        //       "leveza",
+        //       "saudade"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "📱",
         //     "title": "No meio do dia",
         //     "sub": "Entre tarefas, pensamentos e notificações que não chegam",
@@ -1184,13 +1256,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-12T09:30:00-03:00",
         //     "sentimento": "Saudade disfarçada",
         //     "moods": [
-        //         "saudade",
-        //         "ironia",
-        //         "curiosidade",
-        //         "leveza"
+        //       "saudade",
+        //       "ironia",
+        //       "curiosidade",
+        //       "leveza"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Bora encarar o dia?",
         //     "sub": "Bom dia, com palavras leves.",
@@ -1199,13 +1271,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-12T04:23:12-03:00",
         //     "sentimento": "Carinho",
         //     "moods": [
-        //         "carinho",
-        //         "afeto",
-        //         "leveza",
-        //         "paz"
+        //       "carinho",
+        //       "afeto",
+        //       "leveza",
+        //       "paz"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite - depois de um dia puxado.",
         //     "sub": "Boa noite com carinho.",
@@ -1214,13 +1286,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-11T19:11:40-03:00",
         //     "sentimento": "Carinho",
         //     "moods": [
-        //         "carinho",
-        //         "afeto",
-        //         "leveza",
-        //         "paz"
+        //       "carinho",
+        //       "afeto",
+        //       "leveza",
+        //       "paz"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💔",
         //     "title": "Somente Poemas",
         //     "sub": "Poemas que escrevi para o vento levar.",
@@ -1229,13 +1301,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-11T14:39:32-03:00",
         //     "sentimento": "Carinho",
         //     "moods": [
-        //         "carinho",
-        //         "afeto",
-        //         "leveza",
-        //         "paz"
+        //       "carinho",
+        //       "afeto",
+        //       "leveza",
+        //       "paz"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Bom dia! Acordei pensando em você",
         //     "sub": "Bom dia especial",
@@ -1244,13 +1316,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-11T04:04:32-03:00",
         //     "sentimento": "Carinho",
         //     "moods": [
-        //         "carinho",
-        //         "afeto",
-        //         "leveza",
-        //         "paz"
+        //       "carinho",
+        //       "afeto",
+        //       "leveza",
+        //       "paz"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite especial para você",
         //     "sub": "Boa noite com carinho e leveza",
@@ -1259,13 +1331,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-10T05:20:40-03:00",
         //     "sentimento": "Carinho",
         //     "moods": [
-        //         "carinho",
-        //         "afeto",
-        //         "leveza",
-        //         "paz"
+        //       "carinho",
+        //       "afeto",
+        //       "leveza",
+        //       "paz"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💌",
         //     "title": "Bilhetinhos para alguém",
         //     "sub": "Carinho, ironia e morde & assopra no ritmo do dia",
@@ -1274,14 +1346,14 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-10T05:04:02-03:00",
         //     "sentimento": "Afeto brincalhão",
         //     "moods": [
-        //         "carinho",
-        //         "ironia sutil",
-        //         "morde e assopra",
-        //         "leveza",
-        //         "humor do dia"
+        //       "carinho",
+        //       "ironia sutil",
+        //       "morde e assopra",
+        //       "leveza",
+        //       "humor do dia"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "Bom dia, Cléia",
         //     "sub": "Entre ironia e calma, o encanto de começar o dia",
@@ -1290,14 +1362,14 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-10T04:03:23-03:00",
         //     "sentimento": "Admiração serena",
         //     "moods": [
-        //         "leveza",
-        //         "ironia sutil",
-        //         "calma",
-        //         "encanto matinal",
-        //         "afeição contida"
+        //       "leveza",
+        //       "ironia sutil",
+        //       "calma",
+        //       "encanto matinal",
+        //       "afeição contida"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "💫",
         //     "title": "Entrelinhas",
         //     "sub": "O que é sentido não precisa ser explicado",
@@ -1306,13 +1378,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-09T18:50:00-03:00",
         //     "sentimento": "Serenidade",
         //     "moods": [
-        //         "calma",
-        //         "reflexivo",
-        //         "afeto",
-        //         "intimista"
+        //       "calma",
+        //       "reflexivo",
+        //       "afeto",
+        //       "intimista"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "⏳",
         //     "title": "Cápsula do Tempo Imediato",
         //     "sub": "O Teste de 24 Horas",
@@ -1321,13 +1393,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-09T11:55:00-03:00",
         //     "sentimento": "Expectativa",
         //     "moods": [
-        //         "urgência",
-        //         "reflexão",
-        //         "curiosidade",
-        //         "paciência"
+        //       "urgência",
+        //       "reflexão",
+        //       "curiosidade",
+        //       "paciência"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa Noite, Cléia",
         //     "sub": "Silêncio bom, alma leve",
@@ -1336,13 +1408,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-09T00:00:00-03:00",
         //     "sentimento": "Serenidade",
         //     "moods": [
-        //         "calma",
-        //         "paz",
-        //         "acolhimento",
-        //         "reflexão"
+        //       "calma",
+        //       "paz",
+        //       "acolhimento",
+        //       "reflexão"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌞",
         //     "title": "Bom Domingo, Cléia",
         //     "sub": "Um sopro de calma e liberdade",
@@ -1351,13 +1423,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-09T03:35:21-03:00",
         //     "sentimento": "Libertação",
         //     "moods": [
-        //         "leve",
-        //         "livre",
-        //         "calmo",
-        //         "esperançoso"
+        //       "leve",
+        //       "livre",
+        //       "calmo",
+        //       "esperançoso"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🪩",
         //     "title": "Espelho de Ironias",
         //     "sub": "Reflexões que sorriem de volta",
@@ -1366,13 +1438,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-09T00:00:00-03:00",
         //     "sentimento": "Alegria",
         //     "moods": [
-        //         "alegria",
-        //         "humor",
-        //         "leve",
-        //         "reflexivo"
+        //       "alegria",
+        //       "humor",
+        //       "leve",
+        //       "reflexivo"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌬️",
         //     "title": "Bem Me Queira",
         //     "sub": "Canção que traduz leveza e autodescoberta",
@@ -1381,13 +1453,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-08T00:00:00-03:00",
         //     "sentimento": "Serenidade",
         //     "moods": [
-        //         "sereno",
-        //         "calmo",
-        //         "paz",
-        //         "tranquilo"
+        //       "sereno",
+        //       "calmo",
+        //       "paz",
+        //       "tranquilo"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🖋️",
         //     "title": "Retrato de admiração",
         //     "sub": "Uma carta escrita à mão para Cléia",
@@ -1396,12 +1468,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-07T10:23:00-03:00",
         //     "sentimento": "Gratidão",
         //     "moods": [
-        //         "gratidão",
-        //         "esperança",
-        //         "leve"
+        //       "gratidão",
+        //       "esperança",
+        //       "leve"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🪞",
         //     "title": "Quiz da Cléia — Perguntas Sequenciais",
         //     "sub": "Um quiz que reflete o jeito dela: leve, sarcástico e certeiro",
@@ -1410,12 +1482,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-06T22:42:00-03:00",
         //     "sentimento": "Alegria",
         //     "moods": [
-        //         "alegria",
-        //         "humor",
-        //         "feliz"
+        //       "alegria",
+        //       "humor",
+        //       "feliz"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🍃",
         //     "title": "Quando o vento perder a curva",
         //     "sub": "Um poema que finge leveza, mas sopra verdades",
@@ -1424,12 +1496,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-05T20:05:00-03:00",
         //     "sentimento": "Melancolia",
         //     "moods": [
-        //         "melancolia",
-        //         "triste",
-        //         "nostalgia"
+        //       "melancolia",
+        //       "triste",
+        //       "nostalgia"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🍷",
         //     "title": "Poema para Cléia",
         //     "sub": "Poema que escrevi para você, só porque sim",
@@ -1438,12 +1510,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-05T20:05:00-03:00",
         //     "sentimento": "Contentamento",
         //     "moods": [
-        //         "contentamento",
-        //         "feliz",
-        //         "leve"
+        //       "contentamento",
+        //       "feliz",
+        //       "leve"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🎧",
         //     "title": "Traços de Você — Playlist e Sentidos",
         //     "sub": "Canções que descrevem o que as palavras não conseguem",
@@ -1452,12 +1524,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-05T19:05:00-03:00",
         //     "sentimento": "Contentamento",
         //     "moods": [
-        //         "contentamento",
-        //         "feliz",
-        //         "leve"
+        //       "contentamento",
+        //       "feliz",
+        //       "leve"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌕",
         //     "title": "Lua e os Mares — Segredos das Marés e das Sereias",
         //     "sub": "Entre ciência, mitos e o canto das marés",
@@ -1466,13 +1538,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-04T19:03:10-03:00",
         //     "sentimento": "Serenidade",
         //     "moods": [
-        //         "sereno",
-        //         "calmo",
-        //         "paz",
-        //         "tranquilo"
+        //       "sereno",
+        //       "calmo",
+        //       "paz",
+        //       "tranquilo"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🪞",
         //     "title": "Manual de Autoproteção Emocional — Volume Cléia",
         //     "sub": "Guia prático-irônico de morde e assopra",
@@ -1481,11 +1553,11 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-04T11:50:10-03:00",
         //     "sentimento": "Desconfiança",
         //     "moods": [
-        //         "preocupado",
-        //         "tenso"
+        //       "preocupado",
+        //       "tenso"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🏃🏻",
         //     "title": "Entre corridas e pausas",
         //     "sub": "Dia corrido? Onde vou parar?",
@@ -1494,12 +1566,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-04T00:01:00-03:00",
         //     "sentimento": "Desânimo",
         //     "moods": [
-        //         "desanimo",
-        //         "sem-energia",
-        //         "cansado"
+        //       "desanimo",
+        //       "sem-energia",
+        //       "cansado"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌬️",
         //     "title": "Vento que leva as palavras",
         //     "sub": "Brisa leve que carrega o que não precisa ficar",
@@ -1508,12 +1580,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-03T12:22:54-03:00",
         //     "sentimento": "Alívio",
         //     "moods": [
-        //         "alivio",
-        //         "leve",
-        //         "paz"
+        //       "alivio",
+        //       "leve",
+        //       "paz"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🧜‍♀️",
         //     "title": "Sereia: Voz do Mar",
         //     "sub": "Um mergulho nos mistérios da sereia",
@@ -1522,13 +1594,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-03T04:33:14-03:00",
         //     "sentimento": "Serenidade",
         //     "moods": [
-        //         "sereno",
-        //         "calmo",
-        //         "paz",
-        //         "tranquilo"
+        //       "sereno",
+        //       "calmo",
+        //       "paz",
+        //       "tranquilo"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "Bom dia, Cléia",
         //     "sub": "Um amanhecer suave e encantado",
@@ -1537,12 +1609,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-03T03:50:02-03:00",
         //     "sentimento": "Esperança",
         //     "moods": [
-        //         "esperança",
-        //         "luz",
-        //         "sereno"
+        //       "esperança",
+        //       "luz",
+        //       "sereno"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🗓",
         //     "title": "Domingos com Você",
         //     "sub": "Tudo o que um domingo especial merece",
@@ -1551,12 +1623,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-02T07:30:00-03:00",
         //     "sentimento": "Paz",
         //     "moods": [
-        //         "paz",
-        //         "calmo",
-        //         "sereno"
+        //       "paz",
+        //       "calmo",
+        //       "sereno"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "✨",
         //     "title": "Luz em Caos",
         //     "sub": "Uma calmaria disfarçada de tempestade",
@@ -1565,12 +1637,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-01T15:30:00-03:00",
         //     "sentimento": "Esperança",
         //     "moods": [
-        //         "esperança",
-        //         "luz",
-        //         "sereno"
+        //       "esperança",
+        //       "luz",
+        //       "sereno"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🎭",
         //     "title": "A Tragédia do Sábado Perdido",
         //     "sub": "Uma comédia dramática sobre o descanso que nunca chega",
@@ -1579,11 +1651,11 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-11-01T07:00:00-03:00",
         //     "sentimento": "Frustração",
         //     "moods": [
-        //         "tenso",
-        //         "preocupado"
+        //       "tenso",
+        //       "preocupado"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "📚",
         //     "title": "12 Motivos para Ser Professora",
         //     "sub": "Uma sexta com 12 aulas e ainda um sorriso no final",
@@ -1592,12 +1664,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-31T07:00:00-03:00",
         //     "sentimento": "Gratidão",
         //     "moods": [
-        //         "gratidão",
-        //         "esperança",
-        //         "leve"
+        //       "gratidão",
+        //       "esperança",
+        //       "leve"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "☀️",
         //     "title": "Bom dia, Cléia.",
         //     "sub": "Entre café, música e esperança",
@@ -1606,12 +1678,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-30T04:32:00-03:00",
         //     "sentimento": "Esperança",
         //     "moods": [
-        //         "esperança",
-        //         "luz",
-        //         "sereno"
+        //       "esperança",
+        //       "luz",
+        //       "sereno"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌙",
         //     "title": "Boa noite, Cléia.",
         //     "sub": "Um descanso merecido e gestos que falam mais que palavras",
@@ -1620,12 +1692,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-29T20:00:00-03:00",
         //     "sentimento": "Paz",
         //     "moods": [
-        //         "paz",
-        //         "calmo",
-        //         "sereno"
+        //       "paz",
+        //       "calmo",
+        //       "sereno"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "😏",
         //     "title": "Bom dia, do seu chefinho.",
         //     "sub": "Um bom humor que acorda antes do café",
@@ -1634,12 +1706,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-29T06:00:00-03:00",
         //     "sentimento": "Alegria",
         //     "moods": [
-        //         "alegria",
-        //         "humor",
-        //         "feliz"
+        //       "alegria",
+        //       "humor",
+        //       "feliz"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "Bom dia com passarinhos",
         //     "sub": "Um amanhecer com som de passarinhos e palavras leves",
@@ -1648,12 +1720,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-28T08:00:00-03:00",
         //     "sentimento": "Alegria",
         //     "moods": [
-        //         "alegria",
-        //         "humor",
-        //         "feliz"
+        //       "alegria",
+        //       "humor",
+        //       "feliz"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🗣",
         //     "title": "Aurora de vozes",
         //     "sub": "Onde sua voz vira luz",
@@ -1662,11 +1734,11 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-27T08:00:00-03:00",
         //     "sentimento": "Liberdade",
         //     "moods": [
-        //         "liberdade",
-        //         "leve"
+        //       "liberdade",
+        //       "leve"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌤️",
         //     "title": "O dia acordou diferente",
         //     "sub": "Ele encontrou um sorriso bonito",
@@ -1675,12 +1747,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-27T08:00:00-03:00",
         //     "sentimento": "Alegria",
         //     "moods": [
-        //         "alegria",
-        //         "humor",
-        //         "feliz"
+        //       "alegria",
+        //       "humor",
+        //       "feliz"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "📬",
         //     "title": "Cartas Não Entregues",
         //     "sub": "Cartas que o tempo não entregou",
@@ -1689,12 +1761,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-26T08:00:00-03:00",
         //     "sentimento": "Solidão",
         //     "moods": [
-        //         "saudade",
-        //         "falta",
-        //         "nostalgia"
+        //       "saudade",
+        //       "falta",
+        //       "nostalgia"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌆🌾",
         //     "title": "Cidade & Interior — entre buzinas e passarinhos",
         //     "sub": "Ritmos que se cruzam entre o asfalto e as águas",
@@ -1703,13 +1775,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-25T08:00:00-03:00",
         //     "sentimento": "Serenidade",
         //     "moods": [
-        //         "sereno",
-        //         "calmo",
-        //         "paz",
-        //         "tranquilo"
+        //       "sereno",
+        //       "calmo",
+        //       "paz",
+        //       "tranquilo"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "😂📊",
         //     "title": "Assuntos sérios (com uma professora que sabe rir deles)",
         //     "sub": "Final de dia de sexta-feira",
@@ -1718,12 +1790,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-24T08:00:00-03:00",
         //     "sentimento": "Ansiedade",
         //     "moods": [
-        //         "ansioso",
-        //         "tenso",
-        //         "preocupado"
+        //       "ansioso",
+        //       "tenso",
+        //       "preocupado"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "📜",
         //     "title": "Carta narrada pelo silêncio",
         //     "sub": "Uma carta narrada pelo silêncio",
@@ -1732,12 +1804,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-23T08:00:00-03:00",
         //     "sentimento": "Melancolia",
         //     "moods": [
-        //         "melancolia",
-        //         "triste",
-        //         "nostalgia"
+        //       "melancolia",
+        //       "triste",
+        //       "nostalgia"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌱",
         //     "title": "Bom dia - Semente de luz.",
         //     "sub": "Bom dia especial para alguém mais do que especial",
@@ -1746,12 +1818,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-22T08:00:00-03:00",
         //     "sentimento": "Esperança",
         //     "moods": [
-        //         "esperança",
-        //         "luz",
-        //         "sereno"
+        //       "esperança",
+        //       "luz",
+        //       "sereno"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🫙",
         //     "title": "Cartas Engarrafadas",
         //     "sub": "Mensagens especiais do mar",
@@ -1760,12 +1832,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-21T21:00:00-03:00",
         //     "sentimento": "Esperança",
         //     "moods": [
-        //         "esperança",
-        //         "luz",
-        //         "sereno"
+        //       "esperança",
+        //       "luz",
+        //       "sereno"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🌅",
         //     "title": "Bom dia — Caos que acalma",
         //     "sub": "Mensagem especial",
@@ -1774,13 +1846,13 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-21T08:00:00-03:00",
         //     "sentimento": "Serenidade",
         //     "moods": [
-        //         "sereno",
-        //         "calmo",
-        //         "paz",
-        //         "tranquilo"
+        //       "sereno",
+        //       "calmo",
+        //       "paz",
+        //       "tranquilo"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🎧",
         //     "title": "Cards Musicais",
         //     "sub": "Página com player e faixas",
@@ -1789,12 +1861,12 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-20T08:00:00-03:00",
         //     "sentimento": "Contentamento",
         //     "moods": [
-        //         "contentamento",
-        //         "feliz",
-        //         "leve"
+        //       "contentamento",
+        //       "feliz",
+        //       "leve"
         //     ]
-        // },
-        // {
+        //   },
+        //   {
         //     "emoji": "🍯",
         //     "title": "Doce e Salgado",
         //     "sub": "Combinação que dá certo",
@@ -1803,11 +1875,11 @@ document.addEventListener("pointerdown", (ev) => {
         //     "publishedAt": "2025-10-10T08:00:00-03:00",
         //     "sentimento": "Contentamento",
         //     "moods": [
-        //         "contentamento",
-        //         "feliz",
-        //         "leve"
+        //       "contentamento",
+        //       "feliz",
+        //       "leve"
         //     ]
-        // }
+        //   }
     ].map((c) => c.href);
 
     // Une o que já existia com esses "pre lidos"
