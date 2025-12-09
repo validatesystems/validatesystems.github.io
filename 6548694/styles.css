@@ -1490,3 +1490,29 @@ button.active:focus .filter-count {
     align-content: center; /* centraliza vertical na área da grid */
   }
 }
+
+.btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  margin: 20px 0;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  color: #eaeaea;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-voltar:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.btn-voltar:active {
+  transform: scale(0.97);
+}
