@@ -81,6 +81,9 @@
     gateTheme = $("#gateTheme"),
     appRoot = $("#appRoot");
 
+  const isLoginPage = !!gate;
+  const isMainContentPage = !gate && !!appRoot;
+
   // --- Força UPPERCASE sem mover o cursor ---
   gateInput?.addEventListener("input", (e) => {
     // limpa erro enquanto digita
@@ -110,6 +113,7 @@
   })();
   let currentKey = KEYS[currentKeyIndex];
   function refreshHint() {
+    if (!gateHint) return;
     gateHint.textContent = "Dica: " + (currentKey?.hint || "—");
   }
 
@@ -118,8 +122,25 @@
     try {
       sessionStorage.setItem(ACCESS_TAG, "ok:" + (currentKey?.id || ""));
     } catch {}
-    hideGate();
+
+    // avisa o ip-capture-mail que o acesso foi concedido
+    try {
+      window.dispatchEvent(new Event("login:granted"));
+    } catch (e) {
+      console.warn("Falha ao disparar login:granted", e);
+    }
+
+    if (isLoginPage) {
+      // dá um respiro para o e-mail ser enviado antes de trocar de página
+      setTimeout(() => {
+        const ts = Date.now();
+        window.location.href = "page.html?ts=" + ts;
+      }, 1000);
+    } else {
+      hideGate();
+    }
   }
+
   function hasAccess() {
     try {
       const v = sessionStorage.getItem(ACCESS_TAG) || "";
@@ -129,29 +150,41 @@
     }
   }
 
+  // Protege a página principal: se não tiver acesso, manda para o login
+  if (isMainContentPage && !hasAccess()) {
+    window.location.href = "index2.html";
+    return;
+  }
+
   function showGate() {
+    if (!gate) return;
     document.body.classList.add("gate-open");
     gate.classList.remove("hidden");
-    appRoot.setAttribute("aria-hidden", "true");
+    appRoot?.setAttribute("aria-hidden", "true");
     refreshHint();
     setTimeout(() => gateInput?.focus(), 60);
   }
   function hideGate() {
+    if (!gate) return;
     gate.classList.add("hidden");
     document.body.classList.remove("gate-open");
-    appRoot.removeAttribute("aria-hidden");
+    appRoot?.removeAttribute("aria-hidden");
   }
 
   function setError(msg) {
+    if (!gateErr || !gate) return;
     gateErr.textContent = msg || "Senha incorreta 😅";
     const card = gate.querySelector(".gate-card");
-    card.classList.remove("shake");
-    void card.offsetWidth;
-    card.classList.add("shake");
+    if (card) {
+      card.classList.remove("shake");
+      void card.offsetWidth;
+      card.classList.add("shake");
+    }
     gateInput?.classList.add("is-error");
     gateInput?.setAttribute("aria-invalid", "true");
   }
   function clearError() {
+    if (!gateErr) return;
     gateErr.textContent = "";
     gateInput?.classList.remove("is-error");
     gateInput?.removeAttribute("aria-invalid");
@@ -164,8 +197,18 @@
     } else setError("Ops, foi quase. Tenta de novo?");
   }
 
-  if (hasAccess()) hideGate();
-  else showGate();
+  // Comportamento de inicialização do gate:
+  if (isLoginPage) {
+    if (hasAccess()) {
+      // Já tem acesso: vai direto para a página principal
+      // location.replace("index2.html?ts=" + ts);
+      const ts = Date.now();
+      window.location.href = "page.html?ts=" + ts;
+    } else {
+      showGate();
+    }
+  }
+
   gateEnter?.addEventListener("click", checkPass);
   gateInput?.addEventListener("keyup", (e) => {
     if (e.key === "Enter") checkPass();
@@ -174,9 +217,11 @@
   gateInput?.addEventListener("input", clearError);
   gateTheme?.addEventListener("click", () => {
     toggleTheme();
-    const card = gate.querySelector(".gate-card");
-    card.classList.add("shake");
-    setTimeout(() => card.classList.remove("shake"), 380);
+    const card = gate?.querySelector(".gate-card");
+    if (card) {
+      card.classList.add("shake");
+      setTimeout(() => card.classList.remove("shake"), 380);
+    }
     gateInput?.focus();
   });
 
@@ -249,6 +294,7 @@
   }
 
   function renderNotifications(items) {
+    if (!notifList) return;
     if (!items.length) {
       notifList.innerHTML = `<p class="notif-empty">Sem notificações por aqui.</p>`;
       return;
@@ -284,6 +330,7 @@
   }
 
   async function openNotificationsModal() {
+    if (!notifBackdrop || !notifList) return;
     notifBackdrop.classList.add("open");
     notifBackdrop.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -322,19 +369,24 @@
 
       renderNotifications(filtered);
     } catch (err) {
-      notifList.innerHTML = `
+      if (notifList) {
+        notifList.innerHTML = `
                 <div class="notif-card">
                   <p class="notif-item-title">Não foi possível carregar</p>
                   <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
                 </div>
               `;
+      }
     } finally {
-      notifList.setAttribute("aria-busy", "false");
-      notifList.focus();
+      if (notifList) {
+        notifList.setAttribute("aria-busy", "false");
+        notifList.focus();
+      }
     }
   }
 
   function closeNotificationsModal() {
+    if (!notifBackdrop) return;
     notifBackdrop.classList.remove("open");
     notifBackdrop.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
@@ -349,33 +401,37 @@
   notifBackdrop?.addEventListener("click", (e) => {
     if (e.target === notifBackdrop) closeNotificationsModal();
   });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && notifBackdrop.classList.contains("open"))
-      closeNotificationsModal();
-  });
+  if (notifBackdrop) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && notifBackdrop.classList.contains("open"))
+        closeNotificationsModal();
+    });
+  }
 
-  // Clique: navega só se houver href
-  notifList.addEventListener("click", (e) => {
-    const card = e.target.closest(".notif-card");
-    if (!card) return;
-    const href = card.dataset.href;
-    if (href) {
-      closeNotificationsModal();
-      location.href = href;
-    }
-  });
+  if (notifList) {
+    // Clique: navega só se houver href
+    notifList.addEventListener("click", (e) => {
+      const card = e.target.closest(".notif-card");
+      if (!card) return;
+      const href = card.dataset.href;
+      if (href) {
+        closeNotificationsModal();
+        location.href = href;
+      }
+    });
 
-  // Teclado: Enter ou Espaço disparam a navegação quando houver href
-  notifList.addEventListener("keyup", (e) => {
-    if (e.key !== "Enter" && e.key !== " ") return;
-    const card = e.target.closest(".notif-card");
-    if (!card) return;
-    const href = card.dataset.href;
-    if (href) {
-      closeNotificationsModal();
-      location.href = href;
-    }
-  });
+    // Teclado: Enter ou Espaço disparam a navegação quando houver href
+    notifList.addEventListener("keyup", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const card = e.target.closest(".notif-card");
+      if (!card) return;
+      const href = card.dataset.href;
+      if (href) {
+        closeNotificationsModal();
+        location.href = href;
+      }
+    });
+  }
 
   refreshNotificationBadgeFromJSON();
 
@@ -485,8 +541,7 @@
           a.classList.add("card-hoje");
         }
       } else {
-        // fallback: se por algum motivo o rastreador não estiver disponível,
-        // ainda dá para usar o destaque antigo (opcional)
+        // fallback
         if (isToday(d, hoje)) {
           a.classList.add("card-hoje");
         }
@@ -626,7 +681,7 @@
 
       baseCards = cards
         .map((c) => ({ ...c, __dt: parsePublishedAt(c.publishedAt) }))
-        .filter((c) => c.__dt) // ✅ só garante que a data é válida
+        .filter((c) => c.__dt)
         .sort((a, b) => b.__dt - a.__dt);
 
       // começa mostrando os cards de hoje
@@ -643,8 +698,7 @@
 
   /* ===== Rastreamento por título (envia para GAS) ===== */
   const EMAIL_WEBHOOK =
-    "https://script.google.com/macros/s/AKfycbyrXFeRH7VrfjwdPRfyVkje4IwyhZxOhK4_Cw_xTcXF5eosIXQHdVglgUk7fj-934bDPg/exec"; // <<<<<<<<<<<<<< SUBSTITUA pela URL do seu Web App (exec)
-  // "https://script.google.com/macros/s/AKfycbx1Saml2tXxfFm4MWzJXprDFdSe_44An5O48qZ_Jrq0uwU0LNIR-2K0ynS-UMsM83AyVA/exec"; // <<<<<<<<<<<<<< SUBSTITUA pela URL do seu Web App (exec)
+    "https://script.google.com/macros/s/AKfycbyrXFeRH7VrfjwdPRfyVkje4IwyhZxOhK4_Cw_xTcXF5eosIXQHdVglgUk7fj-934bDPg/exec";
 
   // Inicialização segura no escopo global (window)
   (function ensureThrottleVar() {
@@ -653,15 +707,9 @@
     }
   })();
 
-  /**
-   * Envia telemetria de clique em card para Apps Script (sem preflight / OPTIONS)
-   * - Usa sendBeacon (text/plain) quando disponível
-   * - Fallback para fetch sem headers (evita preflight) com keepalive
-   * - Anti-ruído: 1s entre envios (usa window.__lastSentAt)
-   */
   function notifyCardClickByTitle(titulo) {
     const now = Date.now();
-    if (now - window.__lastSentAt < 1000) return; // 1s de intervalo mínimo entre envios
+    if (now - window.__lastSentAt < 1000) return;
     window.__lastSentAt = now;
 
     const payload = {
@@ -676,7 +724,6 @@
     const jsonStr = JSON.stringify(payload);
     console.log("[track] payload:", payload);
 
-    // 1) sendBeacon com string/Uint8Array => Content-Type text/plain (sem preflight)
     let sent = false;
     try {
       if (navigator.sendBeacon) {
@@ -688,13 +735,11 @@
       console.warn("[track] sendBeacon error:", err);
     }
 
-    // 2) Fallback fetch SEM headers (evita preflight); mantém keepalive
     if (!sent) {
       fetch(EMAIL_WEBHOOK, {
         method: "POST",
-        body: jsonStr, // text/plain (sem headers) — GAS faz parse robusto
+        body: jsonStr,
         keepalive: true,
-        // mode: "no-cors" // opcional: se ativar, resposta será opaca (difícil de debugar)
       })
         .then(async (res) => {
           try {
@@ -716,20 +761,17 @@
       if (notifEl) {
         const href = (notifEl.getAttribute("data-href") || "").trim();
         if (!href) {
-          // Notificação sem página: não navega e não envia e-mail
           return;
         }
-        // Envia o mesmo e-mail dos cards da home
         const title =
           notifEl.getAttribute("data-title") ||
           notifEl.querySelector(".notif-item-title")?.textContent?.trim() ||
           "";
         if (title) notifyCardClickByTitle(title);
-        // (navegação padrão acontece sozinha se for <a href="...">)
         return;
       }
 
-      // 2) Demais cliques (cards da home etc.) mantêm o comportamento existente
+      // 2) Demais cliques (cards da home etc.)
       const el = ev.target.closest("[data-title],[data-card]");
       if (!el) return;
       const title =
@@ -761,7 +803,6 @@
 
   function saveReadSet(set) {
     try {
-      // salva como array simples de hrefs
       localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(set)));
     } catch (e) {
       console.warn("[cardsRead] erro ao salvar:", e);
@@ -779,7 +820,6 @@
     return Array.from(readSet);
   };
 
-  // Mapeia um <article.card> para um ID (href)
   function getCardIdFromElement(el) {
     if (!el) return null;
     const title = el.dataset.title;
@@ -800,7 +840,6 @@
       saveReadSet(readSet);
     }
 
-    // visual: lido
     el.classList.add("card-lido");
     el.classList.remove("card-hoje");
 
@@ -811,11 +850,6 @@
       tag.classList.add("lido");
     }
 
-    // se você estiver usando contadores nos botões:
-    if (typeof window.updateFilterCounts === "function") {
-      window.updateFilterCounts();
-    }
-    // Atualiza os números dos filtros (se a função existir)
     if (typeof window.updateFilterCounts === "function") {
       window.updateFilterCounts();
     }
@@ -824,7 +858,6 @@
   function syncVisualReadState() {
     const cardsEls = document.querySelectorAll(".card[data-title]");
 
-    // aplica classe visual de lido
     cardsEls.forEach((el) => {
       const id = getCardIdFromElement(el);
       if (id && readSet.has(id)) {
@@ -833,7 +866,6 @@
       }
     });
 
-    // ajusta tag "Lido / Não lido"
     cardsEls.forEach((el) => {
       const id = getCardIdFromElement(el);
       const tag = el.querySelector(".card-status-tag");
@@ -851,7 +883,6 @@
     });
   }
 
-  // Quando os cards forem carregados pela primeira vez
   document.addEventListener("cards:ready", () => {
     setTimeout(() => {
       syncVisualReadState();
@@ -861,7 +892,6 @@
     }, 250);
   });
 
-  // Quando mudar o filtro (Hoje / Todos / Não lidos)
   const filterTodayBtn = document.getElementById("filterToday");
   const filterAllBtn = document.getElementById("filterAll");
   const filterUnreadBtn = document.getElementById("filterUnread");
@@ -873,7 +903,6 @@
     });
   });
 
-  // Qualquer clique em card marca como lido
   document.addEventListener(
     "click",
     (ev) => {
@@ -888,19 +917,16 @@
 document.addEventListener("cards:ready", () => {
   const totalCards = window.cards || [];
 
-  // Lidos (LocalStorage)
   const readStr = localStorage.getItem("cardsRead") || "[]";
   let readArr = [];
   try {
     readArr = JSON.parse(readStr);
   } catch (e) {}
 
-  // Quantidade Não Lidos
   const notReadCount = totalCards.filter(
     (c) => !readArr.includes(c.href)
   ).length;
 
-  // Só de Hoje
   const now = new Date();
   const isToday = (d) =>
     d.getDate() === now.getDate() &&
@@ -912,17 +938,16 @@ document.addEventListener("cards:ready", () => {
     return isToday(dt) && dt <= now;
   }).length;
 
-  // Todos disponíveis (até agora)
   const allAvailableCount = totalCards.filter((c) => {
     const dt = c.__dt instanceof Date ? c.__dt : new Date(c.publishedAt);
     return dt <= now;
   }).length;
 
-  // Atualizar botões
   const btnUnread = document.querySelector("#filterUnread span");
   const btnToday = document.querySelector("#filterToday span");
   const btnAll = document.querySelector("#filterAll span");
 
+  // Mantive os textos personalizados desativados como já estavam:
   // if (btnUnread) btnUnread.textContent = `Não lido (${notReadCount})`;
   // if (btnToday) btnToday.textContent = `Só de hoje (${todayCount})`;
   // if (btnAll)
