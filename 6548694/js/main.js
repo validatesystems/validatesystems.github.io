@@ -40,7 +40,9 @@
   // ];
 
   /* ======================   08/12/2025 - 23:06   ======================= */
-  const KEYS = [{ id: "dj", pass: "SEREIA", hint: "DJ do mar" }];
+  const KEYS = [
+    { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
+  ];
   /* ================================================================== */
 
   /* ===== Tema com persistência ===== */
