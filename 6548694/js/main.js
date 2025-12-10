@@ -137,7 +137,7 @@
       setTimeout(() => {
         const ts = Date.now();
         window.location.href = "page.html?ts=" + ts;
-      }, 1000);
+      }, 400);
     } else {
       hideGate();
     }
@@ -1053,3 +1053,4 @@ window.addEventListener("pageshow", (event) => {
 //     window.location.href = target.href;
 //   });
 // })();
+
