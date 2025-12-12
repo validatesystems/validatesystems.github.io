@@ -1378,25 +1378,15 @@ document.addEventListener("pointerdown", (ev) => {
   // Lista de cards que devem ser forçados a ficarem NÃO lidos
   const PRE_UNREAD_CARDS = [
     {
-      emoji: "✉️",
-      title: "Bom dia especial",
-      sub: "Um envelope guarda uma mensagem",
-      desc: "Cada palavra revela detalhes.",
-      href: "./bomdia20251209.html",
-      publishedAt: "2025-12-09T04:12:00-03:00",
-      sentimento: "afeto sereno e presença silenciosa",
-      moods: ["manhã suave", "pensamento leve", "carinho discreto"],
-    },
-    {
-      emoji: "🌅",
-      title: "Bom dia, Cléia",
-      sub: "Quando o silêncio decide falar",
-      desc: "Um instante calmo de manhã onde só quero que você saiba que pensei em você.",
-      href: "./bomdia20251208.html",
-      publishedAt: "2025-12-08T04:25:00-03:00",
-      sentimento: "afeto sereno e presença silenciosa",
-      moods: ["manhã suave", "pensamento leve", "carinho discreto"],
-    },
+    "emoji": "🎬",
+    "title": "Um Reels que sou eu pensando em você",
+    "sub": "30 segundos que dizem mais que um texto inteiro",
+    "desc": "Clique para abrir um Reels que traduz algo que eu queria te falar sem palavras.",
+    "href": "./reels06122025.html",
+    "publishedAt": "2025-12-10T04:32:00-03:00",
+    "sentimento": "https://www.instagram.com/p/DM6h5CYxK3A/",
+    "moods": ["vídeo", "realidade", "entrelinhas"]
+  },
   ];
 
   /* ===== Aplicar PRE_UNREAD_CARDS ===== */
@@ -1435,3 +1425,4 @@ document.addEventListener("pointerdown", (ev) => {
     PRE_READ_CARDS.length
   );
 })();
+
