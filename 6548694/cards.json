@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "✉️",
+    "title": "Presença",
+    "sub": "Companhias que aquecem",
+    "desc": "Quando o que vive aqui é simples e inesperado.",
+    "href": "./presenca_20251213.html",
+    "publishedAt": "2025-12-13T14:09:00-03:00",
+    "sentimento": "afeto sereno e presença silenciosa",
+    "moods": [
+      "manhã suave",
+      "pensamento leve",
+      "carinho discreto"
+    ]
+  },
+  {
     "emoji": "🎬",
     "title": "Um Reels que sou eu pensando em você",
     "sub": "30 segundos que dizem mais que um texto inteiro",
@@ -7,7 +21,11 @@
     "href": "./reels06122025.html",
     "publishedAt": "2025-12-10T04:32:00-03:00",
     "sentimento": "https://www.instagram.com/p/DM6h5CYxK3A/",
-    "moods": ["vídeo", "realidade", "entrelinhas"]
+    "moods": [
+      "vídeo",
+      "realidade",
+      "entrelinhas"
+    ]
   },
   {
     "emoji": "✉️",
@@ -17,7 +35,11 @@
     "href": "./bomdia20251209.html",
     "publishedAt": "2025-12-09T04:12:00-03:00",
     "sentimento": "afeto sereno e presença silenciosa",
-    "moods": ["manhã suave", "pensamento leve", "carinho discreto"]
+    "moods": [
+      "manhã suave",
+      "pensamento leve",
+      "carinho discreto"
+    ]
   },
   {
     "emoji": "🌅",
@@ -27,7 +49,11 @@
     "href": "./bomdia20251208.html",
     "publishedAt": "2025-12-08T04:25:00-03:00",
     "sentimento": "afeto sereno e presença silenciosa",
-    "moods": ["manhã suave", "pensamento leve", "carinho discreto"]
+    "moods": [
+      "manhã suave",
+      "pensamento leve",
+      "carinho discreto"
+    ]
   },
   {
     "emoji": "📜",
@@ -37,7 +63,11 @@
     "href": "./mensagem05122025.html",
     "publishedAt": "2025-12-05T21:45:00-03:00",
     "sentimento": "Lugar que acolhe",
-    "moods": ["delicadeza quieta", "afeto discreto", "calma profunda"]
+    "moods": [
+      "delicadeza quieta",
+      "afeto discreto",
+      "calma profunda"
+    ]
   },
   {
     "emoji": "🫧",
@@ -47,7 +77,11 @@
     "href": "./mensagem02122025(3).html",
     "publishedAt": "2025-12-02T19:20:00-03:00",
     "sentimento": "Confissão serena sem expectativa",
-    "moods": ["entrelinhas suaves", "verdade sem pressão", "afeto quieto"]
+    "moods": [
+      "entrelinhas suaves",
+      "verdade sem pressão",
+      "afeto quieto"
+    ]
   },
   {
     "emoji": "✨",
@@ -87,7 +121,11 @@
     "href": "./boanoite01122025.html",
     "publishedAt": "2025-12-01T19:00:00-03:00",
     "sentimento": "encerramento calmo",
-    "moods": ["silêncio", "leveza madura", "noite tranquila"]
+    "moods": [
+      "silêncio",
+      "leveza madura",
+      "noite tranquila"
+    ]
   },
   {
     "emoji": "🌀",
@@ -97,7 +135,11 @@
     "href": "./mensagem01122025.html",
     "publishedAt": "2025-12-01T18:01:00-03:00",
     "sentimento": "afeto disfarçado de implicância",
-    "moods": ["ironia romântica", "aproximação suave", "carinho entrelinhado"]
+    "moods": [
+      "ironia romântica",
+      "aproximação suave",
+      "carinho entrelinhado"
+    ]
   },
   {
     "emoji": "🖋️",
@@ -107,7 +149,11 @@
     "href": "./recado01122025.html",
     "publishedAt": "2025-12-01T07:00:00-03:00",
     "sentimento": "Romantismo sereno e maduro",
-    "moods": ["calma íntima", "afeição silenciosa", "presença que conforta"]
+    "moods": [
+      "calma íntima",
+      "afeição silenciosa",
+      "presença que conforta"
+    ]
   },
   {
     "emoji": "🗺️",
@@ -117,7 +163,11 @@
     "href": "./mapaderefugios.html",
     "publishedAt": "2025-12-01T12:15:00-03:00",
     "sentimento": "acolhimento silencioso",
-    "moods": ["calma profunda", "refúgio emocional", "silêncio que abraça"]
+    "moods": [
+      "calma profunda",
+      "refúgio emocional",
+      "silêncio que abraça"
+    ]
   },
   {
     "emoji": "🌤️",
@@ -127,7 +177,11 @@
     "href": "./bomdia01122025.html",
     "publishedAt": "2025-12-0T04:12:00-03:00",
     "sentimento": "cuidado leve",
-    "moods": ["manhã tranquila", "força silenciosa", "presença suave"]
+    "moods": [
+      "manhã tranquila",
+      "força silenciosa",
+      "presença suave"
+    ]
   },
   {
     "emoji": "🌙",
@@ -137,7 +191,11 @@
     "href": "./boanoite30112025.html",
     "publishedAt": "2025-11-30T20:00:00-03:00",
     "sentimento": "cuidado discreto",
-    "moods": ["oração", "noite tranquila", "acolhimento suave"]
+    "moods": [
+      "oração",
+      "noite tranquila",
+      "acolhimento suave"
+    ]
   },
   {
     "emoji": "📜",
@@ -147,7 +205,11 @@
     "href": "./mensagem29112025.html",
     "publishedAt": "2025-11-30T04:19:00-03:00",
     "sentimento": "intimidade leve",
-    "moods": ["bilhete suave", "pensamentos soltos", "leveza silenciosa"]
+    "moods": [
+      "bilhete suave",
+      "pensamentos soltos",
+      "leveza silenciosa"
+    ]
   },
   {
     "emoji": "🌙",
@@ -157,7 +219,11 @@
     "href": "./mensagem28112025.html",
     "publishedAt": "2025-11-29T00:09:00-03:00",
     "sentimento": "carinho sem floreio",
-    "moods": ["sinceridade leve", "humor suave", "encanto discreto"]
+    "moods": [
+      "sinceridade leve",
+      "humor suave",
+      "encanto discreto"
+    ]
   },
   {
     "emoji": "🌤️",
@@ -167,7 +233,11 @@
     "href": "./aindaestouaqui_28112025.html",
     "publishedAt": "2025-11-28T04:18:00-03:00",
     "sentimento": "leveza matinal",
-    "moods": ["humor suave", "respiro cedo", "manhã tranquila"]
+    "moods": [
+      "humor suave",
+      "respiro cedo",
+      "manhã tranquila"
+    ]
   },
   {
     "emoji": "💌",
@@ -177,7 +247,11 @@
     "href": "./bilheteparavoce_25112025.html",
     "publishedAt": "2025-11-25T06:46:00-03:00",
     "sentimento": "Carinho tranquilo e silencioso",
-    "moods": ["afeto suave", "cuidado discreto", "mensagem dobrada"]
+    "moods": [
+      "afeto suave",
+      "cuidado discreto",
+      "mensagem dobrada"
+    ]
   },
   {
     "emoji": "🌤️",
@@ -187,7 +261,11 @@
     "href": "./bomdia25112025.html",
     "publishedAt": "2025-11-25T04:18:00-03:00",
     "sentimento": "Amanhecer consciente e cheio de calma",
-    "moods": ["manhã tranquila", "retorno suave", "clareza interior"]
+    "moods": [
+      "manhã tranquila",
+      "retorno suave",
+      "clareza interior"
+    ]
   },
   {
     "emoji": "🌙",
@@ -197,7 +275,11 @@
     "href": "./boanoite24112025.html",
     "publishedAt": "2025-11-24T18:00:00-03:00",
     "sentimento": "Calmaria suave antes do sono",
-    "moods": ["noite tranquila", "silêncio bom", "carinho suave"]
+    "moods": [
+      "noite tranquila",
+      "silêncio bom",
+      "carinho suave"
+    ]
   },
   {
     "emoji": "🧜🏻‍♀️",
@@ -221,7 +303,11 @@
     "href": "./fragmentos_musicais24112025.html",
     "publishedAt": "2025-11-24T15:00:00-03:00",
     "sentimento": "Calmaria que toca sem pressa",
-    "moods": ["parede antiga", "versos guardados", "poesia que respira"]
+    "moods": [
+      "parede antiga",
+      "versos guardados",
+      "poesia que respira"
+    ]
   },
   {
     "emoji": "✨",
@@ -231,7 +317,11 @@
     "href": "./fragmentos24112025.html",
     "publishedAt": "2025-11-24T12:17:00-03:00",
     "sentimento": "Suavidade que permanece",
-    "moods": ["silêncio bonito", " presença leve", "suspiro guardado"]
+    "moods": [
+      "silêncio bonito",
+      " presença leve",
+      "suspiro guardado"
+    ]
   },
   {
     "emoji": "🌌",
@@ -241,7 +331,11 @@
     "href": "./sonho_revelado24112025.html",
     "publishedAt": "2025-11-24T07:10:00-03:00",
     "sentimento": "Afeto revelado em silêncio",
-    "moods": ["sonhos", "confissão suave", "entrelinhas"]
+    "moods": [
+      "sonhos",
+      "confissão suave",
+      "entrelinhas"
+    ]
   },
   {
     "emoji": "☀️",
@@ -251,7 +345,11 @@
     "href": "./bomdia24112025.html",
     "publishedAt": "2025-11-24T04:12:00-03:00",
     "sentimento": "Afeto discreto",
-    "moods": ["leve", "sonhos", "entrelinhas"]
+    "moods": [
+      "leve",
+      "sonhos",
+      "entrelinhas"
+    ]
   },
   {
     "emoji": "🌙",
@@ -261,7 +359,11 @@
     "href": "./boanoite23112025.html",
     "publishedAt": "2025-11-23T19:38:00-03:00",
     "sentimento": "Afeto discreto",
-    "moods": ["leve", "ironia boa", "entrelinhas"]
+    "moods": [
+      "leve",
+      "ironia boa",
+      "entrelinhas"
+    ]
   },
   {
     "emoji": "💗",
@@ -271,7 +373,11 @@
     "href": "./umrecadopravoce23112025.html",
     "publishedAt": "2025-11-23T16:54:00-03:00",
     "sentimento": "Carinho discreto",
-    "moods": ["afeto", "leveza", "ironia boa"]
+    "moods": [
+      "afeto",
+      "leveza",
+      "ironia boa"
+    ]
   },
   {
     "emoji": "☀️",
@@ -281,7 +387,11 @@
     "href": "./mensagem7h23112025.html",
     "publishedAt": "2025-11-23T07:00:00-03:00",
     "sentimento": "Carinho espontâneo",
-    "moods": ["leve", "afetuoso", "revigorante"]
+    "moods": [
+      "leve",
+      "afetuoso",
+      "revigorante"
+    ]
   },
   {
     "emoji": "☀️",
@@ -291,7 +401,11 @@
     "href": "./bomdia22112025.html",
     "publishedAt": "2025-11-23T04:12:00-03:00",
     "sentimento": "Carinho radiante",
-    "moods": ["ensolarado", "afetuoso", "revigorante"]
+    "moods": [
+      "ensolarado",
+      "afetuoso",
+      "revigorante"
+    ]
   },
   {
     "emoji": "🌙",
@@ -301,7 +415,11 @@
     "href": "./boanoitec22112025.html",
     "publishedAt": "2025-11-22T18:18:00-03:00",
     "sentimento": "Carinho profundo",
-    "moods": ["sereno", "afetuoso", "intimista"]
+    "moods": [
+      "sereno",
+      "afetuoso",
+      "intimista"
+    ]
   },
   {
     "emoji": "🌿",
@@ -311,7 +429,11 @@
     "href": "./presencasraras22112025.html",
     "publishedAt": "2025-11-22T13:00:00-03:00",
     "sentimento": "Aconchego suave",
-    "moods": ["leve", "emocional", "afetuoso"]
+    "moods": [
+      "leve",
+      "emocional",
+      "afetuoso"
+    ]
   },
   {
     "emoji": "📝",
@@ -321,7 +443,11 @@
     "href": "./lembrete_silencioso22112025.html",
     "publishedAt": "2025-11-22T10:00:00-03:00",
     "sentimento": "Carinho contido",
-    "moods": ["silêncio", "saudade leve", "confissão discreta"]
+    "moods": [
+      "silêncio",
+      "saudade leve",
+      "confissão discreta"
+    ]
   },
   {
     "emoji": "🌤️",
@@ -331,7 +457,11 @@
     "href": "./mensagemrapida22112025.html",
     "publishedAt": "2025-11-22T07:00:00-03:00",
     "sentimento": "Carinho leve",
-    "moods": ["luz", "calma", "humor suave"]
+    "moods": [
+      "luz",
+      "calma",
+      "humor suave"
+    ]
   },
   {
     "emoji": "☀️",
@@ -341,7 +471,11 @@
     "href": "./bomdia22112025.html",
     "publishedAt": "2025-11-22T04:37:00-03:00",
     "sentimento": "Leveza matinal",
-    "moods": ["poético", "afeto discreto", "manhã suave"]
+    "moods": [
+      "poético",
+      "afeto discreto",
+      "manhã suave"
+    ]
   },
   {
     "emoji": "🌙",
@@ -351,7 +485,11 @@
     "href": "./boanoitenointerior20112025.html",
     "publishedAt": "2025-11-21T19:00:00-03:00",
     "sentimento": "Calma afetiva",
-    "moods": ["noite tranquila", "aconchego", "saudade boa"]
+    "moods": [
+      "noite tranquila",
+      "aconchego",
+      "saudade boa"
+    ]
   },
   {
     "emoji": "🌤️",
@@ -361,7 +499,11 @@
     "href": "./fimdetarde20112025.html",
     "publishedAt": "2025-11-21T17:59:00-03:00",
     "sentimento": "Saudade suave",
-    "moods": ["fim de tarde", "lembrança", "cuidado quieto"]
+    "moods": [
+      "fim de tarde",
+      "lembrança",
+      "cuidado quieto"
+    ]
   },
   {
     "emoji": "💌",
@@ -371,7 +513,11 @@
     "href": "./mensagemrapida_carta21112025.html",
     "publishedAt": "2025-11-21T10:37:00-03:00",
     "sentimento": "afeto quieto",
-    "moods": ["leve", "silencioso", "carinho discreto"]
+    "moods": [
+      "leve",
+      "silencioso",
+      "carinho discreto"
+    ]
   },
   {
     "emoji": "📜",
@@ -381,7 +527,12 @@
     "href": "./cartadesexta21112025.html",
     "publishedAt": "2025-11-21T09:11:00-03:00",
     "sentimento": "Saudade feliz",
-    "moods": ["leve", "afeto discreto", "saudade boa", "gratidão silenciosa"]
+    "moods": [
+      "leve",
+      "afeto discreto",
+      "saudade boa",
+      "gratidão silenciosa"
+    ]
   },
   {
     "emoji": "💌",
@@ -391,7 +542,13 @@
     "href": "./mensagemrapida21112025.html",
     "publishedAt": "2025-11-21T07:00:00-03:00",
     "sentimento": "Afeto silencioso",
-    "moods": ["Cuidado", "Sutileza", "Admiração", "Presença", "Calma"]
+    "moods": [
+      "Cuidado",
+      "Sutileza",
+      "Admiração",
+      "Presença",
+      "Calma"
+    ]
   },
   {
     "emoji": "🌅",
@@ -401,7 +558,12 @@
     "href": "./bomdia21112025.html",
     "publishedAt": "2025-11-21T03:58:00-03:00",
     "sentimento": "Cuidado sereno",
-    "moods": ["leve", "elegante", "afeto discreto", "acolhedor"]
+    "moods": [
+      "leve",
+      "elegante",
+      "afeto discreto",
+      "acolhedor"
+    ]
   },
   {
     "emoji": "🌾",
@@ -411,7 +573,11 @@
     "href": "./interiorquemoraemvoce20112025.html",
     "publishedAt": "2025-11-20T11:48:00-03:00",
     "sentimento": "Calma afetiva",
-    "moods": ["origens", "introspecção", "afeto quieto"]
+    "moods": [
+      "origens",
+      "introspecção",
+      "afeto quieto"
+    ]
   },
   {
     "emoji": "🛣️",
@@ -421,7 +587,11 @@
     "href": "./devoltaaointerior.html",
     "publishedAt": "2025-11-20T11:16:00-03:00",
     "sentimento": "Nostalgia calma",
-    "moods": ["estrada", "origem", "reflexão"]
+    "moods": [
+      "estrada",
+      "origem",
+      "reflexão"
+    ]
   },
   {
     "emoji": "💭",
@@ -431,7 +601,11 @@
     "href": "./falamemenina20112025.html",
     "publishedAt": "2025-11-20T05:00:00-03:00",
     "sentimento": "Confissão reflexiva",
-    "moods": ["sinceridade", "intimidade", "questionamento"]
+    "moods": [
+      "sinceridade",
+      "intimidade",
+      "questionamento"
+    ]
   },
   {
     "emoji": "💜",
@@ -441,7 +615,11 @@
     "href": "./coisasqueeuqueriadizer.html",
     "publishedAt": "2025-11-20T04:45:00-03:00",
     "sentimento": "Confissão suave",
-    "moods": ["intimidade", "calma emocional", "sentimento guardado"]
+    "moods": [
+      "intimidade",
+      "calma emocional",
+      "sentimento guardado"
+    ]
   },
   {
     "emoji": "🌙",
@@ -451,7 +629,11 @@
     "href": "./boanoite19112025.html",
     "publishedAt": "2025-11-19T19:00:00-03:00",
     "sentimento": "Calma afetiva",
-    "moods": ["suave", "noturno", "carinho quieto"]
+    "moods": [
+      "suave",
+      "noturno",
+      "carinho quieto"
+    ]
   },
   {
     "emoji": "🎧",
@@ -461,7 +643,12 @@
     "href": "https://open.spotify.com/intl-pt/track/0wZZRJNv6bwSjAHVRf97ND?si=5ba624337f0044e5",
     "publishedAt": "2025-11-19T19:00:00-03:00",
     "sentimento": "Afeto suave",
-    "moods": ["leve", "calmo", "sincero", "intimista"]
+    "moods": [
+      "leve",
+      "calmo",
+      "sincero",
+      "intimista"
+    ]
   },
   {
     "emoji": "🔥",
@@ -471,7 +658,12 @@
     "href": "./voceporaquidenovo19112025.html",
     "publishedAt": "2025-11-19T16:35:00-03:00",
     "sentimento": "Afeto leve",
-    "moods": ["íntimo", "reflexivo", "suave", "engraçadinho"]
+    "moods": [
+      "íntimo",
+      "reflexivo",
+      "suave",
+      "engraçadinho"
+    ]
   },
   {
     "emoji": "💌",
@@ -481,7 +673,12 @@
     "href": "./semsermao19112025.html",
     "publishedAt": "2025-11-19T11:02:00-03:00",
     "sentimento": "Afeto leve",
-    "moods": ["delicado", "bem humorado", "suave", "carinho discreto"]
+    "moods": [
+      "delicado",
+      "bem humorado",
+      "suave",
+      "carinho discreto"
+    ]
   },
   {
     "emoji": "🔥",
@@ -491,7 +688,11 @@
     "href": "./donademim19112025.html",
     "publishedAt": "2025-11-19T07:00:00-03:00",
     "sentimento": "Força suave",
-    "moods": ["empoderamento discreto", "noturno", "voz interior"]
+    "moods": [
+      "empoderamento discreto",
+      "noturno",
+      "voz interior"
+    ]
   },
   {
     "emoji": "☀️",
@@ -501,7 +702,11 @@
     "href": "./bomdia19112025.html",
     "publishedAt": "2025-11-19T00:00:00-03:00",
     "sentimento": "Leveza matinal",
-    "moods": ["poético", "afeto discreto", "manhã suave"]
+    "moods": [
+      "poético",
+      "afeto discreto",
+      "manhã suave"
+    ]
   },
   {
     "emoji": "🌙",
@@ -511,7 +716,11 @@
     "href": "./boanoite18112025.html",
     "publishedAt": "2025-11-18T21:08:00-03:00",
     "sentimento": "Carinho discreto",
-    "moods": ["noturno", "leveza", "afeto irônico"]
+    "moods": [
+      "noturno",
+      "leveza",
+      "afeto irônico"
+    ]
   },
   {
     "emoji": "🌇",
@@ -521,7 +730,11 @@
     "href": "./boatarde_fimdetarde18112025.html",
     "publishedAt": "2025-11-18T17:12:00-03:00",
     "sentimento": "Admiração luminosa",
-    "moods": ["fim de tarde", "admiração discreta", "afeto calmo"]
+    "moods": [
+      "fim de tarde",
+      "admiração discreta",
+      "afeto calmo"
+    ]
   },
   {
     "emoji": "✨",
@@ -531,7 +744,11 @@
     "href": "./pedacosdecarinho18112025.html",
     "publishedAt": "2025-11-18T13:06:00-03:00",
     "sentimento": "Admiração contida",
-    "moods": ["delicado", "afeto discreto", "confissão em silêncio"]
+    "moods": [
+      "delicado",
+      "afeto discreto",
+      "confissão em silêncio"
+    ]
   },
   {
     "emoji": "📜",
@@ -541,7 +758,11 @@
     "href": "./poema18112025(2).html",
     "publishedAt": "2025-11-18T08:00:00-03:00",
     "sentimento": "Admiração calma",
-    "moods": ["poético", "leve", "afetuoso"]
+    "moods": [
+      "poético",
+      "leve",
+      "afetuoso"
+    ]
   },
   {
     "emoji": "📝",
@@ -551,7 +772,11 @@
     "href": "./poema18112025.html",
     "publishedAt": "2025-11-18T09:01:00-03:00",
     "sentimento": "Admiração suave",
-    "moods": ["leve", "afetuoso", "poético"]
+    "moods": [
+      "leve",
+      "afetuoso",
+      "poético"
+    ]
   },
   {
     "emoji": "💜",
@@ -561,7 +786,11 @@
     "href": "./mensagemrapida18112025(3).html",
     "publishedAt": "2025-11-18T09:01:00-03:00",
     "sentimento": "Humor afetivo",
-    "moods": ["leve", "irônico", "carinho discreto"]
+    "moods": [
+      "leve",
+      "irônico",
+      "carinho discreto"
+    ]
   },
   {
     "emoji": "🖥️",
@@ -571,7 +800,12 @@
     "href": "./mensagemrapida18112025(2).html",
     "publishedAt": "2025-11-18T06:16:00-03:00",
     "sentimento": "Cuidado silencioso",
-    "moods": ["Sutileza", "Verdade", "Calma", "Cotidiano"]
+    "moods": [
+      "Sutileza",
+      "Verdade",
+      "Calma",
+      "Cotidiano"
+    ]
   },
   {
     "emoji": "🌤️",
@@ -581,7 +815,12 @@
     "href": "./mensagemrapida18112025.html",
     "publishedAt": "2025-11-18T05:57:00-03:00",
     "sentimento": "Cuidado leve",
-    "moods": ["Força", "Gentileza", "Leveza", "Cotidiano"]
+    "moods": [
+      "Força",
+      "Gentileza",
+      "Leveza",
+      "Cotidiano"
+    ]
   },
   {
     "emoji": "🌙",
@@ -591,7 +830,12 @@
     "href": "./mensagemrapida(3)17112025.html",
     "publishedAt": "2025-11-17T21:23:00-03:00",
     "sentimento": "Cuidado leve",
-    "moods": ["Calma", "Carinho", "Cotidiano", "Sutileza"]
+    "moods": [
+      "Calma",
+      "Carinho",
+      "Cotidiano",
+      "Sutileza"
+    ]
   },
   {
     "emoji": "🎧",
@@ -601,7 +845,13 @@
     "href": "./historiaemvozbaixa17112025.html",
     "publishedAt": "2025-11-17T19:46:00-03:00",
     "sentimento": "Afeto contido",
-    "moods": ["Cuidado", "Sutileza", "Verdade", "Serenidade", "Admiração"]
+    "moods": [
+      "Cuidado",
+      "Sutileza",
+      "Verdade",
+      "Serenidade",
+      "Admiração"
+    ]
   },
   {
     "emoji": "💌",
@@ -611,7 +861,13 @@
     "href": "./mensagemrapida(2)17112025.html",
     "publishedAt": "2025-11-17T16:51:00-03:00",
     "sentimento": "Afeto silencioso",
-    "moods": ["Cuidado", "Sutileza", "Admiração", "Presença", "Calma"]
+    "moods": [
+      "Cuidado",
+      "Sutileza",
+      "Admiração",
+      "Presença",
+      "Calma"
+    ]
   },
   {
     "emoji": "💌",
@@ -621,7 +877,13 @@
     "href": "./mensagemrapida17112025.html",
     "publishedAt": "2025-11-17T06:55:00-03:00",
     "sentimento": "Afeto silencioso",
-    "moods": ["Cuidado", "Sutileza", "Admiração", "Presença", "Calma"]
+    "moods": [
+      "Cuidado",
+      "Sutileza",
+      "Admiração",
+      "Presença",
+      "Calma"
+    ]
   },
   {
     "emoji": "🌙",
@@ -631,7 +893,12 @@
     "href": "./boanoite16112025.html",
     "publishedAt": "2025-11-16T19:01:12-03:00",
     "sentimento": "Cuidado e admiração tranquila",
-    "moods": ["calma noturna", "carinho", "admiração", "acolhimento"]
+    "moods": [
+      "calma noturna",
+      "carinho",
+      "admiração",
+      "acolhimento"
+    ]
   },
   {
     "emoji": "💗",
@@ -641,7 +908,12 @@
     "href": "./vocevoltouaqui16112025.html",
     "publishedAt": "2025-11-16T14:45:00-03:00",
     "sentimento": "Afeto leve e divertido",
-    "moods": ["leveza", "carinho", "ironia suave", "encanto discreto"]
+    "moods": [
+      "leveza",
+      "carinho",
+      "ironia suave",
+      "encanto discreto"
+    ]
   },
   {
     "emoji": "🛣️",
@@ -684,7 +956,12 @@
     "href": "./boanoite15112025.html",
     "publishedAt": "2025-11-15T19:35:00-03:00",
     "sentimento": "Cuidado profundo",
-    "moods": ["calma", "acolhimento", "noite suave", "afeto silencioso"]
+    "moods": [
+      "calma",
+      "acolhimento",
+      "noite suave",
+      "afeto silencioso"
+    ]
   },
   {
     "emoji": "🌘",
@@ -694,7 +971,12 @@
     "href": "./bomdomingo15112025.html",
     "publishedAt": "2025-11-16T04:38:20-03:00",
     "sentimento": "Cuidado suave",
-    "moods": ["calma", "amanhecer", "carinho contido", "mistério leve"]
+    "moods": [
+      "calma",
+      "amanhecer",
+      "carinho contido",
+      "mistério leve"
+    ]
   },
   {
     "emoji": "🌆",
@@ -704,7 +986,12 @@
     "href": "./18hsabado15112025.html",
     "publishedAt": "2025-11-15T18:00:00-03:00",
     "sentimento": "Desejo",
-    "moods": ["leveza", "serenidade", "reflexão", "desejo"]
+    "moods": [
+      "leveza",
+      "serenidade",
+      "reflexão",
+      "desejo"
+    ]
   },
   {
     "emoji": "🌊",
@@ -730,7 +1017,12 @@
     "href": "./sabado15h.html",
     "publishedAt": "2025-11-15T08:43:00-03:00",
     "sentimento": "Desejo",
-    "moods": ["leveza", "serenidade", "reflexão", "desejo"]
+    "moods": [
+      "leveza",
+      "serenidade",
+      "reflexão",
+      "desejo"
+    ]
   },
   {
     "emoji": "☀️",
@@ -740,7 +1032,11 @@
     "href": "./sabado12h.html",
     "publishedAt": "2025-11-15T04:12:00-03:00",
     "sentimento": "Reflexão",
-    "moods": ["leveza", "serenidade", "reflexão"]
+    "moods": [
+      "leveza",
+      "serenidade",
+      "reflexão"
+    ]
   },
   {
     "emoji": "☀️",
@@ -750,7 +1046,11 @@
     "href": "./bomdiadesabado.html",
     "publishedAt": "2025-11-15T04:12:00-03:00",
     "sentimento": "Reflexão",
-    "moods": ["leveza", "serenidade", "reflexão"]
+    "moods": [
+      "leveza",
+      "serenidade",
+      "reflexão"
+    ]
   },
   {
     "emoji": "🌟",
@@ -760,7 +1060,11 @@
     "href": "./voceporaquidenovo.html",
     "publishedAt": "2025-11-14T19:30:00-03:00",
     "sentimento": "Reflexão",
-    "moods": ["leveza", "serenidade", "reflexão"]
+    "moods": [
+      "leveza",
+      "serenidade",
+      "reflexão"
+    ]
   },
   {
     "emoji": "🌙",
@@ -770,7 +1074,11 @@
     "href": "./boanoite141125.html",
     "publishedAt": "2025-11-14T19:30:00-03:00",
     "sentimento": "Calma",
-    "moods": ["leveza", "serenidade", "lembrança"]
+    "moods": [
+      "leveza",
+      "serenidade",
+      "lembrança"
+    ]
   },
   {
     "emoji": "🕊️",
@@ -780,7 +1088,9 @@
     "href": "./saudades14112025.html",
     "publishedAt": "2025-11-14T09:00:00-03:00",
     "sentimento": "Saudade",
-    "moods": ["saudade"]
+    "moods": [
+      "saudade"
+    ]
   },
   {
     "emoji": "",
@@ -790,7 +1100,12 @@
     "href": "./fim.html",
     "publishedAt": "2025-11-12T19:26:00-03:00",
     "sentimento": "Despedida",
-    "moods": ["adeus", "despedida", "tempo", "silêncio"]
+    "moods": [
+      "adeus",
+      "despedida",
+      "tempo",
+      "silêncio"
+    ]
   },
   {
     "emoji": "🌙",
@@ -800,7 +1115,12 @@
     "href": "./boanoite121125.html",
     "publishedAt": "2025-11-12T19:26:00-03:00",
     "sentimento": "Calma irônica",
-    "moods": ["leveza", "ironia", "serenidade", "lembrança"]
+    "moods": [
+      "leveza",
+      "ironia",
+      "serenidade",
+      "lembrança"
+    ]
   },
   {
     "emoji": "🕕",
@@ -810,7 +1130,12 @@
     "href": "./18hterminou.html",
     "publishedAt": "2025-11-12T18:00:00-03:00",
     "sentimento": "Cansaço bem-humorado",
-    "moods": ["ironia", "leveza", "cansaço", "pensamento solto"]
+    "moods": [
+      "ironia",
+      "leveza",
+      "cansaço",
+      "pensamento solto"
+    ]
   },
   {
     "emoji": "☕",
@@ -820,7 +1145,12 @@
     "href": "./meiodatarde.html",
     "publishedAt": "2025-11-12T15:00:00-03:00",
     "sentimento": "Leveza com ironia",
-    "moods": ["cansaço", "humor", "leveza", "lembrança"]
+    "moods": [
+      "cansaço",
+      "humor",
+      "leveza",
+      "lembrança"
+    ]
   },
   {
     "emoji": "🥱",
@@ -830,7 +1160,12 @@
     "href": "./depoisdoalmoco.html",
     "publishedAt": "2025-11-12T12:23:00-03:00",
     "sentimento": "Distração sincera",
-    "moods": ["preguiça boa", "ironia", "leveza", "saudade"]
+    "moods": [
+      "preguiça boa",
+      "ironia",
+      "leveza",
+      "saudade"
+    ]
   },
   {
     "emoji": "📱",
@@ -840,7 +1175,12 @@
     "href": "./nomeiododia.html",
     "publishedAt": "2025-11-12T09:30:00-03:00",
     "sentimento": "Saudade disfarçada",
-    "moods": ["saudade", "ironia", "curiosidade", "leveza"]
+    "moods": [
+      "saudade",
+      "ironia",
+      "curiosidade",
+      "leveza"
+    ]
   },
   {
     "emoji": "☀️",
@@ -850,7 +1190,12 @@
     "href": "./bomdia_12_11_25.html",
     "publishedAt": "2025-11-12T04:23:12-03:00",
     "sentimento": "Carinho",
-    "moods": ["carinho", "afeto", "leveza", "paz"]
+    "moods": [
+      "carinho",
+      "afeto",
+      "leveza",
+      "paz"
+    ]
   },
   {
     "emoji": "🌙",
@@ -860,7 +1205,12 @@
     "href": "./boa_noite_11_11_25.html",
     "publishedAt": "2025-11-11T19:11:40-03:00",
     "sentimento": "Carinho",
-    "moods": ["carinho", "afeto", "leveza", "paz"]
+    "moods": [
+      "carinho",
+      "afeto",
+      "leveza",
+      "paz"
+    ]
   },
   {
     "emoji": "💔",
@@ -870,7 +1220,12 @@
     "href": "./romantico_moderno.html",
     "publishedAt": "2025-11-11T14:39:32-03:00",
     "sentimento": "Carinho",
-    "moods": ["carinho", "afeto", "leveza", "paz"]
+    "moods": [
+      "carinho",
+      "afeto",
+      "leveza",
+      "paz"
+    ]
   },
   {
     "emoji": "☀️",
@@ -880,7 +1235,12 @@
     "href": "./bom_dia_cleia_11_11_25.html",
     "publishedAt": "2025-11-11T04:04:32-03:00",
     "sentimento": "Carinho",
-    "moods": ["carinho", "afeto", "leveza", "paz"]
+    "moods": [
+      "carinho",
+      "afeto",
+      "leveza",
+      "paz"
+    ]
   },
   {
     "emoji": "🌙",
@@ -890,7 +1250,12 @@
     "href": "./boa_noite_legendas.html",
     "publishedAt": "2025-11-10T05:20:40-03:00",
     "sentimento": "Carinho",
-    "moods": ["carinho", "afeto", "leveza", "paz"]
+    "moods": [
+      "carinho",
+      "afeto",
+      "leveza",
+      "paz"
+    ]
   },
   {
     "emoji": "💌",
@@ -932,7 +1297,12 @@
     "href": "./index(entrelinhas).html",
     "publishedAt": "2025-11-09T18:50:00-03:00",
     "sentimento": "Serenidade",
-    "moods": ["calma", "reflexivo", "afeto", "intimista"]
+    "moods": [
+      "calma",
+      "reflexivo",
+      "afeto",
+      "intimista"
+    ]
   },
   {
     "emoji": "⏳",
@@ -942,7 +1312,12 @@
     "href": "./index(capsula_do_tempo).html",
     "publishedAt": "2025-11-09T11:55:00-03:00",
     "sentimento": "Expectativa",
-    "moods": ["urgência", "reflexão", "curiosidade", "paciência"]
+    "moods": [
+      "urgência",
+      "reflexão",
+      "curiosidade",
+      "paciência"
+    ]
   },
   {
     "emoji": "🌙",
@@ -952,7 +1327,12 @@
     "href": "./index(boa_noite_sabado_cleia).html",
     "publishedAt": "2025-11-09T00:00:00-03:00",
     "sentimento": "Serenidade",
-    "moods": ["calma", "paz", "acolhimento", "reflexão"]
+    "moods": [
+      "calma",
+      "paz",
+      "acolhimento",
+      "reflexão"
+    ]
   },
   {
     "emoji": "🌞",
@@ -962,7 +1342,12 @@
     "href": "./index(bom_domingo_cleia).html",
     "publishedAt": "2025-11-09T03:35:21-03:00",
     "sentimento": "Libertação",
-    "moods": ["leve", "livre", "calmo", "esperançoso"]
+    "moods": [
+      "leve",
+      "livre",
+      "calmo",
+      "esperançoso"
+    ]
   },
   {
     "emoji": "🪩",
@@ -972,7 +1357,12 @@
     "href": "./index(espelho_de_ironias).html",
     "publishedAt": "2025-11-09T00:00:00-03:00",
     "sentimento": "Alegria",
-    "moods": ["alegria", "humor", "leve", "reflexivo"]
+    "moods": [
+      "alegria",
+      "humor",
+      "leve",
+      "reflexivo"
+    ]
   },
   {
     "emoji": "🌬️",
@@ -982,7 +1372,12 @@
     "href": "./index(bem_me_queira).html",
     "publishedAt": "2025-11-08T00:00:00-03:00",
     "sentimento": "Serenidade",
-    "moods": ["sereno", "calmo", "paz", "tranquilo"]
+    "moods": [
+      "sereno",
+      "calmo",
+      "paz",
+      "tranquilo"
+    ]
   },
   {
     "emoji": "🖋️",
@@ -992,7 +1387,11 @@
     "href": "./index(retrato_de_admiracao).html",
     "publishedAt": "2025-11-07T10:23:00-03:00",
     "sentimento": "Gratidão",
-    "moods": ["gratidão", "esperança", "leve"]
+    "moods": [
+      "gratidão",
+      "esperança",
+      "leve"
+    ]
   },
   {
     "emoji": "🪞",
@@ -1002,7 +1401,11 @@
     "href": "./index(quiz_cleia).html",
     "publishedAt": "2025-11-06T22:42:00-03:00",
     "sentimento": "Alegria",
-    "moods": ["alegria", "humor", "feliz"]
+    "moods": [
+      "alegria",
+      "humor",
+      "feliz"
+    ]
   },
   {
     "emoji": "🍃",
@@ -1012,7 +1415,11 @@
     "href": "./index(Quando o vento perder a curva).html",
     "publishedAt": "2025-11-05T20:05:00-03:00",
     "sentimento": "Melancolia",
-    "moods": ["melancolia", "triste", "nostalgia"]
+    "moods": [
+      "melancolia",
+      "triste",
+      "nostalgia"
+    ]
   },
   {
     "emoji": "🍷",
@@ -1022,7 +1429,11 @@
     "href": "./index(Poema para Cléia).html",
     "publishedAt": "2025-11-05T20:05:00-03:00",
     "sentimento": "Contentamento",
-    "moods": ["contentamento", "feliz", "leve"]
+    "moods": [
+      "contentamento",
+      "feliz",
+      "leve"
+    ]
   },
   {
     "emoji": "🎧",
@@ -1032,7 +1443,11 @@
     "href": "./index(Playlist — Traços de Você).html",
     "publishedAt": "2025-11-05T19:05:00-03:00",
     "sentimento": "Contentamento",
-    "moods": ["contentamento", "feliz", "leve"]
+    "moods": [
+      "contentamento",
+      "feliz",
+      "leve"
+    ]
   },
   {
     "emoji": "🌕",
@@ -1042,7 +1457,12 @@
     "href": "./index(lua_e_os_mares).html",
     "publishedAt": "2025-11-04T19:03:10-03:00",
     "sentimento": "Serenidade",
-    "moods": ["sereno", "calmo", "paz", "tranquilo"]
+    "moods": [
+      "sereno",
+      "calmo",
+      "paz",
+      "tranquilo"
+    ]
   },
   {
     "emoji": "🪞",
@@ -1052,7 +1472,10 @@
     "href": "./index(manual_da_cleia).html",
     "publishedAt": "2025-11-04T11:50:10-03:00",
     "sentimento": "Desconfiança",
-    "moods": ["preocupado", "tenso"]
+    "moods": [
+      "preocupado",
+      "tenso"
+    ]
   },
   {
     "emoji": "🏃🏻",
@@ -1062,7 +1485,11 @@
     "href": "./index(entre_corridas_e_pausas).html",
     "publishedAt": "2025-11-04T00:01:00-03:00",
     "sentimento": "Desânimo",
-    "moods": ["desanimo", "sem-energia", "cansado"]
+    "moods": [
+      "desanimo",
+      "sem-energia",
+      "cansado"
+    ]
   },
   {
     "emoji": "🌬️",
@@ -1072,7 +1499,11 @@
     "href": "./index(vento_que_leva_as_palavras).html",
     "publishedAt": "2025-11-03T12:22:54-03:00",
     "sentimento": "Alívio",
-    "moods": ["alivio", "leve", "paz"]
+    "moods": [
+      "alivio",
+      "leve",
+      "paz"
+    ]
   },
   {
     "emoji": "🧜‍♀️",
@@ -1082,7 +1513,12 @@
     "href": "./index(sereia_voz_do_mar).html",
     "publishedAt": "2025-11-03T04:33:14-03:00",
     "sentimento": "Serenidade",
-    "moods": ["sereno", "calmo", "paz", "tranquilo"]
+    "moods": [
+      "sereno",
+      "calmo",
+      "paz",
+      "tranquilo"
+    ]
   },
   {
     "emoji": "🌤️",
@@ -1092,7 +1528,11 @@
     "href": "./index(bom_dia_reta_final_ano).html",
     "publishedAt": "2025-11-03T03:50:02-03:00",
     "sentimento": "Esperança",
-    "moods": ["esperança", "luz", "sereno"]
+    "moods": [
+      "esperança",
+      "luz",
+      "sereno"
+    ]
   },
   {
     "emoji": "🗓",
@@ -1102,7 +1542,11 @@
     "href": "./index(domingos_com_vc).html",
     "publishedAt": "2025-11-02T07:30:00-03:00",
     "sentimento": "Paz",
-    "moods": ["paz", "calmo", "sereno"]
+    "moods": [
+      "paz",
+      "calmo",
+      "sereno"
+    ]
   },
   {
     "emoji": "✨",
@@ -1112,7 +1556,11 @@
     "href": "./index(luz_em_caos).html",
     "publishedAt": "2025-11-01T15:30:00-03:00",
     "sentimento": "Esperança",
-    "moods": ["esperança", "luz", "sereno"]
+    "moods": [
+      "esperança",
+      "luz",
+      "sereno"
+    ]
   },
   {
     "emoji": "🎭",
@@ -1122,7 +1570,10 @@
     "href": "./index(sabadou).html",
     "publishedAt": "2025-11-01T07:00:00-03:00",
     "sentimento": "Frustração",
-    "moods": ["tenso", "preocupado"]
+    "moods": [
+      "tenso",
+      "preocupado"
+    ]
   },
   {
     "emoji": "📚",
@@ -1132,7 +1583,11 @@
     "href": "./index(12aulas12motivos).html",
     "publishedAt": "2025-10-31T07:00:00-03:00",
     "sentimento": "Gratidão",
-    "moods": ["gratidão", "esperança", "leve"]
+    "moods": [
+      "gratidão",
+      "esperança",
+      "leve"
+    ]
   },
   {
     "emoji": "☀️",
@@ -1142,7 +1597,11 @@
     "href": "./index(bom_dia_cleia).html",
     "publishedAt": "2025-10-30T04:32:00-03:00",
     "sentimento": "Esperança",
-    "moods": ["esperança", "luz", "sereno"]
+    "moods": [
+      "esperança",
+      "luz",
+      "sereno"
+    ]
   },
   {
     "emoji": "🌙",
@@ -1152,7 +1611,11 @@
     "href": "./index(boa_noite_com_estrelas).html",
     "publishedAt": "2025-10-29T20:00:00-03:00",
     "sentimento": "Paz",
-    "moods": ["paz", "calmo", "sereno"]
+    "moods": [
+      "paz",
+      "calmo",
+      "sereno"
+    ]
   },
   {
     "emoji": "😏",
@@ -1162,7 +1625,11 @@
     "href": "./index(bom_dia_do_chefinho).html",
     "publishedAt": "2025-10-29T06:00:00-03:00",
     "sentimento": "Alegria",
-    "moods": ["alegria", "humor", "feliz"]
+    "moods": [
+      "alegria",
+      "humor",
+      "feliz"
+    ]
   },
   {
     "emoji": "🌤️",
@@ -1172,7 +1639,11 @@
     "href": "./(bom_dia_com_passarinhos)index.html",
     "publishedAt": "2025-10-28T08:00:00-03:00",
     "sentimento": "Alegria",
-    "moods": ["alegria", "humor", "feliz"]
+    "moods": [
+      "alegria",
+      "humor",
+      "feliz"
+    ]
   },
   {
     "emoji": "🗣",
@@ -1182,7 +1653,10 @@
     "href": "./index(aurora_de_vozes).html",
     "publishedAt": "2025-10-27T08:00:00-03:00",
     "sentimento": "Liberdade",
-    "moods": ["liberdade", "leve"]
+    "moods": [
+      "liberdade",
+      "leve"
+    ]
   },
   {
     "emoji": "🌤️",
@@ -1192,7 +1666,11 @@
     "href": "./index(bom_dia_de_luz).html",
     "publishedAt": "2025-10-27T08:00:00-03:00",
     "sentimento": "Alegria",
-    "moods": ["alegria", "humor", "feliz"]
+    "moods": [
+      "alegria",
+      "humor",
+      "feliz"
+    ]
   },
   {
     "emoji": "📬",
@@ -1202,7 +1680,11 @@
     "href": "./index(cartas_nao_entregues).html",
     "publishedAt": "2025-10-26T08:00:00-03:00",
     "sentimento": "Solidão",
-    "moods": ["saudade", "falta", "nostalgia"]
+    "moods": [
+      "saudade",
+      "falta",
+      "nostalgia"
+    ]
   },
   {
     "emoji": "🌆🌾",
@@ -1212,7 +1694,12 @@
     "href": "./index(cidade e interior).html",
     "publishedAt": "2025-10-25T08:00:00-03:00",
     "sentimento": "Serenidade",
-    "moods": ["sereno", "calmo", "paz", "tranquilo"]
+    "moods": [
+      "sereno",
+      "calmo",
+      "paz",
+      "tranquilo"
+    ]
   },
   {
     "emoji": "😂📊",
@@ -1222,7 +1709,11 @@
     "href": "./index(Assuntos sérios (com uma professora que sabe rir deles)).html",
     "publishedAt": "2025-10-24T08:00:00-03:00",
     "sentimento": "Ansiedade",
-    "moods": ["ansioso", "tenso", "preocupado"]
+    "moods": [
+      "ansioso",
+      "tenso",
+      "preocupado"
+    ]
   },
   {
     "emoji": "📜",
@@ -1232,7 +1723,11 @@
     "href": "./index(carta narrada pelo silêncio).html",
     "publishedAt": "2025-10-23T08:00:00-03:00",
     "sentimento": "Melancolia",
-    "moods": ["melancolia", "triste", "nostalgia"]
+    "moods": [
+      "melancolia",
+      "triste",
+      "nostalgia"
+    ]
   },
   {
     "emoji": "🌱",
@@ -1242,7 +1737,11 @@
     "href": "./index(bom dia semente de luz).html",
     "publishedAt": "2025-10-22T08:00:00-03:00",
     "sentimento": "Esperança",
-    "moods": ["esperança", "luz", "sereno"]
+    "moods": [
+      "esperança",
+      "luz",
+      "sereno"
+    ]
   },
   {
     "emoji": "🫙",
@@ -1252,7 +1751,11 @@
     "href": "./index(cartas engarrafadas).html",
     "publishedAt": "2025-10-21T21:00:00-03:00",
     "sentimento": "Esperança",
-    "moods": ["esperança", "luz", "sereno"]
+    "moods": [
+      "esperança",
+      "luz",
+      "sereno"
+    ]
   },
   {
     "emoji": "🌅",
@@ -1262,7 +1765,12 @@
     "href": "./index(bom dia morde e assopra).html",
     "publishedAt": "2025-10-21T08:00:00-03:00",
     "sentimento": "Serenidade",
-    "moods": ["sereno", "calmo", "paz", "tranquilo"]
+    "moods": [
+      "sereno",
+      "calmo",
+      "paz",
+      "tranquilo"
+    ]
   },
   {
     "emoji": "🎧",
@@ -1272,7 +1780,11 @@
     "href": "./index(musical).html",
     "publishedAt": "2025-10-20T08:00:00-03:00",
     "sentimento": "Contentamento",
-    "moods": ["contentamento", "feliz", "leve"]
+    "moods": [
+      "contentamento",
+      "feliz",
+      "leve"
+    ]
   },
   {
     "emoji": "🍯",
@@ -1282,7 +1794,10 @@
     "href": "./index(doce e salgado).html",
     "publishedAt": "2025-10-10T08:00:00-03:00",
     "sentimento": "Contentamento",
-    "moods": ["contentamento", "feliz", "leve"]
+    "moods": [
+      "contentamento",
+      "feliz",
+      "leve"
+    ]
   }
 ]
-
