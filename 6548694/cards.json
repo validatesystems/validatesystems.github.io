@@ -1,19 +1,5 @@
 [
   {
-    "emoji": "✉️",
-    "title": "Presença",
-    "sub": "Companhias que aquecem",
-    "desc": "Quando o que vive aqui é simples e inesperado.",
-    "href": "./presenca_20251213.html",
-    "publishedAt": "2025-12-13T14:09:00-03:00",
-    "sentimento": "afeto sereno e presença silenciosa",
-    "moods": [
-      "manhã suave",
-      "pensamento leve",
-      "carinho discreto"
-    ]
-  },
-  {
     "emoji": "🎬",
     "title": "Um Reels que sou eu pensando em você",
     "sub": "30 segundos que dizem mais que um texto inteiro",
@@ -1800,4 +1786,5 @@
       "leve"
     ]
   }
+
 ]
