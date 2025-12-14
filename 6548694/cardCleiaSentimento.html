@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Entre o Silêncio e o Que Fica</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg1: #070a14;
+        --bg2: #0b1020;
+        --card: rgba(12, 18, 36, 0.88);
+        --border: rgba(148, 163, 184, 0.34);
+        --text: #e5e7eb;
+        --muted: rgba(229, 231, 235, 0.7);
+        --accent: #f59e0b;
+        --accent2: #fb7185;
+        --paper: #231a14; /* “papel” escurecido */
+        --paper2: #1b1410;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        color: var(--text);
+        background: radial-gradient(circle at 15% 10%, rgba(245, 158, 11, 0.12), transparent 52%),
+          radial-gradient(circle at 85% 90%, rgba(251, 113, 133, 0.10), transparent 55%),
+          linear-gradient(135deg, var(--bg1), var(--bg2));
+        display: grid;
+        place-items: center;
+        padding: 18px;
+        overflow-x: hidden;
+      }
+
+      /* granulação suave */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: url("https://www.transparenttextures.com/patterns/noisy.png");
+        opacity: 0.18;
+        mix-blend-mode: soft-light;
+        z-index: 0;
+      }
+
+      .shell {
+        width: min(680px, 100%);
+        position: relative;
+        z-index: 1;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        padding: 24px 18px 18px;
+        box-shadow: 0 22px 55px rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        overflow: hidden;
+        animation: enter 0.6s ease-out;
+      }
+
+      @keyframes enter {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.42);
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 14px rgba(245, 158, 11, 0.55);
+      }
+
+      .title {
+        font-family: "Playfair Display", serif;
+        font-weight: 600;
+        font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+        letter-spacing: 0.01em;
+        margin: 8px 0 6px;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.55;
+        margin-bottom: 14px;
+        text-wrap: balance;
+      }
+
+      .stage {
+        margin-top: 12px;
+        border-radius: 22px;
+        border: 1px solid rgba(148, 163, 184, 0.30);
+        overflow: hidden;
+        background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      }
+
+      .veil {
+        padding: 18px;
+      }
+
+      .tap {
+        width: 100%;
+        border: 0;
+        cursor: pointer;
+        border-radius: 18px;
+        padding: 14px 14px;
+        background: rgba(248, 250, 252, 0.06);
+        border: 1px solid rgba(248, 250, 252, 0.18);
+        color: #f9fafb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+      }
+
+      .tap:hover {
+        background: rgba(248, 250, 252, 0.10);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+        transform: translateY(-1px);
+      }
+
+      .tap:active {
+        transform: translateY(0);
+      }
+
+      .tap strong {
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        font-size: 0.88rem;
+        text-transform: uppercase;
+      }
+
+      .tap span {
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.35;
+        text-align: right;
+      }
+
+      /* “papel” escurecido */
+      .paper {
+        display: none;
+        padding: 18px;
+        background: radial-gradient(circle at 20% 15%, rgba(255, 217, 165, 0.10), transparent 52%),
+          radial-gradient(circle at 85% 85%, rgba(251, 113, 133, 0.07), transparent 50%),
+          linear-gradient(135deg, var(--paper), var(--paper2));
+        position: relative;
+        border-top: 1px solid rgba(148, 163, 184, 0.16);
+        animation: reveal 0.55s ease-out;
+      }
+
+      .paper::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+        opacity: 0.22;
+        mix-blend-mode: soft-light;
+      }
+
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .text {
+        position: relative;
+        z-index: 1;
+        font-size: 1rem;
+        line-height: 1.85;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .text p {
+        margin-bottom: 12px;
+      }
+
+      .text .soft {
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      .text .focus {
+        color: rgba(255, 255, 255, 0.95);
+        font-weight: 500;
+      }
+
+      .signature {
+        margin-top: 14px;
+        text-align: right;
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.72);
+        opacity: 0.95;
+        position: relative;
+        z-index: 1;
+      }
+
+      .footer {
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .mini {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        opacity: 0.95;
+      }
+
+      .pulse {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--accent2);
+        box-shadow: 0 0 18px rgba(251, 113, 133, 0.45);
+        animation: pulse 1.6s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+        50% {
+          transform: scale(1.18);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 22px 14px 16px;
+          border-radius: 22px;
+        }
+
+        .tap {
+          padding: 12px 12px;
+        }
+
+        .tap span {
+          font-size: 0.86rem;
+        }
+
+        .text {
+          font-size: 0.98rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="shell">
+      <section class="card" aria-label="Mensagem">
+        <div class="top">
+          <div class="chip"><span class="dot"></span> bom dia</div>
+          <div class="chip" style="border-color: rgba(148,163,184,0.28)">sutil e leve</div>
+        </div>
+
+        <h1 class="title">Um lugar que fica</h1>
+        <p class="subtitle">
+          Tem coisas que não pedem espaço no mundo. Elas só ficam, com cuidado, com verdade,
+          e com aquela calma que não precisa provar nada.
+        </p>
+
+        <div class="stage">
+          <div class="veil">
+            <button class="tap" id="openBtn" type="button" aria-controls="paper" aria-expanded="false">
+              <div>
+                <strong>Toque para abrir</strong>
+              </div>
+              <span>sem pressa, do seu jeito</span>
+            </button>
+          </div>
+
+          <div class="paper" id="paper" role="region" aria-label="Mensagem aberta">
+            <div class="text">
+              <p class="focus">
+                Cléia, bom dia.
+              </p>
+
+              <p class="soft">
+                Eu queria te dizer uma coisa do jeito mais simples, sem peso, sem cobrança, sem
+                te puxar para lugar nenhum.
+              </p>
+
+              <p>
+                <span class="focus">Eu sinto você.</span>
+                Às vezes no silêncio, às vezes no detalhe, às vezes numa lembrança que acende do nada.
+                E o que eu sinto é tão bom que eu nem imaginava que ainda existia um jeito de sentir assim.
+              </p>
+
+              <p class="soft">
+                Eu não te peço resposta. Não peço gesto. Não peço explicação.
+                Eu só queria que você soubesse que, quando a vida aperta aí dentro, existe um canto
+                seguro em mim que te recebe com respeito.
+              </p>
+
+              <p>
+                Mesmo sem poder ser vivido, vive em mim.<br />
+                E, curiosamente, faz companhia.<br />
+                Daquelas que te aquecem, não pesam, não cobram. Só estão ali, firmes e silenciosas.
+              </p>
+
+              <p class="soft">
+                E se um dia a vida permitir que esse sentimento possa ser vivido, eu vou estar inteiro
+                para viver isso com toda intensidade guardada aqui.<br />
+                Se não permitir, tudo bem também. Ele continua genuíno, bonito, e bem guardado.
+                Ao ler isto, não quero que se sinta pressionada e sim que sinta paz. 
+              </p>
+
+              <p class="focus">
+                Hoje, só desejo que o teu dia brilhe como você.
+              </p>
+
+              <div class="signature">._.. ...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="mini"><span class="pulse"></span> toque gentil, sem pressão</div>
+          <div class="mini">feito para ler no seu tempo</div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        const btn = document.getElementById("openBtn");
+        const paper = document.getElementById("paper");
+
+        function openPaper() {
+          if (!paper) return;
+          paper.style.display = "block";
+          btn.setAttribute("aria-expanded", "true");
+          // rolagem suave para a mensagem (mobile friendly)
+          setTimeout(() => {
+            paper.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 80);
+        }
+
+        btn.addEventListener("click", openPaper);
+
+        // Não faz nada ao tocar fora, conforme você pediu:
+        // "Ao tocar na área escura, nada acontece."
+      })();
+    </script>
+  </body>
+</html>
