@@ -1,5 +1,20 @@
 [
   {
+  "emoji": "🕊️",
+  "title": "Presença",
+  "sub": "Quando o silêncio fala",
+  "desc": "Nem tudo pede resposta.",
+  "href": "./cardCleiaSentimento.html",
+  "publishedAt": "2025-12-14T04:44:00-03:00",
+  "sentimento": "afeto consciente e verdade íntima",
+  "moods": [
+    "escuta interior",
+    "conexão serena",
+    "coragem suave"
+  ]
+}
+,
+  {
     "emoji": "🎬",
     "title": "Saudade",
     "sub": "Quando um ser mora em você",
@@ -13,18 +28,4 @@
       "entrelinhas"
     ]
   },
-  {
-    "emoji": "🎬",
-    "title": "Um Reels que sou eu pensando em você",
-    "sub": "30 segundos que dizem mais que um texto inteiro",
-    "desc": "Clique para abrir um Reels que traduz algo que eu queria te falar sem palavras.",
-    "href": "./reels06122025.html",
-    "publishedAt": "2025-12-06T20:00:00-03:00",
-    "sentimento": "https://www.instagram.com/p/DM6h5CYxK3A/",
-    "moods": [
-      "vídeo",
-      "realidade",
-      "entrelinhas"
-    ]
-  }
 ]
