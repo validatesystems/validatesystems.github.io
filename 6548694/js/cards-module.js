@@ -130,6 +130,7 @@ document.addEventListener("pointerdown", (ev) => {
 
   // Lista de cards que devem ser forçados a ficarem NÃO lidos
   const PRE_UNREAD_CARDS = [
+
   ];
 
   /* ===== Aplicar PRE_UNREAD_CARDS ===== */

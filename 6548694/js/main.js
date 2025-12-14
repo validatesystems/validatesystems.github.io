@@ -653,9 +653,9 @@
           let msg = "Não há cards disponíveis neste momento.";
 
           if (filter === "today") {
-            msg = "Ainda não há cards publicados para hoje.";
+            msg = "Hoje, nenhum card foi publicado ainda. 😶‍🌫️";
           } else if (filter === "unread") {
-            msg = "Não há cards não lidos. Olha você em dia com tudo!";
+            msg = "Você já leu todos os cards. Olha você em dia com tudo! 🫶🏼";
           }
 
           const p = document.createElement("p");
@@ -687,8 +687,45 @@
         .sort((a, b) => b.__dt - a.__dt);
 
       // começa mostrando os cards de hoje
-      applyFilter("today");
+      function getListForFilter(filter) {
+        const now = new Date();
+        let list = baseCards.slice();
+
+        if (filter === "today") {
+          list = list.filter((c) => isToday(c.__dt, now) && c.__dt <= now);
+        }
+
+        if (filter === "all") {
+          list = list.filter((c) => c.__dt <= now);
+        }
+
+        if (filter === "unread") {
+          const isRead =
+            typeof window.isCardRead === "function"
+              ? (href) => window.isCardRead(href)
+              : (href) =>
+                window.__cardsRead instanceof Set ? window.__cardsRead.has(href) : false;
+
+          list = list.filter((c) => c.__dt <= now && !isRead(c.href));
+        }
+
+        return list;
+      }
+
+      function pickInitialFilterByAvailability() {
+        const order = ["today", "unread", "all"];
+        for (const f of order) {
+          if (getListForFilter(f).length > 0) return f;
+        }
+        // Se nenhum tem cards disponíveis, cai no "today" (vai mostrar a msg de vazio de hoje)
+        return "today";
+      }
+
+      // escolhe automaticamente o primeiro filtro que tiver cards disponíveis
+      const initialFilter = pickInitialFilterByAvailability();
+      applyFilter(initialFilter);
       updateFilterCounts();
+
     });
 
     filterTodayBtn?.addEventListener("click", () => applyFilter("today"));
