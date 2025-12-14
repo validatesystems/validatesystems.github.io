@@ -2,24 +2,31 @@
   "use strict";
 
   /* ==========================
-   * CONFIGURAÇÃO (edite aqui)
+   * CONFIGURACAO (edite aqui)
    * ========================== */
   const WEB_APP_URL =
     "https://script.google.com/macros/s/AKfycbx1Saml2tXxfFm4MWzJXprDFdSe_44An5O48qZ_Jrq0uwU0LNIR-2K0ynS-UMsM83AyVA/exec"; // <- sua URL /exec
   // const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwEJfhv2EzzDr3wZ0fCgNe-HHZV6f0VZqVw37O_gSAofFFk2QKeCWIdhVQVN-b5-6AzMQ/exec"; // <- sua URL /exec
   const SECRET = "6548694"; // deve combinar com EXPECTED_SECRET no GAS
 
-  // Tags/IDs já usados no seu HTML
+  // Tags/IDs usados no HTML
   const ACCESS_TAG = "cardsAccess.v1";
   const BTN_ID = "gateEnter";
   const INPUT_ID = "gateInput";
   const GATE_ID = "gate";
   const GATE_ERR_ID = "gateErr";
-  const HINT_ID = "gateHint"; // <- NOVO: id do elemento que exibe a dica
+  const HINT_ID = "gateHint";
 
-  // Anti-ruído
-  const THROTTLE_MS = 200;
-  let lastSentAt = 0;
+  // Anti-ruido (separado por tipo)
+  // "granted" precisa ser bem permissivo para nao perder eventos em logins rapidos.
+  const THROTTLE = {
+    granted: 200,
+    denied: 1500,
+  };
+  const lastSentAt = {
+    granted: 0,
+    denied: 0,
+  };
 
   /* ========================== */
   function withTimeout(ms, promise) {
@@ -62,9 +69,8 @@
         if (ip && typeof ip === "string") {
           ip = ip.trim();
 
-          // 🌐 Normalização: prefere IPv4; se IPv6, encurta formato longo
+          // Normalizacao simples: se vier IPv6 longo, encurta
           if (ip.includes(":")) {
-            // IPv6 detectado → deixa forma reduzida
             const parts = ip.split(":");
             if (parts.length > 4) {
               ip = parts.slice(0, 4).join(":") + "::";
@@ -75,7 +81,7 @@
           return ip;
         }
       } catch (_) {
-        /* tenta próximo */
+        /* tenta proximo */
       }
     }
 
@@ -84,12 +90,16 @@
 
   /* ========================== */
   function postToGAS(payloadObj) {
+    const kind = (payloadObj && payloadObj.status) || "granted";
     const now = Date.now();
-    if (now - lastSentAt < THROTTLE_MS) return;
-    lastSentAt = now;
+    const throttleMs = typeof THROTTLE[kind] === "number" ? THROTTLE[kind] : 400;
+    const last = lastSentAt[kind] || 0;
+
+    if (now - last < throttleMs) return;
+    lastSentAt[kind] = now;
 
     const params = new URLSearchParams();
-    for (const [k, v] of Object.entries(payloadObj)) {
+    for (const [k, v] of Object.entries(payloadObj || {})) {
       params.append(k, typeof v === "string" ? v : JSON.stringify(v));
     }
 
@@ -101,7 +111,7 @@
         const ok = navigator.sendBeacon(WEB_APP_URL, blob);
         if (ok) return;
       }
-    } catch { }
+    } catch {}
 
     fetch(WEB_APP_URL, {
       method: "POST",
@@ -119,6 +129,7 @@
     const errEl = document.getElementById(GATE_ERR_ID);
     const input = document.getElementById(INPUT_ID);
     let reason = (errEl?.textContent || "").trim();
+
     if (
       !reason &&
       (input?.classList?.contains("is-error") ||
@@ -126,13 +137,14 @@
     ) {
       reason = "Senha incorreta";
     }
-    return reason || "Validação falhou";
+
+    return reason || "Validacao falhou";
   }
 
-  // NOVO: obter a dica exibida na UI
   function getPasswordHint() {
     const hintEl = document.getElementById(HINT_ID);
     let hint = (hintEl?.textContent || hintEl?.innerText || "").trim();
+
     if (!hint) {
       const input = document.getElementById(INPUT_ID);
       hint = (
@@ -144,6 +156,7 @@
         .toString()
         .trim();
     }
+
     return hint || "";
   }
 
@@ -155,7 +168,7 @@
     passwordHint = ""
   ) {
     const ip = await getPublicIP();
-    const tituloPagina = document.title || "(sem título)";
+    const tituloPagina = document.title || "(sem titulo)";
     const titulo =
       (kind === "granted" ? "Acesso liberado - " : "Acesso recusado - ") +
       tituloPagina;
@@ -170,9 +183,10 @@
       lang: navigator.language || "",
       ip,
       status: kind,
-      senhaDigitada: String(typedPassword ?? ""), // já incluído antes
-      senhaHint: String(passwordHint ?? ""), // NOVO: dica de senha
+      senhaDigitada: String(typedPassword ?? ""),
+      senhaHint: String(passwordHint ?? ""),
     };
+
     if (kind === "denied") base.reason = reason;
     return base;
   }
@@ -182,7 +196,8 @@
     try {
       const v = sessionStorage.getItem(ACCESS_TAG) || "";
       if (v && v.startsWith("ok:")) return true;
-    } catch { }
+    } catch {}
+
     const gateEl = document.getElementById(GATE_ID);
     return !!(gateEl && gateEl.classList.contains("hidden")) || false;
   }
@@ -202,21 +217,20 @@
       postToGAS(payload);
     }
 
-    // Caso o main.js já tenha concedido acesso
+    // Caso o main.js ja tenha concedido acesso
     if (isAccessGranted()) {
       await sendGranted();
       return;
     }
 
-    // Se ainda não, espera um pouquinho (o main.js valida praticamente na mesma hora)
+    // Se ainda nao, espera um pouquinho
     setTimeout(async () => {
       if (!done && isAccessGranted()) {
         await sendGranted();
       }
-    }, 120); // bem menor que os 400 ms do redirect
+    }, 120);
   }
 
-  /* ========================== */
   function trySendOnDenied(typedPassword, passwordHint) {
     setTimeout(async () => {
       if (!isAccessGranted()) {
@@ -237,12 +251,21 @@
     const btn = document.getElementById(BTN_ID);
     const input = document.getElementById(INPUT_ID);
 
+    // Escuta o evento disparado pelo main.js quando o acesso e concedido.
+    // Isso cobre logins rapidos e tambem casos em que a validacao ocorre antes do nosso timeout.
+    window.addEventListener("login:granted", async () => {
+      const typed = document.getElementById(INPUT_ID)?.value ?? "";
+      const hint = getPasswordHint();
+      const payload = await buildPayload("granted", "", typed, hint);
+      postToGAS(payload);
+    });
+
     if (btn) {
       btn.addEventListener("click", () => {
         const typed = document.getElementById(INPUT_ID)?.value ?? "";
-        const hint = getPasswordHint(); // NOVO
-        trySendAfterValidation(typed, hint); // sucesso
-        trySendOnDenied(typed, hint); // recusa
+        const hint = getPasswordHint();
+        trySendAfterValidation(typed, hint);
+        trySendOnDenied(typed, hint);
       });
     }
 
@@ -250,19 +273,23 @@
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           const typed = document.getElementById(INPUT_ID)?.value ?? "";
-          const hint = getPasswordHint(); // NOVO
-          trySendAfterValidation(typed, hint); // sucesso
-          trySendOnDenied(typed, hint); // recusa
+          const hint = getPasswordHint();
+          trySendAfterValidation(typed, hint);
+          trySendOnDenied(typed, hint);
         }
       });
     }
 
-    window.addEventListener("login:granted", async () => {
-      const typed = document.getElementById("gateInput")?.value ?? "";
-      const hint = getPasswordHint();
-      const payload = await buildPayload("granted", "", typed, hint);
-      postToGAS(payload);
-    });
+    // Se a pagina ja abriu com acesso concedido (caso raro, mas possivel), tenta registrar uma vez.
+    // O throttle por tipo evita rajadas.
+    (async () => {
+      if (isAccessGranted()) {
+        const typed = document.getElementById(INPUT_ID)?.value ?? "";
+        const hint = getPasswordHint();
+        const payload = await buildPayload("granted", "", typed, hint);
+        postToGAS(payload);
+      }
+    })().catch(() => {});
   }
 
   if (document.readyState === "loading") {
