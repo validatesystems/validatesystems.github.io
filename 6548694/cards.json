@@ -1,14 +1,19 @@
 [
-  "emoji": "🌿",
-  "title": "O que fica",
-  "sub": "Sem pedidos",
-  "desc": "Há sentimentos que não pedem lugar. Apenas permanecem.",
-  "href": "cardCleiaSentimento.html",
-  "publishedAt"publishedAt": "2025-
-  "moods": "calmo",
-  "sentimento": "presença"
-  },
-
+  {
+  "emoji": "🕊️",
+  "title": "Presença",
+  "sub": "Quando o silêncio fala",
+  "desc": "Nem tudo pede resposta.",
+  "href": "./cardCleiaSentimento.html",
+  "publishedAt": "2025-12-14T08:00:00-03:00",
+  "sentimento": "afeto consciente e verdade íntima",
+  "moods": [
+    "escuta interior",
+    "conexão serena",
+    "coragem suave"
+  ]
+}
+,
   {
     "emoji": "🎬",
     "title": "Um Reels que sou eu pensando em você",
@@ -1798,4 +1803,5 @@
   }
 
 ]
+
 
