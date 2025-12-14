@@ -1,4 +1,14 @@
 [
+  "emoji": "🌿",
+  "title": "O que fica",
+  "sub": "Sem pedidos",
+  "desc": "Há sentimentos que não pedem lugar. Apenas permanecem.",
+  "href": "cardCleiaSentimento.html",
+  "publishedAt"publishedAt": "2025-
+  "moods": "calmo",
+  "sentimento": "presença"
+  },
+
   {
     "emoji": "🎬",
     "title": "Um Reels que sou eu pensando em você",
@@ -1788,3 +1798,4 @@
   }
 
 ]
+
