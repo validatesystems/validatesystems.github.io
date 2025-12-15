@@ -17,8 +17,8 @@
     window.cards = Array.isArray(data)
       ? data
       : Array.isArray(data.cards)
-        ? data.cards
-        : [];
+      ? data.cards
+      : [];
 
     // dispara o evento que o main.js já escuta
     document.dispatchEvent(new Event("cards:ready"));
@@ -39,9 +39,9 @@
   //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
   // ];
 
-  /* ======================   13/12/2025 - 14:14   ======================= */
+  /* ======================   08/12/2025 - 23:06   ======================= */
   const KEYS = [
-    { id: "mare", pass: "MARE", hint: "Sobe e desce sem pedir licença." },
+    { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
   ];
   /* ================================================================== */
 
@@ -55,8 +55,8 @@
     themeParam === "eletrico"
       ? "eletrico"
       : themeParam === "acustico"
-        ? "acustico"
-        : storedTheme || "acustico";
+      ? "acustico"
+      : storedTheme || "acustico";
   function applyTheme(mode) {
     document.body.classList.toggle("eletrico", mode === "eletrico");
     localStorage.setItem(THEME_KEY, mode);
@@ -99,7 +99,7 @@
       // restaura a posição do cursor
       try {
         el.setSelectionRange(selectionStart, selectionEnd);
-      } catch { }
+      } catch {}
     }
   });
 
@@ -120,26 +120,10 @@
   }
 
   const ACCESS_TAG = "cardsAccess.v1";
-  const JUST_GRANTED_TAG = "cardsAccess.justGranted.v1";
-  const ACCESS_ID_KEY = "cardsAccess.accessId.v1";
-
   function grantAccess() {
-
-    const accessId =
-      Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
-
-    sessionStorage.setItem(ACCESS_TAG, "ok:" + accessId);
-    sessionStorage.setItem(ACCESS_ID_KEY, accessId);
-    sessionStorage.setItem(JUST_GRANTED_TAG, "1");
-
-    window.dispatchEvent(new Event("login:granted"));
-
-    setTimeout(() => {
-      location.href = "page.html";
-    }, 300);
     try {
       sessionStorage.setItem(ACCESS_TAG, "ok:" + (currentKey?.id || ""));
-    } catch { }
+    } catch {}
 
     // avisa o ip-capture-mail que o acesso foi concedido
     try {
@@ -275,8 +259,8 @@
       const items = Array.isArray(data)
         ? data
         : Array.isArray(data?.notificacoes)
-          ? data.notificacoes
-          : [];
+        ? data.notificacoes
+        : [];
 
       // ===== FILTRO: apenas notificações de HOJE e com horário <= AGORA =====
       const now = new Date();
@@ -364,8 +348,8 @@
       const items = Array.isArray(data)
         ? data
         : Array.isArray(data?.notificacoes)
-          ? data.notificacoes
-          : [];
+        ? data.notificacoes
+        : [];
 
       // ===== FILTRO: somente HOJE e horário <= AGORA (local) =====
       const now = new Date();
@@ -659,8 +643,8 @@
             window.__cardsRead instanceof Set
               ? window.__cardsRead
               : typeof window.getReadCards === "function"
-                ? new Set(window.getReadCards())
-                : new Set();
+              ? new Set(window.getReadCards())
+              : new Set();
 
           list = list.filter((c) => c.__dt <= now && !readSet.has(c.href));
         }
@@ -669,9 +653,9 @@
           let msg = "Não há cards disponíveis neste momento.";
 
           if (filter === "today") {
-            msg = "Hoje, nenhum card foi publicado ainda. 😶‍🌫️";
+            msg = "Ainda não há cards publicados para hoje.";
           } else if (filter === "unread") {
-            msg = "Você já leu todos os cards. Olha você em dia com tudo! 🫶🏼";
+            msg = "Não há cards não lidos. Olha você em dia com tudo!";
           }
 
           const p = document.createElement("p");
@@ -703,45 +687,8 @@
         .sort((a, b) => b.__dt - a.__dt);
 
       // começa mostrando os cards de hoje
-      function getListForFilter(filter) {
-        const now = new Date();
-        let list = baseCards.slice();
-
-        if (filter === "today") {
-          list = list.filter((c) => isToday(c.__dt, now) && c.__dt <= now);
-        }
-
-        if (filter === "all") {
-          list = list.filter((c) => c.__dt <= now);
-        }
-
-        if (filter === "unread") {
-          const isRead =
-            typeof window.isCardRead === "function"
-              ? (href) => window.isCardRead(href)
-              : (href) =>
-                window.__cardsRead instanceof Set ? window.__cardsRead.has(href) : false;
-
-          list = list.filter((c) => c.__dt <= now && !isRead(c.href));
-        }
-
-        return list;
-      }
-
-      function pickInitialFilterByAvailability() {
-        const order = ["today", "unread", "all"];
-        for (const f of order) {
-          if (getListForFilter(f).length > 0) return f;
-        }
-        // Se nenhum tem cards disponíveis, cai no "today" (vai mostrar a msg de vazio de hoje)
-        return "today";
-      }
-
-      // escolhe automaticamente o primeiro filtro que tiver cards disponíveis
-      const initialFilter = pickInitialFilterByAvailability();
-      applyFilter(initialFilter);
+      applyFilter("today");
       updateFilterCounts();
-
     });
 
     filterTodayBtn?.addEventListener("click", () => applyFilter("today"));
@@ -976,7 +923,7 @@ document.addEventListener("cards:ready", () => {
   let readArr = [];
   try {
     readArr = JSON.parse(readStr);
-  } catch (e) { }
+  } catch (e) {}
 
   const notReadCount = totalCards.filter(
     (c) => !readArr.includes(c.href)
@@ -1106,5 +1053,3 @@ window.addEventListener("pageshow", (event) => {
 //     window.location.href = target.href;
 //   });
 // })();
-
-
