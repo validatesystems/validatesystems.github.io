@@ -225,6 +225,14 @@
         if (!r.ok) throw new Error("icanhazip not ok");
         return (await r.text()).trim();
       },
+
+      // amazonaws
+      async () => {
+        const r = await fetch("https://checkip.amazonaws.com", { cache: "no-store" });
+        if (!r.ok) throw new Error("aws checkip not ok");
+        return (await r.text()).trim();
+      },
+
     ];
 
     for (const fn of sources) {
@@ -235,9 +243,16 @@
         ]);
 
         if (ip && typeof ip === "string") {
-          getPublicIP._cache = ip;
-          return ip;
+          const clean = ip.trim();
+          const looksLikeIP =
+            /^(\d{1,3}\.){3}\d{1,3}$/.test(clean) || clean.includes(":"); // IPv4 ou IPv6
+
+          if (looksLikeIP) {
+            getPublicIP._cache = clean;
+            return clean;
+          }
         }
+
       } catch { }
     }
 
