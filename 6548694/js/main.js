@@ -41,7 +41,7 @@
 
   /* ======================   13/12/2025 - 14:14   ======================= */
   const KEYS = [
-    { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
+    { id: "mare", pass: "MARE", hint: "Sobe e desce sem pedir licença." },
   ];
   /* ================================================================== */
 
@@ -1106,4 +1106,5 @@ window.addEventListener("pageshow", (event) => {
 //     window.location.href = target.href;
 //   });
 // })();
+
 
