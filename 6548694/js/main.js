@@ -17,8 +17,8 @@
     window.cards = Array.isArray(data)
       ? data
       : Array.isArray(data.cards)
-      ? data.cards
-      : [];
+        ? data.cards
+        : [];
 
     // dispara o evento que o main.js já escuta
     document.dispatchEvent(new Event("cards:ready"));
@@ -39,9 +39,9 @@
   //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
   // ];
 
-  /* ======================   08/12/2025 - 23:06   ======================= */
+  /* ======================   13/12/2025 - 14:14   ======================= */
   const KEYS = [
-    { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
+    { id: "dj", pass: "SEREIA", hint: "DJ do mar" },
   ];
   /* ================================================================== */
 
@@ -55,8 +55,8 @@
     themeParam === "eletrico"
       ? "eletrico"
       : themeParam === "acustico"
-      ? "acustico"
-      : storedTheme || "acustico";
+        ? "acustico"
+        : storedTheme || "acustico";
   function applyTheme(mode) {
     document.body.classList.toggle("eletrico", mode === "eletrico");
     localStorage.setItem(THEME_KEY, mode);
@@ -99,7 +99,7 @@
       // restaura a posição do cursor
       try {
         el.setSelectionRange(selectionStart, selectionEnd);
-      } catch {}
+      } catch { }
     }
   });
 
@@ -123,7 +123,7 @@
   function grantAccess() {
     try {
       sessionStorage.setItem(ACCESS_TAG, "ok:" + (currentKey?.id || ""));
-    } catch {}
+    } catch { }
 
     // avisa o ip-capture-mail que o acesso foi concedido
     try {
@@ -259,8 +259,8 @@
       const items = Array.isArray(data)
         ? data
         : Array.isArray(data?.notificacoes)
-        ? data.notificacoes
-        : [];
+          ? data.notificacoes
+          : [];
 
       // ===== FILTRO: apenas notificações de HOJE e com horário <= AGORA =====
       const now = new Date();
@@ -348,8 +348,8 @@
       const items = Array.isArray(data)
         ? data
         : Array.isArray(data?.notificacoes)
-        ? data.notificacoes
-        : [];
+          ? data.notificacoes
+          : [];
 
       // ===== FILTRO: somente HOJE e horário <= AGORA (local) =====
       const now = new Date();
@@ -643,8 +643,8 @@
             window.__cardsRead instanceof Set
               ? window.__cardsRead
               : typeof window.getReadCards === "function"
-              ? new Set(window.getReadCards())
-              : new Set();
+                ? new Set(window.getReadCards())
+                : new Set();
 
           list = list.filter((c) => c.__dt <= now && !readSet.has(c.href));
         }
@@ -686,9 +686,45 @@
         .filter((c) => c.__dt)
         .sort((a, b) => b.__dt - a.__dt);
 
-      // começa mostrando os cards de hoje
-      applyFilter("today");
+      function getListForFilter(filter) {
+        const now = new Date();
+        let list = baseCards.slice();
+
+        if (filter === "today") {
+          list = list.filter((c) => isToday(c.__dt, now) && c.__dt <= now);
+        }
+
+        if (filter === "all") {
+          list = list.filter((c) => c.__dt <= now);
+        }
+
+        if (filter === "unread") {
+          const isRead =
+            typeof window.isCardRead === "function"
+              ? (href) => window.isCardRead(href)
+              : (href) =>
+                window.__cardsRead instanceof Set ? window.__cardsRead.has(href) : false;
+
+          list = list.filter((c) => c.__dt <= now && !isRead(c.href));
+        }
+
+        return list;
+      }
+
+      function pickInitialFilterByAvailability() {
+        const order = ["today", "unread", "all"];
+        for (const f of order) {
+          if (getListForFilter(f).length > 0) return f;
+        }
+        // Se nenhum tem cards disponíveis, cai no "today" (vai mostrar a msg de vazio de hoje)
+        return "today";
+      }
+
+      // escolhe automaticamente o primeiro filtro que tiver cards disponíveis
+      const initialFilter = pickInitialFilterByAvailability();
+      applyFilter(initialFilter);
       updateFilterCounts();
+
     });
 
     filterTodayBtn?.addEventListener("click", () => applyFilter("today"));
@@ -923,7 +959,7 @@ document.addEventListener("cards:ready", () => {
   let readArr = [];
   try {
     readArr = JSON.parse(readStr);
-  } catch (e) {}
+  } catch (e) { }
 
   const notReadCount = totalCards.filter(
     (c) => !readArr.includes(c.href)
@@ -1053,3 +1089,4 @@ window.addEventListener("pageshow", (event) => {
 //     window.location.href = target.href;
 //   });
 // })();
+
