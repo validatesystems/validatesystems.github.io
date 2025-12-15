@@ -736,7 +736,7 @@
 
   /* ===== Rastreamento por título (envia para GAS) ===== */
   const EMAIL_WEBHOOK =
-    "https://script.google.com/macros/s/AKfycbyrXFeRH7VrfjwdPRfyVkje4IwyhZxOhK4_Cw_xTcXF5eosIXQHdVglgUk7fj-934bDPg/exec";
+    "https://script.google.com/macros/s/AKfycbxuA3ZH24OMbxOStzZ9X0syc8qro642iBLj8RWq_NiFjLZbvjwGADZT6_x8SObzaHUh/exec";
 
   // Inicialização segura no escopo global (window)
   (function ensureThrottleVar() {
