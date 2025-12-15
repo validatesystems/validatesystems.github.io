@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Bom dia</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg1: #fdf6e3;
+        --bg2: #fffefc;
+        --card: rgba(255, 255, 255, 0.85);
+        --border: rgba(255, 183, 77, 0.35);
+        --text: #3a3a3a;
+        --soft: rgba(58, 58, 58, 0.72);
+        --accent: #ff9800;
+
+        --paper: #fffaf0;
+        --paperEdge: rgba(255, 255, 255, 0.14);
+        --paperInk: #444;
+        --paperSoft: #666;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "Cormorant Garamond", serif;
+        background: radial-gradient(
+            80rem 30rem at 50% -2rem,
+            rgba(255, 255, 255, 0.65),
+            transparent 60%
+          ),
+          linear-gradient(180deg, #ffecd2 0%, #fcb69f 50%, #fffaf0 100%);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* grão sutil de luz */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+            40rem 20rem at 60% 8%,
+            rgba(255, 197, 126, 0.22),
+            transparent 60%
+          ),
+          radial-gradient(
+            30rem 18rem at 20% 0%,
+            rgba(255, 255, 255, 0.28),
+            transparent 65%
+          );
+        mix-blend-mode: screen;
+        opacity: 0.7;
+        z-index: 0;
+      }
+
+      .shell {
+        position: relative;
+        z-index: 1;
+        width: min(560px, 100%);
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        padding: 28px 24px 22px;
+        box-shadow: 0 24px 48px rgba(255, 152, 0, 0.18),
+          0 6px 20px rgba(0, 0, 0, 0.06);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        animation: fadeIn 800ms ease-out both;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        color: var(--accent);
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        background: rgba(255, 152, 0, 0.08);
+        user-select: none;
+        font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto,
+          Arial, sans-serif;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 12px rgba(255, 152, 0, 0.6);
+      }
+
+      .paper {
+        margin-top: 16px;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.5),
+            transparent 18%
+          ),
+          var(--paper);
+        border-radius: 20px;
+        padding: 24px 20px;
+        box-shadow: inset 0 0 0 1px var(--paperEdge),
+          0 8px 20px rgba(0, 0, 0, 0.08);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .paper::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.12) 50%,
+          transparent
+        );
+        opacity: 0.35;
+      }
+
+      .msg {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: var(--paperInk);
+      }
+
+      .msg h1 {
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        font-size: clamp(1.6rem, 4vw, 2rem);
+        margin-bottom: 12px;
+        color: var(--accent);
+      }
+
+      .msg p {
+        font-size: clamp(1rem, 2.6vw, 1.1rem);
+        line-height: 1.8;
+        color: var(--paperSoft);
+      }
+
+      .divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent),
+          transparent
+        );
+        margin: 18px 0 16px;
+      }
+
+      .signature {
+        text-align: center;
+        font-size: 0.85rem;
+        color: rgba(58, 58, 58, 0.7);
+        user-select: none;
+      }
+
+      .signature b {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      @media (max-width: 420px) {
+        .card {
+          border-radius: 22px;
+          padding: 24px 16px 16px;
+        }
+        .paper {
+          border-radius: 20px;
+          padding: 18px 14px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="shell" role="main">
+      <section class="card" aria-label="Mensagem do dia">
+        <div class="topline">
+          <span class="chip"><span class="dot"></span>bom dia</span>
+        </div>
+
+        <div class="paper" role="article">
+          <div class="msg">
+            <h1>Bom dia Cléia.</h1>
+            <p>
+              Hoje não trago mensagens grandes.<br />
+              Só um desejo sincero de que o seu dia seja bom.
+            </p>
+
+            <div class="divider" aria-hidden="true"></div>
+
+            <div class="signature">
+              <b>._.. ...</b>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

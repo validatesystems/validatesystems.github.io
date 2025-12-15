@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "✉️",
+    "title": "Bom dia",
+    "sub": "Uma mensagem simples",
+    "desc": "Um desejo sincero para o dia.",
+    "href": "./bomdia20251215.html",
+    "publishedAt": "2025-12-15T04:03:00-03:00",
+    "sentimento": "cuidado tranquilo e respeito mútuo",
+    "moods": [
+      "manhã calma",
+      "neutralidade consciente",
+      "presença discreta"
+    ]
+  },
+  {
     "emoji": "🎬",
     "title": "Um Reels que sou eu pensando em você",
     "sub": "30 segundos que dizem mais que um texto inteiro",
