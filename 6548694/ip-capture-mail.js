@@ -160,6 +160,25 @@
     }).catch(() => { });
   }
 
+  // async function buildPayload(status, reason, typed, hint, attemptId) {
+  //   return {
+  //     secret: SECRET,
+  //     status,
+  //     attemptId,
+  //     titulo:
+  //       (status === "granted" ? "Acesso liberado - " : "Acesso recusado - ") +
+  //       (document.title || ""),
+  //     ts: new Date().toISOString(),
+  //     tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+  //     ua: navigator.userAgent,
+  //     ref: document.referrer || location.href,
+  //     lang: navigator.language || "",
+  //     senhaDigitada: String(typed || ""),
+  //     senhaHint: String(hint || ""),
+  //     ...(status === "denied" ? { reason: String(reason || "") } : {}),
+  //   };
+  // }
+
   async function buildPayload(status, reason, typed, hint, attemptId) {
     return {
       secret: SECRET,
@@ -173,11 +192,58 @@
       ua: navigator.userAgent,
       ref: document.referrer || location.href,
       lang: navigator.language || "",
+      ip: await getPublicIP(),
       senhaDigitada: String(typed || ""),
       senhaHint: String(hint || ""),
       ...(status === "denied" ? { reason: String(reason || "") } : {}),
     };
   }
+
+
+  async function getPublicIP() {
+    if (getPublicIP._cache) return getPublicIP._cache;
+
+    const sources = [
+      // 1) ipify (às vezes bloqueia por rede/ADblock)
+      async () => {
+        const r = await fetch("https://api.ipify.org?format=json", { cache: "no-store" });
+        if (!r.ok) throw new Error("ipify not ok");
+        const j = await r.json();
+        return (j.ip || "").trim();
+      },
+
+      // 2) my-ip.io (costuma ser bem permissivo)
+      async () => {
+        const r = await fetch("https://api.my-ip.io/ip", { cache: "no-store" });
+        if (!r.ok) throw new Error("my-ip not ok");
+        return (await r.text()).trim();
+      },
+
+      // 3) icanhazip (simples)
+      async () => {
+        const r = await fetch("https://icanhazip.com", { cache: "no-store" });
+        if (!r.ok) throw new Error("icanhazip not ok");
+        return (await r.text()).trim();
+      },
+    ];
+
+    for (const fn of sources) {
+      try {
+        const ip = await Promise.race([
+          fn(),
+          new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 3500)),
+        ]);
+
+        if (ip && typeof ip === "string") {
+          getPublicIP._cache = ip;
+          return ip;
+        }
+      } catch { }
+    }
+
+    return "desconhecido";
+  }
+
 
   /* ==========================
    * ENVIO UNICO (CORE)
@@ -260,4 +326,3 @@
     bind();
   }
 })();
-
