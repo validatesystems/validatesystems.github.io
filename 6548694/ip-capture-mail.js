@@ -515,37 +515,90 @@
   "use strict";
 
   /* ==========================
-   * CONFIGURACAO (edite aqui)
+   * CONFIGURACAO
    * ========================== */
   const WEB_APP_URL =
     "https://script.google.com/macros/s/AKfycbx1Saml2tXxfFm4MWzJXprDFdSe_44An5O48qZ_Jrq0uwU0LNIR-2K0ynS-UMsM83AyVA/exec";
   const SECRET = "6548694";
 
-  // Tags/IDs usados no HTML
-  const ACCESS_TAG = "cardsAccess.v1";
-  // Flag para reenviar o "granted" na page.html apos redirect/BFCache
-  const JUST_GRANTED_TAG = "cardsAccess.justGranted.v1";
+  // IDs do seu HTML
   const BTN_ID = "gateEnter";
   const INPUT_ID = "gateInput";
   const GATE_ID = "gate";
   const GATE_ERR_ID = "gateErr";
   const HINT_ID = "gateHint";
 
-  // Anti-ruido (separado por tipo)
-  const THROTTLE = {
-    granted: 200,
-    denied: 1500,
-  };
-  const lastSentAt = {
-    granted: 0,
-    denied: 0,
-  };
+  // Mesmo ACCESS_TAG usado no main.js
+  const ACCESS_TAG = "cardsAccess.v1";
 
-  /* ========================== */
+  /* ==========================
+   * CONTROLE DE DUPLICACAO
+   *  - 1 email por tentativa de login
+   *  - persiste entre index2.html -> page.html
+   * ========================== */
+  const ATTEMPT_ID_KEY = "cardsAccess.attemptId.v1";
+  const SENT_ATTEMPT_ID_KEY = "cardsAccess.sentAttemptId.v1";
+
+  // Fila simples (para mobile: se falhar, tenta novamente depois)
+  const QUEUE_KEY = "cardsAccess.mailQueue.v1";
+  const MAX_ATTEMPTS = 6;
+
+  function now() {
+    return Date.now();
+  }
+
+  function makeId() {
+    return now().toString(36) + "-" + Math.random().toString(36).slice(2);
+  }
+
+  function ensureAttemptId() {
+    try {
+      let id = sessionStorage.getItem(ATTEMPT_ID_KEY);
+      if (!id) {
+        id = makeId();
+        sessionStorage.setItem(ATTEMPT_ID_KEY, id);
+      }
+      return id;
+    } catch {
+      // sem sessionStorage? fallback em memoria
+      if (!ensureAttemptId._mem) ensureAttemptId._mem = makeId();
+      return ensureAttemptId._mem;
+    }
+  }
+
+  function resetAttemptId() {
+    // chamado no clique/Enter: cada tentativa de login ganha um id novo
+    try {
+      const id = makeId();
+      sessionStorage.setItem(ATTEMPT_ID_KEY, id);
+      return id;
+    } catch {
+      ensureAttemptId._mem = makeId();
+      return ensureAttemptId._mem;
+    }
+  }
+
+  function wasAttemptSent(attemptId) {
+    if (!attemptId) return true;
+    try {
+      return sessionStorage.getItem(SENT_ATTEMPT_ID_KEY) === attemptId;
+    } catch {
+      return false;
+    }
+  }
+
+  function markAttemptSent(attemptId) {
+    if (!attemptId) return;
+    try {
+      sessionStorage.setItem(SENT_ATTEMPT_ID_KEY, attemptId);
+    } catch { }
+  }
+
+  /* ==========================
+   * IP publico (com cache)
+   * ========================== */
   function withTimeout(ms, promise) {
-    const t = new Promise((_, rej) =>
-      setTimeout(() => rej(new Error("timeout")), ms)
-    );
+    const t = new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms));
     return Promise.race([promise, t]);
   }
 
@@ -581,79 +634,18 @@
         let ip = await fn();
         if (ip && typeof ip === "string") {
           ip = ip.trim();
-
-          // Normalizacao simples: se vier IPv6 longo, encurta
-          if (ip.includes(":")) {
-            const parts = ip.split(":");
-            if (parts.length > 4) {
-              ip = parts.slice(0, 4).join(":") + "::";
-            }
-          }
-
           getPublicIP._cache = ip;
           return ip;
         }
-      } catch (_) {
-        // tenta proximo
-      }
+      } catch { }
     }
 
     return "desconhecido";
   }
 
-  /* ========================== */
-  function postToGAS(payloadObj) {
-    const kind = (payloadObj && payloadObj.status) || "granted";
-    const now = Date.now();
-    const throttleMs = typeof THROTTLE[kind] === "number" ? THROTTLE[kind] : 400;
-    const last = lastSentAt[kind] || 0;
-
-    if (now - last < throttleMs) return;
-    lastSentAt[kind] = now;
-
-    const params = new URLSearchParams();
-    for (const [k, v] of Object.entries(payloadObj || {})) {
-      params.append(k, typeof v === "string" ? v : JSON.stringify(v));
-    }
-
-    try {
-      if (navigator.sendBeacon) {
-        const blob = new Blob([params.toString()], {
-          type: "application/x-www-form-urlencoded;charset=UTF-8",
-        });
-        const ok = navigator.sendBeacon(WEB_APP_URL, blob);
-        if (ok) return;
-      }
-    } catch { }
-
-    fetch(WEB_APP_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-      },
-      body: params.toString(),
-      keepalive: true,
-    }).catch((err) => console.error("[ip-mail] fetch error:", err));
-  }
-
-  /* ========================== */
-  function getRefusalReason() {
-    const errEl = document.getElementById(GATE_ERR_ID);
-    const input = document.getElementById(INPUT_ID);
-    let reason = (errEl?.textContent || "").trim();
-
-    if (
-      !reason &&
-      (input?.classList?.contains("is-error") ||
-        input?.getAttribute("aria-invalid") === "true")
-    ) {
-      reason = "Senha incorreta";
-    }
-
-    return reason || "Validacao falhou";
-  }
-
+  /* ==========================
+   * Helpers de UI
+   * ========================== */
   function getPasswordHint() {
     const hintEl = document.getElementById(HINT_ID);
     let hint = (hintEl?.textContent || hintEl?.innerText || "").trim();
@@ -669,42 +661,24 @@
         .toString()
         .trim();
     }
-
     return hint || "";
   }
 
-  /* ========================== */
-  async function buildPayload(
-    kind = "granted",
-    reason = "",
-    typedPassword = "",
-    passwordHint = ""
-  ) {
-    const ip = await getPublicIP();
-    const tituloPagina = document.title || "(sem titulo)";
-    const titulo =
-      (kind === "granted" ? "Acesso liberado - " : "Acesso recusado - ") +
-      tituloPagina;
+  function getRefusalReason() {
+    const errEl = document.getElementById(GATE_ERR_ID);
+    const input = document.getElementById(INPUT_ID);
 
-    const base = {
-      secret: SECRET,
-      titulo,
-      ts: new Date().toISOString(),
-      tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
-      ua: navigator.userAgent,
-      ref: document.referrer || location.href,
-      lang: navigator.language || "",
-      ip,
-      status: kind,
-      senhaDigitada: String(typedPassword ?? ""),
-      senhaHint: String(passwordHint ?? ""),
-    };
-
-    if (kind === "denied") base.reason = reason;
-    return base;
+    let reason = (errEl?.textContent || "").trim();
+    if (
+      !reason &&
+      (input?.classList?.contains("is-error") ||
+        input?.getAttribute("aria-invalid") === "true")
+    ) {
+      reason = "Senha incorreta";
+    }
+    return reason || "Validacao falhou";
   }
 
-  /* ========================== */
   function isAccessGranted() {
     try {
       const v = sessionStorage.getItem(ACCESS_TAG) || "";
@@ -715,265 +689,259 @@
     return !!(gateEl && gateEl.classList.contains("hidden")) || false;
   }
 
-  /* ========================== */
+  /* ==========================
+   * Envio para GAS
+   * ========================== */
+  function postToGAS(payloadObj) {
+    const params = new URLSearchParams();
+    for (const [k, v] of Object.entries(payloadObj || {})) {
+      params.append(k, typeof v === "string" ? v : JSON.stringify(v));
+    }
+
+    // Tenta sendBeacon primeiro (melhor em mobile/redirect)
+    try {
+      if (navigator.sendBeacon) {
+        const blob = new Blob([params.toString()], {
+          type: "application/x-www-form-urlencoded;charset=UTF-8",
+        });
+        const ok = navigator.sendBeacon(WEB_APP_URL, blob);
+        if (ok) return true;
+      }
+    } catch { }
+
+    // Fallback fetch keepalive
+    try {
+      fetch(WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+        body: params.toString(),
+        keepalive: true,
+      }).catch(() => { });
+      return true; // no-cors não permite confirmar; tratamos como "tentado"
+    } catch {
+      return false;
+    }
+  }
+
+  async function buildPayload(kind, attemptId, reason, typedPassword, passwordHint) {
+    const ip = await getPublicIP();
+    const tituloPagina = document.title || "(sem titulo)";
+    const titulo =
+      (kind === "granted" ? "Pagina aberta - Acesso liberado - " : "Pagina aberta - Acesso recusado - ") +
+      tituloPagina;
+
+    const base = {
+      secret: SECRET,
+      status: kind,
+      titulo,
+      ts: new Date().toISOString(),
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+      ua: navigator.userAgent,
+      ref: document.referrer || location.href,
+      lang: navigator.language || "",
+      ip,
+      attemptId: String(attemptId || ""),
+      senhaDigitada: String(typedPassword ?? ""),
+      senhaHint: String(passwordHint ?? ""),
+    };
+
+    if (kind === "denied") base.reason = String(reason || "");
+    return base;
+  }
+
+  /* ==========================
+   * Fila simples com retry
+   * ========================== */
+  function loadQueue() {
+    try {
+      const raw = localStorage.getItem(QUEUE_KEY);
+      const q = raw ? JSON.parse(raw) : [];
+      return Array.isArray(q) ? q : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveQueue(q) {
+    try {
+      localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
+    } catch { }
+  }
+
+  function enqueue(item) {
+    const q = loadQueue();
+
+    // Dedupe forte: não enfileira o mesmo attemptId/status duas vezes
+    if (
+      q.some(
+        (x) => x && x.attemptId === item.attemptId && x.kind === item.kind
+      )
+    ) {
+      return;
+    }
+
+    q.push(item);
+    saveQueue(q);
+  }
+
+  async function flushQueue() {
+    const q = loadQueue();
+    if (!q.length) return;
+
+    const remaining = [];
+
+    for (const item of q) {
+      if (!item || !item.kind || !item.attemptId) continue;
+
+      // Se já marcamos como enviado nesta sessão, pode descartar
+      if (item.kind === "granted" && wasAttemptSent(item.attemptId)) continue;
+
+      const attempts = Number(item.attempts || 0);
+      if (attempts >= MAX_ATTEMPTS) continue;
+
+      const payload = await buildPayload(
+        item.kind,
+        item.attemptId,
+        item.reason || "",
+        item.typedPassword || "",
+        item.passwordHint || ""
+      );
+
+      const ok = postToGAS(payload);
+
+      // Para "granted": marcamos como enviado para evitar avalanche de emails
+      if (ok && item.kind === "granted") markAttemptSent(item.attemptId);
+
+      // Se ainda pode tentar de novo, mantém
+      if (!ok) {
+        remaining.push({ ...item, attempts: attempts + 1 });
+      }
+    }
+
+    saveQueue(remaining);
+  }
+
+  /* ==========================
+   * Envio seguro (1 por tentativa)
+   * ========================== */
+  async function sendGranted(typedPassword, passwordHint) {
+    const attemptId = ensureAttemptId();
+    if (wasAttemptSent(attemptId)) return;
+
+    const payload = await buildPayload(
+      "granted",
+      attemptId,
+      "",
+      typedPassword,
+      passwordHint
+    );
+
+    const ok = postToGAS(payload);
+    if (ok) {
+      markAttemptSent(attemptId);
+    } else {
+      enqueue({ kind: "granted", attemptId, typedPassword, passwordHint, attempts: 1 });
+    }
+  }
+
+  async function sendDenied(typedPassword, passwordHint) {
+    const attemptId = ensureAttemptId();
+    const reason = getRefusalReason();
+
+    const payload = await buildPayload(
+      "denied",
+      attemptId,
+      reason,
+      typedPassword,
+      passwordHint
+    );
+
+    const ok = postToGAS(payload);
+    if (!ok) {
+      enqueue({
+        kind: "denied",
+        attemptId,
+        reason,
+        typedPassword,
+        passwordHint,
+        attempts: 1,
+      });
+    }
+  }
+
+  /* ==========================
+   * BIND (simples e sem duplicar)
+   * ========================== */
   function bind() {
     const btn = document.getElementById(BTN_ID);
     const input = document.getElementById(INPUT_ID);
 
-    // Fila persistente para garantir envio mesmo com redirects/fechamento rapido no mobile
-    const QKEY = "mailQueue.v2";
-    const LOCKKEY = "mailQueue.lock.v2";
-    const MAX_ATTEMPTS = 12;
-    const BASE_BACKOFF = 800;
-    const MAX_BACKOFF = 60_000;
-    const DEDUPE_WINDOW = 8_000;
+    // Sempre que a pagina abre, tenta drenar o que ficou pendente
+    flushQueue().catch(() => { });
 
-    function now() {
-      return Date.now();
+    // Se esta pagina abriu já com acesso garantido (ex: index2 -> page.html, BFCache/reload)
+    // envia 1 vez por attemptId (sem duplicar)
+    if (isAccessGranted()) {
+      sendGranted("", getPasswordHint()).catch(() => { });
     }
 
-    function safeParse(json, fallback) {
-      try {
-        return JSON.parse(json);
-      } catch {
-        return fallback;
-      }
-    }
+    function onAttempt() {
+      // Nova tentativa de login = novo attemptId (isso evita repetir o mesmo email)
+      const attemptId = resetAttemptId();
 
-    function loadQueue() {
-      try {
-        return safeParse(localStorage.getItem(QKEY) || "[]", []);
-      } catch {
-        return [];
-      }
-    }
-
-    function saveQueue(q) {
-      try {
-        localStorage.setItem(QKEY, JSON.stringify(q));
-      } catch { }
-    }
-
-    function makeId() {
-      return (
-        String(Date.now()) +
-        ":" +
-        Math.random().toString(16).slice(2) +
-        ":" +
-        Math.random().toString(16).slice(2)
-      );
-    }
-
-    function isLocked() {
-      try {
-        const v = Number(localStorage.getItem(LOCKKEY) || "0");
-        return v > now();
-      } catch {
-        return false;
-      }
-    }
-
-    function lock(ms) {
-      try {
-        localStorage.setItem(LOCKKEY, String(now() + ms));
-      } catch { }
-    }
-
-    function unlock() {
-      try {
-        localStorage.removeItem(LOCKKEY);
-      } catch { }
-    }
-
-    function shouldDedupe(item) {
-      if (item.payload?.status !== "granted") return false;
-
-      const q = loadQueue();
-      const t0 = now() - DEDUPE_WINDOW;
-      return q.some(
-        (x) =>
-          x?.payload?.status === "granted" &&
-          typeof x.createdAt === "number" &&
-          x.createdAt >= t0
-      );
-    }
-
-    function enqueue(payload) {
-      const item = {
-        id: makeId(),
-        createdAt: now(),
-        nextTryAt: now(),
-        attempts: 0,
-        payload,
-      };
-
-      if (shouldDedupe(item)) return;
-
-      const q = loadQueue();
-      q.push(item);
-      saveQueue(q);
-
-      scheduleFlush(0);
-    }
-
-    function trySendOne(item) {
-      postToGAS(item.payload);
-    }
-
-    function computeBackoff(attempt) {
-      const exp = Math.min(MAX_BACKOFF, BASE_BACKOFF * Math.pow(2, attempt));
-      const jitter = Math.floor(Math.random() * 300);
-      return exp + jitter;
-    }
-
-    let flushTimer = null;
-
-    function scheduleFlush(delayMs) {
-      if (flushTimer) return;
-      flushTimer = setTimeout(() => {
-        flushTimer = null;
-        flushQueue();
-      }, Math.max(0, delayMs || 0));
-    }
-
-    function flushQueue() {
-      if (isLocked()) return;
-      lock(1200);
-
-      try {
-        let q = loadQueue();
-        if (!Array.isArray(q) || q.length === 0) {
-          unlock();
-          return;
-        }
-
-        const t = now();
-
-        // Limpa itens antigos (24h)
-        const TTL = 24 * 60 * 60 * 1000;
-        q = q.filter((x) => !x?.createdAt || t - x.createdAt < TTL);
-
-        for (const item of q) {
-          if (!item || !item.payload) continue;
-
-          if (item.attempts >= MAX_ATTEMPTS) {
-            item.nextTryAt = Infinity;
-            continue;
-          }
-
-          if (typeof item.nextTryAt !== "number") item.nextTryAt = t;
-          if (item.nextTryAt > t) continue;
-
-          // Marca proxima tentativa antes de tentar (protege contra fechamento no meio)
-          item.attempts += 1;
-          item.nextTryAt = t + computeBackoff(item.attempts);
-
-          trySendOne(item);
-
-          flushQueue._sentThisRound = (flushQueue._sentThisRound || 0) + 1;
-          if (flushQueue._sentThisRound >= 2) break;
-        }
-
-        q = q.filter((x) => x && x.payload && x.attempts < MAX_ATTEMPTS);
-        saveQueue(q);
-
-        flushQueue._sentThisRound = 0;
-
-        if (q.length) {
-          const t2 = now();
-          const next = q.reduce((min, x) => {
-            const n = typeof x.nextTryAt === "number" ? x.nextTryAt : t2;
-            return Math.min(min, n);
-          }, Infinity);
-
-          if (Number.isFinite(next)) {
-            scheduleFlush(Math.max(250, next - t2));
-          }
-        }
-      } finally {
-        unlock();
-      }
-    }
-
-    // 1) Evento do main.js: enfileira imediatamente
-    window.addEventListener("login:granted", async () => {
-      try {
-        const typed = input?.value || "";
-        const hint = getPasswordHint();
-        const payload = await buildPayload("granted", "", typed, hint);
-        enqueue(payload);
-      } catch { }
-    });
-
-    // 2) Clique/Enter: enfileira conforme resultado apos pequeno delay
-    function handleAttempt() {
       const typed = input?.value || "";
       const hint = getPasswordHint();
 
-      setTimeout(async () => {
-        try {
-          if (isAccessGranted()) {
-            const payload = await buildPayload("granted", "", typed, hint);
-            enqueue(payload);
-          } else {
-            const payload = await buildPayload(
-              "denied",
-              getRefusalReason(),
-              typed,
-              hint
-            );
-            enqueue(payload);
-          }
-        } catch { }
-      }, 260);
+      // Pequeno delay para dar tempo do main.js validar e gravar o ACCESS_TAG
+      setTimeout(() => {
+        if (isAccessGranted()) {
+          sendGranted(typed, hint).catch(() => { });
+        } else {
+          // Para denied, não marca como enviado (pode haver nova tentativa logo em seguida)
+          sendDenied(typed, hint).catch(() => { });
+        }
+      }, 220);
+
+      // Se o browser matar a aba no meio, o queue segura
+      enqueue({
+        kind: "granted",
+        attemptId,
+        typedPassword: typed,
+        passwordHint: hint,
+        attempts: 1,
+      });
     }
 
-    btn?.addEventListener("click", handleAttempt);
+    btn?.addEventListener("click", onAttempt);
+
     input?.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") handleAttempt();
+      if (e.key === "Enter") onAttempt();
     });
 
-    // 3) Envio tardio na page.html (pos-redirect/BFCache)
-    // Funciona com a flag JUST_GRANTED_TAG.
-    // Tambem tem um fallback: se a page.html abriu com acesso garantido e ainda nao registramos
-    // um "granted" nesta sessao, enviamos uma vez mesmo sem a flag.
-    (async () => {
-      try {
-        const SENT_TAG = "cardsAccess.grantedSent.v1";
-        const hasSent = !!sessionStorage.getItem(SENT_TAG);
+    // Também envia quando o main.js avisar explicitamente
+    window.addEventListener("login:granted", () => {
+      const typed = input?.value || "";
+      const hint = getPasswordHint();
+      sendGranted(typed, hint).catch(() => { });
+    });
 
-        const justGranted = sessionStorage.getItem(JUST_GRANTED_TAG);
-        if (justGranted && isAccessGranted()) {
-          sessionStorage.removeItem(JUST_GRANTED_TAG);
-          sessionStorage.setItem(SENT_TAG, "1");
-          const payload = await buildPayload("granted");
-          enqueue(payload);
-          return;
-        }
-
-        // Fallback: page abriu (ou voltou do BFCache) ja com acesso, mas sem flag.
-        // Envia somente 1 vez por sessao para nao spammar.
-        if (!hasSent && isAccessGranted()) {
-          sessionStorage.setItem(SENT_TAG, "1");
-          const payload = await buildPayload("granted");
-          enqueue(payload);
-        }
-      } catch { }
-    })();
-
-    // 4) Flush em momentos criticos no mobile
-    window.addEventListener("pagehide", () => flushQueue());
-    window.addEventListener("pageshow", (e) => {
-      if (e && e.persisted) scheduleFlush(0);
+    // Momentos críticos no mobile: tenta drenar fila
+    window.addEventListener("pagehide", () => {
+      flushQueue().catch(() => { });
     });
     document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") flushQueue();
-      if (document.visibilityState === "visible") scheduleFlush(0);
+      if (document.visibilityState === "hidden") {
+        flushQueue().catch(() => { });
+      } else {
+        flushQueue().catch(() => { });
+      }
     });
-    window.addEventListener("online", () => scheduleFlush(0));
-
-    // 5) Drena fila ao abrir a pagina
-    scheduleFlush(0);
+    window.addEventListener("online", () => {
+      flushQueue().catch(() => { });
+    });
   }
 
   if (document.readyState === "loading") {
