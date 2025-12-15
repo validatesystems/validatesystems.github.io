@@ -91,7 +91,7 @@ window.addEventListener("pagehide", flushQueue);
    * CONFIG
    * ========================== */
   const WEB_APP_URL =
-    "https://script.google.com/macros/s/AKfycbwURwnuNjP6sfiWPD8Vb4Kh9ke20QgUpp4sPfMRICKiHx1jSyp0fNwmL6I76rtW6H4/exec";
+    "https://script.google.com/macros/s/AKfycbzG0brytob2oiD34f9CWUFlTzuag_t189YhcZ6eRJK1NWTwMJuHUpWdZzy0ytVkGNTC/exec";
   const SECRET = "990143";
 
   // IDs do seu HTML (index2.html)
