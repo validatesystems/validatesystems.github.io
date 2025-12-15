@@ -120,7 +120,23 @@
   }
 
   const ACCESS_TAG = "cardsAccess.v1";
+  const JUST_GRANTED_TAG = "cardsAccess.justGranted.v1";
+  const ACCESS_ID_KEY = "cardsAccess.accessId.v1";
+
   function grantAccess() {
+
+    const accessId =
+      Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
+
+    sessionStorage.setItem(ACCESS_TAG, "ok:" + accessId);
+    sessionStorage.setItem(ACCESS_ID_KEY, accessId);
+    sessionStorage.setItem(JUST_GRANTED_TAG, "1");
+
+    window.dispatchEvent(new Event("login:granted"));
+
+    setTimeout(() => {
+      location.href = "page.html";
+    }, 300);
     try {
       sessionStorage.setItem(ACCESS_TAG, "ok:" + (currentKey?.id || ""));
     } catch { }
