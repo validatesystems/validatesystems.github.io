@@ -111,7 +111,7 @@
         const ok = navigator.sendBeacon(WEB_APP_URL, blob);
         if (ok) return;
       }
-    } catch {}
+    } catch { }
 
     fetch(WEB_APP_URL, {
       method: "POST",
@@ -196,7 +196,7 @@
     try {
       const v = sessionStorage.getItem(ACCESS_TAG) || "";
       if (v && v.startsWith("ok:")) return true;
-    } catch {}
+    } catch { }
 
     const gateEl = document.getElementById(GATE_ID);
     return !!(gateEl && gateEl.classList.contains("hidden")) || false;
@@ -251,46 +251,61 @@
     const btn = document.getElementById(BTN_ID);
     const input = document.getElementById(INPUT_ID);
 
-    // Escuta o evento disparado pelo main.js quando o acesso e concedido.
-    // Isso cobre logins rapidos e tambem casos em que a validacao ocorre antes do nosso timeout.
+    // 1) Evento disparado pelo main.js no momento exato da liberação
     window.addEventListener("login:granted", async () => {
-      const typed = document.getElementById(INPUT_ID)?.value ?? "";
-      const hint = getPasswordHint();
-      const payload = await buildPayload("granted", "", typed, hint);
-      postToGAS(payload);
-    });
-
-    if (btn) {
-      btn.addEventListener("click", () => {
-        const typed = document.getElementById(INPUT_ID)?.value ?? "";
-        const hint = getPasswordHint();
-        trySendAfterValidation(typed, hint);
-        trySendOnDenied(typed, hint);
-      });
-    }
-
-    if (input) {
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          const typed = document.getElementById(INPUT_ID)?.value ?? "";
-          const hint = getPasswordHint();
-          trySendAfterValidation(typed, hint);
-          trySendOnDenied(typed, hint);
-        }
-      });
-    }
-
-    // Se a pagina ja abriu com acesso concedido (caso raro, mas possivel), tenta registrar uma vez.
-    // O throttle por tipo evita rajadas.
-    (async () => {
-      if (isAccessGranted()) {
-        const typed = document.getElementById(INPUT_ID)?.value ?? "";
+      try {
+        const typed = input?.value || "";
         const hint = getPasswordHint();
         const payload = await buildPayload("granted", "", typed, hint);
         postToGAS(payload);
-      }
-    })().catch(() => {});
+      } catch { }
+    });
+
+    // Função comum para clique e Enter
+    function handleAttempt() {
+      const typed = input?.value || "";
+      const hint = getPasswordHint();
+
+      // Pequeno delay para permitir o main.js concluir a validação
+      setTimeout(async () => {
+        try {
+          if (isAccessGranted()) {
+            const payload = await buildPayload("granted", "", typed, hint);
+            postToGAS(payload);
+          } else {
+            const payload = await buildPayload(
+              "denied",
+              getRefusalReason(),
+              typed,
+              hint
+            );
+            postToGAS(payload);
+          }
+        } catch { }
+      }, 350);
+    }
+
+    // 2) Clique no botão
+    btn?.addEventListener("click", handleAttempt);
+
+    // 3) Enter no input
+    input?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") handleAttempt();
+    });
+
+    // 4) Caso raro: página já abriu com acesso garantido (mobile / restore)
+    (async () => {
+      try {
+        const justGranted = sessionStorage.getItem(JUST_GRANTED_TAG);
+        if (justGranted && isAccessGranted()) {
+          sessionStorage.removeItem(JUST_GRANTED_TAG);
+          const payload = await buildPayload("granted");
+          postToGAS(payload);
+        }
+      } catch { }
+    })();
   }
+
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", bind, { once: true });
