@@ -130,20 +130,7 @@ document.addEventListener("pointerdown", (ev) => {
 
   // Lista de cards que devem ser forçados a ficarem NÃO lidos
   const PRE_UNREAD_CARDS = [
-    {
-      "emoji": "✉️",
-      "title": "Bom dia",
-      "sub": "Uma mensagem simples",
-      "desc": "Um desejo sincero para o dia.",
-      "href": "./bomdia20251215.html",
-      "publishedAt": "2025-12-15T04:03:00-03:00",
-      "sentimento": "cuidado tranquilo e respeito mútuo",
-      "moods": [
-        "manhã calma",
-        "neutralidade consciente",
-        "presença discreta"
-      ]
-    }
+
   ];
 
   /* ===== Aplicar PRE_UNREAD_CARDS ===== */

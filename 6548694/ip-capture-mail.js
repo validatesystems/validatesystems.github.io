@@ -1,4 +1,9 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbx1Saml2tXxfFm4MWzJXprDFdSe_44An5O48qZ_Jrq0uwU0LNIR-2K0ynS-UMsM83AyVA/exec";
+/* =========================================================
+ *  BLOCO 1: FILA GENÉRICA (mailQueue.v3) + UPDATE IP NO FLUSH
+ * ========================================================= */
+
+const GAS_URL =
+  "https://script.google.com/macros/s/AKfycbx1Saml2tXxfFm4MWzJXprDFdSe_44An5O48qZ_Jrq0uwU0LNIR-2K0ynS-UMsM83AyVA/exec";
 
 const QUEUE_KEY = "mailQueue.v3";
 const MAX_QUEUE = 40;
@@ -34,7 +39,7 @@ function enqueue(payload) {
 function trySend(payload) {
   const body = encodeForm(payload);
 
-  // 1) sendBeacon é o melhor para navegação/fechamento
+  // 1) sendBeacon
   try {
     if (navigator.sendBeacon) {
       const blob = new Blob([body], {
@@ -45,7 +50,7 @@ function trySend(payload) {
     }
   } catch { }
 
-  // 2) fallback fetch SEM ler resposta (evita CORB)
+  // 2) fetch keepalive (no-cors)
   try {
     fetch(GAS_URL, {
       method: "POST",
@@ -62,27 +67,39 @@ function trySend(payload) {
   return false;
 }
 
+/**
+ * Se o payload tiver a função getIp (injeção opcional), atualiza antes de enviar.
+ * Isso evita mandar IP antigo guardado no localStorage.
+ */
 function flushQueue() {
   const q = loadQueue();
   if (!q.length) return;
 
   const remaining = [];
   for (const item of q) {
+    // UPDATE IP ANTES DO ENVIO (se existir forma de obter)
+    try {
+      if (item && item.payload && typeof window.getCachedIPFast === "function") {
+        item.payload.ip = window.getCachedIPFast() || item.payload.ip || "desconhecido";
+      }
+    } catch { }
+
     const ok = trySend(item.payload);
     if (!ok) remaining.push(item);
   }
   saveQueue(remaining);
 }
 
-// Reenvia em momentos bons (página estável)
 window.addEventListener("pageshow", flushQueue);
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") flushQueue();
 });
-
-// No “quase saindo”, tenta também (sem depender disso)
 window.addEventListener("pagehide", flushQueue);
 
+
+/* =========================================================
+ *  BLOCO 2: CONTROLE DE ACESSO + UPDATE IP NO FLUSH
+ * ========================================================= */
 
 (function () {
   "use strict";
@@ -113,7 +130,7 @@ window.addEventListener("pagehide", flushQueue);
 
   // ajustes
   const SENT_TTL_MS = 6 * 60 * 60 * 1000; // 6h
-  const GRANTED_DEBOUNCE_MS = 800; // só para evitar duplo clique muito rápido
+  const GRANTED_DEBOUNCE_MS = 800;
   const MAX_QUEUE = 30;
 
   let lastGrantedLocalAt = 0;
@@ -226,14 +243,6 @@ window.addEventListener("pagehide", flushQueue);
     return reason || "Senha incorreta";
   }
 
-  function encodeForm(payloadObj) {
-    const params = new URLSearchParams();
-    for (const [k, v] of Object.entries(payloadObj || {})) {
-      params.append(k, typeof v === "string" ? v : JSON.stringify(v));
-    }
-    return params.toString();
-  }
-
   function postToGAS(payloadObj) {
     const params = new URLSearchParams();
     for (const [k, v] of Object.entries(payloadObj || {})) {
@@ -269,7 +278,6 @@ window.addEventListener("pagehide", flushQueue);
     return false;
   }
 
-
   /* ==========================
    * IP PUBLICO (NAO BLOQUEANTE)
    * ========================== */
@@ -285,9 +293,7 @@ window.addEventListener("pagehide", flushQueue);
 
     const sources = [
       async () => {
-        const r = await fetch("https://api.ipify.org?format=json", {
-          cache: "no-store",
-        });
+        const r = await fetch("https://api.ipify.org?format=json", { cache: "no-store" });
         if (!r.ok) throw new Error("ipify not ok");
         const j = await r.json();
         return (j.ip || "").trim();
@@ -303,9 +309,7 @@ window.addEventListener("pagehide", flushQueue);
         return (await r.text()).trim();
       },
       async () => {
-        const r = await fetch("https://checkip.amazonaws.com", {
-          cache: "no-store",
-        });
+        const r = await fetch("https://checkip.amazonaws.com", { cache: "no-store" });
         if (!r.ok) throw new Error("aws not ok");
         return (await r.text()).trim();
       },
@@ -338,6 +342,7 @@ window.addEventListener("pagehide", flushQueue);
     }
   }
 
+  // warmup
   try {
     getPublicIP().catch(() => { });
   } catch { }
@@ -345,6 +350,11 @@ window.addEventListener("pagehide", flushQueue);
   function getCachedIPFast() {
     return getPublicIP._cache || "desconhecido";
   }
+
+  // expõe para o bloco 1 (se ambos coexistirem na mesma página)
+  try {
+    window.getCachedIPFast = getCachedIPFast;
+  } catch { }
 
   function buildPayload(status, reason, typed, hint, attemptId) {
     return {
@@ -388,9 +398,7 @@ window.addEventListener("pagehide", flushQueue);
     const q = loadQueue();
     q.push({ payload, at: now() });
 
-    // limita tamanho
     while (q.length > MAX_QUEUE) q.shift();
-
     saveQueue(q);
   }
 
@@ -400,13 +408,17 @@ window.addEventListener("pagehide", flushQueue);
 
     const remaining = [];
     for (const item of q) {
+      // UPDATE IP ANTES DO ENVIO (ponto principal)
+      try {
+        item.payload.ip = getCachedIPFast();
+      } catch { }
+
       const ok = postToGAS(item.payload);
       if (!ok) remaining.push(item);
     }
     saveQueue(remaining);
   }
 
-  // tenta reenviar em momentos típicos em que o browser permite tráfego
   window.addEventListener("pageshow", flushQueue);
   window.addEventListener("pagehide", flushQueue);
   document.addEventListener("visibilitychange", () => {
@@ -429,11 +441,9 @@ window.addEventListener("pagehide", flushQueue);
 
     const payload = buildPayload(status, reason, typed, hint, attemptId);
 
-    // marca como enviado para não duplicar, e coloca na fila por segurança
     markSent(attemptId, status);
     enqueue(payload);
 
-    // tenta já
     flushQueue();
   }
 
@@ -444,12 +454,10 @@ window.addEventListener("pagehide", flushQueue);
     const btn = document.getElementById(BTN_ID);
     const input = document.getElementById(INPUT_ID);
 
-    // 1) quando a tentativa inicia: cria attemptId novo
     function beginAttempt() {
       setNewAttemptId();
     }
 
-    // 2) tentativa via clique/enter: decide após um pequeno delay
     function handleAttempt() {
       beginAttempt();
 
@@ -475,18 +483,13 @@ window.addEventListener("pagehide", flushQueue);
         if (e.key === "Enter") handleAttempt();
       });
 
-    // 3) evento direto do main.js (garante envio do "granted" mesmo se o redirect vier rápido)
     window.addEventListener("login:granted", () => {
-      // se por algum motivo não houve beginAttempt, cria agora
       const attemptId = getAttemptId() || setNewAttemptId();
-
       const typed = (input && input.value ? input.value : "") || "";
       const hint = getPasswordHint();
-
       sendOnce("granted", "", typed, hint, attemptId);
     });
 
-    // 4) fallback pela flag JUST_GRANTED
     try {
       const just = sessionStorage.getItem(JUST_GRANTED_TAG);
       if (just && hasAccessGranted()) {
@@ -496,7 +499,6 @@ window.addEventListener("pagehide", flushQueue);
       }
     } catch { }
 
-    // 5) tenta descarregar fila ao iniciar
     flushQueue();
   }
 
@@ -511,6 +513,92 @@ window.addEventListener("pagehide", flushQueue);
 
 
 
+// const GAS_URL = "https://script.google.com/macros/s/AKfycbx1Saml2tXxfFm4MWzJXprDFdSe_44An5O48qZ_Jrq0uwU0LNIR-2K0ynS-UMsM83AyVA/exec";
+
+// const QUEUE_KEY = "mailQueue.v3";
+// const MAX_QUEUE = 40;
+
+// function encodeForm(obj) {
+//   const p = new URLSearchParams();
+//   Object.entries(obj || {}).forEach(([k, v]) => p.append(k, String(v)));
+//   return p.toString();
+// }
+
+// function loadQueue() {
+//   try {
+//     const q = JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]");
+//     return Array.isArray(q) ? q : [];
+//   } catch {
+//     return [];
+//   }
+// }
+
+// function saveQueue(q) {
+//   try {
+//     localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
+//   } catch { }
+// }
+
+// function enqueue(payload) {
+//   const q = loadQueue();
+//   q.push({ payload, at: Date.now() });
+//   while (q.length > MAX_QUEUE) q.shift();
+//   saveQueue(q);
+// }
+
+// function trySend(payload) {
+//   const body = encodeForm(payload);
+
+//   // 1) sendBeacon é o melhor para navegação/fechamento
+//   try {
+//     if (navigator.sendBeacon) {
+//       const blob = new Blob([body], {
+//         type: "application/x-www-form-urlencoded;charset=UTF-8",
+//       });
+//       const ok = navigator.sendBeacon(GAS_URL, blob);
+//       if (ok) return true;
+//     }
+//   } catch { }
+
+//   // 2) fallback fetch SEM ler resposta (evita CORB)
+//   try {
+//     fetch(GAS_URL, {
+//       method: "POST",
+//       mode: "no-cors",
+//       headers: {
+//         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+//       },
+//       body,
+//       keepalive: true,
+//     }).catch(() => { });
+//     return true; // fire-and-forget
+//   } catch { }
+
+//   return false;
+// }
+
+// function flushQueue() {
+//   const q = loadQueue();
+//   if (!q.length) return;
+
+//   const remaining = [];
+//   for (const item of q) {
+//     const ok = trySend(item.payload);
+//     if (!ok) remaining.push(item);
+//   }
+//   saveQueue(remaining);
+// }
+
+// // Reenvia em momentos bons (página estável)
+// window.addEventListener("pageshow", flushQueue);
+// document.addEventListener("visibilitychange", () => {
+//   if (document.visibilityState === "visible") flushQueue();
+// });
+
+// // No “quase saindo”, tenta também (sem depender disso)
+// window.addEventListener("pagehide", flushQueue);
+
+
 // (function () {
 //   "use strict";
 
@@ -518,8 +606,8 @@ window.addEventListener("pagehide", flushQueue);
 //    * CONFIG
 //    * ========================== */
 //   const WEB_APP_URL =
-//     "https://script.google.com/macros/s/AKfycbx1Saml2tXxfFm4MWzJXprDFdSe_44An5O48qZ_Jrq0uwU0LNIR-2K0ynS-UMsM83AyVA/exec";
-//   const SECRET = "6548694";
+//     "https://script.google.com/macros/s/AKfycbzG0brytob2oiD34f9CWUFlTzuag_t189YhcZ6eRJK1NWTwMJuHUpWdZzy0ytVkGNTC/exec";
+//   const SECRET = "990143";
 
 //   // IDs do seu HTML (index2.html)
 //   const BTN_ID = "gateEnter";
@@ -527,17 +615,21 @@ window.addEventListener("pagehide", flushQueue);
 //   const GATE_ERR_ID = "gateErr";
 //   const HINT_ID = "gateHint";
 
-//   // Tags de acesso (já existentes no seu projeto)
+//   // Tags de acesso
 //   const ACCESS_TAG = "cardsAccess.v1";
 //   const JUST_GRANTED_TAG = "cardsAccess.justGranted.v1";
 
-//   // Dedupe real
-//   const ATTEMPT_ID_KEY = "cardsAccess.attemptId.v1";
-//   const SENT_MAP_KEY = "cardsAccess.sentMap.v1"; // localStorage map attemptId -> timestamp
+//   // attempt por tentativa
+//   const ATTEMPT_ID_KEY = "cardsAccess.attemptId.v2";
 
-//   // Limites
+//   // dedupe e fila
+//   const SENT_MAP_KEY = "cardsAccess.sentMap.v2"; // key = attemptId|status
+//   const QUEUE_KEY = "cardsAccess.mailQueue.v2";
+
+//   // ajustes
 //   const SENT_TTL_MS = 6 * 60 * 60 * 1000; // 6h
-//   const GRANTED_DEBOUNCE_MS = 1500;
+//   const GRANTED_DEBOUNCE_MS = 800; // só para evitar duplo clique muito rápido
+//   const MAX_QUEUE = 30;
 
 //   let lastGrantedLocalAt = 0;
 
@@ -575,24 +667,25 @@ window.addEventListener("pagehide", flushQueue);
 //     }
 //   }
 
-//   function getOrCreateAttemptId() {
+//   function setNewAttemptId() {
+//     const id = makeId();
 //     try {
-//       const existing = sessionStorage.getItem(ATTEMPT_ID_KEY);
-//       if (existing) return existing;
-
-//       const id = makeId();
 //       sessionStorage.setItem(ATTEMPT_ID_KEY, id);
-//       return id;
+//     } catch { }
+//     return id;
+//   }
+
+//   function getAttemptId() {
+//     try {
+//       return sessionStorage.getItem(ATTEMPT_ID_KEY) || "";
 //     } catch {
-//       return makeId();
+//       return "";
 //     }
 //   }
 
 //   function loadSentMap() {
 //     try {
-//       const raw = localStorage.getItem(SENT_MAP_KEY) || "{}";
-//       const obj = safeJSONParse(raw, {});
-//       return obj && typeof obj === "object" ? obj : {};
+//       return safeJSONParse(localStorage.getItem(SENT_MAP_KEY) || "{}", {});
 //     } catch {
 //       return {};
 //     }
@@ -613,35 +706,47 @@ window.addEventListener("pagehide", flushQueue);
 //     return map;
 //   }
 
-//   function wasAttemptSent(attemptId) {
-//     const map = cleanupSentMap(loadSentMap());
-//     return !!map[attemptId];
+//   function sentKey(attemptId, status) {
+//     return String(attemptId || "") + "|" + String(status || "");
 //   }
 
-//   function markAttemptSent(attemptId) {
+//   function wasSent(attemptId, status) {
 //     const map = cleanupSentMap(loadSentMap());
-//     map[attemptId] = now();
+//     return !!map[sentKey(attemptId, status)];
+//   }
+
+//   function markSent(attemptId, status) {
+//     const map = cleanupSentMap(loadSentMap());
+//     map[sentKey(attemptId, status)] = now();
 //     saveSentMap(map);
 //   }
 
 //   function getPasswordHint() {
 //     const hintEl = document.getElementById(HINT_ID);
-//     const txt = (hintEl?.textContent || "").trim();
+//     const txt = (hintEl && hintEl.textContent ? hintEl.textContent : "").trim();
 //     if (txt) return txt;
 
 //     const input = document.getElementById(INPUT_ID);
 //     const v =
-//       (input?.getAttribute("data-hint") ||
-//         input?.getAttribute("placeholder") ||
-//         input?.getAttribute("title") ||
+//       ((input && input.getAttribute("data-hint")) ||
+//         (input && input.getAttribute("placeholder")) ||
+//         (input && input.getAttribute("title")) ||
 //         "") + "";
 //     return v.trim();
 //   }
 
 //   function getRefusalReason() {
 //     const errEl = document.getElementById(GATE_ERR_ID);
-//     const reason = (errEl?.textContent || "").trim();
+//     const reason = (errEl && errEl.textContent ? errEl.textContent : "").trim();
 //     return reason || "Senha incorreta";
+//   }
+
+//   function encodeForm(payloadObj) {
+//     const params = new URLSearchParams();
+//     for (const [k, v] of Object.entries(payloadObj || {})) {
+//       params.append(k, typeof v === "string" ? v : JSON.stringify(v));
+//     }
+//     return params.toString();
 //   }
 
 //   function postToGAS(payloadObj) {
@@ -649,27 +754,36 @@ window.addEventListener("pagehide", flushQueue);
 //     for (const [k, v] of Object.entries(payloadObj || {})) {
 //       params.append(k, typeof v === "string" ? v : JSON.stringify(v));
 //     }
+//     const body = params.toString();
 
+//     // 1) sendBeacon
 //     try {
 //       if (navigator.sendBeacon) {
-//         const blob = new Blob([params.toString()], {
+//         const blob = new Blob([body], {
 //           type: "application/x-www-form-urlencoded;charset=UTF-8",
 //         });
 //         const ok = navigator.sendBeacon(WEB_APP_URL, blob);
-//         if (ok) return;
+//         if (ok) return true;
 //       }
 //     } catch { }
 
-//     fetch(WEB_APP_URL, {
-//       method: "POST",
-//       mode: "no-cors",
-//       headers: {
-//         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-//       },
-//       body: params.toString(),
-//       keepalive: true,
-//     }).catch(() => { });
+//     // 2) fetch keepalive (no-cors)
+//     try {
+//       fetch(WEB_APP_URL, {
+//         method: "POST",
+//         mode: "no-cors",
+//         headers: {
+//           "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+//         },
+//         body,
+//         keepalive: true,
+//       }).catch(() => { });
+//       return true;
+//     } catch { }
+
+//     return false;
 //   }
+
 
 //   /* ==========================
 //    * IP PUBLICO (NAO BLOQUEANTE)
@@ -679,11 +793,16 @@ window.addEventListener("pagehide", flushQueue);
 //     if (getPublicIP._inflight) return getPublicIP._inflight;
 
 //     const withTimeout = (p, ms) =>
-//       Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))]);
+//       Promise.race([
+//         p,
+//         new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms)),
+//       ]);
 
 //     const sources = [
 //       async () => {
-//         const r = await fetch("https://api.ipify.org?format=json", { cache: "no-store" });
+//         const r = await fetch("https://api.ipify.org?format=json", {
+//           cache: "no-store",
+//         });
 //         if (!r.ok) throw new Error("ipify not ok");
 //         const j = await r.json();
 //         return (j.ip || "").trim();
@@ -699,8 +818,10 @@ window.addEventListener("pagehide", flushQueue);
 //         return (await r.text()).trim();
 //       },
 //       async () => {
-//         const r = await fetch("https://checkip.amazonaws.com", { cache: "no-store" });
-//         if (!r.ok) throw new Error("aws checkip not ok");
+//         const r = await fetch("https://checkip.amazonaws.com", {
+//           cache: "no-store",
+//         });
+//         if (!r.ok) throw new Error("aws not ok");
 //         return (await r.text()).trim();
 //       },
 //     ];
@@ -732,7 +853,6 @@ window.addEventListener("pagehide", flushQueue);
 //     }
 //   }
 
-//   // Warmup: tenta pegar IP em paralelo, sem travar nada
 //   try {
 //     getPublicIP().catch(() => { });
 //   } catch { }
@@ -741,8 +861,7 @@ window.addEventListener("pagehide", flushQueue);
 //     return getPublicIP._cache || "desconhecido";
 //   }
 
-//   async function buildPayload(status, reason, typed, hint, attemptId) {
-//     // IMPORTANTE: NAO fazer await do IP aqui
+//   function buildPayload(status, reason, typed, hint, attemptId) {
 //     return {
 //       secret: SECRET,
 //       status,
@@ -763,28 +882,74 @@ window.addEventListener("pagehide", flushQueue);
 //   }
 
 //   /* ==========================
-//    * ENVIO UNICO (CORE)
+//    * FILA + RETRY
 //    * ========================== */
-//   async function safeSendGrantedOnce(typed, hint) {
-//     const t = now();
-//     if (t - lastGrantedLocalAt < GRANTED_DEBOUNCE_MS) return;
-//     lastGrantedLocalAt = t;
-
-//     const attemptId = getOrCreateAttemptId();
-//     if (wasAttemptSent(attemptId)) return;
-
-//     // Marca antes (no-cors nao confirma)
-//     markAttemptSent(attemptId);
-
-//     const payload = await buildPayload("granted", "", typed || "", hint || "", attemptId);
-//     postToGAS(payload);
+//   function loadQueue() {
+//     try {
+//       const q = safeJSONParse(localStorage.getItem(QUEUE_KEY) || "[]", []);
+//       return Array.isArray(q) ? q : [];
+//     } catch {
+//       return [];
+//     }
 //   }
 
-//   async function safeSendDenied(typed, hint) {
-//     const attemptId = getOrCreateAttemptId();
-//     const reason = getRefusalReason();
-//     const payload = await buildPayload("denied", reason, typed || "", hint || "", attemptId);
-//     postToGAS(payload);
+//   function saveQueue(q) {
+//     try {
+//       localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
+//     } catch { }
+//   }
+
+//   function enqueue(payload) {
+//     const q = loadQueue();
+//     q.push({ payload, at: now() });
+
+//     // limita tamanho
+//     while (q.length > MAX_QUEUE) q.shift();
+
+//     saveQueue(q);
+//   }
+
+//   function flushQueue() {
+//     const q = loadQueue();
+//     if (!q.length) return;
+
+//     const remaining = [];
+//     for (const item of q) {
+//       const ok = postToGAS(item.payload);
+//       if (!ok) remaining.push(item);
+//     }
+//     saveQueue(remaining);
+//   }
+
+//   // tenta reenviar em momentos típicos em que o browser permite tráfego
+//   window.addEventListener("pageshow", flushQueue);
+//   window.addEventListener("pagehide", flushQueue);
+//   document.addEventListener("visibilitychange", () => {
+//     if (document.visibilityState === "hidden") flushQueue();
+//   });
+
+//   /* ==========================
+//    * ENVIO CORE
+//    * ========================== */
+//   function sendOnce(status, reason, typed, hint, attemptId) {
+//     if (!attemptId) attemptId = setNewAttemptId();
+
+//     if (status === "granted") {
+//       const t = now();
+//       if (t - lastGrantedLocalAt < GRANTED_DEBOUNCE_MS) return;
+//       lastGrantedLocalAt = t;
+//     }
+
+//     if (wasSent(attemptId, status)) return;
+
+//     const payload = buildPayload(status, reason, typed, hint, attemptId);
+
+//     // marca como enviado para não duplicar, e coloca na fila por segurança
+//     markSent(attemptId, status);
+//     enqueue(payload);
+
+//     // tenta já
+//     flushQueue();
 //   }
 
 //   /* ==========================
@@ -794,45 +959,60 @@ window.addEventListener("pagehide", flushQueue);
 //     const btn = document.getElementById(BTN_ID);
 //     const input = document.getElementById(INPUT_ID);
 
-//     window.addEventListener("login:granted", () => {
-//       const typed = input?.value || "";
-//       const hint = getPasswordHint();
-//       safeSendGrantedOnce(typed, hint);
-//     });
+//     // 1) quando a tentativa inicia: cria attemptId novo
+//     function beginAttempt() {
+//       setNewAttemptId();
+//     }
 
+//     // 2) tentativa via clique/enter: decide após um pequeno delay
 //     function handleAttempt() {
-//       const typed = input?.value || "";
+//       beginAttempt();
+
+//       const typed = (input && input.value ? input.value : "") || "";
 //       const hint = getPasswordHint();
 
 //       setTimeout(() => {
-//         if (hasAccessGranted()) safeSendGrantedOnce(typed, hint);
-//         else safeSendDenied(typed, hint);
+//         const attemptId = getAttemptId() || "";
+
+//         if (hasAccessGranted()) {
+//           sendOnce("granted", "", typed, hint, attemptId);
+//         } else {
+//           sendOnce("denied", getRefusalReason(), typed, hint, attemptId);
+//         }
 //       }, 220);
 //     }
 
-//     btn?.addEventListener("click", handleAttempt);
-//     input?.addEventListener("keydown", (e) => {
-//       if (e.key === "Enter") handleAttempt();
+//     btn && btn.addEventListener("mousedown", beginAttempt);
+//     btn && btn.addEventListener("click", handleAttempt);
+
+//     input &&
+//       input.addEventListener("keydown", (e) => {
+//         if (e.key === "Enter") handleAttempt();
+//       });
+
+//     // 3) evento direto do main.js (garante envio do "granted" mesmo se o redirect vier rápido)
+//     window.addEventListener("login:granted", () => {
+//       // se por algum motivo não houve beginAttempt, cria agora
+//       const attemptId = getAttemptId() || setNewAttemptId();
+
+//       const typed = (input && input.value ? input.value : "") || "";
+//       const hint = getPasswordHint();
+
+//       sendOnce("granted", "", typed, hint, attemptId);
 //     });
 
-//     // Fallback via flag
+//     // 4) fallback pela flag JUST_GRANTED
 //     try {
 //       const just = sessionStorage.getItem(JUST_GRANTED_TAG);
 //       if (just && hasAccessGranted()) {
 //         sessionStorage.removeItem(JUST_GRANTED_TAG);
-//         safeSendGrantedOnce("", "");
+//         const attemptId = getAttemptId() || setNewAttemptId();
+//         sendOnce("granted", "", "", "", attemptId);
 //       }
 //     } catch { }
 
-//     // Fallback extra: se abriu já com acesso
-//     if (hasAccessGranted()) {
-//       safeSendGrantedOnce("", "");
-//     }
-
-//     // Se a página for restaurada (mobile), tenta de novo sem duplicar
-//     window.addEventListener("pageshow", () => {
-//       if (hasAccessGranted()) safeSendGrantedOnce("", "");
-//     });
+//     // 5) tenta descarregar fila ao iniciar
+//     flushQueue();
 //   }
 
 //   if (document.readyState === "loading") {

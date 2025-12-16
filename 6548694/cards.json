@@ -1,5 +1,47 @@
 [
   {
+    "emoji": "🌅",
+    "title": "Bom dia, com calma",
+    "sub": "A manhã escolhe o tom",
+    "desc": "Esta mensagem só aparece pela manhã. Volte à tarde e à noite para ler o que o dia ainda guarda.",
+    "href": "./mensagem-por-turnos_20251216.html",
+    "publishedAt": "2025-12-16T04:00:00-03:00",
+    "sentimento": "início sereno e presença cuidadosa",
+    "moods": [
+      "manhã suave",
+      "começo atento",
+      "silêncio gentil"
+    ]
+  },
+  {
+    "emoji": "☀️",
+    "title": "Boa tarde, no meio do caminho",
+    "sub": "A tarde pede pausa",
+    "desc": "Esta mensagem pertence à tarde. Pela manhã e à noite, outras palavras esperam por você.",
+    "href": "./mensagem-por-turnos_20251216.html",
+    "publishedAt": "2025-12-16T12:00:00-03:00",
+    "sentimento": "equilíbrio e continuidade",
+    "moods": [
+      "ritmo do dia",
+      "respiro consciente",
+      "atenção presente"
+    ]
+  },
+  {
+    "emoji": "🌙",
+    "title": "Boa noite, encerramento",
+    "sub": "A noite recolhe o dia",
+    "desc": "Esta mensagem só se revela à noite. Amanhã, a manhã recomeça com outro sentido.",
+    "href": "./mensagem-por-turnos_20251216.html",
+    "publishedAt": "2025-12-16T18:00:00-03:00",
+    "sentimento": "acolhimento e fechamento tranquilo",
+    "moods": [
+      "noite introspectiva",
+      "descanso emocional",
+      "fim de ciclo"
+    ]
+  },
+  {
     "emoji": "🎬",
     "title": "Um Reels que sou eu pensando em você",
     "sub": "30 segundos que dizem mais que um texto inteiro",
@@ -1786,5 +1828,4 @@
       "leve"
     ]
   }
-
 ]
