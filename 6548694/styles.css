@@ -1026,7 +1026,12 @@ body.gate-open {
 } */
 
 .card-status-tag {
+  /* Exibe a tag */
   display: inline-flex;
+
+  /* Não exibe a tag */
+  display: none;
+
   align-items: center;
   padding: 4px 10px;
   border-radius: 999px;
