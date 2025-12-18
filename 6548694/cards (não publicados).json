@@ -1,5 +1,19 @@
 [
-   {
+  {
+    "emoji": "🌙",
+    "title": "Um espaço com carinho",
+    "sub": "Uma página aconchegante e interativa",
+    "desc": "Linhas suaves revelam uma mensagem de presença e afeto.",
+    "href": "./espaco_aconchegante20251812.html",
+    "publishedAt": "2025-12-18T06:23:00-03:00",
+    "sentimento": "acolhimento, companhia serena e afeto discreto",
+    "moods": [
+      "noite tranquila",
+      "companhia silenciosa",
+      "carinho suave"
+    ]
+  },
+  {
     "emoji": "🌅",
     "title": "Bom dia, com calma",
     "sub": "A manhã escolhe o tom",
@@ -69,5 +83,4 @@
       "entrelinhas"
     ]
   }
-
 ]
