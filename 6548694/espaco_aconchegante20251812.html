@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Um espaço só seu</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg-1: #1b1f2a;
+        --bg-2: #2a2f3a;
+        --accent: #ffd7a8;
+        --accent-2: #ffb5b5;
+        --text: #f6f7f9;
+        --muted: #cfd3da;
+        --card: rgba(255, 255, 255, 0.07);
+        --card-border: rgba(255, 255, 255, 0.14);
+        --shadow: rgba(0, 0, 0, 0.45);
+      }
+
+      .light {
+        --bg-1: #fff7f0;
+        --bg-2: #ffe9db;
+        --accent: #ce7f3f;
+        --accent-2: #c95656;
+        --text: #2a2a2a;
+        --muted: #6b6b6b;
+        --card: rgba(255, 255, 255, 0.7);
+        --card-border: rgba(0, 0, 0, 0.06);
+        --shadow: rgba(0, 0, 0, 0.15);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Playfair Display", sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            1200px 800px at 10% 0%,
+            var(--bg-2),
+            var(--bg-1)
+          )
+          fixed;
+        transition: background 0.8s ease, color 0.3s ease;
+        -webkit-text-size-adjust: 100%;
+      }
+
+      .ambient {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+        filter: blur(0.2px);
+      }
+
+      .glow {
+        position: absolute;
+        width: 24vmin;
+        height: 24vmin;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255, 215, 168, 0.45),
+          transparent 60%
+        );
+        animation: drift 22s ease-in-out infinite;
+        mix-blend-mode: screen;
+      }
+
+      .glow:nth-child(2) {
+        width: 30vmin;
+        height: 30vmin;
+        left: 70%;
+        top: 15%;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255, 181, 181, 0.35),
+          transparent 60%
+        );
+        animation-duration: 28s;
+      }
+
+      .glow:nth-child(3) {
+        width: 20vmin;
+        height: 20vmin;
+        left: 10%;
+        top: 65%;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(206, 127, 63, 0.3),
+          transparent 60%
+        );
+        animation-duration: 26s;
+      }
+
+      @keyframes drift {
+        0% {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        50% {
+          transform: translate3d(3vmin, -2vmin, 0) scale(1.08);
+        }
+        100% {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .glow {
+          animation: none;
+        }
+        .line {
+          transition: none;
+          animation: none;
+        }
+        .pulse {
+          animation: none;
+        }
+      }
+
+      .wrap {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        min-height: 100dvh;
+        padding: calc(18px + env(safe-area-inset-top))
+          calc(18px + env(safe-area-inset-right))
+          calc(18px + env(safe-area-inset-bottom))
+          calc(18px + env(safe-area-inset-left));
+      }
+
+      .card {
+        width: min(780px, 100%);
+        background: var(--card);
+        backdrop-filter: blur(8px) saturate(110%);
+        border: 1px solid var(--card-border);
+        box-shadow: 0 20px 60px var(--shadow);
+        border-radius: 20px;
+        padding: clamp(16px, 4vw, 36px);
+        transition: transform 0.35s ease, box-shadow 0.35s ease,
+          background 0.6s ease;
+      }
+
+      /* Hover só em dispositivos que realmente têm hover */
+      @media (hover: hover) and (pointer: fine) {
+        .card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 30px 80px var(--shadow);
+        }
+      }
+
+      .header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .title {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(22px, 4.2vw, 30px);
+        color: var(--accent);
+        letter-spacing: 0.2px;
+        line-height: 1.15;
+        max-width: 22ch;
+      }
+
+      .controls {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .btn {
+        appearance: none;
+        border: 1px solid var(--card-border);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.1),
+          rgba(255, 255, 255, 0.05)
+        );
+        color: var(--text);
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.12s ease, box-shadow 0.2s ease,
+          background 0.2s ease;
+        min-height: 44px; /* alvo de toque */
+        touch-action: manipulation;
+        white-space: nowrap;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn.accent {
+        border-color: transparent;
+        background: linear-gradient(
+          180deg,
+          var(--accent) 0%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        color: #2a2a2a;
+        box-shadow: 0 8px 20px rgba(255, 215, 168, 0.35);
+      }
+
+      .btn.ghost {
+        color: var(--accent);
+        border-color: rgba(255, 215, 168, 0.5);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .content {
+        margin-top: 8px;
+        line-height: 1.85;
+        font-size: clamp(16px, 2.8vw, 20px);
+        text-wrap: pretty;
+        overflow-wrap: anywhere;
+        hyphens: auto;
+      }
+
+      .line {
+        margin: 0 0 10px;
+        opacity: 0;
+        transform: translateY(8px);
+        filter: saturate(110%);
+        transition: opacity 600ms ease, transform 600ms ease;
+      }
+
+      .line.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .line strong {
+        font-weight: 800;
+        color: var(--accent-2);
+      }
+
+      .footer {
+        margin-top: 18px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 14px;
+        flex-wrap: wrap;
+      }
+
+      .pulse {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 0 rgba(255, 215, 168, 0.6);
+        animation: pulse 2.4s infinite ease-in-out;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(255, 215, 168, 0.6);
+          transform: scale(1);
+        }
+        60% {
+          box-shadow: 0 0 0 16px rgba(255, 215, 168, 0);
+          transform: scale(1.08);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(255, 215, 168, 0);
+          transform: scale(1);
+        }
+      }
+
+      /* Mobile: título em cima, botões em “grade” 2 colunas */
+      @media (max-width: 560px) {
+        .header {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .title {
+          max-width: 100%;
+        }
+
+        .controls {
+          width: 100%;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+        }
+
+        .btn {
+          width: 100%;
+          justify-content: center;
+          text-align: center;
+        }
+
+        .btn.accent {
+          grid-column: 1 / -1; /* “Ver de novo” ocupa a linha inteira */
+        }
+      }
+
+      /* Ajuste fino para telas bem pequenas */
+      @media (max-width: 380px) {
+        .content {
+          line-height: 1.75;
+        }
+        .line {
+          margin-bottom: 9px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="ambient" aria-hidden="true">
+      <div class="glow" style="left: 8%; top: 10%"></div>
+      <div class="glow"></div>
+      <div class="glow"></div>
+    </div>
+
+    <main class="wrap">
+      <article class="card" role="region" aria-label="Mensagem aconchegante">
+        <header class="header">
+          <h1 class="title">Um espaço com carinho</h1>
+          <div class="controls">
+            <button
+              class="btn ghost"
+              id="toggleTheme"
+              aria-label="Alternar tema"
+            >
+              Tema
+            </button>
+            <button
+              class="btn ghost"
+              id="calmMode"
+              aria-label="Reduzir movimento"
+            >
+              Calm
+            </button>
+            <button class="btn accent" id="replay" aria-label="Rever mensagem">
+              Ver de novo
+            </button>
+          </div>
+        </header>
+
+        <section class="content" id="message">
+          <p class="line"><em>Ei,</em></p>
+          <p class="line">Eu venho aqui quando você precisa de companhia.</p>
+          <p class="line">Essas páginas existem pra isso.</p>
+          <p class="line">Pra mim está tudo bem te oferecer esse espaço.</p>
+          <p class="line"><strong>Você é incrível.</strong></p>
+          <p class="line">Sou feliz por ter te conhecido.</p>
+          <p class="line">Te quero bem, onde estiver.</p>
+        </section>
+
+        <footer class="footer">
+          <span
+            ><span class="pulse" aria-hidden="true"></span> Presença gentil, sem
+            pressa.</span
+          >
+          <span>Você pode voltar aqui quando quiser.</span>
+          <span>._.. ...</span>
+        </footer>
+      </article>
+    </main>
+
+    <script>
+      const lines = [...document.querySelectorAll(".line")];
+      const replayBtn = document.getElementById("replay");
+      const themeBtn = document.getElementById("toggleTheme");
+      const calmBtn = document.getElementById("calmMode");
+
+      let prefersLight = window.matchMedia(
+        "(prefers-color-scheme: light)"
+      ).matches;
+      let calm = false;
+
+      if (prefersLight) document.body.classList.add("light");
+
+      function playMessage(speed = 900) {
+        lines.forEach((l) => l.classList.remove("show"));
+        setTimeout(() => {
+          lines.forEach((line, i) => {
+            setTimeout(() => line.classList.add("show"), i * speed);
+          });
+        }, 250);
+      }
+
+      window.addEventListener("DOMContentLoaded", () => playMessage());
+
+      replayBtn.addEventListener("click", () => {
+        playMessage(calm ? 600 : 900);
+      });
+
+      themeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("light");
+        themeBtn.textContent = document.body.classList.contains("light")
+          ? "Escuro"
+          : "Tema";
+      });
+
+      calmBtn.addEventListener("click", () => {
+        calm = !calm;
+        document.documentElement.style.scrollBehavior = calm
+          ? "auto"
+          : "smooth";
+        calmBtn.textContent = calm ? "Normal" : "Calm";
+        document.querySelectorAll(".glow").forEach((g) => {
+          g.style.animationPlayState = calm ? "paused" : "running";
+        });
+      });
+
+      // 3D só em desktop (evita “briga” no touch e melhora responsividade/perf)
+      const card = document.querySelector(".card");
+      const canHover = window.matchMedia(
+        "(hover: hover) and (pointer: fine)"
+      ).matches;
+      let hoverTimeout;
+
+      if (canHover) {
+        card.addEventListener("pointermove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.transform = `translateY(-2px) perspective(800px) rotateX(${
+            y * -2
+          }deg) rotateY(${x * 2}deg)`;
+          clearTimeout(hoverTimeout);
+          hoverTimeout = setTimeout(() => {
+            card.style.transform = "";
+          }, 400);
+        });
+
+        card.addEventListener("pointerleave", () => {
+          card.style.transform = "";
+        });
+      }
+    </script>
+  </body>
+</html>
