@@ -1027,7 +1027,7 @@ body.gate-open {
 
 .card-status-tag {
   /* Exibe a tag */
-  display: inline-flex;
+  /* display: inline-flex; */
 
   /* Não exibe a tag */
   display: none;
@@ -1521,3 +1521,4 @@ button.active:focus .filter-count {
 .btn-voltar:active {
   transform: scale(0.97);
 }
+
