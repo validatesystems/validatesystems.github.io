@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Para Cléia</title>
+    <title>Para Cléia - Natal 🎄</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Nunito:wght@300;400;600&display=swap"
@@ -12,10 +12,12 @@
 
     <style>
       :root {
-        --bg: #f6f4f2;
+        --bg: #fdf6f6; /* fundo suave */
         --text: #2e2e2e;
         --muted: #6b6b6b;
-        --accent: #c9a26a;
+        --accent: #c0392b; /* vermelho natalino */
+        --secondary: #1e8449; /* verde natalino */
+        --gold: #d4af37; /* dourado */
       }
 
       * {
@@ -24,29 +26,54 @@
 
       body {
         margin: 0;
-        background: var(--bg);
+        background: linear-gradient(135deg, #fff5f5, #fdfdfd);
         font-family: "Nunito", sans-serif;
         color: var(--text);
         display: flex;
         justify-content: center;
         padding: 40px 20px;
+        background-image: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.6) 1px,
+          transparent 1px
+        );
+        background-size: 40px 40px;
       }
 
       .container {
         max-width: 720px;
         width: 100%;
-        background: rgba(255, 255, 255, 0.65);
+        background: rgba(255, 255, 255, 0.85);
         border-radius: 16px;
         padding: 40px 32px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border: 2px solid var(--gold);
+        position: relative;
+      }
+
+      .container::before {
+        content: "🎄";
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        font-size: 32px;
+      }
+
+      .container::after {
+        content: "⭐";
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        font-size: 28px;
       }
 
       h1 {
         font-family: "Playfair Display", serif;
         font-style: italic;
-        font-size: 28px;
+        font-size: 30px;
         margin-bottom: 32px;
-        color: var(--text);
+        color: var(--accent);
+        text-align: center;
       }
 
       p {
@@ -54,6 +81,7 @@
         line-height: 1.8;
         margin-bottom: 22px;
         color: var(--text);
+        text-align: justify;
       }
 
       p.muted {
@@ -61,17 +89,17 @@
       }
 
       .divider {
-        width: 60px;
-        height: 2px;
-        background: var(--accent);
-        margin: 32px 0;
+        width: 80px;
+        height: 3px;
+        background: var(--secondary);
+        margin: 32px auto;
         border-radius: 2px;
       }
 
       .signature {
         margin-top: 36px;
         font-style: italic;
-        color: var(--muted);
+        color: var(--secondary);
         text-align: right;
       }
 
@@ -81,102 +109,76 @@
         }
 
         h1 {
-          font-size: 24px;
+          font-size: 26px;
         }
 
         p {
           font-size: 16px;
         }
       }
+
+      a {
+        display: inline-block;
+        padding: 12px 26px;
+        border-radius: 24px;
+        text-decoration: none;
+        font-family: "Nunito", sans-serif;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+        color: var(--accent);
+        border: 1px solid var(--accent);
+        background: transparent;
+        transition: all 0.3s ease;
+      }
+
+      a:hover {
+        background: var(--accent);
+        color: #fff;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Cléia,</h1>
+      <h1>Cléia 🎅✨</h1>
 
       <p>
         Nestes cards encontrei uma forma de expressar meus sentimentos por você.
-        Todos verdadeiros. Com a intensidade que me aqueciam, eu escrevi,
+        Todos verdadeiros. Com a intensidade que me aquecem, eu escrevi,
         programei códigos, transformei sentimento em gesto.
       </p>
 
-      <p>
-        Porém, hoje reconheço que não me atentei, no início, para o que isso
-        significaria pra você — casada, com sua vida organizada, seus planos,
-        suas responsabilidades.
-      </p>
-
-      <p>
-        Com o tempo, e com os sentimentos amadurecidos, percebi que nem tudo que
-        é autêntico precisa ser vivido externamente. Alguns sentimentos existem
-        para permanecer dentro de nós.
-      </p>
-
       <div class="divider"></div>
-
-      <p>
-        O que posso dizer agora é simples e verdadeiro: esses sentimentos
-        continuam existindo. Não com urgência, não com cobrança — mas com
-        presença.
-      </p>
-
-      <p>
-        Sentimentos que não podem ser vividos não desaparecem. Eles vivem em nós
-        por tempo indeterminado, amadurecem, se transformam e encontram seu
-        lugar.
-      </p>
-
-      <p>
-        Se um dia puderem ser vividos, será algo naturalmente bonito. Se não,
-        tudo bem. Ainda assim, foi uma experiência rara sentir dessa forma, algo
-        que eu não imaginava ser capaz.
-      </p>
 
       <p>
         Quando te olho, é com respeito e admiração. Sei que você é alguém que
         precisou lidar com muita coisa sozinha desde muito cedo, e isso te
         ensinou a valorizar o que realmente importa.
       </p>
+      <div class="divider"></div>
 
       <p>
         Isso te tornou forte. Apenas não seja dura com você mesma. Você me
         mostrou coisas que eu ainda não havia compreendido, apenas sendo
         exatamente quem você é.
       </p>
+      <div class="divider"></div>
 
       <p>
         Não abra mão de ser você. Não negocie isso. Você é incrível e, de forma
         muito sincera, o seu brilho me encanta.
       </p>
+      <div class="divider"></div>
 
       <p>
-        Que o seu Natal te traga a renovação que fizer sentido pra você. 🎄💛
+        Que o seu Natal te traga a renovação necessária para uma nova fase na
+        sua vida. 🎄💛
       </p>
 
-      <div class="signature">De alguém que bem te quer.</div>
+      <div class="signature">De alguém que bem te quer. 🎁</div>
       <div class="signature">._.. ...</div>
 
       <div style="margin-top: 48px; text-align: center">
-        <a
-          href="./index2.html"
-          style="
-            display: inline-block;
-            padding: 12px 26px;
-            border-radius: 24px;
-            text-decoration: none;
-            font-family: 'Nunito', sans-serif;
-            font-size: 14px;
-            letter-spacing: 0.3px;
-            color: #555;
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            background: transparent;
-            transition: all 0.3s ease;
-          "
-          onmouseover="this.style.background='rgba(0,0,0,0.04)'"
-          onmouseout="this.style.background='transparent'"
-        >
-          Página inicial
-        </a>
+        <a href="./index2.html">Página inicial 🎄</a>
       </div>
     </div>
   </body>
