@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "⏳",
+    "title": "No tempo certo",
+    "sub": "Nem tudo precisa ser dito agora",
+    "desc": "Algumas coisas continuam sendo sentidas, em silêncio.",
+    "href": "./oTempoDeSentir20251223.html",
+    "publishedAt": "2025-12-23T21:16:00-03:00",
+    "sentimento": "presença, respeito e sentimento contido",
+    "moods": [
+      "tempo",
+      "calma",
+      "sentir sem pressionar"
+    ]
+  },
+  {
     "emoji": "🔥",
     "title": "Entre o cheiro e a ideia",
     "sub": "Uma provocação que começa na imaginação",
