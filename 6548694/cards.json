@@ -1,5 +1,20 @@
 [
   {
+    "emoji": "🎄",
+    "title": "Com respeito e verdade",
+    "sub": "Um cuidado em forma de palavra",
+    "desc": "Sentimentos autênticos, revistos com maturidade e respeito.",
+    "href": "./mensagem_20251224.html",
+    "publishedAt": "2025-12-24T09:00:00-03:00",
+    "sentimento": "admiração consciente, afeto contido e maturidade emocional",
+    "moods": [
+      "respeito",
+      "verdade",
+      "sentir com cuidado",
+      "natal"
+    ]
+  },
+  {
     "emoji": "⏳",
     "title": "No tempo certo",
     "sub": "Nem tudo precisa ser dito agora",

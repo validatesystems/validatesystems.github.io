@@ -132,11 +132,24 @@
       console.warn("Falha ao disparar login:granted", e);
     }
 
+    //   // Comportamento pós-login (padrão):
+    //   if (isLoginPage) {
+    //     // dá um respiro para o e-mail ser enviado antes de trocar de página
+    //     setTimeout(() => {
+    //       const ts = Date.now();
+    //       window.location.href = "page.html?ts=" + ts;
+    //     }, 400);
+    //   } else {
+    //     hideGate();
+    //   }
+    // }
+
+    // Comportamento pós-login (atual):
+    // Redireciona para uma página específica após o login
     if (isLoginPage) {
       // dá um respiro para o e-mail ser enviado antes de trocar de página
       setTimeout(() => {
-        const ts = Date.now();
-        window.location.href = "page.html?ts=" + ts;
+        window.location.href = "mensagem_20251224.html"; // Página para a qual redirecionar
       }, 400);
     } else {
       hideGate();
@@ -210,6 +223,12 @@
       showGate();
     }
   }
+
+  // // Comportamento de inicialização do gate:
+  // // Mesmo tendo acesso, sempre mostra o gate na index2.html
+  // if (isLoginPage) {
+  //   showGate();
+  // }
 
   gateEnter?.addEventListener("click", checkPass);
   gateInput?.addEventListener("keyup", (e) => {
