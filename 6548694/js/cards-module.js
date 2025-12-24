@@ -36,6 +36,22 @@ async function ensureCards() {
   if (Array.isArray(window.cards) && window.cards.length) return window.cards;
   const data = await loadJSON(CARDS_CANDIDATES);
   window.cards = Array.isArray(data) ? data : [];
+
+  // Salva um cache leve dos cards no localStorage (para outros scripts usarem sem fetch)
+  try {
+    const slim = window.cards.map((c) => ({
+      title: c?.title ?? "",
+      sub: c?.sub ?? "",
+      desc: c?.desc ?? "",
+      href: c?.href ?? "",
+      publishedAt: c?.publishedAt ?? "",
+    }));
+    localStorage.setItem("cardsCache.v1", JSON.stringify(slim));
+  } catch (e) {
+    console.warn("[cards-module] falha ao salvar cardsCache.v1", e);
+  }
+
+
   document.dispatchEvent(
     new CustomEvent("cards:ready", {
       detail: { count: window.cards.length },
