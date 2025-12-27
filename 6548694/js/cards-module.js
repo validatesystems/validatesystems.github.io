@@ -146,20 +146,7 @@ document.addEventListener("pointerdown", (ev) => {
 
   // Lista de cards que devem ser forçados a ficarem NÃO lidos
   const PRE_UNREAD_CARDS = [
-    {
-      "emoji": "🔥",
-      "title": "Entre o cheiro e a ideia",
-      "sub": "Uma provocação que começa na imaginação",
-      "desc": "Um encontro sutil entre memória, desejo e aquilo que só a pele entende.",
-      "href": "./EntreOCheiroEAIdeia.html",
-      "publishedAt": "2025-12-18T18:10:00-03:00",
-      "sentimento": "desejo contido, curiosidade quente e intimidade implícita",
-      "moods": [
-        "provocação sutil",
-        "pensamento que esquenta",
-        "noite insinuante"
-      ]
-    },
+    // Exemplo:
   ];
 
   /* ===== Aplicar PRE_UNREAD_CARDS ===== */
