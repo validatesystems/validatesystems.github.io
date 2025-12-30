@@ -41,7 +41,7 @@
 
   /* ======================   18/12/2025 - 06:29   ======================= */
   const KEYS = [
-    { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
+    { id: "vento", pass: "VENTO", hint: "Balança sua rede." },
   ];
   /* ================================================================== */
 
