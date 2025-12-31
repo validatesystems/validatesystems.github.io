@@ -133,27 +133,27 @@
     }
 
     //   // Comportamento pós-login (padrão):
-    //   if (isLoginPage) {
-    //     // dá um respiro para o e-mail ser enviado antes de trocar de página
-    //     setTimeout(() => {
-    //       const ts = Date.now();
-    //       window.location.href = "page.html?ts=" + ts;
-    //     }, 400);
-    //   } else {
-    //     hideGate();
-    //   }
-    // }
-
-    // Comportamento pós-login (atual):
-    // Redireciona para uma página específica após o login
     if (isLoginPage) {
       // dá um respiro para o e-mail ser enviado antes de trocar de página
       setTimeout(() => {
-        window.location.href = "fimdeanonotempocerto20251230.html"; // Página para a qual redirecionar
+        const ts = Date.now();
+        window.location.href = "page.html?ts=" + ts;
       }, 400);
     } else {
       hideGate();
     }
+    // }
+
+    // Comportamento pós-login (atual):
+    // Redireciona para uma página específica após o login
+    // if (isLoginPage) {
+    //   // dá um respiro para o e-mail ser enviado antes de trocar de página
+    //   setTimeout(() => {
+    //     window.location.href = "fimdeanonotempocerto20251230.html"; // Página para a qual redirecionar
+    //   }, 400);
+    // } else {
+    //   hideGate();
+    // }
   }
 
   function hasAccess() {
