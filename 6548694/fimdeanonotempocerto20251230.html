@@ -6,940 +6,1027 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Fim de ano, no tempo certo</title>
+    <title>Para Cléia - Uma Mensagem no Tempo</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
 
     <style>
       :root {
-        /* Tema: fim de ano (noite quente + dourado + toques festivos discretos) */
-        --bg1: #070a12;
-        --bg2: #0d1324;
-        --bg3: #0b1020;
+        /* Tema: Noite estrelada com cores profundas e mágicas */
+        --deep-navy: #0a0e17;
+        --midnight: #121828;
+        --twilight: #1a2342;
+        --starlight: #e6e8ff;
+        --moonlight: #c8d1ff;
+        --golden-hour: #ffcc70;
+        --soft-pink: #ff9ec8;
+        --aqua-dream: #7bf1ff;
+        --magic-purple: #b399ff;
 
-        --card: rgba(255, 255, 255, 0.085);
-        --card2: rgba(255, 255, 255, 0.06);
-        --border: rgba(255, 255, 255, 0.16);
+        --text-primary: rgba(230, 232, 255, 0.95);
+        --text-secondary: rgba(230, 232, 255, 0.75);
+        --text-soft: rgba(230, 232, 255, 0.55);
 
-        --text: #f6f7fb;
-        --muted: rgba(246, 247, 251, 0.78);
-        --soft: rgba(246, 247, 251, 0.62);
+        --border-glow: rgba(255, 204, 112, 0.3);
+        --card-bg: rgba(18, 24, 40, 0.7);
 
-        --accent: #ffd48a; /* dourado */
-        --accent2: #9ad7ff; /* azul suave (frio) */
-        --accent3: #ff8fb1; /* rosé sutil */
+        --radius-soft: 20px;
+        --radius-full: 1000px;
 
-        --glow: rgba(255, 212, 138, 0.35);
-        --glow2: rgba(154, 215, 255, 0.22);
-        --glow3: rgba(255, 143, 177, 0.16);
-
-        --shadow: 0 24px 60px rgba(0, 0, 0, 0.48);
-        --radius: 22px;
-
-        --sparkle: rgba(255, 212, 138, 0.35);
-        --sparkle2: rgba(255, 255, 255, 0.22);
+        --transition-slow: 800ms cubic-bezier(0.16, 1, 0.3, 1);
+        --transition-medium: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+        --transition-fast: 200ms ease;
       }
 
       * {
         box-sizing: border-box;
-      }
-
-      html,
-      body {
-        height: 100%;
-      }
-
-      body {
         margin: 0;
-        font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial,
-          sans-serif;
-        color: var(--text);
+        padding: 0;
+      }
 
+      html {
+        height: 100%;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: "Inter", sans-serif;
         background: radial-gradient(
-            1100px 720px at 12% 8%,
-            rgba(154, 215, 255, 0.16),
-            transparent 58%
+            ellipse at 20% 20%,
+            var(--twilight) 0%,
+            transparent 50%
           ),
           radial-gradient(
-            980px 700px at 88% 18%,
-            rgba(255, 212, 138, 0.16),
-            transparent 58%
+            ellipse at 80% 80%,
+            rgba(255, 156, 200, 0.1) 0%,
+            transparent 50%
           ),
           radial-gradient(
-            920px 640px at 58% 0%,
-            rgba(255, 143, 177, 0.08),
-            transparent 60%
+            ellipse at 40% 60%,
+            rgba(123, 241, 255, 0.08) 0%,
+            transparent 50%
           ),
-          linear-gradient(180deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+          linear-gradient(180deg, var(--deep-navy) 0%, var(--midnight) 100%);
+        color: var(--text-primary);
         overflow-x: hidden;
+        position: relative;
       }
 
-      /* Brilhos discretos do fim de ano */
-      .confettiGlow {
+      /* Fundo mágico com partículas e gradientes animados */
+      .cosmic-bg {
         position: fixed;
-        inset: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         pointer-events: none;
-        opacity: 0.55;
-        mix-blend-mode: screen;
-        filter: blur(0.2px);
+        z-index: -1;
+        opacity: 0.7;
       }
 
-      .confettiGlow::before,
-      .confettiGlow::after {
-        content: "";
+      .gradient-orb {
         position: absolute;
-        inset: -10%;
+        border-radius: 50%;
+        filter: blur(60px);
+        animation: float 20s infinite ease-in-out;
+      }
+
+      .orb-1 {
+        width: 500px;
+        height: 500px;
         background: radial-gradient(
-            circle at 10% 22%,
-            var(--sparkle),
-            transparent 45%
-          ),
-          radial-gradient(
-            circle at 22% 65%,
-            rgba(154, 215, 255, 0.22),
-            transparent 48%
-          ),
-          radial-gradient(
-            circle at 78% 18%,
-            rgba(255, 143, 177, 0.12),
-            transparent 52%
-          ),
-          radial-gradient(
-            circle at 86% 62%,
-            rgba(255, 255, 255, 0.12),
-            transparent 56%
-          );
-        opacity: 0.6;
-        transform: rotate(2deg);
+          circle,
+          var(--magic-purple) 0%,
+          transparent 70%
+        );
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
       }
 
-      .confettiGlow::after {
-        opacity: 0.35;
-        transform: rotate(-2deg) scale(1.02);
+      .orb-2 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          var(--aqua-dream) 0%,
+          transparent 70%
+        );
+        top: 60%;
+        right: 15%;
+        animation-delay: 5s;
       }
 
-      /* Fundo com ondas/partículas (bem suave) */
-      .bg-waves {
+      .orb-3 {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(
+          circle,
+          var(--golden-hour) 0%,
+          transparent 70%
+        );
+        bottom: 10%;
+        left: 20%;
+        animation-delay: 10s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-40px) scale(1.05);
+        }
+      }
+
+      /* Estrelas */
+      .starfield {
         position: fixed;
-        inset: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         pointer-events: none;
-        opacity: 0.55;
-        filter: blur(0.2px);
-      }
-
-      .bg-waves svg {
-        width: 120%;
-        height: 120%;
-        transform: translate(-10%, -8%);
-      }
-
-      .stars {
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        overflow: hidden;
+        z-index: -1;
       }
 
       .star {
         position: absolute;
-        width: 2px;
-        height: 2px;
+        background-color: white;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.58);
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.22);
-        animation: floaty 9s linear infinite;
-        opacity: 0.48;
-      }
-
-      /* Estrelinhas especiais (tipo "faisca") */
-      .star.spark {
-        width: 3px;
-        height: 3px;
-        opacity: 0.7;
-        background: radial-gradient(
-          circle at 35% 35%,
-          rgba(255, 212, 138, 0.95),
-          rgba(255, 212, 138, 0.2) 55%,
-          transparent 70%
-        );
-        box-shadow: 0 0 14px rgba(255, 212, 138, 0.26);
-        animation: twinkle 2.9s ease-in-out infinite;
-      }
-
-      @keyframes floaty {
-        0% {
-          transform: translateY(20px);
-          opacity: 0.25;
-        }
-        50% {
-          transform: translateY(-20px);
-          opacity: 0.65;
-        }
-        100% {
-          transform: translateY(20px);
-          opacity: 0.25;
-        }
+        animation: twinkle 3s infinite;
       }
 
       @keyframes twinkle {
-        0% {
-          transform: translateY(0) scale(0.9);
-          opacity: 0.4;
+        0%,
+        100% {
+          opacity: 0.3;
         }
         50% {
-          transform: translateY(-6px) scale(1.15);
-          opacity: 0.95;
-        }
-        100% {
-          transform: translateY(0) scale(0.9);
-          opacity: 0.45;
+          opacity: 1;
         }
       }
 
-      .wrap {
-        position: relative;
-        min-height: 100%;
-        padding: 28px 16px 72px;
-      }
-
+      /* Layout principal */
       .container {
-        max-width: 820px;
+        max-width: 800px;
         margin: 0 auto;
+        padding: 2rem 1.5rem;
+        position: relative;
+        z-index: 1;
       }
 
-      .hero {
-        border: 1px solid var(--border);
+      /* Cabeçalho artístico */
+      .art-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        padding: 3rem 2rem;
         background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.11),
-          rgba(255, 255, 255, 0.06)
+          135deg,
+          rgba(26, 35, 66, 0.4) 0%,
+          rgba(18, 24, 40, 0.6) 100%
         );
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        padding: 22px 18px;
         backdrop-filter: blur(10px);
+        border-radius: var(--radius-soft);
+        border: 1px solid var(--border-glow);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+          0 0 60px rgba(255, 204, 112, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
         position: relative;
         overflow: hidden;
       }
 
-      /* “faixa” de brilho de virada de ano */
-      .hero::before {
+      .art-header::before {
         content: "";
         position: absolute;
-        inset: -2px;
-        background: radial-gradient(
-          780px 180px at 50% 0%,
-          rgba(255, 212, 138, 0.18),
-          transparent 60%
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--golden-hour),
+          transparent
         );
-        opacity: 0.9;
-        pointer-events: none;
       }
 
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 14px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        background: rgba(0, 0, 0, 0.18);
-        color: var(--muted);
-        font-size: 13px;
-        letter-spacing: 0.2px;
-        user-select: none;
+      .title-wrapper {
         position: relative;
+        display: inline-block;
       }
 
-      .badge .dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle at 30% 30%,
-          var(--accent),
-          rgba(255, 212, 138, 0.18)
+      .main-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(3rem, 8vw, 4.5rem);
+        font-weight: 600;
+        background: linear-gradient(
+          135deg,
+          var(--starlight) 0%,
+          var(--moonlight) 50%,
+          var(--golden-hour) 100%
         );
-        box-shadow: 0 0 18px var(--glow);
-      }
-
-      .title {
-        margin: 14px 0 6px;
-        font-family: "Playfair Display", serif;
-        font-size: clamp(28px, 4.5vw, 38px);
-        line-height: 1.08;
-        letter-spacing: 0.2px;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.5px;
+        line-height: 1.1;
       }
 
       .subtitle {
-        margin: 0;
-        color: var(--soft);
-        font-size: clamp(14px, 2.4vw, 16px);
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
         line-height: 1.6;
+        font-weight: 300;
       }
 
-      .hint {
-        margin-top: 16px;
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        color: rgba(246, 247, 251, 0.72);
-        font-size: 13px;
-      }
-
-      .hint .scroll {
-        width: 26px;
-        height: 40px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        position: relative;
-        background: rgba(255, 255, 255, 0.04);
-      }
-
-      .hint .scroll::after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        top: 9px;
-        width: 4px;
-        height: 8px;
-        border-radius: 99px;
-        transform: translateX(-50%);
-        background: rgba(255, 255, 255, 0.65);
-        animation: wheel 1.7s ease-in-out infinite;
-      }
-
-      @keyframes wheel {
-        0% {
-          transform: translateX(-50%) translateY(0);
-          opacity: 0.4;
-        }
-        50% {
-          transform: translateX(-50%) translateY(12px);
-          opacity: 0.95;
-        }
-        100% {
-          transform: translateX(-50%) translateY(0);
-          opacity: 0.4;
-        }
-      }
-
-      .journey {
-        margin-top: 18px;
-        border-radius: var(--radius);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(0, 0, 0, 0.22);
-        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
-        overflow: hidden;
-      }
-
-      .journeyHead {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 14px;
-        padding: 14px 16px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        background: linear-gradient(
-          180deg,
-          rgba(255, 255, 255, 0.07),
-          rgba(255, 255, 255, 0.02)
-        );
-      }
-
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        color: rgba(246, 247, 251, 0.86);
-        font-size: 13px;
-      }
-
-      .meter {
-        flex: 1;
-        height: 10px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.07);
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .meter > i {
-        display: block;
-        height: 100%;
-        width: 0%;
+      .divider {
+        width: 200px;
+        height: 1px;
         background: linear-gradient(
           90deg,
-          rgba(154, 215, 255, 0.52),
-          rgba(255, 212, 138, 0.56),
-          rgba(255, 143, 177, 0.22)
+          transparent,
+          var(--golden-hour),
+          transparent
         );
-        box-shadow: 0 0 22px rgba(255, 212, 138, 0.16);
-        border-radius: 999px;
-        transition: width 180ms linear;
+        margin: 2rem auto;
+        opacity: 0.5;
       }
 
-      .content {
-        padding: 14px 16px 18px;
+      /* Nova visualização da mensagem - Timeline vertical */
+      .timeline {
+        position: relative;
+        padding: 2rem 0;
       }
 
-      .block {
-        display: grid;
-        grid-template-columns: 34px 1fr;
-        gap: 12px;
-        padding: 14px 12px;
-        margin: 10px 0;
-        border-radius: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.04);
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 30px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--golden-hour),
+          var(--soft-pink),
+          transparent
+        );
+        opacity: 0.3;
+      }
+
+      .timeline-item {
+        display: flex;
+        margin-bottom: 3rem;
         opacity: 0;
-        transform: translateY(10px);
-        filter: blur(1px);
-        transition: opacity 520ms ease, transform 520ms ease, filter 520ms ease,
-          background 520ms ease, border-color 520ms ease;
+        transform: translateX(-30px);
+        transition: all var(--transition-slow);
+        position: relative;
       }
 
-      .block.reveal {
+      .timeline-item.visible {
         opacity: 1;
-        transform: translateY(0);
-        filter: blur(0);
+        transform: translateX(0);
       }
 
-      .block.reveal {
-        background: rgba(255, 255, 255, 0.045);
-        border-color: rgba(255, 255, 255, 0.14);
+      .timeline-marker {
+        width: 60px;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
       }
 
-      .icon {
-        width: 34px;
-        height: 34px;
-        border-radius: 12px;
-        display: grid;
-        place-items: center;
-        font-size: 16px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        box-shadow: 0 0 0 rgba(255, 212, 138, 0);
-        transition: box-shadow 520ms ease, background 520ms ease,
-          transform 520ms ease;
-        user-select: none;
+      .marker-dot {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--deep-navy);
+        border: 2px solid var(--golden-hour);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 20px var(--golden-hour),
+          0 0 40px rgba(255, 204, 112, 0.2);
+        transition: all var(--transition-medium);
       }
 
-      .block.reveal .icon {
-        background: rgba(255, 255, 255, 0.095);
-        box-shadow: 0 0 24px rgba(255, 212, 138, 0.18),
-          0 0 18px rgba(154, 215, 255, 0.12), 0 0 16px rgba(255, 143, 177, 0.08);
-        transform: translateY(-1px);
+      .timeline-item.visible .marker-dot {
+        transform: scale(1.1);
+        box-shadow: 0 0 30px var(--golden-hour),
+          0 0 60px rgba(255, 204, 112, 0.3);
       }
 
-      .block p {
-        margin: 0;
-        color: rgba(246, 247, 251, 0.9);
-        line-height: 1.75;
-        font-size: 15px;
-      }
-
-      .signatureBox {
-        margin-top: 12px;
-        padding: 14px 12px;
-        border-radius: 18px;
-        border: 1px dashed rgba(255, 255, 255, 0.22);
-        background: rgba(0, 0, 0, 0.16);
+      .marker-icon {
+        font-size: 12px;
         opacity: 0;
-        transform: translateY(8px);
-        filter: blur(1px);
-        transition: opacity 520ms ease, transform 520ms ease, filter 520ms ease;
+        transition: opacity var(--transition-medium);
+      }
+
+      .timeline-item.visible .marker-icon {
+        opacity: 1;
+      }
+
+      .timeline-content {
+        flex: 1;
+        padding: 1.5rem 2rem;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-radius: var(--radius-soft);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-left: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        transition: all var(--transition-medium);
         position: relative;
         overflow: hidden;
       }
 
-      .signatureBox::before {
+      .timeline-content::before {
         content: "";
         position: absolute;
-        inset: -2px;
-        background: radial-gradient(
-          540px 120px at 20% 0%,
-          rgba(255, 212, 138, 0.12),
-          transparent 60%
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--golden-hour),
+          transparent
         );
-        opacity: 0.85;
-        pointer-events: none;
+        opacity: 0.5;
       }
 
-      .signatureBox.reveal {
-        opacity: 1;
-        transform: translateY(0);
-        filter: blur(0);
+      .timeline-item.visible .timeline-content {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+          0 0 60px rgba(255, 204, 112, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
       }
 
-      .signatureBox .sig {
-        font-family: "Playfair Display", serif;
-        font-size: 16px;
-        color: rgba(255, 255, 255, 0.9);
-        margin: 0 0 6px;
+      .message-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-primary);
+        font-weight: 300;
+        position: relative;
+        z-index: 1;
+      }
+
+      .message-highlight {
+        color: var(--golden-hour);
+        font-weight: 500;
+      }
+
+      /* Assinatura especial */
+      .signature-section {
+        text-align: center;
+        padding: 4rem 2rem;
+        margin-top: 3rem;
         position: relative;
       }
 
-      .signatureBox .code {
-        margin: 0;
-        color: rgba(255, 255, 255, 0.65);
-        letter-spacing: 1.6px;
-        font-size: 13px;
+      .signature-card {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 3rem;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 204, 112, 0.1) 0%,
+          rgba(179, 153, 255, 0.1) 50%,
+          rgba(123, 241, 255, 0.1) 100%
+        );
+        backdrop-filter: blur(20px);
+        border-radius: var(--radius-soft);
+        border: 1px solid var(--border-glow);
         position: relative;
+        overflow: hidden;
       }
 
-      .footerActions {
-        margin-top: 18px;
+      .signature-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255, 204, 112, 0.1) 0%,
+          transparent 50%
+        );
+      }
+
+      .signature-text {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 2rem;
+        color: var(--starlight);
+        margin-bottom: 1rem;
+        font-weight: 500;
+      }
+
+      .signature-code {
+        font-family: monospace;
+        color: var(--text-soft);
+        letter-spacing: 3px;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+      }
+
+      /* Navegação */
+      .navigation {
         display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 3rem;
         flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
       }
 
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 12px 16px;
-        border-radius: 999px;
+      .nav-btn {
+        padding: 0.8rem 2rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
         text-decoration: none;
-        font-size: 14px;
-        color: rgba(246, 247, 251, 0.92);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: rgba(255, 255, 255, 0.06);
-        transition: transform 180ms ease, background 180ms ease,
-          border-color 180ms ease, box-shadow 180ms ease;
-        user-select: none;
+        border-radius: var(--radius-full);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all var(--transition-medium);
+        cursor: pointer;
       }
 
-      .btn:hover {
-        transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.095);
-        border-color: rgba(255, 255, 255, 0.26);
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+      .nav-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--golden-hour);
+        transform: translateY(-2px);
       }
 
-      .btn:active {
-        transform: translateY(0);
+      .nav-btn.primary {
+        background: linear-gradient(
+          135deg,
+          var(--golden-hour),
+          var(--soft-pink)
+        );
+        color: var(--deep-navy);
+        font-weight: 500;
+        border: none;
       }
 
-      .btn.secondary {
-        color: rgba(246, 247, 251, 0.86);
-        background: rgba(0, 0, 0, 0.14);
+      .nav-btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(255, 204, 112, 0.3);
       }
 
-      .toast {
+      /* Efeitos especiais */
+      .floating-particles {
         position: fixed;
-        left: 50%;
-        bottom: 18px;
-        transform: translateX(-50%);
-        padding: 10px 14px;
-        border-radius: 999px;
-        background: rgba(0, 0, 0, 0.55);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        color: rgba(246, 247, 251, 0.92);
-        font-size: 13px;
-        opacity: 0;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         pointer-events: none;
-        transition: opacity 240ms ease, transform 240ms ease;
-        backdrop-filter: blur(8px);
+        z-index: -1;
       }
 
-      .toast.show {
-        opacity: 1;
-        transform: translateX(-50%) translateY(-2px);
+      .particle {
+        position: absolute;
+        background: radial-gradient(
+          circle,
+          var(--golden-hour) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        opacity: 0;
+        animation: float-particle 20s infinite linear;
       }
 
-      @media (min-width: 680px) {
-        .hero {
-          padding: 26px 22px;
+      @keyframes float-particle {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 0;
         }
-        .content {
-          padding: 16px 18px 20px;
+        10% {
+          opacity: 0.3;
         }
-        .block p {
-          font-size: 16px;
+        90% {
+          opacity: 0.3;
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      /* Responsividade */
+      @media (max-width: 768px) {
+        .container {
+          padding: 1rem;
+        }
+
+        .art-header {
+          padding: 2rem 1rem;
+          margin-bottom: 2rem;
+        }
+
+        .main-title {
+          font-size: 2.5rem;
+        }
+
+        .timeline::before {
+          left: 20px;
+        }
+
+        .timeline-marker {
+          width: 40px;
+        }
+
+        .marker-dot {
+          width: 20px;
+          height: 20px;
+        }
+
+        .timeline-content {
+          padding: 1.2rem;
+          margin-left: 0.5rem;
+        }
+
+        .message-text {
+          font-size: 1rem;
+        }
+
+        .signature-card {
+          padding: 2rem;
+        }
+
+        .signature-text {
+          font-size: 1.5rem;
         }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .star,
-        .hint .scroll::after,
-        .star.spark {
-          animation: none !important;
-        }
-        .block,
-        .signatureBox,
-        .meter > i {
-          transition: none !important;
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
         }
       }
     </style>
   </head>
 
   <body>
-    <!-- brilho sutil de fim de ano -->
-    <div class="confettiGlow" aria-hidden="true"></div>
-
-    <!-- Fundo com ondas bem suaves -->
-    <div class="bg-waves" aria-hidden="true">
-      <svg viewBox="0 0 1200 900" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0" stop-color="rgba(154,215,255,0.20)" />
-            <stop offset="0.62" stop-color="rgba(255,212,138,0.18)" />
-            <stop offset="1" stop-color="rgba(255,143,177,0.10)" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M0,640 C140,600 260,720 420,680 C600,630 650,520 810,540 C960,560 1040,690 1200,640 L1200,900 L0,900 Z"
-          fill="url(#g1)"
-          opacity="0.18"
-        ></path>
-        <path
-          d="M0,690 C160,650 260,760 440,720 C610,680 700,590 840,610 C1000,635 1060,760 1200,720 L1200,900 L0,900 Z"
-          fill="rgba(255,255,255,0.10)"
-          opacity="0.10"
-        ></path>
-        <path
-          d="M0,580 C220,520 280,640 470,610 C650,582 690,470 860,495 C1010,520 1080,640 1200,595"
-          fill="none"
-          stroke="rgba(255,255,255,0.14)"
-          stroke-width="2"
-          opacity="0.10"
-        ></path>
-      </svg>
+    <!-- Fundo cósmico -->
+    <div class="cosmic-bg">
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="gradient-orb orb-3"></div>
     </div>
 
-    <!-- Partículas -->
-    <div class="stars" id="stars" aria-hidden="true"></div>
+    <!-- Campo de estrelas -->
+    <div class="starfield" id="starfield"></div>
 
-    <div class="wrap">
-      <div class="container">
-        <section class="hero">
-          <div class="badge">
-            <span class="dot"></span>
-            <span>Fim de ano, leitura em passos</span>
-          </div>
+    <!-- Partículas flutuantes -->
+    <div class="floating-particles" id="particles"></div>
 
-          <h1 class="title">Cléia</h1>
+    <div class="container">
+      <!-- Cabeçalho artístico -->
+      <header class="art-header">
+        <div class="title-wrapper">
+          <h1 class="main-title">Para Cléia</h1>
+          <div class="divider"></div>
           <p class="subtitle">
-            Uma mensagem que aparece aos poucos, como as coisas que a gente
-            entende com o tempo.
+            Mensagens que se revelam com o tempo, como estrelas que brilham na
+            medida certa. Role suavemente e deixe que cada palavra encontre seu
+            momento.
           </p>
+        </div>
+      </header>
 
-          <div class="hint">
-            <div class="scroll" aria-hidden="true"></div>
-            <div>Role devagar. Cada trecho acende um pequeno símbolo.</div>
-          </div>
-        </section>
-
-        <section class="journey" aria-label="Mensagem em partes">
-          <div class="journeyHead">
-            <div class="pill" title="Progresso da leitura">
-              <span aria-hidden="true">💫</span>
-              <span id="progressLabel">0%</span>
-            </div>
-            <div class="meter" aria-hidden="true"><i id="meterFill"></i></div>
-            <button
-              class="btn secondary"
-              id="copyBtn"
-              type="button"
-              title="Copiar a mensagem inteira"
-            >
-              <span aria-hidden="true">📎</span> Copiar
-            </button>
-          </div>
-
-          <div class="content" id="content">
-            <div class="block" data-icon="⭐">
-              <div class="icon" aria-hidden="true">⭐</div>
-              <p>
-                Cléia, este ano teve muitas coisas. Algumas passam. Outras
-                ficam.
-              </p>
-            </div>
-
-            <div class="block" data-icon="🌙">
-              <div class="icon" aria-hidden="true">🌙</div>
-              <p>
-                Entre tudo o que aconteceu, houve algo que permaneceu em mim de
-                um jeito bonito, profundo e verdadeiro.
-              </p>
-            </div>
-
-            <div class="block" data-icon="🐚">
-              <div class="icon" aria-hidden="true">🐚</div>
-              <p>
-                Você fez parte do meu ano de uma forma que não se explica
-                rápido. Não por gestos grandes, mas pela presença. Pelo jeito de
-                ser. Pela forma como você existe no mundo.
-              </p>
-            </div>
-
-            <div class="block" data-icon="✨">
-              <div class="icon" aria-hidden="true">✨</div>
-              <p>
-                Eu te admiro como ser humano. Como mulher que sente, mas sabe
-                respeitar os próprios limites. Como mãe, mesmo conhecendo pouco
-                esse seu lado, é impossível não perceber o cuidado, a força e o
-                amor que você carrega.
-              </p>
-            </div>
-
-            <div class="block" data-icon="🙏">
-              <div class="icon" aria-hidden="true">🙏</div>
-              <p>
-                Não te coloco em pedestal algum. Apenas reconheço o que você
-                representa para mim. Isso é diferente de idealizar. É enxergar.
-              </p>
-            </div>
-
-            <div class="block" data-icon="🤍">
-              <div class="icon" aria-hidden="true">🤍</div>
-              <p>
-                Houve um tempo em que eu estava fechado, seguindo a vida no
-                automático, sem perceber. E, sem saber, você me devolveu coisas
-                que eu achava que tinham ficado no passado.
-              </p>
-            </div>
-
-            <div class="block" data-icon="🌊">
-              <div class="icon" aria-hidden="true">🌊</div>
-              <p>
-                Sentir novamente. Olhar com mais presença. Estar mais inteiro.
-                Tudo isso voltou. E eu sou grato por isso.
-              </p>
-            </div>
-
-            <div class="block" data-icon="🕯️">
-              <div class="icon" aria-hidden="true">🕯️</div>
-              <p>
-                Eu sei que existem caminhos, tempos e escolhas que não se cruzam
-                agora. E eu respeito isso com maturidade e cuidado.
-              </p>
-            </div>
-
-            <div class="block" data-icon="🫶">
-              <div class="icon" aria-hidden="true">🫶</div>
-              <p>
-                O que senti não desapareceu. Apenas amadureceu. Tornou-se mais
-                consciente, mais silencioso e mais verdadeiro. Mas existe.
-              </p>
-            </div>
-
-            <div class="block" data-icon="🌟">
-              <div class="icon" aria-hidden="true">🌟</div>
-              <p>
-                Não sei qual é o meu lugar na sua vida. Mas espero ser, no
-                mínimo, alguém que não pesa, não exige e não machuca. Espero te
-                trazer sorrisos, leveza e bons momentos.
-              </p>
-            </div>
-
-            <div class="block" data-icon="🧭">
-              <div class="icon" aria-hidden="true">🧭</div>
-              <p>
-                Se em algum momento meus gestos tornaram os seus dias difíceis
-                um pouco mais leves, então já valeu.
-              </p>
-            </div>
-
-            <div class="block" data-icon="⏳">
-              <div class="icon" aria-hidden="true">⏳</div>
-              <p>
-                Acredito que nada é acaso. Os encontros têm propósito. E o tempo
-                faz o que precisa ser feito quando a gente respeita o processo.
-              </p>
-            </div>
-
-            <div class="block" data-icon="💛">
-              <div class="icon" aria-hidden="true">💛</div>
-              <p>
-                Obrigado por existir. Obrigado por ser quem você é. Que você
-                siga realizando seus sonhos, cuidando de si e brilhando, do seu
-                jeito.
-              </p>
-            </div>
-
-            <div class="block" data-icon="💜">
-              <div class="icon" aria-hidden="true">💜</div>
-              <p>
-                Estarei por aqui, te proporcionando um espaço de paz e
-                tranquilidade.
-              </p>
-            </div>
-
-            <div class="block" data-icon="💜">
-              <div class="icon" aria-hidden="true">💜</div>
-              <p>
-                Que este ano novo traga para você muitas alegrias, conquistas e
-                momentos especiais.
-              </p>
-            </div>
-
-            <div class="signatureBox" id="signatureBox">
-              <p class="sig">De alguém que bem te quer.</p>
-              <p class="code">._.. ...</p>
-            </div>
-
-            <div class="footerActions">
-              <a
-                class="btn"
-                href="./index2.html"
-                title="Voltar para a página principal"
-              >
-                <span aria-hidden="true">🏠</span> Página inicial
-              </a>
-              <button
-                class="btn"
-                id="scrollTopBtn"
-                type="button"
-                title="Voltar ao topo"
-              >
-                <span aria-hidden="true">⬆️</span> Voltar ao topo
-              </button>
+      <!-- Timeline da mensagem -->
+      <main class="timeline">
+        <!-- Item 1 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">⭐</span>
             </div>
           </div>
-        </section>
+          <div class="timeline-content">
+            <span class="message-highlight">Cléia</span>
+            <p class="message-text">
+              Este ano teve muitas coisas. Algumas passam. Outras ficam.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">🌙</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Entre tudo o que aconteceu, houve algo que permaneceu em mim de um
+              jeito
+              <span class="message-highlight"
+                >bonito, profundo e verdadeiro</span
+              >.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">💫</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Você fez parte do meu ano de uma forma que não se explica rápido.
+              Não por gestos grandes, mas pela
+              <span class="message-highlight">presença</span>. Pelo jeito de
+              ser. Pela forma como você existe no mundo.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">✨</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Eu te admiro como ser humano. Como mulher que sente, mas sabe
+              respeitar os próprios limites. Como mãe, mesmo conhecendo pouco
+              esse seu lado, é impossível não perceber o
+              <span class="message-highlight">cuidado, a força e o amor</span>
+              que você carrega.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">🙏</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Não é exagero, mas
+              <span class="message-highlight">reconheço</span>
+              o que você representa para mim. Isso é diferente de idealizar. É
+              enxergar.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 6 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">🤍</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Houve um tempo em que eu estava fechado, seguindo a vida no
+              automático, sem perceber. E, sem saber, você me devolveu coisas
+              que eu achava que nunca sentiria novamente, mas de uma forma mais
+              <span class="message-highlight">consciente e verdadeira.</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 7 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">🌊</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Sentir novamente. Olhar com mais presença. Estar mais inteiro.
+              Tudo isso <span class="message-highlight">voltou</span>. E eu sou
+              grato por isso.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 8 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">🕯️</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Eu sei que existem caminhos, tempos e escolhas que não se cruzam
+              agora. E eu respeito isso com
+              <span class="message-highlight">maturidade e cuidado</span>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 9 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">🫶</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              O que senti não desapareceu. Apenas
+              <span class="message-highlight">amadureceu</span>. Tornou-se mais
+              consciente, mais silencioso e mais verdadeiro. Mas existe e
+              aceito.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 10 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">🌟</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Não sei qual é o meu lugar na sua vida. Mas espero ser, no mínimo,
+              alguém que não pesa, não exige e não machuca. Espero te trazer
+              <span class="message-highlight"
+                >sorrisos, leveza e bons momentos</span
+              >.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 11 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">🧭</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Se em algum momento meus gestos tornaram os seus dias difíceis um
+              pouco mais leves, então
+              <span class="message-highlight">já valeu</span>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 12 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">⏳</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Acredito que nada é acaso. Os encontros têm propósito. E o tempo
+              faz o que precisa ser feito quando a gente
+              <span class="message-highlight">respeita o processo</span>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 13 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">💛</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Obrigado por existir. Obrigado por ser quem você é. Que você siga
+              realizando seus sonhos, cuidando de si e
+              <span class="message-highlight">brilhando, do seu jeito</span>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 14 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">💜</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Estarei por aqui, te proporcionando um espaço de
+              <span class="message-highlight">paz e tranquilidade</span>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Item 15 -->
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <div class="marker-dot">
+              <span class="marker-icon">🎆</span>
+            </div>
+          </div>
+          <div class="timeline-content">
+            <p class="message-text">
+              Que este ano novo traga para você muitas
+              <span class="message-highlight"
+                >alegrias, conquistas e momentos especiais</span
+              >.
+            </p>
+          </div>
+        </div>
+      </main>
+
+      <!-- Assinatura -->
+      <section class="signature-section">
+        <div class="signature-card">
+          <p class="signature-text">De alguém que bem te quer.</p>
+          <p class="signature-code">._.. ...</p>
+        </div>
+      </section>
+
+      <!-- Navegação -->
+      <div class="navigation">
+        <button class="nav-btn" id="copyBtn">
+          <span>📋</span> Copiar Mensagem
+        </button>
+        <button class="nav-btn primary" id="topBtn">
+          <span>⭐</span> Voltar ao Início
+        </button>
       </div>
-    </div>
-
-    <div class="toast" id="toast" role="status" aria-live="polite">
-      Copiado.
     </div>
 
     <script>
       (function () {
         "use strict";
 
-        // Partículas (estrelas)
-        const stars = document.getElementById("stars");
-        const STAR_COUNT = 26;
-        const SPARK_COUNT = 8;
-
-        function rand(min, max) {
-          return Math.random() * (max - min) + min;
+        // Criar estrelas
+        const starfield = document.getElementById("starfield");
+        for (let i = 0; i < 150; i++) {
+          const star = document.createElement("div");
+          star.className = "star";
+          star.style.width = Math.random() * 2 + 1 + "px";
+          star.style.height = star.style.width;
+          star.style.left = Math.random() * 100 + "%";
+          star.style.top = Math.random() * 100 + "%";
+          star.style.animationDelay = Math.random() * 3 + "s";
+          star.style.animationDuration = Math.random() * 2 + 2 + "s";
+          starfield.appendChild(star);
         }
 
-        for (let i = 0; i < STAR_COUNT; i++) {
-          const s = document.createElement("div");
-          s.className = "star";
-          s.style.left = rand(2, 98) + "%";
-          s.style.top = rand(2, 98) + "%";
-          s.style.animationDuration = rand(6, 14) + "s";
-          s.style.animationDelay = rand(0, 6) + "s";
-          s.style.opacity = rand(0.25, 0.65);
-          const size = rand(1.5, 2.6);
-          s.style.width = size + "px";
-          s.style.height = size + "px";
-          stars.appendChild(s);
+        // Criar partículas
+        const particles = document.getElementById("particles");
+        for (let i = 0; i < 20; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          const size = Math.random() * 4 + 1;
+          particle.style.width = size + "px";
+          particle.style.height = size + "px";
+          particle.style.left = Math.random() * 100 + "%";
+          particle.style.animationDelay = Math.random() * 20 + "s";
+          particle.style.animationDuration = Math.random() * 10 + 15 + "s";
+          particles.appendChild(particle);
         }
 
-        // “faíscas” douradas (fim de ano)
-        for (let i = 0; i < SPARK_COUNT; i++) {
-          const s = document.createElement("div");
-          s.className = "star spark";
-          s.style.left = rand(4, 96) + "%";
-          s.style.top = rand(6, 92) + "%";
-          s.style.animationDuration = rand(2.2, 3.8) + "s";
-          s.style.animationDelay = rand(0, 2.4) + "s";
-          stars.appendChild(s);
-        }
+        // Revelar timeline items ao scroll
+        const timelineItems = document.querySelectorAll(".timeline-item");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                // Ativar ícone depois de um delay
+                setTimeout(() => {
+                  const icon = entry.target.querySelector(".marker-icon");
+                  if (icon) {
+                    icon.style.opacity = "1";
+                    icon.style.transform = "scale(1.2)";
+                    setTimeout(() => {
+                      icon.style.transform = "scale(1)";
+                    }, 300);
+                  }
+                }, 500);
+              }
+            });
+          },
+          {
+            threshold: 0.3,
+            rootMargin: "0px 0px -50px 0px",
+          }
+        );
 
-        // Reveal progressivo
-        const blocks = Array.from(document.querySelectorAll(".block"));
-        const signatureBox = document.getElementById("signatureBox");
-        const meterFill = document.getElementById("meterFill");
-        const progressLabel = document.getElementById("progressLabel");
+        timelineItems.forEach((item) => {
+          observer.observe(item);
+        });
 
-        function revealOnScroll() {
-          const vh =
-            window.innerHeight || document.documentElement.clientHeight;
-
-          let revealed = 0;
-
-          blocks.forEach((b) => {
-            const rect = b.getBoundingClientRect();
-            const inView = rect.top < vh * 0.86;
-
-            if (inView) {
-              b.classList.add("reveal");
-            }
-
-            if (b.classList.contains("reveal")) revealed++;
-          });
-
-          const content = document.getElementById("content");
-          const contentRect = content.getBoundingClientRect();
-          const nearEnd = contentRect.bottom < vh * 1.25;
-          if (nearEnd) signatureBox.classList.add("reveal");
-
-          const pct = Math.round((revealed / blocks.length) * 100);
-          progressLabel.textContent = pct + "%";
-          meterFill.style.width = pct + "%";
-        }
-
-        window.addEventListener("scroll", revealOnScroll, { passive: true });
-        window.addEventListener("resize", revealOnScroll);
-        revealOnScroll();
-
-        // Copiar texto completo (conteúdo dos parágrafos)
+        // Botão de copiar
         const copyBtn = document.getElementById("copyBtn");
-        const toast = document.getElementById("toast");
-
-        function showToast(msg) {
-          toast.textContent = msg;
-          toast.classList.add("show");
-          window.clearTimeout(showToast._t);
-          showToast._t = window.setTimeout(
-            () => toast.classList.remove("show"),
-            1200
-          );
-        }
-
-        function getFullText() {
-          const ps = blocks.map((b) => b.querySelector("p").innerText.trim());
-          const tail = "\n\nDe alguém que bem te quer.\n._.. ...";
-          return ps.join("\n\n") + tail;
-        }
-
         copyBtn.addEventListener("click", async () => {
+          const messages = Array.from(timelineItems)
+            .map((item) => {
+              return item.querySelector(".message-text").textContent;
+            })
+            .join("\n\n");
+
+          const fullMessage =
+            messages + "\n\nDe alguém que bem te quer.\n._.. ...";
+
           try {
-            const text = getFullText();
-            await navigator.clipboard.writeText(text);
-            showToast("Copiado.");
-          } catch (e) {
-            try {
-              const ta = document.createElement("textarea");
-              ta.value = getFullText();
-              ta.setAttribute("readonly", "");
-              ta.style.position = "fixed";
-              ta.style.left = "-9999px";
-              document.body.appendChild(ta);
-              ta.select();
-              document.execCommand("copy");
-              document.body.removeChild(ta);
-              showToast("Copiado.");
-            } catch (err) {
-              showToast("Não foi possível copiar.");
-            }
+            await navigator.clipboard.writeText(fullMessage);
+
+            // Feedback visual
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = "<span>✓</span> Copiado!";
+            copyBtn.style.background =
+              "linear-gradient(135deg, #4CAF50, #45a049)";
+
+            setTimeout(() => {
+              copyBtn.innerHTML = originalText;
+              copyBtn.style.background = "";
+            }, 2000);
+          } catch (err) {
+            copyBtn.innerHTML = "<span>❌</span> Erro ao copiar";
+            copyBtn.style.background =
+              "linear-gradient(135deg, #f44336, #d32f2f)";
+
+            setTimeout(() => {
+              copyBtn.innerHTML = originalText;
+              copyBtn.style.background = "";
+            }, 2000);
           }
         });
 
-        // Voltar ao topo
-        const scrollTopBtn = document.getElementById("scrollTopBtn");
-        scrollTopBtn.addEventListener("click", () => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
+        // Botão de voltar ao topo
+        const topBtn = document.getElementById("topBtn");
+        topBtn.addEventListener("click", () => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        });
+
+        // Efeito de digitação no primeiro item
+        const firstMessage = document.querySelector(
+          ".timeline-item .message-text"
+        );
+        if (firstMessage) {
+          const text = firstMessage.innerHTML;
+          firstMessage.innerHTML = "";
+
+          let i = 0;
+          const typeWriter = () => {
+            if (i < text.length) {
+              firstMessage.innerHTML += text.charAt(i);
+              i++;
+              setTimeout(typeWriter, 20);
+            }
+          };
+
+          // Iniciar depois de um pequeno delay
+          setTimeout(() => {
+            const firstItem = document.querySelector(".timeline-item");
+            if (firstItem) {
+              firstItem.classList.add("visible");
+              typeWriter();
+            }
+          }, 500);
+        }
+
+        // Efeito de parallax suave no scroll
+        window.addEventListener("scroll", () => {
+          const scrolled = window.pageYOffset;
+          const cosmicBg = document.querySelector(".cosmic-bg");
+
+          if (cosmicBg) {
+            cosmicBg.style.transform = `translateY(${scrolled * 0.05}px)`;
+          }
         });
       })();
     </script>
