@@ -1,32 +1,3 @@
-(async function loadCards() {
-  try {
-    const res = await fetch("./cards.json?ts=" + Date.now(), {
-      cache: "no-store",
-    });
-    if (!res.ok) {
-      console.error("Erro ao carregar cards.json:", res.status);
-      return;
-    }
-
-    const data = await res.json();
-
-    // se seu arquivo for um array direto:
-    // window.cards = Array.isArray(data) ? data : [];
-
-    // se for algo como { cards: [...] }:
-    window.cards = Array.isArray(data)
-      ? data
-      : Array.isArray(data.cards)
-        ? data.cards
-        : [];
-
-    // dispara o evento que o main.js já escuta
-    document.dispatchEvent(new Event("cards:ready"));
-  } catch (e) {
-    console.error("Falha ao carregar cards.json:", e);
-  }
-})();
-
 (function () {
   const $ = (s) => document.querySelector(s);
 
@@ -39,9 +10,9 @@
   //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
   // ];
 
-  /* ======================   18/12/2025 - 06:29   ======================= */
+  /* ======================   01/01/2026 - 12:55   ======================= */
   const KEYS = [
-    { id: "vento", pass: "VENTO", hint: "Balança sua rede." },
+    { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
   ];
   /* ================================================================== */
 
@@ -471,6 +442,19 @@
     const filterAllBtn = document.getElementById("filterAll");
     const filterUnreadBtn = document.getElementById("filterUnread");
 
+    // Controles novos
+    const searchInput = document.getElementById("searchCards");
+    const sortSelect = document.getElementById("sortCards");
+    const statAvailableEl = document.getElementById("statAvailable");
+    const statUnreadEl = document.getElementById("statUnread");
+    const statTodayEl = document.getElementById("statToday");
+
+    let searchQuery = "";
+    let sortOrder = "new";
+
+    if (sortSelect && sortSelect.value) {
+      sortOrder = String(sortSelect.value);
+    }
     // Spans de contagem nos botões
     const countUnreadEl = document.getElementById("countUnread");
     const countTodayEl = document.getElementById("countToday");
@@ -513,6 +497,9 @@
         if (countUnreadEl) countUnreadEl.textContent = "";
         if (countTodayEl) countTodayEl.textContent = "";
         if (countAllEl) countAllEl.textContent = "";
+        if (statAvailableEl) statAvailableEl.textContent = "0";
+        if (statUnreadEl) statUnreadEl.textContent = "0";
+        if (statTodayEl) statTodayEl.textContent = "0";
         return;
       }
 
@@ -624,16 +611,19 @@
       // estado visual nos botões
       if (filterTodayBtn) {
         filterTodayBtn.classList.toggle("secondary", filter === "today");
+        filterTodayBtn.classList.toggle("active", filter === "today");
         filterTodayBtn.classList.toggle("ghost", filter !== "today");
       }
 
       if (filterAllBtn) {
         filterAllBtn.classList.toggle("secondary", filter === "all");
+        filterAllBtn.classList.toggle("active", filter === "all");
         filterAllBtn.classList.toggle("ghost", filter !== "all");
       }
 
       if (filterUnreadBtn) {
         filterUnreadBtn.classList.toggle("secondary", filter === "unread");
+        filterUnreadBtn.classList.toggle("active", filter === "unread");
         filterUnreadBtn.classList.toggle("ghost", filter !== "unread");
       }
 
@@ -667,6 +657,25 @@
 
           list = list.filter((c) => c.__dt <= now && !readSet.has(c.href));
         }
+
+        // Busca (título/sub/descrição)
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          list = list.filter((c) => {
+            const t = String(c.title || "").toLowerCase();
+            const s = String(c.sub || "").toLowerCase();
+            const d = String(c.desc || "").toLowerCase();
+            return t.includes(q) || s.includes(q) || d.includes(q);
+          });
+        }
+
+        // Ordenação (por publishedAt)
+        list.sort((a, b) => {
+          const ad = a.__dt ? a.__dt.getTime() : 0;
+          const bd = b.__dt ? b.__dt.getTime() : 0;
+          return sortOrder === "old" ? ad - bd : bd - ad;
+        });
+
 
         if (!list.length) {
           let msg = "Não há cards disponíveis neste momento.";
@@ -744,6 +753,16 @@
       applyFilter(initialFilter);
       updateFilterCounts();
 
+    });
+
+    searchInput?.addEventListener("input", () => {
+      searchQuery = String(searchInput.value || "").trim();
+      applyFilter(currentFilter);
+    });
+
+    sortSelect?.addEventListener("change", () => {
+      sortOrder = String(sortSelect.value || "new");
+      applyFilter(currentFilter);
     });
 
     filterTodayBtn?.addEventListener("click", () => applyFilter("today"));
@@ -844,6 +863,16 @@
 (function () {
   // Usa a mesma chave do seed (PRE_READ_CARDS)
   const STORAGE_KEY = "cardsRead.v1";
+
+  // Migração: versões antigas salvavam em "cardsRead"
+  try {
+    const legacy = localStorage.getItem("cardsRead");
+    const current = localStorage.getItem(STORAGE_KEY);
+    if (legacy && !current) {
+      localStorage.setItem(STORAGE_KEY, legacy);
+    }
+  } catch (e) { }
+
 
   function loadReadSet() {
     try {
@@ -974,15 +1003,14 @@
 document.addEventListener("cards:ready", () => {
   const totalCards = window.cards || [];
 
-  const readStr = localStorage.getItem("cardsRead") || "[]";
   let readArr = [];
   try {
-    readArr = JSON.parse(readStr);
+    const raw = localStorage.getItem("cardsRead.v1") || "[]";
+    const parsed = JSON.parse(raw);
+    readArr = Array.isArray(parsed) ? parsed : [];
   } catch (e) { }
 
-  const notReadCount = totalCards.filter(
-    (c) => !readArr.includes(c.href)
-  ).length;
+  const notReadCount = totalCards.filter((c) => !readArr.includes(c.href)).length;
 
   const now = new Date();
   const isToday = (d) =>
