@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "🌬️",
+    "title": "Ela",
+    "sub": "Que tal um poema?",
+    "desc": "Um poema que descreve Ela",
+    "href": "./poema20260101.html",
+    "publishedAt": "2026-01-01T18:30:00-03:00",
+    "sentimento": "presença discreta, carinho contido e afeto que respeita o tempo",
+    "moods": [
+      "silêncio",
+      "presença",
+      "tempo próprio"
+    ]
+  },
+  {
     "emoji": "✨",
     "title": "Fim de ano, no tempo certo",
     "sub": "Uma leitura que aquece devagar",

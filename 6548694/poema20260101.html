@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Poema para você</title>
+
+    <style>
+      /* tema automático */
+      :root {
+        --bg-light: #faf3e9;
+        --text-light: #333;
+        --accent-light: #b07d62;
+
+        --bg-dark: #0e0f14;
+        --text-dark: #eee;
+        --accent-dark: #d8bfae;
+
+        /* container do poema */
+        --paper-light: rgba(255, 255, 255, 0.72);
+        --paper-dark: rgba(255, 255, 255, 0.06);
+        --border-light: rgba(176, 125, 98, 0.22);
+        --border-dark: rgba(216, 191, 174, 0.18);
+        --shadow-light: 0 16px 42px rgba(0, 0, 0, 0.12);
+        --shadow-dark: 0 18px 48px rgba(0, 0, 0, 0.42);
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        font-family: "Georgia", serif;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+
+      body.light {
+        background: var(--bg-light);
+        color: var(--text-light);
+      }
+      body.dark {
+        background: var(--bg-dark);
+        color: var(--text-dark);
+      }
+
+      .container {
+        padding: 28px 16px 34px;
+        max-width: 860px;
+        margin: auto;
+      }
+
+      /* NOVO: container “papel” do poema */
+      .poem-container {
+        margin: 56px auto 0;
+        max-width: 760px;
+        border-radius: 22px;
+        padding: 18px;
+        position: relative;
+        opacity: 0;
+        animation: fadeIn 1.2s ease-in-out forwards;
+      }
+
+      body.light .poem-container {
+        background: linear-gradient(
+          180deg,
+          var(--paper-light),
+          rgba(255, 255, 255, 0.58)
+        );
+        border: 1px solid var(--border-light);
+        box-shadow: var(--shadow-light);
+      }
+
+      body.dark .poem-container {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.08),
+          var(--paper-dark)
+        );
+        border: 1px solid var(--border-dark);
+        box-shadow: var(--shadow-dark);
+      }
+
+      /* detalhe de topo, bem discreto */
+      .poem-container::before {
+        content: "";
+        position: absolute;
+        left: 22px;
+        right: 22px;
+        top: 5px;
+        height: 2px;
+        border-radius: 999px;
+        opacity: 0.55;
+        background: currentColor;
+      }
+
+      /* “miolo” do poema */
+      .poem-box {
+        margin-top: 0;
+        font-size: 20px;
+        line-height: 1.7;
+        text-align: center;
+      }
+
+      .poem-lines {
+        padding: 22px 16px 18px;
+      }
+
+      .poem-lines p {
+        margin: 10px 0;
+      }
+
+      /* separação visual entre estrofes */
+      .poem-lines p + p {
+        /* mantém ritmo */
+        margin-top: 14px;
+      }
+
+      /* opcional: espaçamento maior a cada bloco de estrofe
+         sem precisar mexer no HTML, usando parágrafos vazios ou separadores
+         (se você não quiser, pode remover esta parte) */
+      .poem-lines p.gap {
+        margin: 18px 0;
+        opacity: 0.55;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .signature {
+        margin-top: 22px;
+        text-align: center;
+        font-size: 16px;
+        font-style: normal;
+        opacity: 0.9;
+        color: var(--accent-light);
+      }
+
+      body.dark .signature {
+        color: var(--accent-dark);
+      }
+
+      .actions {
+        margin: 22px auto 0;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 10px 22px;
+        border-radius: 999px;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        background: transparent;
+        color: inherit;
+        border: 1px solid currentColor;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      /* responsivo */
+      @media (max-width: 420px) {
+        .poem-box {
+          font-size: 18px;
+        }
+        .poem-container {
+          padding: 14px;
+          border-radius: 18px;
+        }
+        .poem-lines {
+          padding: 18px 12px 14px;
+        }
+      }
+      .poem-title {
+        /* top: 100px; */
+        margin-top: 30px;
+        text-align: center;
+        font-size: 20px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+        opacity: 0.75;
+        font-weight: 500;
+      }
+
+      body.light .poem-title {
+        color: var(--accent-light);
+      }
+
+      body.dark .poem-title {
+        color: var(--accent-dark);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- NOVO: container do poema (papel/card) -->
+      <div class="poem-container">
+        <div class="poem-title">Ela</div>
+        <div class="poem-box">
+          <div class="poem-lines">
+            <p>Ela existe como vento que sopra devagar,</p>
+            <p>que não avisa sua chagada.</p>
+            <p>Toca a pele sem alarde,</p>
+            <p>mas deixa presença, deixa o cheiro.</p>
+
+            <p class="gap">•</p>
+
+            <p>O mundo gira, muda de tom,</p>
+            <p>troca as paisagens,</p>
+            <p>mas algumas coisas permanecem,</p>
+            <p>como cheiro dela,</p>
+            <p>como luz que não se explica,</p>
+            <p>apenas ilumina.</p>
+
+            <p class="gap">•</p>
+
+            <p>Ela veio sem avisar,</p>
+            <p>como o dia recebe o Sol ao amanhecer,</p>
+            <p>sem se despedir da noite,</p>
+            <p>como quem te abraça com a alma.</p>
+
+            <p class="gap">•</p>
+
+            <p>E mesmo sem viver o que pulsa,</p>
+            <p>ficaram fragmentos.</p>
+            <p>Um sentimento guardado,</p>
+            <p>claro como um luar,</p>
+            <p>profundo como mar.</p>
+
+            <p class="gap">•</p>
+
+            <p>Que esse tempo novo seja leve,</p>
+            <p>que a vida caminhe sem ruídos,</p>
+            <p>e que cada passo encontre sentido,</p>
+            <p>sem cobrar, sem dor, sem medo.</p>
+
+            <p class="gap">•</p>
+
+            <p>Que o amor exista nas entrelinhas,</p>
+            <p>mas que exista,</p>
+            <p>como quem sabe esperar.</p>
+            <p>Porque todo caminho, no fundo,</p>
+            <p>tem seu próprio tempo.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- assinatura separada -->
+      <div class="signature">💜<br />._.. ...</div>
+
+      <!-- ações -->
+      <div class="actions">
+        <button class="btn" onclick="toggleTheme()" id="themeBtn">
+          🌗 Alternar Tema
+        </button>
+        <a href="./index2.html" class="btn">🏠 Página inicial</a>
+      </div>
+    </div>
+
+    <script>
+      // detectar tema com base no horário local
+      const hora = new Date().getHours();
+      const body = document.body;
+
+      if (hora >= 6 && hora < 18) {
+        body.classList.add("light");
+      } else {
+        body.classList.add("dark");
+      }
+
+      // alternar manual
+      function toggleTheme() {
+        if (body.classList.contains("light")) {
+          body.classList.remove("light");
+          body.classList.add("dark");
+        } else {
+          body.classList.remove("dark");
+          body.classList.add("light");
+        }
+      }
+    </script>
+  </body>
+</html>
