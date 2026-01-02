@@ -2,7 +2,10 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <title>Entre o Silêncio e o Que Fica</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,10 +40,19 @@
       }
 
       body {
-        font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto,
+          Arial, sans-serif;
         color: var(--text);
-        background: radial-gradient(circle at 15% 10%, rgba(245, 158, 11, 0.12), transparent 52%),
-          radial-gradient(circle at 85% 90%, rgba(251, 113, 133, 0.10), transparent 55%),
+        background: radial-gradient(
+            circle at 15% 10%,
+            rgba(245, 158, 11, 0.12),
+            transparent 52%
+          ),
+          radial-gradient(
+            circle at 85% 90%,
+            rgba(251, 113, 133, 0.1),
+            transparent 55%
+          ),
           linear-gradient(135deg, var(--bg1), var(--bg2));
         display: grid;
         place-items: center;
@@ -137,9 +149,13 @@
       .stage {
         margin-top: 12px;
         border-radius: 22px;
-        border: 1px solid rgba(148, 163, 184, 0.30);
+        border: 1px solid rgba(148, 163, 184, 0.3);
         overflow: hidden;
-        background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.04),
+          rgba(255, 255, 255, 0.01)
+        );
       }
 
       .veil {
@@ -159,11 +175,12 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+        transition: transform 0.16s ease, background 0.16s ease,
+          box-shadow 0.16s ease;
       }
 
       .tap:hover {
-        background: rgba(248, 250, 252, 0.10);
+        background: rgba(248, 250, 252, 0.1);
         box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
         transform: translateY(-1px);
       }
@@ -190,8 +207,16 @@
       .paper {
         display: none;
         padding: 18px;
-        background: radial-gradient(circle at 20% 15%, rgba(255, 217, 165, 0.10), transparent 52%),
-          radial-gradient(circle at 85% 85%, rgba(251, 113, 133, 0.07), transparent 50%),
+        background: radial-gradient(
+            circle at 20% 15%,
+            rgba(255, 217, 165, 0.1),
+            transparent 52%
+          ),
+          radial-gradient(
+            circle at 85% 85%,
+            rgba(251, 113, 133, 0.07),
+            transparent 50%
+          ),
           linear-gradient(135deg, var(--paper), var(--paper2));
         position: relative;
         border-top: 1px solid rgba(148, 163, 184, 0.16);
@@ -317,18 +342,26 @@
       <section class="card" aria-label="Mensagem">
         <div class="top">
           <div class="chip"><span class="dot"></span> bom dia</div>
-          <div class="chip" style="border-color: rgba(148,163,184,0.28)">sutil e leve</div>
+          <div class="chip" style="border-color: rgba(148, 163, 184, 0.28)">
+            sutil e leve
+          </div>
         </div>
 
         <h1 class="title">Um lugar que fica</h1>
         <p class="subtitle">
-          Tem coisas que não pedem espaço no mundo. Elas só ficam, com cuidado, com verdade,
-          e com aquela calma que não precisa provar nada.
+          Tem coisas que não pedem espaço no mundo. Elas só ficam, com cuidado,
+          com verdade, e com aquela calma que não precisa provar nada.
         </p>
 
         <div class="stage">
           <div class="veil">
-            <button class="tap" id="openBtn" type="button" aria-controls="paper" aria-expanded="false">
+            <button
+              class="tap"
+              id="openBtn"
+              type="button"
+              aria-controls="paper"
+              aria-expanded="false"
+            >
               <div>
                 <strong>Toque para abrir</strong>
               </div>
@@ -336,40 +369,47 @@
             </button>
           </div>
 
-          <div class="paper" id="paper" role="region" aria-label="Mensagem aberta">
+          <div
+            class="paper"
+            id="paper"
+            role="region"
+            aria-label="Mensagem aberta"
+          >
             <div class="text">
-              <p class="focus">
-                Cléia, bom dia.
-              </p>
+              <p class="focus">Cléia, bom dia.</p>
 
               <p class="soft">
-                Eu queria te dizer uma coisa do jeito mais simples, sem peso, sem cobrança, sem
-                te puxar para lugar nenhum.
+                Eu queria te dizer uma coisa do jeito mais simples, sem peso,
+                sem cobrança, sem te puxar para lugar nenhum.
               </p>
 
               <p>
                 <span class="focus">Eu sinto você.</span>
-                Às vezes no silêncio, às vezes no detalhe, às vezes numa lembrança que acende do nada.
-                E o que eu sinto é tão bom que eu nem imaginava que ainda existia um jeito de sentir assim.
+                Às vezes no silêncio, às vezes no detalhe, às vezes numa
+                lembrança que acende do nada. E o que eu sinto é tão bom que eu
+                nem imaginava que ainda existia um jeito de sentir assim.
               </p>
 
               <p class="soft">
-                Eu não te peço resposta. Não peço gesto. Não peço explicação.
-                Eu só queria que você soubesse que, quando a vida aperta aí dentro, existe um canto
-                seguro em mim que te recebe com respeito.
+                Eu não te peço resposta. Não peço gesto. Não peço explicação. Eu
+                só queria que você soubesse que, quando a vida aperta aí dentro,
+                existe um canto seguro em mim que te recebe com respeito.
               </p>
 
               <p>
                 Mesmo sem poder ser vivido, vive em mim.<br />
                 E, curiosamente, faz companhia.<br />
-                Daquelas que te aquecem, não pesam, não cobram. Só estão ali, firmes e silenciosas.
+                Daquelas que te aquecem, não pesam, não cobram. Só estão ali,
+                firmes e silenciosas.
               </p>
 
               <p class="soft">
-                E se um dia a vida permitir que esse sentimento possa ser vivido, eu vou estar inteiro
-                para viver isso com toda intensidade guardada aqui.<br />
-                Se não permitir, tudo bem também. Ele continua genuíno, bonito, e bem guardado.
-                Ao ler isto, não quero que se sinta pressionada e sim que sinta paz. 
+                E se um dia a vida permitir que esse sentimento possa ser
+                vivido, eu vou estar inteiro para viver isso com toda
+                intensidade guardada aqui.<br />
+                Se não permitir, tudo bem também. Ele continua genuíno, bonito,
+                e bem guardado. Ao ler isto, não quero que se sinta pressionada
+                e sim que sinta paz.
               </p>
 
               <p class="focus">
@@ -382,7 +422,9 @@
         </div>
 
         <div class="footer">
-          <div class="mini"><span class="pulse"></span> toque gentil, sem pressão</div>
+          <div class="mini">
+            <span class="pulse"></span> toque gentil, sem pressão
+          </div>
           <div class="mini">feito para ler no seu tempo</div>
         </div>
       </section>
@@ -409,5 +451,6 @@
         // "Ao tocar na área escura, nada acontece."
       })();
     </script>
+    <script src="./js/card-telemetry.js"></script>
   </body>
 </html>
