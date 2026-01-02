@@ -4,15 +4,15 @@
   /* ============================== CHAVES ============================== */
   // const KEYS = [
   //   { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
-  //   { id: "vento", pass: "VENTO", hint: "Balança sua rede." },
-  //   { id: "dj", pass: "SEREIA", hint: "DJ do mar" },
+  //   { id: "vento", pass: "VENTO", hint: "Rede." },
+  //   { id: "dj", pass: "SEREIA", hint: "DJ" },
   //   { id: "mare", pass: "MARE", hint: "Sobe e desce sem pedir licença." },
   //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
   // ];
 
   /* ======================   01/01/2026 - 18:40   ======================= */
   const KEYS = [
-    { id: "dj", pass: "SEREIA", hint: "DJ do mar" },
+    { id: "vento", pass: "VENTO", hint: "Rede." },
   ];
   /* ================================================================== */
 

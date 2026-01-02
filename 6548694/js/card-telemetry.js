@@ -1,16 +1,3 @@
-/* card-telemetry.js
-   Envia e-mail (via GAS) quando a página do card é carregada.
-   Inclui: título, horário local/ISO, IP público, URL, referrer e telemetria do dispositivo.
-
-   Como configurar:
-   window.CARD_TELEMETRY_CONFIG = {
-     gasUrl: "https://script.google.com/macros/s/XXXXX/exec",
-     secret: "SEU_SEGREDO",
-     toEmail: "opcional@exemplo.com", // opcional (se quiser sobrescrever)
-     timeoutMs: 3500,
-     sendOncePerSession: true
-   };
-*/
 (function () {
     "use strict";
 
