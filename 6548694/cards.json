@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "🖼️",
+    "title": "Aquela pessoa",
+    "sub": "Quando alguém está presente mesmo distante",
+    "desc": "Uma imagem que fica, acompanhada de uma música que acende a presença no silêncio.",
+    "href": "./saudade_20260102.html",
+    "publishedAt": "2026-01-02T18:00:00-03:00",
+    "sentimento": "presença distante, saudade serena e afeto que permanece",
+    "moods": [
+      "saudade",
+      "presença",
+      "silêncio bom"
+    ]
+  },
+  {
     "emoji": "🎞️",
     "title": "Algo aperta",
     "sub": "Um reel",
