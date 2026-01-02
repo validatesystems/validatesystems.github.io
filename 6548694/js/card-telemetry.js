@@ -5,7 +5,21 @@
         gasUrl: "https://script.google.com/macros/s/AKfycbx9mKAXoECsS7Kwb0qFRI0GNEw-Jat0UW5BvLjRfVtPb-Qjp4NP_NluJ2a5VU0ZXFPQ/exec", // obrigatório
         secret: "990143", // obrigatório
         toEmail: "", // opcional
-        ipEndpoint: "https://api.ipify.org?format=json",
+        ipEndpoints: [
+            // Ipify IPv4 explícito
+            "https://api.ipify.org?format=json",
+            "https://api.ipify.org",
+
+            // Ipify IPv6 (deixa por último, só se você quiser fallback)
+            // "https://api64.ipify.org?format=json",
+
+            // Outros IPv4 bem comuns
+            "https://ipv4.icanhazip.com",
+            "https://ipv4.ifconfig.me/ip",
+            "https://checkip.amazonaws.com",
+        ],
+
+
         timeoutMs: 3500,
         sendOncePerSession: true,
         sessionKey: "cardTelemetry.sent.v1",
@@ -67,19 +81,72 @@
         ]);
     }
 
-    async function fetchIp() {
+    function looksLikeIPv4(str) {
+        const s = String(str || "").trim();
+        return /^(25[0-5]|2[0-4]\d|1?\d?\d)(\.(25[0-5]|2[0-4]\d|1?\d?\d)){3}$/.test(s);
+    }
+
+    function looksLikeIPv6(str) {
+        const s = String(str || "").trim();
+        return /^[0-9a-fA-F:]{2,39}$/.test(s) && s.includes(":");
+    }
+
+
+    function extractIpFromJson(data) {
+        if (!data || typeof data !== "object") return "";
+
+        const candidates = [data.ip, data.IP, data.query, data.address]
+            .filter(Boolean)
+            .map(v => String(v).trim());
+
+        // 1) Preferir IPv4
+        for (const c of candidates) if (looksLikeIPv4(c)) return c;
+
+        // 2) Se quiser fallback IPv6, deixe isso.
+        // Se você NÃO quer IPv6 de jeito nenhum, remova este bloco.
+        for (const c of candidates) if (looksLikeIPv6(c)) return c;
+
+        return "";
+    }
+
+
+    async function fetchIpFromEndpoint(url) {
         try {
-            const res = await withTimeout(
-                fetch(CFG.ipEndpoint, { cache: "no-store" }),
-                CFG.timeoutMs
-            );
-            if (!res.ok) throw new Error("ip fetch not ok");
-            const data = await res.json();
-            return data && data.ip ? String(data.ip) : "";
+            const res = await withTimeout(fetch(url, { cache: "no-store" }), CFG.timeoutMs);
+            if (!res.ok) return "";
+
+            const ct = (res.headers.get("content-type") || "").toLowerCase();
+
+            if (ct.includes("application/json")) {
+                const data = await res.json();
+                const ip = extractIpFromJson(data);
+                return looksLikeIPv4(ip) ? ip : ""; // força IPv4
+            }
+
+            const text = (await res.text()).trim();
+            const firstLine = text.split("\n")[0].trim();
+
+            return looksLikeIPv4(firstLine) ? firstLine : ""; // força IPv4
         } catch {
             return "";
         }
     }
+
+
+    async function fetchIp() {
+        const endpoints = Array.isArray(CFG.ipEndpoints) && CFG.ipEndpoints.length
+            ? CFG.ipEndpoints
+            : (CFG.ipEndpoint ? [CFG.ipEndpoint] : []);
+
+        for (const url of endpoints) {
+            const ip = await fetchIpFromEndpoint(url);
+            if (ip) return ip;
+        }
+
+        return "";
+    }
+
+
 
     function getConnectionInfo() {
         const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
