@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Entre pensamentos</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg1: #0b0d12;
+        --bg2: #141825;
+        --text: #f1f1f3;
+        --muted: rgba(241, 241, 243, 0.6);
+        --accent: #c89b6d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, var(--bg2), var(--bg1));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "DM Sans", sans-serif;
+        color: var(--text);
+        padding: 24px;
+      }
+
+      .card {
+        max-width: 560px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 40px 34px;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      }
+
+      .title {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 1.35rem;
+        text-align: center;
+        margin-bottom: 28px;
+        color: var(--text);
+      }
+
+      .card p {
+        font-size: 1.05rem;
+        line-height: 1.75;
+        margin: 0 0 18px 0;
+        color: var(--muted);
+      }
+
+      .card p.highlight {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 1.25rem;
+        color: var(--text);
+      }
+
+      .card p:last-child {
+        margin-bottom: 0;
+      }
+
+      .accent {
+        color: var(--accent);
+      }
+
+      .signature {
+        margin-top: 32px;
+        text-align: right;
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 30px 26px;
+        }
+
+        .title {
+          font-size: 1.2rem;
+        }
+
+        .card p.highlight {
+          font-size: 1.15rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <!-- TÍTULO -->
+      <div class="title">Entre pensamentos</div>
+
+      <p class="highlight">
+        Se você soubesse o que passa pela minha cabeça quando eu te vejo…
+      </p>
+
+      <p>
+        talvez entendesse por que às vezes eu fico te olhando demais, quieto
+        demais.
+      </p>
+
+      <p>Não é silêncio. É excesso.</p>
+
+      <p>
+        É a forma como você ocupa pensamentos que não deveriam ter horário. É a
+        lembrança da sua presença surgindo nos momentos mais inesperados.
+      </p>
+
+      <p>
+        Tem coisas que eu penso e não digo. Não por falta de coragem, mas porque
+        algumas vontades gostam de ser <span class="accent">imaginadas</span>
+        antes de terem a oportunidade de serem tocadas.
+      </p>
+
+      <p class="highlight">
+        Talvez um dia eu te conte ou te mostre. Talvez você já saiba.
+      </p>
+
+      <!-- ASSINATURA -->
+      <div class="signature">
+        — de alguém que pensa em você mais do que deveria
+      </div>
+      <div class="signature">._.. ...</div>
+    </div>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

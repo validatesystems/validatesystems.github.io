@@ -1,5 +1,19 @@
 [
   {
+    "emoji": "🔥",
+    "title": "Entre pensamentos",
+    "sub": "Aquilo que não se diz, mas se imagina",
+    "desc": "Uma mensagem que habita o silêncio e revela desejos.",
+    "href": "./entre_pensamentos_20260104.html",
+    "publishedAt": "2026-01-04T17:40:34-03:00",
+    "sentimento": "desejo contido, tensão suave e imaginação provocada",
+    "moods": [
+      "tensão",
+      "desejo",
+      "imaginação"
+    ]
+  },
+  {
     "emoji": "🖼️",
     "title": "Aquela pessoa",
     "sub": "Quando alguém está presente mesmo distante",
@@ -1899,5 +1913,4 @@
       "leve"
     ]
   }
-
 ]

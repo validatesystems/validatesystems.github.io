@@ -3,7 +3,7 @@
 
   /* ============================== CHAVES ============================== */
   // const KEYS = [
-  //   { id: "lua", pass: "LUA", hint: "Quando o mar dorme, quem brilha?" },
+  //   { id: "lua", pass: "LUA", hint: "Quem brilha?" },
   //   { id: "vento", pass: "VENTO", hint: "Rede." },
   //   { id: "dj", pass: "SEREIA", hint: "DJ" },
   //   { id: "mare", pass: "MARE", hint: "Sobe e desce sem pedir licença." },
@@ -12,7 +12,7 @@
 
   /* ======================   02/01/2026 - 20:06   ======================= */
   const KEYS = [
-    { id: "dj", pass: "SEREIA", hint: "DJ" },
+    { id: "lua", pass: "LUA", hint: "Quem brilha?" },
   ];
   /* ================================================================== */
 
