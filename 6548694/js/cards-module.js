@@ -138,6 +138,11 @@ document.addEventListener("pointerdown", (ev) => {
 
   ].map((c) => c.href);
 
+
+
+
+
+
   // #############################################################################################
   // #############################################################################################
   // ##################### MARCAR COMO NAO LIDOS ####################################
@@ -146,8 +151,56 @@ document.addEventListener("pointerdown", (ev) => {
 
   // Lista de cards que devem ser forçados a ficarem NÃO lidos
   const PRE_UNREAD_CARDS = [
-    // Exemplo:
+    {
+      "emoji": "🔥",
+      "title": "Entre pensamentos",
+      "sub": "Aquilo que não se diz, mas se imagina",
+      "desc": "Uma mensagem que habita o silêncio e revela desejos.",
+      "href": "./entre_pensamentos_20260104.html",
+      "publishedAt": "2026-01-04T17:40:34-03:00",
+      "sentimento": "desejo contido, tensão suave e imaginação provocada",
+      "moods": [
+        "tensão",
+        "desejo",
+        "imaginação"
+      ]
+    },
+    {
+      "emoji": "🖼️",
+      "title": "Aquela pessoa",
+      "sub": "Quando alguém está presente mesmo distante",
+      "desc": "Uma imagem que fica, acompanhada de uma música que acende a presença no silêncio.",
+      "href": "./saudade_20260102.html",
+      "publishedAt": "2026-01-02T20:07:00-03:00",
+      "sentimento": "presença distante, saudade serena e afeto que permanece",
+      "moods": [
+        "saudade",
+        "presença",
+        "silêncio bom"
+      ]
+    },
+    {
+      "emoji": "🎞️",
+      "title": "Algo aperta",
+      "sub": "Um reel",
+      "desc": "Um vídeo que traduz aquele aperto que chega do nada.",
+      "href": "./reels20260102.html",
+      "publishedAt": "2026-01-02T14:00:00-03:00",
+      "sentimento": "intensidade silenciosa, emoção contida e um desejo que respira devagar",
+      "moods": [
+        "aperto bom",
+        "intensidade",
+        "vontade"
+      ]
+    }
   ];
+
+
+
+
+
+
+
 
   /* ===== Aplicar PRE_UNREAD_CARDS ===== */
   (function applyPreUnread() {
