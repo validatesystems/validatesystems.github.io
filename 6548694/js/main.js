@@ -8,12 +8,11 @@
   //   { id: "dj", pass: "SEREIA", hint: "DJ" },
   //   { id: "mare", pass: "MARE", hint: "Sobe e desce sem pedir licença." },
   //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
+  //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
   // ];
 
-  /* ======================   07/01/2026 - 06:38   ======================= */
-  const KEYS = [
-    { id: "dj", pass: "SEREIA", hint: "DJ" },
-  ];
+  /* ======================   08/01/2026 - 16:55   ======================= */
+  const KEYS = [{ id: "vento", pass: "VENTO", hint: "Rede." }];
   /* ================================================================== */
 
   /* ===== Tema com persistência ===== */
@@ -26,8 +25,8 @@
     themeParam === "eletrico"
       ? "eletrico"
       : themeParam === "acustico"
-        ? "acustico"
-        : storedTheme || "acustico";
+      ? "acustico"
+      : storedTheme || "acustico";
   function applyTheme(mode) {
     document.body.classList.toggle("eletrico", mode === "eletrico");
     localStorage.setItem(THEME_KEY, mode);
@@ -70,7 +69,7 @@
       // restaura a posição do cursor
       try {
         el.setSelectionRange(selectionStart, selectionEnd);
-      } catch { }
+      } catch {}
     }
   });
 
@@ -94,7 +93,7 @@
   function grantAccess() {
     try {
       sessionStorage.setItem(ACCESS_TAG, "ok:" + (currentKey?.id || ""));
-    } catch { }
+    } catch {}
 
     // avisa o ip-capture-mail que o acesso foi concedido
     try {
@@ -249,8 +248,8 @@
       const items = Array.isArray(data)
         ? data
         : Array.isArray(data?.notificacoes)
-          ? data.notificacoes
-          : [];
+        ? data.notificacoes
+        : [];
 
       // ===== FILTRO: apenas notificações de HOJE e com horário <= AGORA =====
       const now = new Date();
@@ -338,8 +337,8 @@
       const items = Array.isArray(data)
         ? data
         : Array.isArray(data?.notificacoes)
-          ? data.notificacoes
-          : [];
+        ? data.notificacoes
+        : [];
 
       // ===== FILTRO: somente HOJE e horário <= AGORA (local) =====
       const now = new Date();
@@ -652,8 +651,8 @@
             window.__cardsRead instanceof Set
               ? window.__cardsRead
               : typeof window.getReadCards === "function"
-                ? new Set(window.getReadCards())
-                : new Set();
+              ? new Set(window.getReadCards())
+              : new Set();
 
           list = list.filter((c) => c.__dt <= now && !readSet.has(c.href));
         }
@@ -675,7 +674,6 @@
           const bd = b.__dt ? b.__dt.getTime() : 0;
           return sortOrder === "old" ? ad - bd : bd - ad;
         });
-
 
         if (!list.length) {
           let msg = "Não há cards disponíveis neste momento.";
@@ -731,7 +729,9 @@
             typeof window.isCardRead === "function"
               ? (href) => window.isCardRead(href)
               : (href) =>
-                window.__cardsRead instanceof Set ? window.__cardsRead.has(href) : false;
+                  window.__cardsRead instanceof Set
+                    ? window.__cardsRead.has(href)
+                    : false;
 
           list = list.filter((c) => c.__dt <= now && !isRead(c.href));
         }
@@ -752,7 +752,6 @@
       const initialFilter = pickInitialFilterByAvailability();
       applyFilter(initialFilter);
       updateFilterCounts();
-
     });
 
     searchInput?.addEventListener("input", () => {
@@ -871,8 +870,7 @@
     if (legacy && !current) {
       localStorage.setItem(STORAGE_KEY, legacy);
     }
-  } catch (e) { }
-
+  } catch (e) {}
 
   function loadReadSet() {
     try {
@@ -1008,9 +1006,11 @@ document.addEventListener("cards:ready", () => {
     const raw = localStorage.getItem("cardsRead.v1") || "[]";
     const parsed = JSON.parse(raw);
     readArr = Array.isArray(parsed) ? parsed : [];
-  } catch (e) { }
+  } catch (e) {}
 
-  const notReadCount = totalCards.filter((c) => !readArr.includes(c.href)).length;
+  const notReadCount = totalCards.filter(
+    (c) => !readArr.includes(c.href)
+  ).length;
 
   const now = new Date();
   const isToday = (d) =>
