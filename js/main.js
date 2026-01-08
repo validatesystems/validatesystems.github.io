@@ -1,0 +1,1046 @@
+(function () {
+  const $ = (s) => document.querySelector(s);
+
+  /* ============================== CHAVES ============================== */
+  // const KEYS = [
+  //   { id: "lua", pass: "LUA", hint: "Quem brilha?" },
+  //   { id: "vento", pass: "VENTO", hint: "Rede." },
+  //   { id: "dj", pass: "SEREIA", hint: "DJ" },
+  //   { id: "mare", pass: "MARE", hint: "Sobe e desce sem pedir licença." },
+  //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
+  //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
+  // ];
+
+  /* ======================   08/01/2026 - 16:55   ======================= */
+  const KEYS = [{ id: "vento", pass: "VENTO", hint: "Rede." }];
+  /* ================================================================== */
+
+  /* ===== Tema com persistência ===== */
+  const THEME_KEY = "theme.mode";
+  const themeParam = (
+    new URL(location.href).searchParams.get("theme") || ""
+  ).toLowerCase();
+  const storedTheme = localStorage.getItem(THEME_KEY) || "";
+  let currentTheme =
+    themeParam === "eletrico"
+      ? "eletrico"
+      : themeParam === "acustico"
+      ? "acustico"
+      : storedTheme || "acustico";
+  function applyTheme(mode) {
+    document.body.classList.toggle("eletrico", mode === "eletrico");
+    localStorage.setItem(THEME_KEY, mode);
+    currentTheme = mode;
+
+    const iconChar = mode === "eletrico" ? "🌙" : "🌤️";
+    document
+      .querySelectorAll(".theme-icon")
+      .forEach((el) => (el.textContent = iconChar));
+  }
+
+  function toggleTheme() {
+    applyTheme(currentTheme === "eletrico" ? "acustico" : "eletrico");
+  }
+  applyTheme(currentTheme);
+  $("#toggleTheme")?.addEventListener("click", toggleTheme);
+
+  /* ===== Gate (senha) ===== */
+  const gate = $("#gate"),
+    gateHint = $("#gateHint"),
+    gateInput = $("#gateInput"),
+    gateEnter = $("#gateEnter"),
+    gateErr = $("#gateErr"),
+    gateTheme = $("#gateTheme"),
+    appRoot = $("#appRoot");
+
+  const isLoginPage = !!gate;
+  const isMainContentPage = !gate && !!appRoot;
+
+  // --- Força UPPERCASE sem mover o cursor ---
+  gateInput?.addEventListener("input", (e) => {
+    // limpa erro enquanto digita
+    clearError();
+
+    const el = e.target;
+    const { selectionStart, selectionEnd } = el;
+    const upper = (el.value || "").toUpperCase();
+    if (upper !== el.value) {
+      el.value = upper;
+      // restaura a posição do cursor
+      try {
+        el.setSelectionRange(selectionStart, selectionEnd);
+      } catch {}
+    }
+  });
+
+  function pickKeyIndex() {
+    return Math.floor(Math.random() * KEYS.length);
+  }
+  const keyParam = (
+    new URL(location.href).searchParams.get("key") || ""
+  ).toLowerCase();
+  let currentKeyIndex = (() => {
+    const i = KEYS.findIndex((k) => k.id.toLowerCase() === keyParam);
+    return i >= 0 ? i : pickKeyIndex();
+  })();
+  let currentKey = KEYS[currentKeyIndex];
+  function refreshHint() {
+    if (!gateHint) return;
+    gateHint.textContent = "Dica: " + (currentKey?.hint || "—");
+  }
+
+  const ACCESS_TAG = "cardsAccess.v1";
+  function grantAccess() {
+    try {
+      sessionStorage.setItem(ACCESS_TAG, "ok:" + (currentKey?.id || ""));
+    } catch {}
+
+    // avisa o ip-capture-mail que o acesso foi concedido
+    try {
+      window.dispatchEvent(new Event("login:granted"));
+    } catch (e) {
+      console.warn("Falha ao disparar login:granted", e);
+    }
+
+    //   // Comportamento pós-login (padrão):
+    if (isLoginPage) {
+      // dá um respiro para o e-mail ser enviado antes de trocar de página
+      setTimeout(() => {
+        const ts = Date.now();
+        window.location.href = "page.html?ts=" + ts;
+      }, 400);
+    } else {
+      hideGate();
+    }
+    // }
+
+    // Comportamento pós-login (atual):
+    // Redireciona para uma página específica após o login
+    // if (isLoginPage) {
+    //   // dá um respiro para o e-mail ser enviado antes de trocar de página
+    //   setTimeout(() => {
+    //     window.location.href = "fimdeanonotempocerto20251230.html"; // Página para a qual redirecionar
+    //   }, 400);
+    // } else {
+    //   hideGate();
+    // }
+  }
+
+  function hasAccess() {
+    try {
+      const v = sessionStorage.getItem(ACCESS_TAG) || "";
+      return v.startsWith("ok:");
+    } catch {
+      return false;
+    }
+  }
+
+  // Protege a página principal: se não tiver acesso, manda para o login
+  if (isMainContentPage && !hasAccess()) {
+    window.location.href = "index2.html";
+    return;
+  }
+
+  function showGate() {
+    if (!gate) return;
+    document.body.classList.add("gate-open");
+    gate.classList.remove("hidden");
+    appRoot?.setAttribute("aria-hidden", "true");
+    refreshHint();
+    setTimeout(() => gateInput?.focus(), 60);
+  }
+  function hideGate() {
+    if (!gate) return;
+    gate.classList.add("hidden");
+    document.body.classList.remove("gate-open");
+    appRoot?.removeAttribute("aria-hidden");
+  }
+
+  function setError(msg) {
+    if (!gateErr || !gate) return;
+    gateErr.textContent = msg || "Senha incorreta 😅";
+    const card = gate.querySelector(".gate-card");
+    if (card) {
+      card.classList.remove("shake");
+      void card.offsetWidth;
+      card.classList.add("shake");
+    }
+    gateInput?.classList.add("is-error");
+    gateInput?.setAttribute("aria-invalid", "true");
+  }
+  function clearError() {
+    if (!gateErr) return;
+    gateErr.textContent = "";
+    gateInput?.classList.remove("is-error");
+    gateInput?.removeAttribute("aria-invalid");
+  }
+  function checkPass() {
+    const v = (gateInput?.value || "").trim();
+    if (!currentKey) return setError("Nenhuma chave ativa.");
+    if (v === currentKey.pass) {
+      grantAccess();
+    } else setError("Ops, foi quase. Tenta de novo?");
+  }
+
+  // Comportamento de inicialização do gate:
+  if (isLoginPage) {
+    if (hasAccess()) {
+      // Já tem acesso: vai direto para a página principal
+      // location.replace("index2.html?ts=" + ts);
+      const ts = Date.now();
+      window.location.href = "page.html?ts=" + ts;
+    } else {
+      showGate();
+    }
+  }
+
+  // // Comportamento de inicialização do gate:
+  // // Mesmo tendo acesso, sempre mostra o gate na index2.html
+  // if (isLoginPage) {
+  //   showGate();
+  // }
+
+  gateEnter?.addEventListener("click", checkPass);
+  gateInput?.addEventListener("keyup", (e) => {
+    if (e.key === "Enter") checkPass();
+    else clearError();
+  });
+  gateInput?.addEventListener("input", clearError);
+  gateTheme?.addEventListener("click", () => {
+    toggleTheme();
+    const card = gate?.querySelector(".gate-card");
+    if (card) {
+      card.classList.add("shake");
+      setTimeout(() => card.classList.remove("shake"), 380);
+    }
+    gateInput?.focus();
+  });
+
+  /* ===== Notificações (badge + modal) ===== */
+  const notifBtn = $("#notifBtn"),
+    notifBadge = $("#notifBadge");
+  const notifBackdrop = $("#notifBackdrop"),
+    notifList = $("#notifList"),
+    notifClose = $("#notifClose");
+  const fmtDate = new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  function ymdLocal(d = new Date()) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${dd}`;
+  }
+
+  async function countTodayNotifications() {
+    try {
+      const res = await fetch("./notificacoes.json?ts=" + Date.now(), {
+        cache: "no-store",
+      });
+      if (!res.ok) throw new Error("Falha ao carregar notificações");
+
+      const data = await res.json();
+      const items = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.notificacoes)
+        ? data.notificacoes
+        : [];
+
+      // ===== FILTRO: apenas notificações de HOJE e com horário <= AGORA =====
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = now.getMonth();
+      const d = now.getDate();
+
+      const filtered = items.filter((n) => {
+        if (!n?.data) return false;
+        const dt = new Date(n.data);
+        if (isNaN(dt)) return false;
+        const isSameDay =
+          dt.getFullYear() === y && dt.getMonth() === m && dt.getDate() === d;
+        return isSameDay && dt <= now;
+      });
+
+      // retorna a quantidade filtrada
+      return filtered.length;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  async function refreshNotificationBadgeFromJSON() {
+    const count = await countTodayNotifications();
+    if (!notifBadge) return;
+    if (count > 0) {
+      notifBadge.textContent = count > 9 ? "9+" : String(count);
+      notifBadge.style.display = "flex";
+    } else {
+      notifBadge.style.display = "none";
+    }
+  }
+
+  function renderNotifications(items) {
+    if (!notifList) return;
+    if (!items.length) {
+      notifList.innerHTML = `<p class="notif-empty">Sem notificações por aqui.</p>`;
+      return;
+    }
+    const frag = document.createDocumentFragment();
+    items.forEach((n) => {
+      const href = (n.href || "").trim();
+
+      // Se há href, usa <a>; caso contrário, <article>
+      const wrap = href
+        ? document.createElement("a")
+        : document.createElement("article");
+      wrap.className = "notif-card";
+      if (href) wrap.href = href;
+
+      // Guardamos atributos para o rastreamento condicional
+      wrap.setAttribute("data-title", n.titulo ?? "Sem título");
+      wrap.setAttribute("data-href", href);
+
+      const date = n.data ? new Date(n.data) : null;
+      const pretty = date && !isNaN(date) ? fmtDate.format(date) : n.data || "";
+
+      wrap.innerHTML = `
+                <p class="notif-date">🗓️ ${pretty}</p>
+                <h3 class="notif-item-title">${n.titulo ?? "Sem título"}</h3>
+                <p class="notif-msg">${n.mensagem ?? ""}</p>
+              `;
+
+      frag.appendChild(wrap);
+    });
+    notifList.innerHTML = "";
+    notifList.appendChild(frag);
+  }
+
+  async function openNotificationsModal() {
+    if (!notifBackdrop || !notifList) return;
+    notifBackdrop.classList.add("open");
+    notifBackdrop.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    notifList.setAttribute("aria-busy", "true");
+    notifList.innerHTML = '<p class="notif-empty">Carregando…</p>';
+
+    try {
+      const res = await fetch("./notificacoes.json?ts=" + Date.now(), {
+        cache: "no-store",
+      });
+      if (!res.ok) throw new Error("Falha ao carregar notificações.");
+      const data = await res.json();
+      const items = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.notificacoes)
+        ? data.notificacoes
+        : [];
+
+      // ===== FILTRO: somente HOJE e horário <= AGORA (local) =====
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = now.getMonth();
+      const d = now.getDate();
+
+      const filtered = items.filter((n) => {
+        if (!n?.data) return false;
+        const dt = new Date(n.data);
+        if (isNaN(dt)) return false;
+        const isSameDay =
+          dt.getFullYear() === y && dt.getMonth() === m && dt.getDate() === d;
+        return isSameDay && dt <= now;
+      });
+
+      // (opcional) ordenar por data/hora crescente
+      filtered.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+      renderNotifications(filtered);
+    } catch (err) {
+      if (notifList) {
+        notifList.innerHTML = `
+                <div class="notif-card">
+                  <p class="notif-item-title">Não foi possível carregar</p>
+                  <p class="notif-msg">Verifique se <code>./notificacoes.json</code> está acessível.</p>
+                </div>
+              `;
+      }
+    } finally {
+      if (notifList) {
+        notifList.setAttribute("aria-busy", "false");
+        notifList.focus();
+      }
+    }
+  }
+
+  function closeNotificationsModal() {
+    if (!notifBackdrop) return;
+    notifBackdrop.classList.remove("open");
+    notifBackdrop.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    notifBtn?.focus();
+  }
+
+  notifBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    openNotificationsModal();
+  });
+  notifClose?.addEventListener("click", closeNotificationsModal);
+  notifBackdrop?.addEventListener("click", (e) => {
+    if (e.target === notifBackdrop) closeNotificationsModal();
+  });
+  if (notifBackdrop) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && notifBackdrop.classList.contains("open"))
+        closeNotificationsModal();
+    });
+  }
+
+  if (notifList) {
+    // Clique: navega só se houver href
+    notifList.addEventListener("click", (e) => {
+      const card = e.target.closest(".notif-card");
+      if (!card) return;
+      const href = card.dataset.href;
+      if (href) {
+        closeNotificationsModal();
+        location.href = href;
+      }
+    });
+
+    // Teclado: Enter ou Espaço disparam a navegação quando houver href
+    notifList.addEventListener("keyup", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const card = e.target.closest(".notif-card");
+      if (!card) return;
+      const href = card.dataset.href;
+      if (href) {
+        closeNotificationsModal();
+        location.href = href;
+      }
+    });
+  }
+
+  refreshNotificationBadgeFromJSON();
+
+  function localDateFromYYYYMMDD(s) {
+    if (!s) return null;
+    const only = s.slice(0, 10);
+    const [y, m, d] = only.split("-").map(Number);
+    if (!y || !m || !d) return null;
+    return new Date(y, m - 1, d);
+  }
+
+  /* ===== Renderização dos cards + filtros (hoje / todos) ===== */
+  (function setupCardsRendering() {
+    const grid = document.getElementById("grid");
+    const filterTodayBtn = document.getElementById("filterToday");
+    const filterAllBtn = document.getElementById("filterAll");
+    const filterUnreadBtn = document.getElementById("filterUnread");
+
+    // Controles novos
+    const searchInput = document.getElementById("searchCards");
+    const sortSelect = document.getElementById("sortCards");
+    const statAvailableEl = document.getElementById("statAvailable");
+    const statUnreadEl = document.getElementById("statUnread");
+    const statTodayEl = document.getElementById("statToday");
+
+    let searchQuery = "";
+    let sortOrder = "new";
+
+    if (sortSelect && sortSelect.value) {
+      sortOrder = String(sortSelect.value);
+    }
+    // Spans de contagem nos botões
+    const countUnreadEl = document.getElementById("countUnread");
+    const countTodayEl = document.getElementById("countToday");
+    const countAllEl = document.getElementById("countAll");
+
+    const fmt = new Intl.DateTimeFormat("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    function parsePublishedAt(s) {
+      if (!s) return null;
+      const dt = new Date(s);
+      if (!isNaN(dt)) return dt;
+      const only = s.slice(0, 10);
+      const [y, m, d] = only.split("-").map(Number);
+      if (!y || !m || !d) return null;
+      return new Date(y, m - 1, d);
+    }
+
+    function isToday(d, ref) {
+      if (!d) return false;
+      const r = ref || new Date();
+      return (
+        d.getFullYear() === r.getFullYear() &&
+        d.getMonth() === r.getMonth() &&
+        d.getDate() === r.getDate()
+      );
+    }
+
+    let baseCards = [];
+    let currentFilter = "today";
+
+    // Atualiza a contagem dos filtros com base em baseCards e no horário atual
+    function updateFilterCounts() {
+      if (!Array.isArray(baseCards) || !baseCards.length) {
+        if (countUnreadEl) countUnreadEl.textContent = "";
+        if (countTodayEl) countTodayEl.textContent = "";
+        if (countAllEl) countAllEl.textContent = "";
+        if (statAvailableEl) statAvailableEl.textContent = "0";
+        if (statUnreadEl) statUnreadEl.textContent = "0";
+        if (statTodayEl) statTodayEl.textContent = "0";
+        return;
+      }
+
+      const now = new Date();
+
+      // Todos os cards cujo horário já chegou
+      const allCards = baseCards.filter((c) => c.__dt && c.__dt <= now);
+
+      // Só de hoje (e já "no tempo")
+      const todayCards = allCards.filter((c) => isToday(c.__dt, now));
+
+      // Não lidos: já no tempo E não marcados como lidos
+      let unreadCards = allCards;
+      if (typeof window.isCardRead === "function") {
+        unreadCards = allCards.filter((c) => !window.isCardRead(c.href));
+      }
+
+      if (countAllEl) {
+        countAllEl.textContent = allCards.length ? String(allCards.length) : "";
+      }
+      if (countTodayEl) {
+        countTodayEl.textContent = todayCards.length
+          ? String(todayCards.length)
+          : "";
+      }
+      if (countUnreadEl) {
+        countUnreadEl.textContent = unreadCards.length
+          ? String(unreadCards.length)
+          : "";
+      }
+    }
+
+    // Deixa acessível globalmente para outros scripts chamarem
+    window.updateFilterCounts = updateFilterCounts;
+
+    function createCardElement(c) {
+      const a = document.createElement("article");
+      a.className = "card";
+      a.dataset.title = c.title;
+
+      const d = c.__dt;
+      const hoje = new Date();
+
+      // Destaque agora é para "não lidos"
+      if (typeof window.isCardRead === "function") {
+        if (!window.isCardRead(c.href)) {
+          a.classList.add("card-hoje");
+        }
+      } else {
+        // fallback
+        if (isToday(d, hoje)) {
+          a.classList.add("card-hoje");
+        }
+      }
+
+      const dateHtml = `
+          <div class="card-meta">
+            <span class="card-date" title="Data de publicação">
+              <span aria-hidden="true">🗓️</span>
+              <span>${fmt.format(d)}</span>
+            </span>
+          </div>
+        `;
+
+      a.innerHTML = `
+          <div class="card-head">
+            <div class="art" aria-hidden="true">${c.emoji}</div>
+            <div>
+              <h3 class="card-title">${c.title}</h3>
+              <p class="card-sub">${c.sub}</p>
+              ${dateHtml}
+            </div>
+          </div>
+          <div class="card-body">${c.desc}</div>
+        `;
+
+      const statusTag = document.createElement("span");
+      statusTag.className = "card-status-tag";
+
+      // define o texto inicial
+      if (
+        typeof window.isCardRead === "function" &&
+        window.isCardRead(c.href)
+      ) {
+        statusTag.textContent = "Lido";
+        statusTag.classList.add("lido");
+      } else {
+        statusTag.textContent = "Não lido";
+        statusTag.classList.add("nao-lido");
+      }
+      a.appendChild(statusTag);
+
+      a.tabIndex = 0;
+      a.addEventListener("click", (e) => {
+        const isButton = e.target.closest("a,button");
+        if (!isButton) location.href = c.href;
+      });
+      a.addEventListener("keyup", (e) => {
+        if (e.key === "Enter" || e.key === " ") location.href = c.href;
+      });
+
+      return a;
+    }
+
+    function applyFilter(filter) {
+      if (!grid) return;
+      currentFilter = filter;
+
+      // estado visual nos botões
+      if (filterTodayBtn) {
+        filterTodayBtn.classList.toggle("secondary", filter === "today");
+        filterTodayBtn.classList.toggle("active", filter === "today");
+        filterTodayBtn.classList.toggle("ghost", filter !== "today");
+      }
+
+      if (filterAllBtn) {
+        filterAllBtn.classList.toggle("secondary", filter === "all");
+        filterAllBtn.classList.toggle("active", filter === "all");
+        filterAllBtn.classList.toggle("ghost", filter !== "all");
+      }
+
+      if (filterUnreadBtn) {
+        filterUnreadBtn.classList.toggle("secondary", filter === "unread");
+        filterUnreadBtn.classList.toggle("active", filter === "unread");
+        filterUnreadBtn.classList.toggle("ghost", filter !== "unread");
+      }
+
+      // efeito suave
+      grid.classList.add("is-updating");
+
+      setTimeout(() => {
+        grid.innerHTML = "";
+
+        let list = baseCards.slice();
+        const now = new Date();
+
+        if (filter === "today") {
+          list = list.filter((c) => {
+            return isToday(c.__dt, now) && c.__dt <= now;
+          });
+        }
+
+        if (filter === "all") {
+          list = list.filter((c) => c.__dt <= now);
+        }
+
+        // filtro "Não lidos"
+        if (filter === "unread") {
+          const readSet =
+            window.__cardsRead instanceof Set
+              ? window.__cardsRead
+              : typeof window.getReadCards === "function"
+              ? new Set(window.getReadCards())
+              : new Set();
+
+          list = list.filter((c) => c.__dt <= now && !readSet.has(c.href));
+        }
+
+        // Busca (título/sub/descrição)
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          list = list.filter((c) => {
+            const t = String(c.title || "").toLowerCase();
+            const s = String(c.sub || "").toLowerCase();
+            const d = String(c.desc || "").toLowerCase();
+            return t.includes(q) || s.includes(q) || d.includes(q);
+          });
+        }
+
+        // Ordenação (por publishedAt)
+        list.sort((a, b) => {
+          const ad = a.__dt ? a.__dt.getTime() : 0;
+          const bd = b.__dt ? b.__dt.getTime() : 0;
+          return sortOrder === "old" ? ad - bd : bd - ad;
+        });
+
+        if (!list.length) {
+          let msg = "Não há cards disponíveis neste momento.";
+
+          if (filter === "today") {
+            msg = "Ainda não há cards publicados para hoje.";
+          } else if (filter === "unread") {
+            msg = "Não há cards não lidos. Olha você em dia com tudo!";
+          }
+
+          const p = document.createElement("p");
+          p.className = "empty-grid-message";
+          p.textContent = msg;
+          grid.appendChild(p);
+        } else {
+          list.forEach((c, index) => {
+            const cardEl = createCardElement(c);
+            cardEl.classList.add("fade-in");
+            cardEl.style.animationDelay = index * 40 + "ms";
+            grid.appendChild(cardEl);
+          });
+        }
+
+        setTimeout(() => {
+          grid.classList.remove("is-updating");
+        }, 220);
+      }, 180);
+    }
+
+    document.addEventListener("cards:ready", async () => {
+      const cards = await (window.cards ? window.cards : []);
+      const now = new Date();
+
+      baseCards = cards
+        .map((c) => ({ ...c, __dt: parsePublishedAt(c.publishedAt) }))
+        .filter((c) => c.__dt)
+        .sort((a, b) => b.__dt - a.__dt);
+
+      function getListForFilter(filter) {
+        const now = new Date();
+        let list = baseCards.slice();
+
+        if (filter === "today") {
+          list = list.filter((c) => isToday(c.__dt, now) && c.__dt <= now);
+        }
+
+        if (filter === "all") {
+          list = list.filter((c) => c.__dt <= now);
+        }
+
+        if (filter === "unread") {
+          const isRead =
+            typeof window.isCardRead === "function"
+              ? (href) => window.isCardRead(href)
+              : (href) =>
+                  window.__cardsRead instanceof Set
+                    ? window.__cardsRead.has(href)
+                    : false;
+
+          list = list.filter((c) => c.__dt <= now && !isRead(c.href));
+        }
+
+        return list;
+      }
+
+      function pickInitialFilterByAvailability() {
+        const order = ["today", "unread", "all"];
+        for (const f of order) {
+          if (getListForFilter(f).length > 0) return f;
+        }
+        // Se nenhum tem cards disponíveis, cai no "today" (vai mostrar a msg de vazio de hoje)
+        return "today";
+      }
+
+      // escolhe automaticamente o primeiro filtro que tiver cards disponíveis
+      const initialFilter = pickInitialFilterByAvailability();
+      applyFilter(initialFilter);
+      updateFilterCounts();
+    });
+
+    searchInput?.addEventListener("input", () => {
+      searchQuery = String(searchInput.value || "").trim();
+      applyFilter(currentFilter);
+    });
+
+    sortSelect?.addEventListener("change", () => {
+      sortOrder = String(sortSelect.value || "new");
+      applyFilter(currentFilter);
+    });
+
+    filterTodayBtn?.addEventListener("click", () => applyFilter("today"));
+    filterAllBtn?.addEventListener("click", () => applyFilter("all"));
+    filterUnreadBtn?.addEventListener("click", () => applyFilter("unread"));
+  })();
+
+  // render();
+
+  /* ===== Rastreamento por título (envia para GAS) ===== */
+  const EMAIL_WEBHOOK =
+    "https://script.google.com/macros/s/AKfycbwlNQIqNjinhLQoM0DSM_4aH8pKA4Z24KPGCXHNyhx2bZJ9FsgqJdgGvH9-QuRvxQ1k/exec";
+
+  // Inicialização segura no escopo global (window)
+  (function ensureThrottleVar() {
+    if (typeof window.__lastSentAt !== "number") {
+      window.__lastSentAt = 0;
+    }
+  })();
+
+  function notifyCardClickByTitle(titulo) {
+    const now = Date.now();
+    if (now - window.__lastSentAt < 1000) return;
+    window.__lastSentAt = now;
+
+    const payload = {
+      titulo: titulo || "(sem título)",
+      ts: new Date().toISOString(),
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+      ua: navigator.userAgent,
+      ref: document.referrer || location.href,
+      lang: navigator.language || "",
+    };
+
+    const jsonStr = JSON.stringify(payload);
+    console.log("[track] payload:", payload);
+
+    let sent = false;
+    try {
+      if (navigator.sendBeacon) {
+        const data = new TextEncoder().encode(jsonStr);
+        sent = navigator.sendBeacon(EMAIL_WEBHOOK, data);
+        console.log("[track] sendBeacon:", sent);
+      }
+    } catch (err) {
+      console.warn("[track] sendBeacon error:", err);
+    }
+
+    if (!sent) {
+      fetch(EMAIL_WEBHOOK, {
+        method: "POST",
+        body: jsonStr,
+        keepalive: true,
+      })
+        .then(async (res) => {
+          try {
+            const text = await res.text();
+            console.log("[track] fetch status:", res.status, "body:", text);
+          } catch {
+            console.log("[track] fetch status:", res.status, "(sem corpo)");
+          }
+        })
+        .catch((err) => console.error("[track] fetch error:", err));
+    }
+  }
+
+  document.addEventListener(
+    "click",
+    (ev) => {
+      // 1) Clique vindo do modal de notificações?
+      const notifEl = ev.target.closest(".notif-card");
+      if (notifEl) {
+        const href = (notifEl.getAttribute("data-href") || "").trim();
+        if (!href) {
+          return;
+        }
+        const title =
+          notifEl.getAttribute("data-title") ||
+          notifEl.querySelector(".notif-item-title")?.textContent?.trim() ||
+          "";
+        if (title) notifyCardClickByTitle(title);
+        return;
+      }
+
+      // 2) Demais cliques (cards da home etc.)
+      const el = ev.target.closest("[data-title],[data-card]");
+      if (!el) return;
+      const title =
+        el.getAttribute("data-title") ||
+        el.getAttribute("data-card") ||
+        el.textContent?.trim();
+      if (title) notifyCardClickByTitle(title);
+    },
+    { capture: true }
+  );
+})();
+
+(function () {
+  // Usa a mesma chave do seed (PRE_READ_CARDS)
+  const STORAGE_KEY = "cardsRead.v1";
+
+  // Migração: versões antigas salvavam em "cardsRead"
+  try {
+    const legacy = localStorage.getItem("cardsRead");
+    const current = localStorage.getItem(STORAGE_KEY);
+    if (legacy && !current) {
+      localStorage.setItem(STORAGE_KEY, legacy);
+    }
+  } catch (e) {}
+
+  function loadReadSet() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return new Set();
+      const arr = JSON.parse(raw);
+      if (!Array.isArray(arr)) return new Set();
+      return new Set(arr);
+    } catch (e) {
+      console.warn("[cardsRead] erro ao carregar:", e);
+      return new Set();
+    }
+  }
+
+  function saveReadSet(set) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(set)));
+    } catch (e) {
+      console.warn("[cardsRead] erro ao salvar:", e);
+    }
+  }
+
+  const readSet = loadReadSet();
+
+  // Helpers globais
+  window.__cardsRead = readSet;
+  window.isCardRead = function (cardId) {
+    return readSet.has(cardId);
+  };
+  window.getReadCards = function () {
+    return Array.from(readSet);
+  };
+
+  function getCardIdFromElement(el) {
+    if (!el) return null;
+    const title = el.dataset.title;
+    if (!title || !Array.isArray(window.cards)) return null;
+
+    const card = window.cards.find((c) => c.title === title);
+    if (!card || !card.href) return null;
+
+    return card.href;
+  }
+
+  function markCardAsReadFromElement(el) {
+    const id = getCardIdFromElement(el);
+    if (!id) return;
+
+    if (!readSet.has(id)) {
+      readSet.add(id);
+      saveReadSet(readSet);
+    }
+
+    el.classList.add("card-lido");
+    el.classList.remove("card-hoje");
+
+    const tag = el.querySelector(".card-status-tag");
+    if (tag) {
+      tag.textContent = "Lido";
+      tag.classList.remove("nao-lido");
+      tag.classList.add("lido");
+    }
+
+    if (typeof window.updateFilterCounts === "function") {
+      window.updateFilterCounts();
+    }
+  }
+
+  function syncVisualReadState() {
+    const cardsEls = document.querySelectorAll(".card[data-title]");
+
+    cardsEls.forEach((el) => {
+      const id = getCardIdFromElement(el);
+      if (id && readSet.has(id)) {
+        el.classList.add("card-lido");
+        el.classList.remove("card-hoje");
+      }
+    });
+
+    cardsEls.forEach((el) => {
+      const id = getCardIdFromElement(el);
+      const tag = el.querySelector(".card-status-tag");
+      if (!tag) return;
+
+      if (id && window.isCardRead(id)) {
+        tag.textContent = "Lido";
+        tag.classList.remove("nao-lido");
+        tag.classList.add("lido");
+      } else {
+        tag.textContent = "Não lido";
+        tag.classList.remove("lido");
+        tag.classList.add("nao-lido");
+      }
+    });
+  }
+
+  document.addEventListener("cards:ready", () => {
+    setTimeout(() => {
+      syncVisualReadState();
+      if (typeof window.updateFilterCounts === "function") {
+        window.updateFilterCounts();
+      }
+    }, 250);
+  });
+
+  const filterTodayBtn = document.getElementById("filterToday");
+  const filterAllBtn = document.getElementById("filterAll");
+  const filterUnreadBtn = document.getElementById("filterUnread");
+
+  [filterTodayBtn, filterAllBtn, filterUnreadBtn].forEach((btn) => {
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      setTimeout(syncVisualReadState, 260);
+    });
+  });
+
+  document.addEventListener(
+    "click",
+    (ev) => {
+      const cardEl = ev.target.closest(".card[data-title]");
+      if (!cardEl) return;
+      markCardAsReadFromElement(cardEl);
+    },
+    { capture: true }
+  );
+})();
+
+document.addEventListener("cards:ready", () => {
+  const totalCards = window.cards || [];
+
+  let readArr = [];
+  try {
+    const raw = localStorage.getItem("cardsRead.v1") || "[]";
+    const parsed = JSON.parse(raw);
+    readArr = Array.isArray(parsed) ? parsed : [];
+  } catch (e) {}
+
+  const notReadCount = totalCards.filter(
+    (c) => !readArr.includes(c.href)
+  ).length;
+
+  const now = new Date();
+  const isToday = (d) =>
+    d.getDate() === now.getDate() &&
+    d.getMonth() === now.getMonth() &&
+    d.getFullYear() === now.getFullYear();
+
+  const todayCount = totalCards.filter((c) => {
+    const dt = c.__dt instanceof Date ? c.__dt : new Date(c.publishedAt);
+    return isToday(dt) && dt <= now;
+  }).length;
+
+  const allAvailableCount = totalCards.filter((c) => {
+    const dt = c.__dt instanceof Date ? c.__dt : new Date(c.publishedAt);
+    return dt <= now;
+  }).length;
+
+  const btnUnread = document.querySelector("#filterUnread span");
+  const btnToday = document.querySelector("#filterToday span");
+  const btnAll = document.querySelector("#filterAll span");
+
+  // Mantive os textos personalizados desativados como já estavam:
+  // if (btnUnread) btnUnread.textContent = `Não lido (${notReadCount})`;
+  // if (btnToday) btnToday.textContent = `Só de hoje (${todayCount})`;
+  // if (btnAll)
+  //   btnAll.textContent = `Todos os cards (${allAvailableCount})`;
+});
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    window.location.reload();
+  }
+});
