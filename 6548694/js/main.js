@@ -539,6 +539,15 @@
       a.className = "card";
       a.dataset.title = c.title;
 
+      // fundo (opcional) por card: c.bg (URL)
+      if (c && c.bg) {
+        const url = String(c.bg).trim();
+        if (url) {
+          a.style.setProperty("--card-bg", `url("${url.replace(/"/g, '\\"')}")`);
+          a.setAttribute("data-has-bg", "1");
+        }
+      }
+
       const d = c.__dt;
       const hoje = new Date();
 
