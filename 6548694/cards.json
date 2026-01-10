@@ -1,5 +1,35 @@
 [
   {
+    "emoji": "✨",
+    "title": "Ela e o Tempo - Parte Final",
+    "sub": "Quando a luz não sente o tempo passar",
+    "desc": "Um encerramento onde a relatividade encontra o afeto. O tempo se dobra, a presença permanece e a luz explica o que o relógio não alcança.",
+    "href": "./ela_e_o_tempo_parte_final_20260110.html",
+    "publishedAt": "2026-01-11T22:05:00-03:00",
+    "sentimento": "entendimento sereno, presença luminosa e aceitação profunda",
+    "moods": [
+      "luz",
+      "tempo",
+      "relatividade",
+      "presença"
+    ]
+  },
+  {
+    "emoji": "⏳",
+    "title": "Ela e o Tempo - Parte II",
+    "sub": "Cléia, quando a presença muda a forma dos dias",
+    "desc": "O tempo deixa de ser medida e passa a ser sentimento. Uma continuação sobre presença que permanece.",
+    "href": "./ela_e_o_tempo_parte2_20260110.html",
+    "publishedAt": "2026-01-11T00:12:00-03:00",
+    "sentimento": "presença que transforma, aceitação e proximidade silenciosa",
+    "moods": [
+      "tempo",
+      "presença",
+      "aceitação",
+      "silêncio cheio"
+    ]
+  },
+  {
     "emoji": "⏳",
     "title": "Ela e o Tempo — Parte I",
     "sub": "Quando a presença altera o ritmo das horas",
@@ -1942,5 +1972,4 @@
       "leve"
     ]
   }
-
 ]

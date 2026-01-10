@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Ela e o Tempo</title>
+    <title>Ela e o Tempo - Parte Final</title>
 
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&family=DM+Sans:wght@300;400;500&display=swap"
@@ -48,21 +48,17 @@
         box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
       }
 
-      /* IMAGEM DESFOCADA DE FUNDO */
       .card::before {
         content: "";
         position: absolute;
         inset: 0;
-        background-image: url("https://images.unsplash.com/photo-1518281361980-b26bfd556770");
-        /* background-image: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"); */
+        background-image: url("https://images.unsplash.com/photo-1542785291-fe3faea39066");
         background-size: cover;
         background-position: center;
         filter: blur(1px);
-        opacity: 1;
         transform: scale(1.1);
       }
 
-      /* CAMADA DE LEITURA */
       .card::after {
         content: "";
         position: absolute;
@@ -82,7 +78,6 @@
         font-size: 1.35rem;
         text-align: center;
         margin-bottom: 32px;
-        color: var(--text);
       }
 
       .poem p {
@@ -99,10 +94,6 @@
         color: var(--text);
       }
 
-      .poem p:last-child {
-        margin-bottom: 0;
-      }
-
       .signature {
         margin-top: 34px;
         text-align: right;
@@ -111,65 +102,60 @@
         font-size: 0.95rem;
         color: var(--muted);
       }
-
-      @media (max-width: 480px) {
-        .card {
-          padding: 34px 28px;
-        }
-
-        .title {
-          font-size: 1.2rem;
-        }
-
-        .poem p.highlight {
-          font-size: 1.15rem;
-        }
-      }
     </style>
   </head>
 
   <body>
     <div class="card">
       <div class="content">
-        <!-- TÍTULO -->
-        <div class="title">Ela e o Tempo - Parte I</div>
+        <div class="title">Ela e o Tempo - Parte Final</div>
 
-        <!-- POEMA -->
         <div class="poem">
-          <p class="highlight">
-            Me pergundo por quê o tempo perto dela<br />
-            passa rápido demais.
-          </p>
-
           <p>
-            Quando está longe,<br />
-            ela ocupa todo ele<br />
-            em meus pensamentos.
-          </p>
-
-          <p>
-            O tempo se expande.<br />
-            Mesmo no silêncio, ela me visita.
+            Einstein dizia que o tempo não é absoluto.<br />
+            Que ele se dobra, se distorce,<br />
+            depende de quem observa.
           </p>
 
           <p class="highlight">
-            Se meus pensamentos se materializassem,<br />
-            ela sentiria minha mão tocando a dela.
+            Talvez ele nunca tenha falado de amor,<br />
+            mas falou de luz.
           </p>
 
           <p>
-            Ainda assim,<br />
-            não tenho a resposta,<br />
-            talvez ela seja a resposta.<br />
-            Há algo nela...
+            A luz não sente o tempo passar.<br />
+            Para ela, tudo acontece agora.
+          </p>
+
+          <p class="highlight">E ela é assim.</p>
+
+          <p>
+            Quando chega, o instante se expande.<br />
+            Quando some, continua presente.<br />
+            Não porque ficou,<br />
+            mas porque iluminou.
+          </p>
+
+          <p class="highlight">
+            Se ela é luz,<br />
+            então faz sentido:
+          </p>
+
+          <p>
+            o tempo perto dela não passa,<br />
+            ele simplesmente acontece.
+          </p>
+
+          <p>
+            E talvez seja por isso<br />
+            que, mesmo distante,<br />
+            ela ainda esteja aqui.
           </p>
         </div>
 
-        <!-- ASSINATURA -->
-        <div class="signature">— de alguém que te tem no tempo</div>
+        <div class="signature">de alguém que entendeu a relatividade</div>
         <div class="signature">._.. ...</div>
       </div>
     </div>
-    <script src="./js/card-telemetry.js"></script>
   </body>
 </html>
