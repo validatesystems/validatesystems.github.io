@@ -11,8 +11,8 @@
   //   { id: "onda", pass: "ONDA", hint: "Chega, bagunça e vai." },
   // ];
 
-  /* ======================   08/01/2026 - 16:55   ======================= */
-  const KEYS = [{ id: "vento", pass: "VENTO", hint: "Rede." }];
+  /* ======================   10/01/2026 - 13:34   ======================= */
+  const KEYS = [{ id: "lua", pass: "LUA", hint: "Quem brilha?" },];
   /* ================================================================== */
 
   /* ===== Tema com persistência ===== */
@@ -25,8 +25,8 @@
     themeParam === "eletrico"
       ? "eletrico"
       : themeParam === "acustico"
-      ? "acustico"
-      : storedTheme || "acustico";
+        ? "acustico"
+        : storedTheme || "acustico";
   function applyTheme(mode) {
     document.body.classList.toggle("eletrico", mode === "eletrico");
     localStorage.setItem(THEME_KEY, mode);
@@ -69,7 +69,7 @@
       // restaura a posição do cursor
       try {
         el.setSelectionRange(selectionStart, selectionEnd);
-      } catch {}
+      } catch { }
     }
   });
 
@@ -93,7 +93,7 @@
   function grantAccess() {
     try {
       sessionStorage.setItem(ACCESS_TAG, "ok:" + (currentKey?.id || ""));
-    } catch {}
+    } catch { }
 
     // avisa o ip-capture-mail que o acesso foi concedido
     try {
@@ -248,8 +248,8 @@
       const items = Array.isArray(data)
         ? data
         : Array.isArray(data?.notificacoes)
-        ? data.notificacoes
-        : [];
+          ? data.notificacoes
+          : [];
 
       // ===== FILTRO: apenas notificações de HOJE e com horário <= AGORA =====
       const now = new Date();
@@ -337,8 +337,8 @@
       const items = Array.isArray(data)
         ? data
         : Array.isArray(data?.notificacoes)
-        ? data.notificacoes
-        : [];
+          ? data.notificacoes
+          : [];
 
       // ===== FILTRO: somente HOJE e horário <= AGORA (local) =====
       const now = new Date();
@@ -651,8 +651,8 @@
             window.__cardsRead instanceof Set
               ? window.__cardsRead
               : typeof window.getReadCards === "function"
-              ? new Set(window.getReadCards())
-              : new Set();
+                ? new Set(window.getReadCards())
+                : new Set();
 
           list = list.filter((c) => c.__dt <= now && !readSet.has(c.href));
         }
@@ -729,9 +729,9 @@
             typeof window.isCardRead === "function"
               ? (href) => window.isCardRead(href)
               : (href) =>
-                  window.__cardsRead instanceof Set
-                    ? window.__cardsRead.has(href)
-                    : false;
+                window.__cardsRead instanceof Set
+                  ? window.__cardsRead.has(href)
+                  : false;
 
           list = list.filter((c) => c.__dt <= now && !isRead(c.href));
         }
@@ -870,7 +870,7 @@
     if (legacy && !current) {
       localStorage.setItem(STORAGE_KEY, legacy);
     }
-  } catch (e) {}
+  } catch (e) { }
 
   function loadReadSet() {
     try {
@@ -1006,7 +1006,7 @@ document.addEventListener("cards:ready", () => {
     const raw = localStorage.getItem("cardsRead.v1") || "[]";
     const parsed = JSON.parse(raw);
     readArr = Array.isArray(parsed) ? parsed : [];
-  } catch (e) {}
+  } catch (e) { }
 
   const notReadCount = totalCards.filter(
     (c) => !readArr.includes(c.href)

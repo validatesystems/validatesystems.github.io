@@ -10,20 +10,22 @@
     <link rel="apple-touch-icon" href="./img/ico.png" />
 
     <!-- CSS principal -->
-    <link rel="stylesheet" href="./styles.css?v=20260108" />
+    <link rel="stylesheet" href="./styles.css?v=20260110" />
 
     <meta name="theme-color" content="#000000" />
 
     <!-- Evitar cache no navegador -->
     <meta
       http-equiv="Cache-Control"
-      content="no-cache, no-store, must-revalidate" />
+      content="no-cache, no-store, must-revalidate"
+    />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
     <meta name="color-scheme" content="light dark" />
   </head>
@@ -36,7 +38,8 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="notifTitle"
-      aria-hidden="true">
+      aria-hidden="true"
+    >
       <div class="notif-modal" role="document">
         <header class="notif-header">
           <h2 id="notifTitle" class="notif-title">Notificações</h2>
@@ -45,7 +48,8 @@
               id="notifClose"
               class="notif-close"
               type="button"
-              title="Fechar">
+              title="Fechar"
+            >
               Fechar
             </button>
           </div>
@@ -55,7 +59,8 @@
           class="notif-list"
           tabindex="0"
           aria-live="polite"
-          aria-busy="false">
+          aria-busy="false"
+        >
           <p class="notif-empty">Carregando…</p>
         </div>
       </div>
@@ -67,7 +72,8 @@
       class="notif-backdrop"
       role="dialog"
       aria-modal="true"
-      aria-hidden="true">
+      aria-hidden="true"
+    >
       <div class="notif-modal" role="document">
         <header class="notif-header">
           <h2 class="notif-title">Como você está se sentindo?</h2>
@@ -131,7 +137,8 @@
             id="toggleTheme"
             class="icon-btn"
             type="button"
-            title="Alternar tema">
+            title="Alternar tema"
+          >
             <span class="theme-icon" aria-hidden="true">🌤️</span>
           </button>
         </div>
@@ -166,7 +173,8 @@
             type="search"
             inputmode="search"
             autocomplete="off"
-            placeholder="Buscar por título, subtítulo ou descrição" />
+            placeholder="Buscar por título, subtítulo ou descrição"
+          />
         </label>
 
         <label class="sort" aria-label="ordenar">
@@ -184,12 +192,12 @@
     </main>
 
     <!-- Scripts principais -->
-    <script src="./js/main.js?v=20260108"></script>
+    <script src="./js/main.js?v=20260110"></script>
 
     <!-- Módulo responsável por carregar os cards e disparar "cards:ready" -->
-    <script type="module" src="./js/cards-module.js?v=20260108"></script>
+    <script type="module" src="./js/cards-module.js?v=20260110"></script>
 
     <!-- Módulo do modal de sentimentos -->
-    <script type="module" src="./js/moods-module.js?v=20260108"></script>
+    <script type="module" src="./js/moods-module.js?v=20260110"></script>
   </body>
 </html>
