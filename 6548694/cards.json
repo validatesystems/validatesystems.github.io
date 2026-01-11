@@ -32,6 +32,24 @@
     ]
   },
   {
+    "emoji": "🌫️",
+    "title": "O cheiro e Ela",
+    "sub": "Cléia, quando o seu perfume apaga o mundo e acende a minha imaginação",
+    "desc": "O perfume misturado com a sua pele...",
+    "href": "./o_cheiro_e_ela_20260111.html",
+    "bg": "https://images.unsplash.com/photo-1600299637171-d174627135ee",
+    "publishedAt": "2026-01-11T08:54:00-03:00",
+    "sentimento": "desejo sutil, vertigem doce e imaginação acesa",
+    "moods": [
+      "cheiro",
+      "perfume",
+      "imaginação",
+      "vertigem",
+      "desejo sutil",
+      "presença no ar"
+    ]
+  },
+  {
     "emoji": "⏳",
     "title": "Ela e o Tempo — Parte I",
     "sub": "Quando a presença altera o ritmo das horas",
@@ -1975,5 +1993,4 @@
       "leve"
     ]
   }
-
 ]
