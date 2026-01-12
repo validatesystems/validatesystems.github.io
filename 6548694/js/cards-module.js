@@ -178,20 +178,6 @@ document.addEventListener("pointerdown", (ev) => {
         "presença",
         "silêncio bom"
       ]
-    },
-    {
-      "emoji": "🎞️",
-      "title": "Algo aperta",
-      "sub": "Um reel",
-      "desc": "Um vídeo que traduz aquele aperto que chega do nada.",
-      "href": "./reels20260102.html",
-      "publishedAt": "2026-01-02T14:00:00-03:00",
-      "sentimento": "intensidade silenciosa, emoção contida e um desejo que respira devagar",
-      "moods": [
-        "aperto bom",
-        "intensidade",
-        "vontade"
-      ]
     }
   ];
 
