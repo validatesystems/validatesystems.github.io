@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "name": "modal_frases_sentimentos",
+    "version": "1.0.0",
+    "locale": "pt-BR",
+    "created_at": "2025-11-08T13:29:33.265296"
+  },
+  "negativo": [
+    "Ah, tá tristinha? Então vou piorar isso, ksksksks… escolha um card pra afundar no drama com estilo.",
+    "Clima nublado por aí? Ótimo, tenho tempestades literárias. Escolhe um card e pega o guarda-chuva.",
+    "Bad vibes? Vem cá que eu tenho mais camadas de cebola. Escolhe um card e chora com poesia.",
+    "Coração apertado? Relaxa, eu aperto mais um pouquinho… ksksks. Escolhe um card.",
+    "Tá na sofrência? Perfeito! Separei a trilha sonora completa. Escolhe um card e dá play no caos.",
+    "Mood: melancolia? Então senta que lá vem textão. Escolhe um card para agravar com elegância.",
+    "Dia cinza? Que tal cinquenta tons de nuvem? Escolhe um card e confere.",
+    "Desânimo ligado? Excelente — habilitando modo ‘toma mais um pouquinho’. Escolha um card.",
+    "Tá pesado? Eu posso adicionar profundidade, ksksks. Vem de card aqui.",
+    "Olhar perdido? Aqui tem labirinto emocional. Escolhe um card pra se perder bonito.",
+    "Drama low-key? Dou upgrade pra high-definition. Escolhe um card.",
+    "Chuva interna? Trouxe trovões metafóricos. Escolhe um card e sente o impacto.",
+    "Sem cor por aí? Tenho paleta ‘azul-chorinho’. Escolhe um card.",
+    "Suspirando fundo? Eu coloco eco. ksksks. Escolhe um card pra amplificar.",
+    "Precisa de colo? Te dou roteiro de filme tristezinha primeiro. Escolhe um card.",
+    "No modo ‘deixa pra lá’? Eu ‘trago pra cá’ rapidinho. Escolha um card.",
+    "Quer se iludir? Eu entrego realidade poética. Escolha um card e sofra com classe.",
+    "Procurando sinal do universo? Ele respondeu: ‘escolha um card’.",
+    "Cabeça cheia? Abri o anexo ‘sentimentos.zip’. Baixa um card aí.",
+    "Quase chorando? A casa oferece lenços — e cards. Escolha um."
+  ],
+  "positivo": [
+    "Feliz, é? Pode ir tirando o cavalinho da chuva: vem um plot twist. Escolhe um card!",
+    "Sorriso largo? Segura que eu trouxe notícias ‘boas’… ksksks. Escolhe um card!",
+    "No alto astral? Ih, então prepara o paraquedas emocional. Escolhe um card!",
+    "Tudo lindo? Calma que eu tenho um ‘porém’. Escolhe um card!",
+    "Animação no topo? Ótimo, hora de um banho de realidade. Escolhe um card!",
+    "Confiante? Deixa eu te contar um segredo… que complica. Escolhe um card!",
+    "Plano de voo pronto? Torrei o combustível do otimismo, ksksks. Escolhe um card!",
+    "Radiante? Botei nuvem na previsão só de teimosia. Escolhe um card!",
+    "Esperançosa? Teste de resistência desbloqueado. Escolhe um card!",
+    "Alma leve? Chamei o vento contraditório. Escolhe um card!",
+    "Em paz? Tá cedo. Tenho dilemas fresquinhos. Escolhe um card!",
+    "Com sorte? Vamos de estatística emocional: 50% drama. Escolhe um card!",
+    "Tudo certo? Que tal um “talvez”? Escolhe um card!",
+    "Céu azul? Pintei um cinzinha pra combinar. Escolhe um card!",
+    "Rindo à toa? Te apresento ‘rsrs nervoso’. Escolhe um card!",
+    "Empolgado? Trouxe boletos metafóricos. Escolhe um card!",
+    "Coração quentinho? Aquece mais com fricção poética. Escolhe um card!",
+    "Leveza no ar? Ativei turbulência criativa. Escolhe um card!",
+    "Dia perfeito? Vamos testar isso. Escolhe um card!",
+    "Otimismo ON? Atualizando para modo ‘plot twist’. Escolhe um card!"
+  ]
+}
