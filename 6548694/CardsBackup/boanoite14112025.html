@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Boa noite</title>
+    <style>
+      :root {
+        --bg1: #020617;
+        --bg2: #0b1120;
+        --bg3: #1f2937;
+        --fg: #e5e7eb;
+        --muted: #9ca3af;
+        --accent: #a855f7;
+        --accent-soft: rgba(168, 85, 247, 0.2);
+        --card: rgba(15, 23, 42, 0.92);
+        --shadow: 0 22px 60px rgba(0, 0, 0, 0.95);
+        --ring: 0 0 0 1px rgba(148, 163, 184, 0.5);
+      }
+
+      [data-theme="light"] {
+        --bg1: #f3f4ff;
+        --bg2: #e0f2fe;
+        --bg3: #dde1ff;
+        --fg: #111827;
+        --muted: #6b7280;
+        --accent: #7c3aed;
+        --accent-soft: rgba(124, 58, 237, 0.16);
+        --card: rgba(255, 255, 255, 0.96);
+        --shadow: 0 22px 60px rgba(15, 23, 42, 0.32);
+        --ring: 0 0 0 1px rgba(148, 163, 184, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--fg);
+        background: radial-gradient(circle at top, var(--bg3), var(--bg1) 55%),
+          radial-gradient(circle at bottom, var(--bg2), var(--bg1) 60%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        position: relative;
+        overflow: auto;
+      }
+
+      /* Camadas de estrelas para efeito de profundidade */
+
+      .stars,
+      .stars-2,
+      .stars-3 {
+        position: fixed;
+        inset: -100px;
+        pointer-events: none;
+        opacity: 0.95;
+        mix-blend-mode: screen;
+      }
+
+      .stars::before,
+      .stars-2::before,
+      .stars-3::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-repeat: repeat;
+        background-size: 260px 260px;
+      }
+
+      .stars::before {
+        background-image: radial-gradient(
+          circle,
+          rgba(248, 250, 252, 0.85) 1px,
+          transparent 1px
+        );
+        opacity: 0.7;
+        animation: float-stars-1 38s linear infinite;
+      }
+
+      .stars-2::before {
+        background-image: radial-gradient(
+          circle,
+          rgba(191, 219, 254, 0.9) 1px,
+          transparent 1px
+        );
+        opacity: 0.45;
+        animation: float-stars-2 65s linear infinite;
+      }
+
+      .stars-3::before {
+        background-image: radial-gradient(
+          circle,
+          rgba(216, 180, 254, 0.85) 1px,
+          transparent 1px
+        );
+        opacity: 0.3;
+        animation: float-stars-3 95s linear infinite;
+      }
+
+      @keyframes float-stars-1 {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        100% {
+          transform: translate3d(-60px, -80px, 0);
+        }
+      }
+
+      @keyframes float-stars-2 {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        100% {
+          transform: translate3d(60px, -60px, 0);
+        }
+      }
+
+      @keyframes float-stars-3 {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        100% {
+          transform: translate3d(-40px, 70px, 0);
+        }
+      }
+
+      .wrapper {
+        width: 100%;
+        max-width: 960px;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 760px;
+        background: var(--card);
+        border-radius: 26px;
+        padding: 22px 20px 18px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        animation: fade-in 0.9s ease-out forwards;
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -20%;
+        background: radial-gradient(
+            circle at top right,
+            var(--accent-soft),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(56, 189, 248, 0.16),
+            transparent 65%
+          );
+        pointer-events: none;
+        opacity: 0.9;
+      }
+
+      .card-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      @keyframes fade-in {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      header.card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .title-group {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .label {
+        font-size: 0.74rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .title {
+        font-size: 1.18rem;
+        font-weight: 600;
+      }
+
+      .subtitle {
+        font-size: 0.86rem;
+        color: var(--muted);
+        max-width: 520px;
+      }
+
+      .theme-toggle {
+        border: none;
+        outline: none;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.65);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.15s ease,
+          box-shadow 0.15s ease;
+        box-shadow: var(--ring);
+        font-size: 0.92rem;
+        color: var(--fg);
+      }
+
+      [data-theme="light"] .theme-toggle {
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .theme-toggle:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.7);
+      }
+
+      .theme-toggle:active {
+        transform: translateY(0);
+      }
+
+      .message {
+        margin-top: 10px;
+        font-size: 0.98rem;
+        line-height: 1.7;
+      }
+
+      .message p {
+        margin: 0 0 0.95rem;
+        text-align: justify;
+      }
+
+      .message p:last-of-type {
+        margin-bottom: 0.3rem;
+      }
+
+      .closing {
+        margin-top: 1.3rem;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .footer-row {
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .note {
+        font-size: 0.78rem;
+        color: var(--muted);
+        opacity: 0.9;
+      }
+
+      .note span {
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        background: rgba(15, 23, 42, 0.4);
+        /* margin: 3px; */
+      }
+
+      [data-theme="light"] .note span {
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn {
+        border-radius: 999px;
+        border: none;
+        outline: none;
+        padding: 7px 14px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: transform 0.12s ease, box-shadow 0.12s ease,
+          background 0.12s ease, color 0.12s ease;
+        white-space: nowrap;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), #38bdf8);
+        color: #0b1120;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.6);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.8);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.85);
+      }
+
+      .btn-ghost {
+        background: rgba(15, 23, 42, 0.4);
+        color: var(--fg);
+        box-shadow: var(--ring);
+      }
+
+      [data-theme="light"] .btn-ghost {
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .btn-ghost:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.7);
+      }
+
+      .btn-ghost:active {
+        transform: translateY(0);
+      }
+
+      .btn span {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .pulse {
+        animation: pulse-soft 0.6s ease-out;
+      }
+
+      @keyframes pulse-soft {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.015);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .card {
+          padding: 16px 14px 14px;
+          border-radius: 20px;
+        }
+
+        .title {
+          font-size: 1.05rem;
+        }
+
+        .subtitle {
+          font-size: 0.8rem;
+        }
+
+        .message {
+          font-size: 0.95rem;
+        }
+
+        .footer-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 2vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars"></div>
+    <div class="stars-2"></div>
+    <div class="stars-3"></div>
+
+    <div class="wrapper">
+      <main class="card" id="card">
+        <div class="card-inner">
+          <header class="card-header">
+            <div class="title-group">
+              <span class="label">Boa noite</span>
+              <h1 class="title">Para o fim do dia não passar despercebido</h1>
+              <p class="subtitle">
+                Uma mensagem especialmente escrita para você, quando tudo
+                desacelera e as verdades ficam um pouco mais nítidas por dentro.
+              </p>
+            </div>
+            <button
+              class="theme-toggle"
+              type="button"
+              id="themeToggle"
+              aria-label="Alternar tema claro ou escuro"
+            >
+              <span id="themeIcon">☀️</span>
+            </button>
+          </header>
+
+          <section class="message" aria-label="Mensagem de boa noite">
+            <p>
+              Boa noite, Cléia. Antes que o dia termine, eu queria te deixar
+              algo simples, mas verdadeiro.
+            </p>
+            <p>
+              Existem sentimentos que a gente até tenta organizar, mas eles
+              encontram um jeito de permanecer. Mesmo quando não falamos, mesmo
+              quando fingimos que está tudo sob controle, mesmo quando o mundo
+              exige racionalidade.
+            </p>
+            <p>
+              Dentro da gente, certas verdades não se dissolvem assim tão
+              facilmente. Você é uma dessas verdades.
+            </p>
+            <p>
+              E não é sobre expectativa, nem sobre cobrança. É só sobre
+              reconhecer o que existe, mesmo que silencioso, mesmo que discreto,
+              mesmo que guardado com cuidado no canto certo do peito.
+            </p>
+            <p>
+              Eu te desejo uma noite tranquila, daquelas que acalmam o
+              pensamento e deixam o coração batendo mais leve. E que o seu final
+              de semana seja bonito, gentil, cheio das pequenas coisas que fazem
+              diferença na alma.
+            </p>
+            <p>
+              As vezes a vida é mais simples do que parece: o que sentimos
+              continua ali, mesmo quando tentamos não perceber. E, no fundo,
+              você sabe.
+            </p>
+            <p>Durma bem. E cuide de você, como você merece.</p>
+          </section>
+
+          <div class="closing">
+            Se um dia esta página for só mais um link perdido, tudo bem. Hoje
+            ela ainda guarda algo que é muito sincero sobre você aqui dentro.
+          </div>
+
+          <div class="footer-row">
+            <div class="note">
+              <span>
+                Esta mensagem não pede resposta. Ela só existe porque você
+                existe.
+              </span>
+            </div>
+            <div class="note">
+              <span>Com 💜 ._.. ...</span>
+            </div>
+            <div class="actions">
+              <!-- <button class="btn btn-primary" type="button" id="btnReread">
+                <span>LER DE NOVO</span>
+              </button> -->
+              <!-- Caso queira integrar com seu modal de comentários, pode trocar este botão -->
+              <button
+                class="btn-comment"
+                type="button"
+                id="openComment"
+                aria-label="Abrir comentário"
+              >
+                <span>💬 COMENTAR (SE QUISER)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        const root = document.documentElement;
+        const toggle = document.getElementById("themeToggle");
+        const icon = document.getElementById("themeIcon");
+        const card = document.getElementById("card");
+        const btnReread = document.getElementById("btnReread");
+        const btnComment = document.getElementById("btnComment");
+
+        function applyTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          localStorage.setItem("boa-noite-theme", theme);
+          icon.textContent = theme === "dark" ? "☀️" : "🌙";
+        }
+
+        const saved = localStorage.getItem("boa-noite-theme");
+        if (saved === "dark" || saved === "light") {
+          applyTheme(saved);
+        } else {
+          applyTheme("dark");
+        }
+
+        toggle.addEventListener("click", function () {
+          const current =
+            root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          applyTheme(current);
+        });
+
+        btnReread.addEventListener("click", function () {
+          card.classList.remove("pulse");
+          void card.offsetWidth;
+          card.classList.add("pulse");
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+
+        // Aqui você pode integrar com seu modal de comentários já existente
+        btnComment.addEventListener("click", function () {
+          // Exemplo: se você usar um botão que dispara o modal em outras páginas,
+          // pode simular o clique aqui ou chamar diretamente a função do modal.
+          const modalTrigger = document.querySelector("[data-open-comment]");
+          if (modalTrigger) {
+            modalTrigger.click();
+          } else {
+            alert(
+              "Aqui entraria o modal de comentários que você já usa nas outras páginas."
+            );
+          }
+        });
+      })();
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

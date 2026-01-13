@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Bilhetinhos - carinho, ironia e morde e assopra</title>
+    <style>
+      :root {
+        --bg1: #fffaf5;
+        --bg2: #f3f7ff;
+        --ink: #2a2030;
+        --muted: #6e6273;
+        --accent: #b675ff;
+        --accent-2: #4cc9f0;
+        --love: #ff7aa2;
+        --irony: #ffd166;
+        --hybrid: #84d8a6;
+        --card: rgba(255, 255, 255, 0.82);
+        --ring: 0 0 0 1.5px rgba(182, 117, 255, 0.28);
+        --radius: 16px;
+        --shadow: 0 8px 24px rgba(17, 17, 26, 0.12),
+          0 2px 6px rgba(17, 17, 26, 0.06);
+        --note-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+        --safe-top: env(safe-area-inset-top);
+        --safe-bottom: env(safe-area-inset-bottom);
+      }
+      :root[data-theme="dark"] {
+        --bg1: #1b1420;
+        --bg2: #0f1320;
+        --ink: #efe7f3;
+        --muted: #b7adbf;
+        --card: rgba(26, 26, 36, 0.7);
+        --note-shadow: 0 10px 18px rgba(0, 0, 0, 0.35);
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji";
+        color: var(--ink);
+        background: radial-gradient(
+            1200px 800px at 10% -10%,
+            var(--bg2),
+            transparent 60%
+          ),
+          radial-gradient(1200px 800px at 100% 0%, var(--bg1), transparent 55%),
+          linear-gradient(
+            180deg,
+            color-mix(in oklab, var(--bg1) 70%, var(--bg2)),
+            var(--bg2)
+          );
+        padding-bottom: max(24px, var(--safe-bottom));
+      }
+
+      .app {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: calc(10px + var(--safe-top)) 16px 16px;
+      }
+      header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .title {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .title h1 {
+        font-size: 1.35rem;
+        margin: 0;
+        letter-spacing: 0.2px;
+      }
+      .title small {
+        color: var(--muted);
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .chip {
+        appearance: none;
+        border: none;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        padding: 10px 12px;
+        border-radius: 999px;
+        color: var(--ink);
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        cursor: pointer;
+      }
+      .chip:active {
+        transform: translateY(1px) scale(0.99);
+      }
+      .chip[data-on="true"] {
+        box-shadow: var(--ring), var(--shadow);
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 8px;
+        margin: 6px 0 14px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        background: var(--card);
+        color: var(--ink);
+        padding: 10px 12px;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .daily {
+        background: linear-gradient(
+            135deg,
+            color-mix(in oklab, var(--accent) 16%, transparent),
+            transparent 40%
+          ),
+          var(--card);
+        border-radius: var(--radius);
+        padding: 12px 14px;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin: 8px 0 16px;
+      }
+      .daily .tag {
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+      .daily strong {
+        display: block;
+        margin-top: 4px;
+      }
+
+      .board {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+      }
+
+      .note {
+        position: relative;
+        background: var(--card);
+        border-radius: 14px;
+        padding: 12px 12px 14px;
+        box-shadow: var(--note-shadow);
+        min-height: 115px;
+        cursor: pointer;
+        transform: rotate(var(--rot, 0deg));
+        transition: transform 0.18s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        border: 1px solid color-mix(in oklab, var(--accent) 15%, transparent);
+        isolation: isolate;
+      }
+      .note:hover {
+        transform: translateY(-2px) rotate(var(--rot, 0deg));
+        filter: brightness(1.03);
+      }
+
+      .pin {
+        position: absolute;
+        top: -8px;
+        left: 14px;
+        width: 18px;
+        height: 18px;
+        background: radial-gradient(circle at 40% 40%, #ffcd4b, #e89b00 60%);
+        border-radius: 50%;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+        z-index: 1;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+      .badge.love {
+        color: #9b244a;
+      }
+      .badge.irony {
+        color: #7a5a00;
+      }
+      .badge.morde {
+        color: #0e6b48;
+      }
+
+      .note .text {
+        margin-top: 6px;
+        font-size: 0.98rem;
+        line-height: 1.28rem;
+        word-wrap: break-word;
+      }
+      .note .meta {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .note[data-type="carinho"] {
+        background: linear-gradient(
+            180deg,
+            color-mix(in oklab, var(--love) 18%, transparent),
+            transparent 40%
+          ),
+          var(--card);
+      }
+      .note[data-type="ironia"] {
+        background: linear-gradient(
+            180deg,
+            color-mix(in oklab, var(--irony) 22%, transparent),
+            transparent 45%
+          ),
+          var(--card);
+      }
+      .note[data-type="mordeassopra"] {
+        background: linear-gradient(
+            180deg,
+            color-mix(in oklab, var(--irony) 16%, transparent),
+            color-mix(in oklab, var(--love) 12%, transparent) 40%,
+            color-mix(in oklab, var(--hybrid) 18%, transparent) 70%
+          ),
+          var(--card);
+        border-color: color-mix(in oklab, var(--hybrid) 30%, transparent);
+      }
+
+      .note.read {
+        opacity: 0.74;
+      }
+
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        backdrop-filter: blur(6px);
+        background: color-mix(in oklab, #000 14%, transparent);
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 0 12px calc(12px + var(--safe-bottom));
+        z-index: 50;
+      }
+      .modal-backdrop[open] {
+        display: flex;
+      }
+      .sheet {
+        width: 100%;
+        max-width: 760px;
+        background: var(--card);
+        border-radius: 18px 18px 14px 14px;
+        box-shadow: var(--shadow);
+        border: 1px solid color-mix(in oklab, var(--accent) 18%, transparent);
+        padding: 14px 14px 8px;
+        animation: rise 0.18s ease;
+      }
+      @keyframes rise {
+        from {
+          transform: translateY(16px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .sheet header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .sheet .fulltext {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
+
+      .empty {
+        text-align: center;
+        color: var(--muted);
+        padding: 24px 8px;
+      }
+      #comment {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        padding: 10px;
+      }
+      /* Contêiner do botão de comentar */
+      #comment {
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        padding: 16px; /* um pouco mais de “respiro” */
+      }
+
+      /* Acento visual para o botão de comentar, mantendo herança do .chip */
+      .btn-comment {
+        border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+        background: linear-gradient(
+            135deg,
+            color-mix(in oklab, var(--accent) 16%, transparent),
+            transparent 40%
+          ),
+          var(--card);
+        color: var(--ink);
+        letter-spacing: 0.2px;
+        transition: transform 0.08s ease, filter 0.18s ease,
+          box-shadow 0.2s ease;
+      }
+      .btn-comment:hover {
+        filter: brightness(1.04);
+      }
+      .btn-comment:active {
+        transform: translateY(1px) scale(0.99);
+      }
+      .btn-comment:focus-visible {
+        outline: none;
+        box-shadow: var(--ring), var(--shadow);
+      }
+      .btn-comment[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div class="title">
+          <div style="font-size: 1.25rem">📌</div>
+          <div>
+            <h1>Bilhetinhos para alguém</h1>
+            <small>Carinho verdadeiro + ironias do dia a dia</small>
+          </div>
+        </div>
+        <div class="actions">
+          <button
+            id="toggleTheme"
+            class="chip"
+            aria-pressed="false"
+            title="Alternar tema"
+          >
+            🌓 Tema
+          </button>
+        </div>
+      </header>
+
+      <div class="toolbar" role="toolbar" aria-label="Filtros de bilhetes">
+        <button id="onlyFavs" class="chip" data-on="false">⭐ Favoritos</button>
+        <button id="onlyUnread" class="chip" data-on="false">
+          🆕 Não lidos
+        </button>
+        <button id="clearFilters" class="chip" data-on="false">
+          🧹 Limpar filtros
+        </button>
+      </div>
+
+      <section id="daily" class="daily" aria-live="polite" hidden>
+        <div>
+          🔔
+          <div class="tag">Sugerido de hoje</div>
+        </div>
+        <div style="flex: 1">
+          <strong id="dailyTitle"></strong>
+          <div id="dailyText" class="muted"></div>
+        </div>
+        <button id="openDaily" class="btn">Abrir</button>
+      </section>
+
+      <div id="board" class="board" aria-live="polite"></div>
+      <div id="empty" class="empty" hidden>
+        Nada por aqui. Ajuste os filtros.
+      </div>
+    </div>
+
+    <div
+      id="modal"
+      class="modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+    >
+      <div class="sheet">
+        <header>
+          <div id="mBadge" class="badge">—</div>
+          <button id="mClose" class="chip">Fechar ✖</button>
+        </header>
+        <div id="mText" class="fulltext"></div>
+        <div
+          class="actions"
+          style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap"
+        >
+          <button id="mFav" class="btn">⭐ Favoritar</button>
+          <button id="mMarkRead" class="btn">🆕 Marcar como lido</button>
+          <button id="mShare" class="btn">📤 Compartilhar</button>
+          <button id="mWhats" class="btn">🟢 WhatsApp</button>
+          <button id="mCopy" class="btn">📋 Copiar</button>
+        </div>
+      </div>
+    </div>
+    <div id="comment">
+      <button
+        id="openComment"
+        class="chip btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
+    </div>
+
+    <script>
+      // ===== Bilhetes no formato pedido: [{ type, text }] =====
+      const DATA = [
+        {
+          type: "ironia",
+          text: "Agenda do dia: sobreviver às 12 aulas e lembrar que o dia ainda não acabou.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Se o dia te pedir demais, me dá um sinal. Eu levo uns doces/salgados e um bilhete com uma piada ruim.",
+        },
+        {
+          type: "carinho",
+          text: "Dizem que o vento leva o que é leve. Curioso: ele insiste em deixar seu cheiro comigo.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Status: um caos por dentro, relatórios por fora. Receita: 1 ironia + 2 abraços.",
+        },
+        {
+          type: "carinho",
+          text: "Informei ao RH que a insalubridade emocional zera quando você sorri. Mandei laudo: uma foto sorrindo.",
+        },
+        {
+          type: "carinho",
+          text: "Se eu disser que não pensei em você hoje, é verdade, pensei o dia inteiro.",
+        },
+        {
+          type: "carinho",
+          text: "Me acalma que eu assino embaixo. Carimbo: sereia que transforma caos em canto.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Amizade com você tem cláusula de ironia obrigatória e multa por sumiço acima de 24h.",
+        },
+        {
+          type: "ironia",
+          text: "Relatório do dia: produtividade discutível, saudade indiscutível.",
+        },
+        {
+          type: "carinho",
+          text: "Bom dia normal? Você não combina com o normal.",
+        },
+        {
+          type: "carinho",
+          text: "Se a paciência acabar, uso a sua emprestada. Juros: um café no fim da tarde.",
+        },
+        {
+          type: "carinho",
+          text: "Modo economia de energia ativado: respondo pouco, penso muito em um lugar e algúem...",
+        },
+        {
+          type: "carinho",
+          text: "Quando fico sério demais, lembro das suas piadas e volto a respirar.",
+        },
+        {
+          type: "carinho",
+          text: "Se a maré virar, eu viro junto. Só não viro a cara pra você.",
+        },
+        {
+          type: "carinho",
+          text: "Tento ser discreto: uma notificação sua me faz rir sem perceber.",
+        },
+        {
+          type: "ironia",
+          text: "Seu humor irônico salva meu dia quando o caos tenta te competir.",
+        },
+        {
+          type: "ironia",
+          text: "Fingir que não ligo é meu esporte preferido, pena que você sempre ganha.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Ironia do destino: tentamos ser racionais e terminamos rindo juntos.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Tem dias em que seu silêncio fala mais do que minha vontade de te cutucar.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Se um dia eu estiver um caos, é porque você passou por aqui.",
+        },
+        {
+          type: "ironia",
+          text: "A saudade tem senso de humor: aparece quando não pode.",
+        },
+        {
+          type: "carinho",
+          text: "Troco meu intervalo para te mandar uma mensagem. O que eu ganho? Mais saudade.",
+        },
+        {
+          type: "ironia",
+          text: "A vida me pediu calma. Respondi com seu nome pra dizer não.",
+        },
+        {
+          type: "carinho",
+          text: "Entre o caos e a calma, seu nome é o intervalo favorito.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Piada pra disfarçar um sorriso que já era seu.",
+        },
+        // { type: "carinho", text: "Tem dias que o café não resolve, só você." },
+        {
+          type: "ironia",
+          text: "Acordei no modo 'tanto faz', até você bagunçar tudo.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Se eu sumir, é estratégia; se eu aparecer, é saudade.",
+        },
+        {
+          type: "ironia",
+          text: "Entre respostas certas, prefiro suas ironias erradas.",
+        },
+        {
+          type: "ironia",
+          text: "Dizem que o tempo cura. Você faz o tempo pedir cura.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Te provoquei só pra ver se ainda existo no seu radar.",
+        },
+        { type: "carinho", text: "Meu descanso mental depende da sua risada." },
+        {
+          type: "mordeassopra",
+          text: "As melhores ironias terminam em abraço.",
+        },
+        {
+          type: "carinho",
+          text: "Hoje o caos tá bonito, deve ser porque você sorriu.",
+        },
+        {
+          type: "ironia",
+          text: "Fingir desinteresse é minha educação pro seu encanto.",
+        },
+        {
+          type: "carinho",
+          text: "Meu plano de carreira inclui te ver sorrir todo dia.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Um pouco de ironia, um pouco de você, o equilíbrio perfeito.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Meu humor oscila entre 'quero te ver' e 'finge que não liguei'.",
+        },
+        {
+          type: "ironia",
+          text: "Teu olhar merecia legenda: '...'",
+        },
+        {
+          type: "carinho",
+          text: "Entre todas as notificações, ainda espero a sua.",
+        },
+        {
+          type: "carinho",
+          text: "A calma é um luxo que acontece quando você sorri.",
+        },
+        {
+          type: "ironia",
+          text: "Meu melhor meme do dia é te imaginar rindo de mim.",
+        },
+        {
+          type: "carinho",
+          text: "Se for pra desacelerar, que seja ao seu lado.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Eu confesso pouco, mas meu sorriso te delata.",
+        },
+        {
+          type: "ironia",
+          text: "Em caso de saudade, quebre o protocolo e me chama.",
+        },
+        {
+          type: "carinho",
+          text: "Você é a pausa que deixa tudo com mais sentido.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Às vezes provoco; quase sempre só quero ficar.",
+        },
+        {
+          type: "ironia",
+          text: "Agenda cheia, coração nem tanto, pois tem espaço para alguém.",
+        },
+        {
+          type: "carinho",
+          text: "De todos os meus jeitos de dizer, o mais honesto ainda é te olhar.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Eu implico, você ri, assim o dia é renovado.",
+        },
+        {
+          type: "ironia",
+          text: "Se eu não te respondi, estava pensando na melhor ironia carinhosa.",
+        },
+        {
+          type: "carinho",
+          text: "Quando você chega, até o barulho vira música.",
+        },
+        {
+          type: "mordeassopra",
+          text: "Metade de mim te cutuca, a outra metade te guarda.",
+        },
+        {
+          type: "ironia",
+          text: "Estou aceitando conselhos, desde que tenham seu nome no meio.",
+        },
+        {
+          type: "carinho",
+          text: "Hoje eu queria te emprestar minha calma e ficar com você.",
+        },
+      ];
+
+      // ===== Normalização: cria IDs internas sem expor no DATA =====
+      const NOTES = DATA.map((n, i) => ({
+        ...n,
+        id: `n${String(i + 1).padStart(2, "0")}`,
+      }));
+
+      // ===== Persistência =====
+      const store = {
+        get(key, fallback) {
+          try {
+            return JSON.parse(localStorage.getItem(key)) ?? fallback;
+          } catch {
+            return fallback;
+          }
+        },
+        set(key, val) {
+          localStorage.setItem(key, JSON.stringify(val));
+        },
+      };
+      const favs = new Set(store.get("bilhetes:favs", []));
+      const read = new Set(store.get("bilhetes:read", []));
+
+      // ===== Estado & DOM =====
+      const state = { onlyFavs: false, onlyUnread: false, dailyId: null };
+      const board = document.getElementById("board");
+      const onlyFavsBtn = document.getElementById("onlyFavs");
+      const onlyUnreadBtn = document.getElementById("onlyUnread");
+      const clearFiltersBtn = document.getElementById("clearFilters");
+      const empty = document.getElementById("empty");
+
+      const daily = document.getElementById("daily");
+      const dailyTitle = document.getElementById("dailyTitle");
+      const dailyText = document.getElementById("dailyText");
+      const openDaily = document.getElementById("openDaily");
+
+      const toggleTheme = document.getElementById("toggleTheme");
+
+      const modal = document.getElementById("modal");
+      const mClose = document.getElementById("mClose");
+      const mBadge = document.getElementById("mBadge");
+      const mText = document.getElementById("mText");
+      const mFav = document.getElementById("mFav");
+      const mMarkRead = document.getElementById("mMarkRead");
+      const mShare = document.getElementById("mShare");
+      const mWhats = document.getElementById("mWhats");
+      const mCopy = document.getElementById("mCopy");
+
+      function labelForType(t) {
+        if (t === "carinho") return { text: "❤️ Carinho", cls: "love" };
+        if (t === "ironia") return { text: "🙃 Ironia", cls: "irony" };
+        return { text: "🫶 Morde & Assopra", cls: "morde" };
+      }
+
+      function pickDaily() {
+        const todayKey = new Date().toISOString().slice(0, 10);
+        let saved = store.get("bilhetes:daily", {});
+        if (saved.date !== todayKey || !NOTES.some((n) => n.id === saved.id)) {
+          const pool = NOTES.filter((n) => !read.has(n.id));
+          const chosen = (pool.length ? pool : NOTES)[
+            Math.floor(Math.random() * (pool.length || NOTES.length))
+          ];
+          saved = { date: todayKey, id: chosen.id };
+          store.set("bilhetes:daily", saved);
+        }
+        state.dailyId = saved.id;
+        const note = NOTES.find((n) => n.id === state.dailyId);
+        if (note) {
+          daily.hidden = false;
+          const lb = labelForType(note.type);
+          dailyTitle.textContent = lb.text + " do dia";
+          dailyText.textContent =
+            note.text.length > 120 ? note.text.slice(0, 120) + "…" : note.text;
+          openDaily.onclick = () => openNote(note);
+        }
+      }
+
+      function render() {
+        let list = [...NOTES];
+        if (state.onlyFavs) list = list.filter((n) => favs.has(n.id));
+        if (state.onlyUnread) list = list.filter((n) => !read.has(n.id));
+
+        board.innerHTML = "";
+        let i = 0;
+        for (const n of list) {
+          const rot = ((i++ % 7) - 3) * 0.8;
+          const el = document.createElement("article");
+          el.className = "note" + (read.has(n.id) ? " read" : "");
+          el.dataset.type = n.type;
+          el.style.setProperty("--rot", rot + "deg");
+          el.setAttribute("tabindex", "0");
+          el.setAttribute("role", "button");
+
+          const lb = labelForType(n.type);
+          el.innerHTML = `
+          <div class="pin" aria-hidden="true"></div>
+          <div class="badge ${lb.cls}">${lb.text}</div>
+          <div class="text">${
+            n.text.length > 110 ? n.text.slice(0, 110) + "…" : n.text
+          }</div>
+          <div class="meta">
+            <span>${favs.has(n.id) ? "⭐" : "☆"}</span>
+          </div>
+        `;
+
+          el.addEventListener("click", () => openNote(n));
+          el.addEventListener("keydown", (ev) => {
+            if (ev.key === "Enter" || ev.key === " ") {
+              ev.preventDefault();
+              openNote(n);
+            }
+          });
+          board.appendChild(el);
+        }
+
+        empty.hidden = list.length !== 0;
+      }
+
+      function openNote(n) {
+        modal.setAttribute("open", "");
+        modal.removeAttribute("aria-hidden");
+        const lb = labelForType(n.type);
+        mBadge.textContent = lb.text;
+        mBadge.className = "badge " + lb.cls;
+        mText.textContent = n.text;
+        mFav.textContent = favs.has(n.id) ? "⭐ Favoritado" : "⭐ Favoritar";
+        mMarkRead.textContent = read.has(n.id)
+          ? "↩️ Marcar como não lido"
+          : "🆕 Marcar como lido";
+        modal.dataset.currentId = n.id;
+      }
+
+      function closeModal() {
+        modal.removeAttribute("open");
+        modal.setAttribute("aria-hidden", "true");
+        delete modal.dataset.currentId;
+      }
+
+      // Modal handlers
+      mClose.addEventListener("click", closeModal);
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.hasAttribute("open")) closeModal();
+      });
+
+      mFav.addEventListener("click", () => {
+        const id = modal.dataset.currentId;
+        if (!id) return;
+        if (favs.has(id)) favs.delete(id);
+        else favs.add(id);
+        store.set("bilhetes:favs", [...favs]);
+        mFav.textContent = favs.has(id) ? "⭐ Favoritado" : "⭐ Favoritar";
+        render();
+      });
+
+      mMarkRead.addEventListener("click", () => {
+        const id = modal.dataset.currentId;
+        if (!id) return;
+        if (read.has(id)) {
+          read.delete(id);
+          mMarkRead.textContent = "🆕 Marcar como lido";
+        } else {
+          read.add(id);
+          mMarkRead.textContent = "↩️ Marcar como não lido";
+        }
+        store.set("bilhetes:read", [...read]);
+        render();
+      });
+
+      mCopy.addEventListener("click", async () => {
+        const id = modal.dataset.currentId;
+        if (!id) return;
+        const note = NOTES.find((n) => n.id === id);
+        if (!note) return;
+        try {
+          await navigator.clipboard.writeText(note.text);
+          mCopy.textContent = "📋 Copiado!";
+          setTimeout(() => (mCopy.textContent = "📋 Copiar"), 1400);
+        } catch {}
+      });
+
+      mShare.addEventListener("click", async () => {
+        const id = modal.dataset.currentId;
+        if (!id) return;
+        const note = NOTES.find((n) => n.id === id);
+        if (!note) return;
+        const text = note.text + " — enviado com carinho";
+        if (navigator.share) {
+          try {
+            await navigator.share({ text, title: "Bilhetinho" });
+          } catch {}
+        } else
+          alert(
+            "Compartilhamento nativo indisponível. Use copiar ou WhatsApp."
+          );
+      });
+
+      mWhats.addEventListener("click", () => {
+        const id = modal.dataset.currentId;
+        if (!id) return;
+        const note = NOTES.find((n) => n.id === id);
+        if (!note) return;
+        const txt = encodeURIComponent(note.text);
+        window.open(`https://wa.me/?text=${txt}`, "_blank");
+      });
+
+      // Filtros
+      function toggleChip(btn, key) {
+        const on = btn.getAttribute("data-on") === "true";
+        btn.setAttribute("data-on", String(!on));
+        state[key] = !on;
+        render();
+      }
+      onlyFavsBtn.addEventListener("click", () =>
+        toggleChip(onlyFavsBtn, "onlyFavs")
+      );
+      onlyUnreadBtn.addEventListener("click", () =>
+        toggleChip(onlyUnreadBtn, "onlyUnread")
+      );
+      clearFiltersBtn.addEventListener("click", () => {
+        state.onlyFavs = false;
+        state.onlyUnread = false;
+        onlyFavsBtn.setAttribute("data-on", "false");
+        onlyUnreadBtn.setAttribute("data-on", "false");
+        render();
+      });
+
+      // Tema persistido
+      const THEME_KEY = "bilhetes:theme";
+      function applyStoredTheme() {
+        const th = JSON.parse(localStorage.getItem(THEME_KEY)) || "light";
+        document.documentElement.setAttribute("data-theme", th);
+        toggleTheme.setAttribute("aria-pressed", String(th === "dark"));
+        document
+          .querySelector('meta[name="color-scheme"]')
+          .setAttribute("content", th === "dark" ? "dark light" : "light dark");
+      }
+      toggleTheme.addEventListener("click", () => {
+        const curr =
+          document.documentElement.getAttribute("data-theme") === "dark"
+            ? "dark"
+            : "light";
+        const next = curr === "dark" ? "light" : "dark";
+        localStorage.setItem(THEME_KEY, JSON.stringify(next));
+        applyStoredTheme();
+      });
+
+      // Init
+      applyStoredTheme();
+      pickDaily();
+      render();
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

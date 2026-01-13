@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Boa noite!</title>
+    <style>
+      :root {
+        --bg1: #0e1020;
+        --bg2: #101427;
+        --ink: #eef2ff;
+        --muted: #a5b4fc;
+        --accent: #7c3aed;
+        --accent-2: #22d3ee;
+        --card: rgba(255, 255, 255, 0.06);
+        --ring: 0 0 0 1.5px rgba(124, 58, 237, 0.5);
+        --glass: blur(10px);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      }
+      [data-theme="light"] {
+        --bg1: #f7f7ff;
+        --bg2: #eef7ff;
+        --ink: #111827;
+        --muted: #6b7280;
+        --accent: #7c3aed;
+        --accent-2: #0891b2;
+        --card: rgba(255, 255, 255, 0.78);
+        --ring: 0 0 0 1.5px rgba(124, 58, 237, 0.25);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, Noto Sans, "Helvetica Neue", Arial;
+        color: var(--ink);
+        background: radial-gradient(60% 60% at 50% 0%, var(--bg2), var(--bg1));
+        display: grid;
+        place-items: center;
+        overflow-x: hidden;
+      }
+
+      .stars,
+      .stars::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(
+            2px 2px at 20% 30%,
+            rgba(255, 255, 255, 0.7) 50%,
+            transparent 52%
+          ),
+          radial-gradient(
+            1.5px 1.5px at 70% 60%,
+            rgba(255, 255, 255, 0.6) 50%,
+            transparent 52%
+          ),
+          radial-gradient(
+            1.2px 1.2px at 40% 80%,
+            rgba(255, 255, 255, 0.55) 50%,
+            transparent 52%
+          ),
+          radial-gradient(
+            1.4px 1.4px at 85% 20%,
+            rgba(255, 255, 255, 0.5) 50%,
+            transparent 52%
+          );
+        opacity: 0.7;
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
+        animation: twinkle 6s ease-in-out infinite alternate;
+      }
+      .stars::after {
+        animation-duration: 8s;
+        opacity: 0.5;
+      }
+      @keyframes twinkle {
+        from {
+          opacity: 0.45;
+        }
+        to {
+          opacity: 0.9;
+        }
+      }
+
+      .card {
+        position: relative;
+        max-width: min(680px, 92vw);
+        padding: clamp(20px, 3.6vw, 36px);
+        border-radius: 20px;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        backdrop-filter: var(--glass);
+        -webkit-backdrop-filter: var(--glass);
+        outline: var(--ring);
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.25rem;
+        letter-spacing: 0.3px;
+        font-weight: 600;
+        color: var(--muted);
+        user-select: none;
+      }
+      .header .emoji {
+        font-size: 1.4rem;
+      }
+
+      h1 {
+        margin: 0.1rem 0 1.2rem;
+        font-size: clamp(1.25rem, 1.5rem + 1vw, 2rem);
+        line-height: 1.1;
+      }
+
+      .lines {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .line {
+        opacity: 0;
+        transform: translateY(8px);
+        margin: 0.35rem 0;
+        font-size: clamp(1rem, 0.95rem + 0.4vw, 1.125rem);
+        line-height: 1.6;
+      }
+      .line.show {
+        animation: fadeUp 0.5s forwards;
+      }
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .cta {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        margin-top: 1.25rem;
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        border-radius: 14px;
+        padding: 0.8rem 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        transition: transform 0.06s ease, box-shadow 0.2s ease,
+          opacity 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .btn:active {
+        transform: translateY(1px) scale(0.98);
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: white;
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--ink);
+        outline: var(--ring);
+      }
+
+      .footer-note {
+        margin-top: 0.75rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+        user-select: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .line {
+          transition: none;
+          animation: none !important;
+          opacity: 1;
+          transform: none;
+        }
+        .stars,
+        .stars::after {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars" aria-hidden="true"></div>
+
+    <main
+      class="card"
+      role="dialog"
+      aria-labelledby="titulo"
+      aria-describedby="conteudo"
+    >
+      <div class="header">
+        <span class="emoji" aria-hidden="true">🌙</span> Boa noite
+      </div>
+      <h1 id="titulo">Tente descansar, eu tento também</h1>
+
+      <ul id="conteudo" class="lines" aria-live="polite">
+        <li class="line">Oi. Tá na hora de fingir que vamos descansar, né?</li>
+        <li class="line">
+          O dia fez questão de testar a paciência, mas a gente sobreviveu.
+        </li>
+        <li class="line">
+          Teve meta, reunião, imprevisto e... aquela vontade de desaparecer por
+          cinco minutos.
+        </li>
+        <li class="line">
+          Mas cá estamos, firmes, cansados e ainda rindo (um pouco por
+          teimosia).
+        </li>
+        <li class="line">
+          Engraçado como, no fim do dia, o corpo pede pausa, mas a cabeça corre
+          pra um canto especial onde está aquele alguém.
+        </li>
+        <li class="line">
+          Não é saudade... é tipo um pensamento insistente com boa
+          justificativa.
+        </li>
+        <li class="line">
+          Então respira, desliga o mundo e tenta dormir, pelo menos até o
+          despertador te lembrar da realidade.
+        </li>
+        <li class="line">
+          Se o sono não vier, tudo bem. Pensa em algo leve... ou em alguém que
+          deixa as horas menos pesadas.
+        </li>
+        <li class="line">
+          Boa noite. E, se não for boa, que pelo menos renda boas mensagens
+          amanhã. 😉
+        </li>
+      </ul>
+
+      <div class="cta">
+        <button id="rerun" class="btn btn-primary" aria-label="Ler de novo">
+          ↻ LER DE NOVO
+        </button>
+        <button
+          id="toggleTheme"
+          class="btn btn-ghost"
+          aria-label="Alternar tema"
+        >
+          🌓 Alternar tema
+        </button>
+      </div>
+
+      <div class="footer-note">
+        Dica: toque em "Ler de novo" para ver as linhas surgindo com efeito.
+      </div>
+      <div class="footer-note">Feito com 💜 especialmente para você.</div>
+      <div class="footer-note">._.. ...</div>
+    </main>
+
+    <script>
+      const saved = localStorage.getItem("theme");
+      if (saved) document.documentElement.setAttribute("data-theme", saved);
+      document.getElementById("toggleTheme").addEventListener("click", () => {
+        const cur =
+          document.documentElement.getAttribute("data-theme") || "dark";
+        const next = cur === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+      });
+
+      const lines = Array.from(document.querySelectorAll(".line"));
+      const rerunBtn = document.getElementById("rerun");
+      function clearLines() {
+        lines.forEach((l) => {
+          l.classList.remove("show");
+          l.style.animationDelay = "0s";
+        });
+      }
+      function runSequence() {
+        clearLines();
+        let delay = 0;
+        const step = 260;
+        lines.forEach((l) => {
+          l.style.animationDelay = delay / 1000 + "s";
+          void l.offsetWidth;
+          l.classList.add("show");
+          delay += step + Math.min(300, Math.floor(l.textContent.length * 3.1));
+        });
+      }
+      rerunBtn.addEventListener("click", runSequence);
+      setTimeout(runSequence, 340);
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

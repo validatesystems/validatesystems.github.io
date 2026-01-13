@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="night">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <meta name="color-scheme" content="dark light" />
+    <title>Boa noite com legandas 🌙</title>
+    <style>
+      :root {
+        --bg1: #0d0b1a;
+        --bg2: #1a1630;
+        --ink: #f2edff;
+        --muted: #b8b0db;
+        --accent: #8b5cf6;
+        --fs-body: clamp(1rem, 0.94rem + 0.6vw, 1.15rem);
+        --fs-small: clamp(0.9rem, 0.86rem + 0.35vw, 1rem);
+        --radius: 20px;
+        --blur: blur(10px);
+        --shadow: 0 6px 30px rgba(0, 0, 0, 0.35);
+        --maxw: min(92vw, 720px);
+        --pad: clamp(16px, 4vw, 28px);
+        --fade: 700ms;
+      }
+      :root {
+        /* ...suas variáveis existentes... */
+        /* Botão Comentar — tema night (padrão) */
+        --btn-cmt-bg: color-mix(in oklab, white 12%, transparent);
+        --btn-cmt-fg: var(--ink);
+        --btn-cmt-bd: color-mix(in oklab, white 22%, transparent);
+        --btn-cmt-bg-hover: color-mix(in oklab, white 22%, transparent);
+        --btn-cmt-ring: 0 0 0 2px
+          color-mix(in oklab, var(--accent) 55%, transparent);
+      }
+
+      [data-theme="light"] {
+        /* ...suas variáveis existentes... */
+        /* Botão Comentar — tema light */
+        --btn-cmt-bg: color-mix(in oklab, black 6%, white 85%);
+        --btn-cmt-fg: #1c1a30; /* texto escuro */
+        --btn-cmt-bd: color-mix(in oklab, black 12%, white 88%);
+        --btn-cmt-bg-hover: color-mix(in oklab, black 10%, white 85%);
+        --btn-cmt-ring: 0 0 0 2px
+          color-mix(in oklab, var(--accent) 55%, transparent);
+      }
+
+      [data-theme="light"] {
+        --bg1: #f4f0ff;
+        --bg2: #e8f1ff;
+        --ink: #1c1a30;
+        --muted: #5e5a7a;
+        --shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        background: radial-gradient(circle at 50% 20%, var(--bg2), var(--bg1));
+        color: var(--ink);
+        font-family: ui-serif, Georgia, "Times New Roman", serif;
+        font-size: var(--fs-body);
+        line-height: 1.55;
+        display: grid;
+        place-items: center;
+        -webkit-font-smoothing: antialiased;
+        padding: calc(env(safe-area-inset-top, 0px) + 6px)
+          calc(env(safe-area-inset-right, 0px) + 6px)
+          calc(env(safe-area-inset-bottom, 0px) + 6px)
+          calc(env(safe-area-inset-left, 0px) + 6px);
+      }
+
+      .frame {
+        width: 100%;
+        max-width: var(--maxw);
+        background: color-mix(in oklab, white 8%, transparent);
+        backdrop-filter: var(--blur);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: var(--pad);
+        display: grid;
+        gap: 0.75rem;
+        text-align: center;
+      }
+
+      .stage {
+        position: relative;
+        min-height: 4.5em;
+        display: grid;
+        place-items: center;
+      }
+
+      .line {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding-inline: 0.25rem;
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity var(--fade) ease, transform var(--fade) ease;
+        will-change: opacity, transform;
+      }
+
+      .line.show {
+        opacity: 1;
+        transform: none;
+      }
+
+      .line.muted {
+        color: var(--muted);
+      }
+
+      .signature {
+        margin-top: 0.5rem;
+        font-style: italic;
+        opacity: 0.75;
+        font-size: var(--fs-small);
+      }
+
+      /* Botão de tema */
+      .theme-toggle {
+        position: fixed;
+        top: env(safe-area-inset-top, 10px);
+        right: env(safe-area-inset-right, 12px);
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(6px);
+        border: none;
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.2s ease;
+      }
+
+      .theme-toggle:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 360px) {
+        .theme-toggle {
+          width: 38px;
+          height: 38px;
+          font-size: 1.1rem;
+        }
+      }
+      /* Botão Comentário — flutuante e responsivo ao tema */
+      .btn-comment {
+        position: fixed;
+        z-index: 1000;
+        right: calc(env(safe-area-inset-right, 0px) + 16px);
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        min-height: 44px; /* alvo de toque confortável */
+        padding: 10px 14px;
+        border-radius: 999px;
+
+        background: var(--btn-cmt-bg);
+        color: var(--btn-cmt-fg);
+        border: 1px solid var(--btn-cmt-bd);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(8px);
+
+        font: inherit;
+        cursor: pointer;
+
+        transition: background 0.25s ease, transform 0.15s ease,
+          box-shadow 0.25s ease, border-color 0.25s ease;
+      }
+
+      .btn-comment:hover {
+        background: var(--btn-cmt-bg-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      }
+
+      .btn-comment:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+      }
+
+      .btn-comment:focus-visible {
+        outline: none;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28), var(--btn-cmt-ring);
+      }
+
+      /* Versão compacta para telas muito estreitas */
+      @media (max-width: 360px) {
+        .btn-comment {
+          padding: 9px 12px;
+          gap: 6px;
+          right: calc(env(safe-area-inset-right, 0px) + 12px);
+          bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Botão de alternância de tema -->
+    <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+      🌙
+    </button>
+
+    <main class="frame" aria-live="polite" aria-atomic="true">
+      <div class="stage" role="region" aria-label="Mensagem">
+        <p class="line" id="slotA"></p>
+        <p class="line" id="slotB" aria-hidden="true"></p>
+      </div>
+    </main>
+    <button
+      id="openComment"
+      class="chip btn-comment"
+      aria-label="Abrir comentário"
+    >
+      💬 Comentar
+    </button>
+
+    <script>
+      /* ===== Alternância de Tema ===== */
+      const root = document.documentElement;
+      const toggleBtn = document.getElementById("themeToggle");
+      const savedTheme = localStorage.getItem("theme");
+
+      // Aplica o tema salvo
+      if (savedTheme === "light") {
+        root.setAttribute("data-theme", "light");
+        toggleBtn.textContent = "☀️";
+      } else {
+        root.setAttribute("data-theme", "night");
+        toggleBtn.textContent = "🌙";
+      }
+
+      toggleBtn.addEventListener("click", () => {
+        const current = root.getAttribute("data-theme");
+        const next = current === "light" ? "night" : "light";
+        root.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+        toggleBtn.textContent = next === "light" ? "☀️" : "🌙";
+      });
+
+      /* ===== Exibição das frases ===== */
+      const lines = [
+        "Oi, chefinha.",
+        "Tudo bem?",
+        "Estou passando por aqui...",
+        "para te desejar uma excelente noite.",
+        "Saiba que estou aqui...",
+        "mesmo longe...",
+        "mandando energias positivas...",
+        "para você, alguém especial pra mim.",
+        "Sinta-se abraçada neste momento.",
+        "Aliás, seu abraço é incrível...",
+        "Transmite vários tipos de energia.",
+        "Algumas, em especial...",
+        "energia de paz...",
+        "de colo...",
+        "de luz.",
+        "O interessante é que sinto que já tive contato com essa energia...",
+        "Não sei onde nem quando, mas sinto ao ponto de olhar pra você...",
+        "como se estivesse reencontrando alguém.",
+        "Mas não um alguém qualquer.",
+        "Não sei te explicar melhor...",
+        "Mas sei que é uma conexão forte.",
+        "Bem, estou falando sério e não quero que você transforme isso numa piada.",
+        "rsrsrsrs, impossível pra você né?!",
+        "Eu sei, essa é você.",
+        "Tudo isso a torna especial, linda.",
+        "Vou contemplá-la daqui...",
+        "enquanto o tempo permitir.",
+        "._.. ...",
+      ];
+
+      const slotA = document.getElementById("slotA");
+      const slotB = document.getElementById("slotB");
+      const signature = document.getElementById("signature");
+
+      const prefersReduced = matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      const isNarrow = matchMedia("(max-width: 480px)").matches;
+
+      const DISPLAY_MS = prefersReduced ? 1600 : isNarrow ? 3200 : 2800;
+      const FADE_MS = 700;
+      let i = 0;
+      let useA = true;
+
+      function setText(el, text) {
+        el.textContent = text;
+        el.classList.toggle(
+          "muted",
+          /rsrsrsrs|mesmo longe|de colo|de luz/.test(text)
+        );
+      }
+
+      function showFirst() {
+        setText(slotA, lines[0]);
+        slotA.classList.add("show");
+      }
+
+      function crossfade(nextText) {
+        const incoming = useA ? slotB : slotA;
+        const outgoing = useA ? slotA : slotB;
+        incoming.setAttribute("aria-hidden", "false");
+        outgoing.setAttribute("aria-hidden", "true");
+        setText(incoming, nextText);
+        incoming.classList.add("show");
+        outgoing.classList.remove("show");
+        useA = !useA;
+      }
+
+      async function run() {
+        showFirst();
+        await new Promise((r) => setTimeout(r, DISPLAY_MS));
+        for (i = 1; i < lines.length; i++) {
+          crossfade(lines[i]);
+          await new Promise((r) => setTimeout(r, DISPLAY_MS));
+        }
+        await new Promise((r) => setTimeout(r, Math.max(FADE_MS, 200)));
+        signature.hidden = false;
+      }
+
+      run();
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

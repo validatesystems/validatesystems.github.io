@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Eu aqui, você aí, e esse quase</title>
+
+    <style>
+      :root {
+        --bg1: #020617;
+        --bg2: #0b1120;
+        --bg3: #1e293b;
+        --accent: #f97316;
+        --accent-soft: rgba(249, 115, 22, 0.18);
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --card-bg: rgba(15, 23, 42, 0.92);
+        --shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+        --radius-lg: 22px;
+        --radius-pill: 999px;
+      }
+
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg1: #f9fafb;
+          --bg2: #e5e7eb;
+          --bg3: #d1d5db;
+          --text: #111827;
+          --muted: #6b7280;
+          --card-bg: rgba(255, 255, 255, 0.97);
+          --shadow: 0 16px 38px rgba(15, 23, 42, 0.18);
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 18px;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
+          "Segoe UI", sans-serif;
+        background: radial-gradient(
+          circle at top,
+          var(--bg3),
+          var(--bg1) 45%,
+          var(--bg2)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .wrapper {
+        max-width: 840px;
+        width: 100%;
+      }
+
+      .card {
+        position: relative;
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        padding: 26px 22px 24px;
+        box-shadow: var(--shadow);
+        color: var(--text);
+        overflow: hidden;
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        transform: translateY(10px);
+        opacity: 0;
+        animation: fadeInCard 0.7s ease-out forwards;
+      }
+
+      @keyframes fadeInCard {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .glow {
+        position: absolute;
+        inset: -120px;
+        background: radial-gradient(
+            circle at top left,
+            rgba(249, 115, 22, 0.3),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(56, 189, 248, 0.24),
+            transparent 60%
+          );
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      .content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .badge-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+
+      .badge-main {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: var(--radius-pill);
+        background: rgba(15, 23, 42, 0.35);
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      @media (prefers-color-scheme: light) {
+        .badge-main {
+          background: rgba(243, 244, 246, 0.9);
+          border-color: rgba(209, 213, 219, 0.9);
+        }
+      }
+
+      .badge-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 6px var(--accent-soft);
+      }
+
+      .badge-hour {
+        font-size: 0.8rem;
+        color: var(--muted);
+        opacity: 0.9;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 1.7rem;
+        letter-spacing: 0.02em;
+      }
+
+      .subtitle {
+        margin: 0 0 18px;
+        font-size: 0.96rem;
+        color: var(--muted);
+      }
+
+      .message {
+        font-size: 1rem;
+        line-height: 1.7;
+        display: grid;
+        gap: 13px;
+        text-align: justify;
+      }
+
+      .message p {
+        margin: 0;
+      }
+
+      .highlight {
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      .footer-note {
+        margin-top: 22px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        text-align: right;
+        font-style: italic;
+      }
+
+      @media (min-width: 640px) {
+        .card {
+          padding: 30px 32px 26px;
+        }
+
+        h1 {
+          font-size: 1.9rem;
+        }
+
+        .message {
+          font-size: 1.02rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <article class="card">
+        <div class="glow" aria-hidden="true"></div>
+
+        <div class="content">
+          <div class="badge-row">
+            <span class="badge-main">
+              <span class="badge-dot"></span>
+              EU AQUI, VOCÊ AÍ, E ESSE QUASE
+            </span>
+            <span class="badge-hour">19h e alguns pensamentos a mais</span>
+          </div>
+
+          <h1>Entre eu, você e esse quase</h1>
+          <p class="subtitle">
+            Tem coisa que a gente não diz em voz alta, mas escreve assim,
+            devagar, como quem admite que o silêncio também fala.
+          </p>
+
+          <div class="message">
+            <p>
+              Cléia, existe algo curioso entre eu e você. Não é algo que se
+              nomeia fácil, não é algo que se encaixa em uma palavra só. É uma
+              espécie de caminho que nunca foi oficialmente percorrido, mas que,
+              ainda assim, existe.
+            </p>
+
+            <p>
+              Entre eu aqui e você aí, sempre ficou um
+              <span class="highlight">quase</span>. E o curioso é que esse quase
+              tem mais verdade do que muita coisa que por aí é chamada de
+              certeza.
+            </p>
+
+            <p>
+              Não é amizade comum, você sabe. Mas também não é algo declarado,
+              exposto, escancarado. É como se o universo tivesse desenhado uma
+              linha fina entre nós dois e decidido não dizer qual é exatamente o
+              nome dela.
+            </p>
+
+            <p>
+              Às vezes eu sinto que esse quase aparece nos horários em que o
+              mundo desacelera. Tipo agora, por volta das 19h, quando o dia já
+              entregou tudo o que tinha para entregar e você finalmente tem um
+              intervalo para respirar.
+            </p>
+
+            <p>
+              É nesse intervalo que eu imagino você lembrando que essas páginas
+              existem. Não como obrigação, não como promessa, mas como um lugar
+              silencioso onde esse quase pode existir sem pressão.
+            </p>
+
+            <p>
+              Eu poderia fingir que é tudo coisa da minha cabeça, mas seria
+              mentir para mim mesmo. Porque tem algo no jeito como você olha,
+              fala, organiza o mundo, que faz esse quase ganhar forma dentro de
+              mim.
+            </p>
+
+            <p>
+              Não quero transformar isso em peso, nem em cobrança, nem em
+              expectativa. Só quero registrar que, entre eu e você, existe esse
+              espaço diferente, essa zona que não é neutra, não é fria, não é
+              indiferente.
+            </p>
+
+            <p>
+              Se um dia você olhar para trás e revisitar essas páginas, talvez
+              perceba que em todas elas eu fui tentando, aos poucos, desenhar os
+              contornos desse quase. Não para te convencer de nada, mas para te
+              mostrar que ele existe.
+            </p>
+
+            <p>
+              E, se em algum momento da sua vida você sentir que esse quase
+              também fala com você, tudo bem. Não precisa dizer. Eu já vou
+              entender.
+            </p>
+
+            <p>
+              Por enquanto, eu fico aqui, do meu lado do caminho, respeitando o
+              seu, deixando o universo brincar com esse quase, mesmo quando ele
+              parece estar de sacanagem comigo.
+            </p>
+
+            <p>
+              Você segue aí, firme, pé no chão, fazendo o que precisa ser feito.
+              Eu sigo aqui, firme também, mas com uma parte de mim sempre
+              curiosa sobre o que teria acontecido se esse quase tivesse
+              decidido ser inteiro.
+            </p>
+          </div>
+
+          <div class="footer-note">
+            Se você está lendo isso agora, o quase já sabe que você existe.
+          </div>
+          <div class="footer-note">._.. ...</div>
+        </div>
+      </article>
+    </div>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

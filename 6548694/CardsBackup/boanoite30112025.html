@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Boa noite, Cléia (30/11/2025)</title>
+
+    <!-- Fonte -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Homemade+Apple&display=swap"
+    />
+
+    <style>
+      :root {
+        --bg1: #020617;
+        --bg2: #0f172a;
+        --card: rgba(15, 23, 42, 0.96);
+        --border-soft: rgba(148, 163, 184, 0.45);
+        --text-main: #e5e7eb;
+        --text-soft: #9ca3af;
+        --accent: #38bdf8;
+        --accent-soft: rgba(56, 189, 248, 0.15);
+        --glow: 0 18px 45px rgba(15, 23, 42, 0.9);
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: "DM Sans", system-ui, sans-serif;
+        color: var(--text-main);
+        background: linear-gradient(160deg, var(--bg1), var(--bg2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        position: relative;
+        overflow: auto;
+      }
+
+      /* estrelas */
+      .stars {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        background-image: radial-gradient(
+            1px 1px at 10% 20%,
+            rgba(248, 250, 252, 0.7),
+            transparent
+          ),
+          radial-gradient(
+            1px 1px at 80% 30%,
+            rgba(248, 250, 252, 0.9),
+            transparent
+          ),
+          radial-gradient(
+            1px 1px at 40% 80%,
+            rgba(148, 163, 184, 0.9),
+            transparent
+          ),
+          radial-gradient(
+            1px 1px at 70% 60%,
+            rgba(148, 163, 184, 0.7),
+            transparent
+          );
+        opacity: 0.7;
+        mix-blend-mode: screen;
+        z-index: 0;
+      }
+
+      /* lua */
+      .moon {
+        position: fixed;
+        top: 60px;
+        right: 80px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #f8fafc 40%, #cbd5e1 70%);
+        box-shadow: 0 0 25px rgba(248, 250, 252, 0.6);
+        z-index: 0;
+      }
+
+      /* nebulosa */
+      .nebula {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40%;
+        background: radial-gradient(
+          circle at 30% 90%,
+          rgba(56, 189, 248, 0.15),
+          transparent 70%
+        );
+        filter: blur(40px);
+        z-index: 0;
+      }
+
+      .shell {
+        max-width: 520px;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 26px;
+        border: 1px solid var(--border-soft);
+        box-shadow: var(--glow);
+        padding: 22px;
+        animation: cardIn 600ms ease-out;
+      }
+
+      @keyframes cardIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      h1 {
+        font-family: "Homemade Apple", cursive;
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: #f1f5f9;
+        margin-bottom: 6px;
+      }
+
+      .sub {
+        font-size: 0.9rem;
+        color: var(--text-soft);
+        margin-bottom: 18px;
+      }
+
+      .message {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: #e0f2fe;
+        font-style: italic;
+        margin-bottom: 10px;
+      }
+
+      .blessing {
+        font-size: 0.92rem;
+        color: #cbd5e1;
+        border-left: 3px solid #38bdf8;
+        padding-left: 10px;
+        margin-top: 12px;
+      }
+
+      .divider {
+        margin: 18px 0 10px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(148, 163, 184, 0.9),
+          transparent
+        );
+      }
+
+      .footnote {
+        font-size: 0.78rem;
+        color: var(--text-soft);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .signature {
+        margin-top: 18px;
+        text-align: right;
+        font-size: 0.9rem;
+        font-family: "Homemade Apple", cursive;
+        color: #f1f5f9;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="stars"></div>
+    <div class="moon"></div>
+    <div class="nebula"></div>
+
+    <div class="shell">
+      <article class="card">
+        <h1>Oi, Cléia.</h1>
+        <p class="sub">
+          Um abraço em forma de mensagem para te aquecer nesta noite.
+        </p>
+
+        <p class="message">
+          Cléia, espero que esteja bem, de verdade.<br /><br />
+          Mas, caso se sinta desamparada em algum momento, saiba que SEMPRE te
+          incluo nas minhas orações a Deus.<br /><br />
+          Fique bem.<br />
+          Boa noite!
+        </p>
+
+        <p class="blessing">
+          Que Deus te alcance exatamente onde o teu coração estiver precisando,
+          com mais clareza e direcionamento.
+        </p>
+
+        <div class="divider"></div>
+
+        <div class="footnote">
+          <small
+            >Agora você sabe que sempre haverá uma oração que te abraça.</small
+          >
+        </div>
+
+        <p class="signature">._.. ...</p>
+      </article>
+    </div>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

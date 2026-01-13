@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Coisas que eu queria te dizer</title>
+
+    <style>
+      :root {
+        /* Fundo suave para madrugada — tons bem calmíssimos */
+        --bg-light1: #f5f3ff;
+        --bg-light2: #e9f0ff;
+
+        /* Fundo escuro também suave, sem contraste forte */
+        --bg-dark1: #0b0b14;
+        --bg-dark2: #1a1a2b;
+
+        --card-light: rgba(255, 255, 255, 0.78);
+        --card-dark: rgba(15, 15, 25, 0.82);
+
+        --fg-light: #1a1a22;
+        --fg-dark: #e5e7eb;
+
+        --muted-light: #6b6b83;
+        --muted-dark: #9fa3c0;
+
+        --accent: #7c3aed;
+        --accent-soft: rgba(124, 58, 237, 0.18);
+
+        --glass: blur(14px);
+        --transition: 0.35s ease;
+      }
+
+      html[data-theme="light"] {
+        --bg1: var(--bg-light1);
+        --bg2: var(--bg-light2);
+        --card: var(--card-light);
+        --fg: var(--fg-light);
+        --muted: var(--muted-light);
+      }
+
+      html[data-theme="dark"] {
+        --bg1: var(--bg-dark1);
+        --bg2: var(--bg-dark2);
+        --card: var(--card-dark);
+        --fg: var(--fg-dark);
+        --muted: var(--muted-dark);
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        background: radial-gradient(
+            circle at 30% 20%,
+            rgba(124, 58, 237, 0.12),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 80% 90%,
+            rgba(96, 165, 250, 0.1),
+            transparent 65%
+          ),
+          linear-gradient(145deg, var(--bg1), var(--bg2));
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 28px 20px;
+        color: var(--fg);
+        transition: background var(--transition), color var(--transition);
+      }
+
+      .toggle-theme {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        background: var(--card);
+        border: 1px solid var(--accent-soft);
+        padding: 8px 10px;
+        border-radius: 999px;
+        cursor: pointer;
+        backdrop-filter: var(--glass);
+        transition: var(--transition);
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .container {
+        max-width: 480px;
+        background: var(--card);
+        padding: 26px 22px 24px;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+        backdrop-filter: var(--glass);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      h1 {
+        margin: 0 0 18px;
+        font-size: 1.6rem;
+        text-align: center;
+        color: var(--fg);
+      }
+
+      .msg {
+        font-size: 1.1rem;
+        line-height: 1.65;
+        margin-bottom: 18px;
+        text-align: justify;
+      }
+
+      .footer {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-top: 20px;
+        text-align: right;
+      }
+    </style>
+  </head>
+
+  <body>
+    <button class="toggle-theme" id="themeToggle">🌓 tema</button>
+
+    <div class="container">
+      <h1>Bom dia Cléia</h1>
+
+      <p class="msg">
+        É, eu também venho aqui como se estivesse te visitando em pensamento.
+      </p>
+
+      <p class="msg">
+        Aqui, só consigo registrar trechos de pensamentos, pois você tem um
+        jeito que me faz te ver em quase todo lugar. Como você faz isso?
+      </p>
+
+      <p class="msg">
+        Te vejo em músicas, em filmes, em livros, em conversas aleatórias, em
+        assuntos aleatórios. Outro dia te vi em um pôr do Sol, até aí tudo bem,
+        mas quando te vi quando olhei para uma tempestade chegando, aí já foi
+        demais. Você tem esse poder de aparecer onde menos espero.
+      </p>
+
+      <p class="msg">
+        Há algo gostoso nisso, sabe? Me faz sentir que você está perto, mesmo
+        quando está longe. E quando te vejo pessoalmente, é como se o tempo não
+        tivesse passado.
+      </p>
+
+      <p class="msg">
+        Ei, essas coisas que eu te digo, parece um adolescente apaixonado, né?
+        Mas é que você me traz essa sensação boa, de estar vivendo algo intenso.
+        Na verdade, não me lembro da última vez que me senti assim. Tinha
+        esquecido como é bom.
+      </p>
+
+      <p class="msg">
+        Sabe, eu queria te dizer que você é incrível do jeito que é. Eu já gosto
+        de tudo em você. Até das suas manias estranhas e dos seus defeitos, que
+        na verdade são parte do que te torna única e fora do comum. Isso me
+        encanta.
+      </p>
+
+      <p class="msg">
+        Se estou te escrevendo sobre o que sinto, é porque eu te falaria.
+        Considere que tá dito.
+      </p>
+
+      <p class="msg">
+        Não sei o quanto disso você percebe… mas, se você não for MV, vai
+        perceber ainda mais.
+      </p>
+
+      <div class="footer">Saudades, de verdade!</div>
+      <div class="footer">._.. ...</div>
+    </div>
+
+    <script>
+      const button = document.getElementById("themeToggle");
+      const root = document.documentElement;
+
+      button.addEventListener("click", () => {
+        const atual = root.getAttribute("data-theme");
+        const proximo = atual === "light" ? "dark" : "light";
+        root.setAttribute("data-theme", proximo);
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

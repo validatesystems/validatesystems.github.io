@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>18h - terminou, mas ainda não</title>
+    <style>
+      :root {
+        --bg1: #fbf4ff;
+        --bg2: #e8f1ff;
+        --ink: #13151a;
+        --muted: #60636b;
+        --accent: #7c3aed;
+        --accent-2: #06b6d4;
+        --card: rgba(255, 255, 255, 0.78);
+        --ring: 0 0 0 1.5px rgba(124, 58, 237, 0.25);
+        --glass: blur(10px);
+        --shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+      }
+
+      [data-theme="dark"] {
+        --bg1: #0f1120;
+        --bg2: #121a2c;
+        --ink: #eef2ff;
+        --muted: #a5b4fc;
+        --accent: #a78bfa;
+        --accent-2: #22d3ee;
+        --card: rgba(255, 255, 255, 0.06);
+        --ring: 0 0 0 1.5px rgba(167, 139, 250, 0.3);
+        --shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+      }
+
+      body {
+        margin: 0;
+        height: 100%;
+        display: grid;
+        place-items: center;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu;
+        color: var(--ink);
+        background: linear-gradient(180deg, var(--bg2), var(--bg1));
+      }
+
+      .card {
+        max-width: min(700px, 92vw);
+        padding: clamp(22px, 3.8vw, 40px);
+        border-radius: 20px;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        backdrop-filter: var(--glass);
+        outline: var(--ring);
+        margin: clamp(20px, 5vw, 40px);
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .emoji {
+        font-size: 1.3rem;
+      }
+
+      h1 {
+        margin: 0.35rem 0 1rem;
+        font-size: clamp(1.25rem, 1.5rem + 1vw, 2rem);
+      }
+
+      .lines {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .line {
+        opacity: 0;
+        transform: translateY(8px);
+        margin: 0.35rem 0;
+        line-height: 1.6;
+      }
+
+      .line.show {
+        animation: fadeUp 0.5s forwards;
+      }
+
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .cta {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        margin-top: 1.2rem;
+      }
+
+      .btn {
+        appearance: none;
+        border: none;
+        border-radius: 14px;
+        padding: 0.8rem 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: white;
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--ink);
+        outline: var(--ring);
+      }
+
+      .footer-note {
+        margin-top: 0.75rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="header">
+        <span class="emoji" aria-hidden="true">🕕</span>
+        18h
+      </div>
+      <h1>Terminou, mas ainda não</h1>
+
+      <ul
+        class="lines"
+        aria-live="polite"
+        aria-label="Pensamentos do fim do expediente"
+      >
+        <li class="line">
+          Deu 18h. O relógio diz que acabou, mas o e-mail jura que não.
+        </li>
+        <li class="line">
+          Desliguei o computador, e ele teve a ousadia de atualizar.
+        </li>
+        <li class="line">
+          O corpo quer cama, mas a mente tá presa no modo “só mais um
+          minutinho”.
+        </li>
+        <li class="line">
+          As notificações pararam, e mesmo assim continuo olhando o celular como
+          se algo fosse acontecer.
+        </li>
+        <li class="line">Spoiler: não acontece. Mas a esperança é teimosa.</li>
+        <li class="line">
+          Entre uma aba fechada e outra reaberta, aparece aquele pensamento
+          leve, o tipo que faz o dia valer um pouco mais.
+        </li>
+        <li class="line">
+          Se vier mensagem, finjo que não estava esperando. Se não vier, finjo
+          maturidade (de novo).
+        </li>
+        <li class="line">
+          Respiro fundo, salvo o arquivo e declaro: expediente encerrado... na
+          teoria.
+        </li>
+      </ul>
+
+      <div class="cta">
+        <button id="rerun" class="btn btn-primary">↻ LER DE NOVO</button>
+        <button id="toggleTheme" class="btn btn-ghost">🌓 Alternar tema</button>
+      </div>
+
+      <div class="footer-note">
+        Dica: toque em "Ler de novo" e finja que o expediente acabou.
+      </div>
+      <div class="footer-note">Feito com 💜 especialmente para você.</div>
+      <div class="footer-note">._.. ...</div>
+    </main>
+
+    <script>
+      const stored = localStorage.getItem("theme");
+      if (stored) document.documentElement.setAttribute("data-theme", stored);
+      document.getElementById("toggleTheme").addEventListener("click", () => {
+        const cur =
+          document.documentElement.getAttribute("data-theme") || "light";
+        const next = cur === "light" ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+      });
+
+      const lines = Array.from(document.querySelectorAll(".line"));
+      const rerunBtn = document.getElementById("rerun");
+      function clearLines() {
+        lines.forEach((l) => l.classList.remove("show"));
+      }
+      function runSequence() {
+        clearLines();
+        let delay = 0;
+        const step = 250;
+        lines.forEach((l) => {
+          l.style.animationDelay = delay / 1000 + "s";
+          void l.offsetWidth;
+          l.classList.add("show");
+          delay += step + Math.min(320, Math.floor(l.textContent.length * 3));
+        });
+      }
+      rerunBtn.addEventListener("click", runSequence);
+      setTimeout(runSequence, 360);
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

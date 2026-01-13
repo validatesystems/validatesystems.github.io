@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Constelação</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,500;1,500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg0: #070a12;
+        --bg1: #0b1020;
+        --card: rgba(255, 255, 255, 0.06);
+        --card2: rgba(255, 255, 255, 0.08);
+        --border: rgba(255, 255, 255, 0.12);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.7);
+        --soft: rgba(255, 255, 255, 0.12);
+        --glow: rgba(255, 255, 255, 0.18);
+        --accent: rgba(255, 215, 160, 0.95);
+        --accent2: rgba(177, 215, 255, 0.95);
+        --shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+        --radius: 22px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        color: var(--text);
+        background: radial-gradient(
+          1200px 900px at 20% 10%,
+          #141a30 0%,
+          var(--bg0) 55%,
+          #06070d 100%
+        );
+        font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Fundo com partículas */
+      #bgCanvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        opacity: 0.95;
+      }
+
+      /* Progresso */
+      .progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        width: 0%;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 215, 160, 0.9),
+          rgba(177, 215, 255, 0.9)
+        );
+        z-index: 50;
+        box-shadow: 0 0 18px rgba(255, 215, 160, 0.2);
+      }
+
+      .wrap {
+        position: relative;
+        z-index: 2;
+        min-height: 100%;
+        padding: 22px 14px 80px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        width: min(860px, 100%);
+      }
+
+      .hero {
+        margin-top: 14px;
+        border: 1px solid var(--border);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.08),
+          rgba(255, 255, 255, 0.04)
+        );
+        box-shadow: var(--shadow);
+        border-radius: var(--radius);
+        padding: 20px 18px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .hero:before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: radial-gradient(
+            500px 220px at 15% 20%,
+            rgba(255, 215, 160, 0.16),
+            transparent 60%
+          ),
+          radial-gradient(
+            520px 260px at 85% 0%,
+            rgba(177, 215, 255, 0.14),
+            transparent 65%
+          );
+        pointer-events: none;
+      }
+
+      .heroInner {
+        position: relative;
+      }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(0, 0, 0, 0.18);
+        color: var(--muted);
+        font-size: 13px;
+        letter-spacing: 0.2px;
+      }
+
+      .title {
+        margin: 14px 0 6px;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(26px, 4.6vw, 40px);
+        line-height: 1.08;
+        letter-spacing: 0.2px;
+      }
+
+      .subtitle {
+        margin: 0 0 14px;
+        color: var(--muted);
+        font-size: clamp(14px, 2.7vw, 16px);
+        line-height: 1.65;
+        max-width: 64ch;
+      }
+
+      .ctaRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+        align-items: center;
+      }
+
+      .btn {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        padding: 12px 16px;
+        border-radius: 16px;
+        cursor: pointer;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        transition: transform 0.15s ease, background 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.09);
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+
+      .btnPrimary {
+        border-color: rgba(255, 215, 160, 0.3);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 215, 160, 0.18),
+          rgba(255, 255, 255, 0.06)
+        );
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      /* Área da história */
+      .story {
+        margin-top: 18px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+        overflow: hidden;
+      }
+
+      .storyHeader {
+        padding: 16px 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.18);
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+
+      .chip b {
+        color: var(--text);
+        font-weight: 800;
+      }
+
+      .storyBody {
+        padding: 18px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 44px 1fr;
+        gap: 12px;
+        padding: 14px 10px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0);
+        background: rgba(255, 255, 255, 0);
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.55s ease, transform 0.55s ease,
+          background 0.35s ease, border-color 0.35s ease;
+        will-change: transform, opacity;
+      }
+
+      .step + .step {
+        margin-top: 10px;
+      }
+
+      .step.isVisible {
+        opacity: 1;
+        transform: translateY(0);
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+
+      .icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.18);
+        display: grid;
+        place-items: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .icon .symbol {
+        font-size: 18px;
+        filter: saturate(1.1);
+      }
+
+      .icon:after {
+        content: "";
+        position: absolute;
+        inset: -60%;
+        background: radial-gradient(
+          circle at 35% 35%,
+          rgba(255, 215, 160, 0.3),
+          transparent 60%
+        );
+        opacity: 0;
+        transform: rotate(12deg);
+        transition: opacity 0.45s ease;
+        pointer-events: none;
+      }
+
+      .step.isVisible .icon:after {
+        opacity: 1;
+      }
+
+      .p {
+        margin: 0;
+        color: var(--text);
+        font-size: clamp(15px, 2.85vw, 16.5px);
+        line-height: 1.8;
+      }
+
+      .p strong {
+        color: rgba(255, 255, 255, 0.96);
+      }
+
+      .footer {
+        margin-top: 18px;
+        padding: 16px 18px 22px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--muted);
+        display: grid;
+        gap: 10px;
+      }
+
+      .signature {
+        font-family: "Playfair Display", serif;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.86);
+      }
+
+      .backRow {
+        display: flex;
+        justify-content: center;
+        padding-top: 6px;
+      }
+
+      .linkBtn {
+        display: inline-block;
+        padding: 12px 26px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 13.5px;
+        letter-spacing: 0.2px;
+        color: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(0, 0, 0, 0.18);
+        transition: transform 0.15s ease, background 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .linkBtn:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+
+      .hiddenUntilStart {
+        display: none;
+      }
+
+      /* Acessibilidade */
+      @media (prefers-reduced-motion: reduce) {
+        .step {
+          transition: none;
+          transform: none;
+        }
+        .btn,
+        .linkBtn {
+          transition: none;
+        }
+        #bgCanvas {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="bgCanvas" aria-hidden="true"></canvas>
+    <div class="progress" id="progressBar" aria-hidden="true"></div>
+
+    <main class="wrap">
+      <div class="container">
+        <section class="hero" aria-label="Introdução">
+          <div class="heroInner">
+            <div class="kicker">
+              💫 <span>Coisas para serem lembradas</span>
+            </div>
+            <h1 class="title">Constelação</h1>
+            <p class="subtitle">
+              Cada trecho aparece no seu tempo. Quando você desce a tela, os
+              símbolos acendem.
+            </p>
+
+            <div class="ctaRow">
+              <button class="btn btnPrimary" id="startBtn" type="button">
+                Exibir mensagem
+              </button>
+              <div class="hint" id="hintText">
+                Dica: depois de começar, desça devagar. A página responde ao seu
+                ritmo.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="story hiddenUntilStart"
+          id="story"
+          aria-label="História que se move"
+        >
+          <div class="storyHeader">
+            <div class="chip">✨ <b>7</b> trechos</div>
+            <div class="chip">🌙 leitura progressiva</div>
+          </div>
+
+          <div class="storyBody" id="storyBody"></div>
+
+          <div class="footer">
+            <div class="signature">De alguém que bem te quer.</div>
+            <div class="signature">._.. ...</div>
+
+            <div class="backRow">
+              <a class="linkBtn" href="./page.html">Página inicial</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+        "use strict";
+
+        const steps = [
+          {
+            icon: "✨",
+            text: "Hoje eu só queria te deixar uma mensagem. Para quando você precisar.",
+          },
+          {
+            icon: "🌙",
+            text: "Tem coisas que não cabem em conversas. Elas ficam aqui dentro, quietas, e vão amadurecendo no tempo certo e se revelando quando for hora.",
+          },
+          {
+            icon: "🕊️",
+            text: "Se eu pareço mais silencioso às vezes, não é distância. É respeito. É cuidado com o seu momento. É eu entendendo melhor como ficar perto, mas não a ponto de incomodar.",
+          },
+          {
+            icon: "⭐",
+            text: "Eu gosto do seu brilho do jeito que ele é. Sem querer moldar nada em você. Só admirar.",
+          },
+          {
+            icon: "🐚",
+            text: "Quando você precisar de paz, lembra disso: tem alguém que te deseja bem, de verdade, e que torce para você se reencontrar com a sua própria leveza.",
+          },
+          {
+            icon: "🌊",
+            text: "E se um dia a vida abrir outra margem, ótimo. Se não abrir, tudo bem também. Porque o que é bonito, quando é real, não vira dívida, vira aprendizado.",
+          },
+          {
+            icon: "🧭",
+            text: "Fique bem. E quando quiser, volta aqui. Eu vou continuar do mesmo jeito: com respeito, com carinho e com admiração.",
+          },
+        ];
+
+        const story = document.getElementById("story");
+        const storyBody = document.getElementById("storyBody");
+        const startBtn = document.getElementById("startBtn");
+        const hintText = document.getElementById("hintText");
+        const progressBar = document.getElementById("progressBar");
+
+        function createStep({ icon, text }) {
+          const el = document.createElement("div");
+          el.className = "step";
+          el.innerHTML = `
+            <div class="icon" aria-hidden="true"><div class="symbol">${icon}</div></div>
+            <p class="p">${escapeHTML(text)}</p>
+          `;
+          return el;
+        }
+
+        function escapeHTML(str) {
+          return String(str)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+        }
+
+        function mount() {
+          storyBody.innerHTML = "";
+          steps.forEach((s) => storyBody.appendChild(createStep(s)));
+        }
+
+        function startExperience() {
+          story.classList.remove("hiddenUntilStart");
+          hintText.textContent = "Vai no seu ritmo.";
+          startBtn.disabled = true;
+          startBtn.textContent = "Constelação acesa";
+          setTimeout(() => {
+            story.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 80);
+          observeSteps();
+          updateProgress();
+        }
+
+        function observeSteps() {
+          const items = Array.from(document.querySelectorAll(".step"));
+          const io = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((e) => {
+                if (e.isIntersecting) e.target.classList.add("isVisible");
+              });
+            },
+            { threshold: 0.22 }
+          );
+          items.forEach((el) => io.observe(el));
+        }
+
+        function updateProgress() {
+          const doc = document.documentElement;
+          const max = doc.scrollHeight - doc.clientHeight;
+          const y = window.scrollY || doc.scrollTop || 0;
+          const pct = max > 0 ? Math.min(100, Math.max(0, (y / max) * 100)) : 0;
+          progressBar.style.width = pct.toFixed(2) + "%";
+        }
+
+        // Fundo com partículas suaves
+        const canvas = document.getElementById("bgCanvas");
+        const ctx = canvas.getContext("2d", { alpha: true });
+
+        let W = 0,
+          H = 0,
+          DPR = 1;
+        let particles = [];
+        const PCOUNT = 70;
+
+        function resize() {
+          DPR = Math.min(2, window.devicePixelRatio || 1);
+          W = Math.floor(window.innerWidth);
+          H = Math.floor(window.innerHeight);
+          canvas.width = Math.floor(W * DPR);
+          canvas.height = Math.floor(H * DPR);
+          canvas.style.width = W + "px";
+          canvas.style.height = H + "px";
+          ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+          seed();
+        }
+
+        function seed() {
+          particles = [];
+          for (let i = 0; i < PCOUNT; i++) {
+            particles.push({
+              x: Math.random() * W,
+              y: Math.random() * H,
+              r: 0.6 + Math.random() * 1.8,
+              vx: -0.12 + Math.random() * 0.24,
+              vy: -0.06 + Math.random() * 0.18,
+              a: 0.08 + Math.random() * 0.14,
+            });
+          }
+        }
+
+        function draw() {
+          ctx.clearRect(0, 0, W, H);
+
+          // Névoa suave
+          const g1 = ctx.createRadialGradient(
+            W * 0.15,
+            H * 0.15,
+            0,
+            W * 0.15,
+            H * 0.15,
+            Math.max(W, H) * 0.8
+          );
+          g1.addColorStop(0, "rgba(255,215,160,0.06)");
+          g1.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = g1;
+          ctx.fillRect(0, 0, W, H);
+
+          const g2 = ctx.createRadialGradient(
+            W * 0.85,
+            H * 0.05,
+            0,
+            W * 0.85,
+            H * 0.05,
+            Math.max(W, H) * 0.7
+          );
+          g2.addColorStop(0, "rgba(177,215,255,0.055)");
+          g2.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = g2;
+          ctx.fillRect(0, 0, W, H);
+
+          // Partículas
+          for (const p of particles) {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < -10) p.x = W + 10;
+            if (p.x > W + 10) p.x = -10;
+            if (p.y < -10) p.y = H + 10;
+            if (p.y > H + 10) p.y = -10;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255,255,255,${p.a})`;
+            ctx.fill();
+          }
+
+          requestAnimationFrame(draw);
+        }
+
+        // Eventos
+        window.addEventListener("scroll", updateProgress, { passive: true });
+        window.addEventListener("resize", resize, { passive: true });
+
+        startBtn.addEventListener("click", startExperience);
+
+        // Init
+        mount();
+        resize();
+        draw();
+      })();
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

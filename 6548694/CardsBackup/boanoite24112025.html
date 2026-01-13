@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Boa noite</title>
+
+    <!-- Fonte delicada e moderna -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Text&family=Inter:wght@300;400;500&display=swap"
+    />
+
+    <style>
+      :root {
+        --bg: #0f1116;
+        --paper: #191b22ee;
+        --text: #ececf1;
+        --subtle: #b4b6c2;
+        --accent: #8f80ff;
+        --paper-shadow: rgba(0, 0, 0, 0.5);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+        font-family: "Inter", sans-serif;
+      }
+
+      /* textura leve de papel escuro */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+        opacity: 0.16;
+        pointer-events: none;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 480px;
+        background: var(--paper);
+        padding: 28px 26px 22px;
+        border-radius: 18px;
+        box-shadow: 0 20px 45px var(--paper-shadow),
+          0 0 0 1px rgba(255, 255, 255, 0.06);
+        animation: fadeIn 0.8s ease-out;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .title {
+        font-family: "DM Serif Text", serif;
+        font-size: 1.6rem;
+        color: var(--text);
+        margin-bottom: 14px;
+      }
+
+      .message {
+        font-size: 1.08rem;
+        line-height: 1.62;
+        color: var(--text);
+        margin-bottom: 22px;
+        text-wrap: balance;
+      }
+
+      .extra {
+        font-size: 0.88rem;
+        color: var(--subtle);
+        margin-bottom: 22px;
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #fff;
+        background: var(--accent);
+        cursor: pointer;
+        box-shadow: 0 6px 14px rgba(143, 128, 255, 0.3);
+        transition: 0.2s ease;
+      }
+
+      .btn:hover {
+        background: #796bf5;
+        box-shadow: 0 10px 24px rgba(143, 128, 255, 0.4);
+        transform: translateY(-1px);
+      }
+
+      .btn:active {
+        transform: translateY(0px);
+        box-shadow: 0 4px 12px rgba(143, 128, 255, 0.25);
+      }
+
+      .signature {
+        margin-top: 28px;
+        text-align: right;
+        font-size: 0.82rem;
+        color: var(--subtle);
+      }
+
+      .signature span {
+        display: block;
+        font-size: 0.68rem;
+        letter-spacing: 0.05em;
+        margin-top: 4px;
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h1 class="title">Boa noite, Cléia</h1>
+
+      <p class="message" id="message">
+        Mais um dia se passou, ou quase. Ainda tem um pouquinho antes de ele
+        realmente acabar. Espero que ele tenha sido produtivo e, ao mesmo tempo,
+        te trazido mais clareza por dentro, mais sossego nas ideias e algum
+        sentimento bonito que você nem estava esperando.
+      </p>
+      <p class="message" id="message">
+        ...ah, hoje vou dormir ouvindo suas músicas.
+      </p>
+
+      <button class="btn" id="btnExtra">ver mais um pouquinho</button>
+
+      <p class="extra" id="extraMessage" style="display: none">
+        E, se ao fechar os olhos você ainda perceber que a luz está acesa,
+        levante e desligue-a. 🤣
+      </p>
+
+      <p class="signature">
+        Com 💜 ._.. ...
+        <span>uma carta silenciosa pra você</span>
+      </p>
+    </div>
+
+    <script>
+      const btnExtra = document.getElementById("btnExtra");
+      const extra = document.getElementById("extraMessage");
+
+      btnExtra.addEventListener("click", () => {
+        extra.style.display = "block";
+        btnExtra.style.display = "none";
+      });
+    </script>
+    <script src="./js/pageRedirectGuard.js" defer></script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

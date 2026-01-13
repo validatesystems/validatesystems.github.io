@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Bom dia</title>
+
+    <!-- Fontes -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Homemade+Apple&display=swap"
+    />
+
+    <style>
+      :root {
+        --bg1: #f6d5ff;
+        --bg2: #e0f4ff;
+        --bg3: #ffe6f1;
+        --glass: rgba(255, 255, 255, 0.88);
+        --glass-soft: rgba(255, 255, 255, 0.75);
+        --fg: #161622;
+        --muted: #6b6b83;
+        --accent: #9b5cff;
+        --accent-soft: rgba(155, 92, 255, 0.18);
+        --accent-2: #ff7ab3;
+        --shadow: 0 22px 60px rgba(15, 23, 42, 0.22);
+        --radius-card: 22px;
+        --radius-pill: 999px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 18px;
+        font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,
+          sans-serif;
+        color: var(--fg);
+        background: radial-gradient(
+            circle at 0% 0%,
+            var(--bg1),
+            transparent 55%
+          ),
+          radial-gradient(circle at 100% 0%, var(--bg2), transparent 55%),
+          radial-gradient(circle at 50% 100%, var(--bg3), #f3f0ff 60%);
+        overflow: auto;
+        position: relative;
+      }
+
+      /* Manchas de cor animadas no fundo */
+      .ambient-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(32px);
+        opacity: 0.75;
+        mix-blend-mode: screen;
+        pointer-events: none;
+        animation: floatOrb 18s ease-in-out infinite alternate;
+      }
+
+      .orb-1 {
+        width: 260px;
+        height: 260px;
+        background: rgba(155, 92, 255, 0.65);
+        top: -60px;
+        left: -40px;
+        animation-delay: 0s;
+      }
+
+      .orb-2 {
+        width: 220px;
+        height: 220px;
+        background: rgba(255, 145, 200, 0.65);
+        bottom: -40px;
+        right: -30px;
+        animation-delay: 3s;
+      }
+
+      .orb-3 {
+        width: 200px;
+        height: 200px;
+        background: rgba(98, 204, 255, 0.7);
+        bottom: 15%;
+        left: 5%;
+        animation-delay: 6s;
+      }
+
+      @keyframes floatOrb {
+        from {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        to {
+          transform: translate3d(20px, -30px, 0) scale(1.08);
+        }
+      }
+
+      .scene {
+        position: relative;
+        z-index: 1;
+        max-width: 760px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 8px;
+      }
+
+      .card {
+        position: relative;
+        width: 100%;
+        max-width: 620px;
+        background: linear-gradient(135deg, var(--glass-soft), var(--glass));
+        border-radius: var(--radius-card);
+        box-shadow: var(--shadow);
+        padding: 26px 22px 26px;
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        overflow: hidden;
+        animation: enterCard 0.9s ease-out;
+      }
+
+      /* Borda brilhando de leve */
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(
+          135deg,
+          rgba(155, 92, 255, 0.35),
+          rgba(255, 158, 190, 0.25)
+        );
+        -webkit-mask: linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0.8;
+        pointer-events: none;
+      }
+
+      /* Brilhinhos discretos */
+      .sparkle {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0) 70%);
+        opacity: 0.7;
+        animation: twinkle 3.2s ease-in-out infinite alternate;
+        pointer-events: none;
+      }
+
+      .sparkle.s1 {
+        top: 16px;
+        right: 40px;
+        animation-delay: 0.2s;
+      }
+      .sparkle.s2 {
+        bottom: 18px;
+        left: 38px;
+        animation-delay: 1s;
+      }
+      .sparkle.s3 {
+        top: 50%;
+        right: 18px;
+        animation-delay: 1.8s;
+      }
+
+      @keyframes twinkle {
+        from {
+          transform: scale(0.8);
+          opacity: 0.2;
+        }
+        to {
+          transform: scale(1.4);
+          opacity: 0.9;
+        }
+      }
+
+      @keyframes enterCard {
+        from {
+          opacity: 0;
+          transform: translateY(18px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: var(--radius-pill);
+        background: radial-gradient(
+          circle at 0 0,
+          rgba(255, 255, 255, 0.9),
+          rgba(255, 255, 255, 0.7)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 8px 22px rgba(148, 163, 184, 0.4);
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--muted);
+        margin-bottom: 12px;
+        transform-origin: left center;
+        animation: badgeIn 1.1s ease-out 0.1s both;
+      }
+
+      .badge-emoji {
+        font-size: 1.05rem;
+      }
+
+      .badge-strong {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      @keyframes badgeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.6rem;
+        color: var(--accent);
+        letter-spacing: 0.03em;
+      }
+
+      .sun-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: var(--radius-pill);
+        background: linear-gradient(
+          135deg,
+          rgba(255, 246, 196, 0.95),
+          rgba(255, 210, 160, 0.98)
+        );
+        box-shadow: 0 12px 26px rgba(248, 180, 80, 0.45);
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #7a4b00;
+        white-space: nowrap;
+      }
+
+      .sun-pill span {
+        display: inline-block;
+      }
+
+      .sun-icon {
+        font-size: 1rem;
+        animation: sunPulse 2.8s ease-in-out infinite;
+      }
+
+      @keyframes sunPulse {
+        0%,
+        100% {
+          transform: scale(1) rotate(0deg);
+        }
+        50% {
+          transform: scale(1.1) rotate(8deg);
+        }
+      }
+
+      .content {
+        margin-top: 10px;
+        position: relative;
+        padding: 10px 4px 0;
+      }
+
+      .greeting {
+        font-family: "Homemade Apple", cursive;
+        font-size: 1.05rem;
+        margin-bottom: 10px;
+        color: var(--fg);
+      }
+
+      p {
+        font-size: 1.02rem;
+        line-height: 1.7;
+        margin: 0 0 12px;
+        color: var(--fg);
+      }
+
+      p.subtle {
+        color: var(--muted);
+      }
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+
+      .underline-soft {
+        position: relative;
+        display: inline-block;
+      }
+
+      .underline-soft::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -3px;
+        height: 7px;
+        border-radius: 999px;
+        background: radial-gradient(
+          circle,
+          rgba(155, 92, 255, 0.2),
+          transparent 65%
+        );
+        opacity: 0.9;
+        pointer-events: none;
+      }
+
+      .bottom-hint {
+        margin-top: 14px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent-2);
+        box-shadow: 0 0 0 6px var(--accent-soft);
+      }
+
+      /* Responsivo */
+      @media (min-width: 768px) {
+        body {
+          padding: 32px;
+        }
+
+        .card {
+          padding: 30px 30px 30px;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        p {
+          font-size: 1.05rem;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .card {
+          padding: 22px 18px 22px;
+          border-radius: 18px;
+        }
+
+        h1 {
+          font-size: 1.4rem;
+        }
+
+        .sun-pill {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Orbes de fundo -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+
+    <div class="scene">
+      <article class="card" aria-label="Mensagem de bom dia">
+        <div class="sparkle s1"></div>
+        <div class="sparkle s2"></div>
+        <div class="sparkle s3"></div>
+
+        <div class="badge">
+          <span class="badge-emoji">✨</span>
+          <span class="badge-strong">Para você</span>
+          <span>que faz o dia ficar mais bonito</span>
+        </div>
+
+        <div class="header-row">
+          <h1>Bom dia</h1>
+          <div class="sun-pill">
+            <span class="sun-icon">☀️</span>
+            <span>começo de dia com bons pensamentos</span>
+          </div>
+        </div>
+
+        <div class="content">
+          <p class="greeting">Oi Cléia,</p>
+
+          <p>Bom dia!</p>
+
+          <p>
+            Se você veio aqui, faço questão de te dizer que é gratificante
+            acordar com bons pensamentos.
+          </p>
+
+          <p>
+            No meu caso, tive sonhos maravilhosos com tantas sensações
+            incríveis.
+          </p>
+
+          <p>
+            Existem pessoas que aparecem nos sonhos e, quando você acorda,
+            deseja não ter acordado.
+          </p>
+
+          <p>Assim aconteceu comigo hoje.</p>
+
+          <p class="subtle">Detalhes…</p>
+
+          <p>Bem, quem sabe um dia eu te conto (ou no próximo card).</p>
+
+          <p>Por enquanto, só fique sabendo disso…</p>
+
+          <p>
+            Por mais que a gente tente fingir pra si mesmo que algo ou alguém é
+            comum na nossa vida, o corpo e a mente encontram uma forma de
+            lembrar que
+            <span class="underline-soft"
+              >certas pessoas fazem você tirar os pés do chão.</span
+            >
+          </p>
+
+          <div class="bottom-hint">
+            <span class="dot"></span>
+            <span>Guarda isso em algum cantinho calmo do seu dia.</span>
+            <span>Até nos meus sonhos você me aluga, menina!</span>
+            <span>💜 ._.. ...</span>
+          </div>
+        </div>
+      </article>
+    </div>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

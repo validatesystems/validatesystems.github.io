@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Fala comigo, menina</title>
+
+    <style>
+      :root {
+        --bg: #050814;
+        --bg-soft: #0b1020;
+        --paper: #fdf9ff;
+        --paper-soft: #f7f0ff;
+        --ink: #171725;
+        --muted: #6b6b83;
+        --accent-left: #7c3aed;
+        --accent-top: #38bdf8;
+        --accent-soft: rgba(124, 58, 237, 0.18);
+        --shadow: 0 22px 60px rgba(0, 0, 0, 0.65);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
+          sans-serif;
+        background: radial-gradient(
+            circle at 0% 0%,
+            rgba(148, 163, 253, 0.18),
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 100% 100%,
+            rgba(56, 189, 248, 0.16),
+            transparent 60%
+          ),
+          linear-gradient(160deg, var(--bg), var(--bg-soft));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 16px;
+        color: var(--ink);
+      }
+
+      .frame {
+        max-width: 520px;
+        width: 100%;
+      }
+
+      .note-wrap {
+        position: relative;
+        padding: 2px;
+        border-radius: 26px;
+        background: linear-gradient(
+          120deg,
+          rgba(124, 58, 237, 0.7),
+          rgba(56, 189, 248, 0.7),
+          rgba(244, 244, 245, 0.3)
+        );
+        box-shadow: var(--shadow);
+      }
+
+      .note {
+        position: relative;
+        display: grid;
+        grid-template-columns: 7px minmax(0, 1fr);
+        background: radial-gradient(
+            circle at top,
+            rgba(248, 250, 252, 0.95),
+            transparent 70%
+          ),
+          linear-gradient(160deg, var(--paper), var(--paper-soft));
+        border-radius: 24px;
+        overflow: hidden;
+      }
+
+      .note::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(148, 163, 184, 0.14),
+          rgba(148, 163, 184, 0.14) 1px,
+          transparent 1px,
+          transparent 28px
+        );
+        opacity: 0.48;
+        pointer-events: none;
+      }
+
+      .edge {
+        background: linear-gradient(
+          to bottom,
+          var(--accent-left),
+          #a855f7,
+          #38bdf8
+        );
+      }
+
+      .content {
+        position: relative;
+        padding: 20px 22px 18px;
+        z-index: 1;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        background: rgba(248, 250, 252, 0.9);
+        border-radius: 999px;
+        padding: 4px 10px;
+        margin-bottom: 8px;
+      }
+
+      .chip-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--accent-left);
+      }
+
+      h1 {
+        margin: 2px 0 14px;
+        font-size: 1.3rem;
+        color: var(--ink);
+      }
+
+      .msg {
+        margin: 0 0 14px;
+        font-size: 1.02rem;
+        line-height: 1.7;
+        color: #111827;
+        text-align: justify;
+      }
+
+      .msg:last-of-type {
+        margin-bottom: 10px;
+      }
+
+      .footer {
+        margin-top: 12px;
+        font-size: 0.78rem;
+        color: var(--muted);
+        text-align: right;
+      }
+
+      @media (max-width: 480px) {
+        .content {
+          padding: 18px 16px 16px;
+        }
+
+        h1 {
+          font-size: 1.18rem;
+        }
+
+        .msg {
+          font-size: 0.98rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="frame">
+      <div class="note-wrap">
+        <div class="note">
+          <div class="edge"></div>
+
+          <div class="content">
+            <div class="chip">
+              <span class="chip-dot"></span>
+              <span>pensamento sincero</span>
+            </div>
+
+            <h1>Fala comigo, menina</h1>
+
+            <p class="msg">
+              Cléia, às vezes fico me perguntando se deveria continuar te
+              mandando essas mensagens.
+            </p>
+
+            <p class="msg">
+              Não por mim. Eu não estou criando expectativas, a atual situação
+              não permite. Tudo bem, eu entendo isso.
+            </p>
+
+            <p class="msg">
+              Mas por você. Se você vem aqui, qual o motivo? Você sabe? Sabe
+              mesmo?
+            </p>
+
+            <p class="msg">
+              Pois eu sei o motivo de fazer essas páginas. Está claro pra mim.
+            </p>
+
+            <p class="msg">
+              E você? Depois que lê, rasga e joga fora? Ou tem algo aí dentro
+              que você alimenta?
+            </p>
+
+            <p class="msg">
+              Bem, imagino que não seja tão simples pra você. Eu respeito isso.
+              Mas fala ou demonstra alguma coisa, menina. Põe pra fora.
+            </p>
+
+            <div class="footer">._.. ...</div>
+            <button
+              id="openComment"
+              class="chip btn-comment"
+              aria-label="Abrir comentário"
+            >
+              💬 Comentar anonimamente
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Bom dia de sábado</title>
+    <style>
+      :root {
+        --bg1: #fdfcfb;
+        --bg2: #e0f2fe;
+        --bg3: #f5f3ff;
+        --fg: #111827;
+        --muted: #6b7280;
+        --accent: #f59e0b;
+        --accent-soft: rgba(245, 158, 11, 0.18);
+        --card: rgba(255, 255, 255, 0.96);
+        --shadow: 0 20px 55px rgba(15, 23, 42, 0.25);
+        --ring: 0 0 0 1px rgba(148, 163, 184, 0.45);
+      }
+
+      [data-theme="dark"] {
+        --bg1: #020617;
+        --bg2: #0b1120;
+        --bg3: #1f2937;
+        --fg: #e5e7eb;
+        --muted: #9ca3af;
+        --accent: #facc15;
+        --accent-soft: rgba(250, 204, 21, 0.16);
+        --card: rgba(15, 23, 42, 0.96);
+        --shadow: 0 22px 60px rgba(0, 0, 0, 0.9);
+        --ring: 0 0 0 1px rgba(148, 163, 184, 0.55);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--fg);
+        background: radial-gradient(circle at top, var(--bg3), var(--bg1) 55%),
+          radial-gradient(circle at bottom, var(--bg2), var(--bg1) 60%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        position: relative;
+        overflow: auto;
+      }
+
+      .glow,
+      .glow-2 {
+        position: fixed;
+        inset: -120px;
+        pointer-events: none;
+        opacity: 0.9;
+      }
+
+      .glow::before,
+      .glow-2::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-repeat: no-repeat;
+      }
+
+      .glow::before {
+        background-image: radial-gradient(
+          circle at 10% 0%,
+          rgba(250, 204, 21, 0.6),
+          transparent 60%
+        );
+        animation: float-glow-1 34s linear infinite;
+      }
+
+      .glow-2::before {
+        background-image: radial-gradient(
+          circle at 90% 100%,
+          rgba(59, 130, 246, 0.45),
+          transparent 60%
+        );
+        animation: float-glow-2 48s linear infinite;
+      }
+
+      @keyframes float-glow-1 {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        50% {
+          transform: translate3d(-40px, 35px, 0);
+        }
+        100% {
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      @keyframes float-glow-2 {
+        0% {
+          transform: translate3d(0, 0, 0);
+        }
+        50% {
+          transform: translate3d(35px, -30px, 0);
+        }
+        100% {
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      .wrapper {
+        width: 100%;
+        max-width: 960px;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 760px;
+        background: var(--card);
+        border-radius: 26px;
+        padding: 22px 20px 18px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fade-in 0.8s ease-out forwards;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -20%;
+        background: radial-gradient(
+            circle at top right,
+            var(--accent-soft),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(56, 189, 248, 0.16),
+            transparent 65%
+          );
+        pointer-events: none;
+      }
+
+      .card-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      @keyframes fade-in {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      header.card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .title-group {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .label {
+        font-size: 0.74rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .title {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .subtitle {
+        font-size: 0.86rem;
+        color: var(--muted);
+        max-width: 520px;
+      }
+
+      .theme-toggle {
+        border: none;
+        outline: none;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.95);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.15s ease,
+          box-shadow 0.15s ease;
+        box-shadow: var(--ring);
+        font-size: 0.92rem;
+        color: var(--fg);
+      }
+
+      [data-theme="dark"] .theme-toggle {
+        background: rgba(15, 23, 42, 0.85);
+      }
+
+      .theme-toggle:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.7);
+      }
+
+      .theme-toggle:active {
+        transform: translateY(0);
+      }
+
+      .message {
+        margin-top: 10px;
+        font-size: 0.98rem;
+        line-height: 1.7;
+      }
+
+      .message p {
+        margin: 0 0 0.95rem;
+        text-align: justify;
+      }
+
+      .message p:last-of-type {
+        margin-bottom: 0.3rem;
+      }
+
+      .closing {
+        margin-top: 1.3rem;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .footer-row {
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .note {
+        font-size: 0.78rem;
+        color: var(--muted);
+        opacity: 0.9;
+      }
+
+      .note span {
+        display: inline-block;
+        width: auto;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        background: rgba(255, 255, 255, 0.9);
+        box-sizing: border-box;
+      }
+
+      [data-theme="dark"] .note span {
+        background: rgba(15, 23, 42, 0.4);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border-radius: 999px;
+        border: none;
+        outline: none;
+        padding: 7px 14px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: transform 0.12s ease, box-shadow 0.12s ease,
+          background 0.12s ease, color 0.12s ease;
+        white-space: nowrap;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), #38bdf8);
+        color: #0b1120;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.7);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.85);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.9);
+      }
+
+      .btn-ghost {
+        background: rgba(255, 255, 255, 0.95);
+        color: var(--fg);
+        box-shadow: var(--ring);
+      }
+
+      [data-theme="dark"] .btn-ghost {
+        background: rgba(15, 23, 42, 0.45);
+      }
+
+      .btn-ghost:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.7);
+      }
+
+      .btn-ghost:active {
+        transform: translateY(0);
+      }
+
+      .btn span {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .pulse {
+        animation: pulse-soft 0.6s ease-out;
+      }
+
+      @keyframes pulse-soft {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.015);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .card {
+          padding: 16px 14px 14px;
+          border-radius: 20px;
+        }
+
+        .title {
+          font-size: 1.08rem;
+        }
+
+        .subtitle {
+          font-size: 0.8rem;
+        }
+
+        .message {
+          font-size: 0.95rem;
+        }
+
+        .footer-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow"></div>
+    <div class="glow-2"></div>
+
+    <div class="wrapper">
+      <main class="card" id="card">
+        <div class="card-inner">
+          <header class="card-header">
+            <div class="title-group">
+              <span class="label">Sábado de manhã</span>
+              <h1 class="title">Quando o universo resolve ajustar as coisas</h1>
+              <p class="subtitle">
+                Um bom dia calmo para lembrar que nem tudo é acaso, e que às
+                vezes a vida se encarrega de colocar no lugar o que parece
+                bagunça.
+              </p>
+            </div>
+            <button
+              class="theme-toggle"
+              type="button"
+              id="themeToggle"
+              aria-label="Alternar tema claro ou escuro"
+            >
+              <span id="themeIcon">🌙</span>
+            </button>
+          </header>
+
+          <section class="message" aria-label="Mensagem de bom dia">
+            <p>
+              Cléia, ontem eu comentei com você sobre o universo equilibrar as
+              coisas, lembra? Fiquei pensando nisso hoje cedo, antes mesmo do
+              sol resolver aparecer.
+            </p>
+            <p>
+              É curioso como a vida encontra jeitos discretos de colocar cada
+              coisa em seu lugar, não do jeito que a gente quer, mas do jeito
+              que faz sentido para o caminho. Às vezes o universo puxa, outras
+              vezes devolve. Uma hora exige paciência, em outra oferece aquilo
+              que acalma. E, quando a gente percebe, tudo que parecia bagunça
+              começa a ter uma lógica silenciosa.
+            </p>
+            <p>Com você não é diferente.</p>
+            <p>
+              Tem dias em que o mundo pesa mais do que deveria e você continua
+              ali, firme, resolvendo tudo, levando do jeito que só você sabe. Em
+              outros, você dá aquele sorriso meio “não sei se rio ou se
+              desisto”, você nunca me disse isso mas provavelmente já se sentiu
+              assim.
+            </p>
+            <p>
+              Mesmo nesses dias existe algo que volta, se ajeita, equilibra,
+              mesmo que você não repare. O universo tem essa mania de devolver o
+              que é verdadeiro, de alinhar o que precisa ser visto, de aproximar
+              o que faz sentido e afastar o que já não tem lugar. Não tem como
+              fugir desse equilíbrio.
+            </p>
+            <p>
+              E você, mesmo sem perceber, está sempre no centro desse movimento,
+              atraindo aquilo que conversa com a sua essência e repelindo o que
+              tenta diminuir quem você é.
+            </p>
+            <p>
+              Se hoje o sábado parecer comum demais, não se engane, os dias
+              tranquilos também fazem parte desse equilíbrio. Às vezes o
+              universo só quer te dar um pouco de respiro antes de reorganizar o
+              resto.
+            </p>
+            <p>
+              Que o seu sábado seja leve. E que você sinta, mesmo que
+              discretamente, que certas coisas não acontecem por acaso.
+              Atente-se aos detalhes, eles são as pistas que o universo deixa
+              para quem está disposto a ver.
+            </p>
+          </section>
+
+          <div class="closing">
+            Se em algum momento o dia pesar de novo, você sabe quem e como pode
+            compartilhar essa carga.
+          </div>
+
+          <div class="footer-row">
+            <div class="note">
+              <span>
+                Esta página é só um lembrete silencioso de que o universo anda
+                mais atento a você do que parece. Não o ignore.
+              </span>
+              <span> Feito com 💜 especialmente para você. </span>
+              <span> ._.. ... </span>
+            </div>
+            <!-- <div class="actions">
+              <button class="btn btn-primary" id="btnReread">
+                <span>↻ LER DE NOVO</span>
+              </button>
+              <button class="btn btn-ghost" id="btnNext">
+                <span>➡️ PRÓXIMO</span>
+              </button>
+            </div> -->
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        const root = document.documentElement;
+        const toggle = document.getElementById("themeToggle");
+        const icon = document.getElementById("themeIcon");
+        const card = document.getElementById("card");
+        const btnReread = document.getElementById("btnReread");
+        const btnNext = document.getElementById("btnNext");
+
+        function applyTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          localStorage.setItem("sabado-manha-theme", theme);
+          icon.textContent = theme === "dark" ? "☀️" : "🌙";
+        }
+
+        const saved = localStorage.getItem("sabado-manha-theme");
+        if (saved === "dark" || saved === "light") {
+          applyTheme(saved);
+        } else {
+          applyTheme("light");
+        }
+
+        toggle.addEventListener("click", function () {
+          const current =
+            root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          applyTheme(current);
+        });
+      })();
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

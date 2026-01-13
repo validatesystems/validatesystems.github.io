@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sentir antes do silêncio</title>
+
+    <!-- Tipografia: uma combinação poética e legível -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #0f1115;
+        --ink: #e8e5e0;
+        --ink-soft: #cfcac1;
+        --accent: #d6b17a;
+        --veil: rgba(239, 233, 223, 0.06);
+        --maxw: 62ch;
+      }
+
+      /* Reset suave */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        color: var(--ink);
+        background: radial-gradient(
+              1200px 800px at 20% 10%,
+              #171922 0%,
+              #0f1115 50%
+            )
+            fixed,
+          linear-gradient(to bottom, rgba(214, 177, 122, 0.05), transparent 40%)
+            fixed,
+          var(--bg);
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+        line-height: 1.6;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        overflow-x: hidden;
+      }
+
+      /* Brisa em movimento: fundo sutil, não distrai, só toca */
+      .grain,
+      .vignette {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .grain {
+        background-image: radial-gradient(
+            ellipse at 70% 20%,
+            rgba(214, 177, 122, 0.1),
+            transparent 40%
+          ),
+          radial-gradient(
+            ellipse at 10% 80%,
+            rgba(200, 180, 160, 0.08),
+            transparent 45%
+          ),
+          url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.05"/></svg>');
+        mix-blend-mode: soft-light;
+        animation: breathe 18s ease-in-out infinite both;
+      }
+      .vignette {
+        background: radial-gradient(
+          1200px 800px at 50% 50%,
+          transparent 55%,
+          rgba(0, 0, 0, 0.35) 100%
+        );
+      }
+      @keyframes breathe {
+        0%,
+        100% {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        50% {
+          transform: translate3d(0, -0.6rem, 0) scale(1.01);
+        }
+      }
+
+      main {
+        z-index: 1;
+        width: 100%;
+        padding: clamp(1.25rem, 3.5vw, 2.25rem);
+        display: grid;
+        place-items: center;
+      }
+
+      .page {
+        width: 100%;
+        max-width: var(--maxw);
+        border-radius: 18px;
+        background: color-mix(in oklab, var(--veil) 65%, transparent);
+        backdrop-filter: blur(8px) saturate(1.05);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset,
+          0 20px 50px rgba(0, 0, 0, 0.45), 0 8px 20px rgba(214, 177, 122, 0.08);
+        padding: clamp(1.5rem, 5vw, 2.75rem);
+        animation: fadeIn 1200ms ease-out both;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      header {
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+      }
+      .kicker {
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        color: var(--ink-soft);
+      }
+      .title {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 600;
+        font-style: italic;
+        font-size: clamp(1.35rem, 3.6vw, 1.75rem);
+        color: var(--accent);
+      }
+
+      article {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(1.25rem, 2.6vw, 1.5rem);
+        letter-spacing: 0.01em;
+      }
+
+      /* Versos e pausas */
+      p {
+        margin: 0 0 1.05rem;
+      }
+      .line {
+        display: block;
+        margin: 0.12rem 0;
+      }
+
+      /* Ênfases que chegam como vento */
+      .soft {
+        color: var(--ink-soft);
+      }
+      .whisper {
+        font-style: italic;
+        opacity: 0.92;
+      }
+      .hold {
+        border-left: 2px solid
+          color-mix(in oklab, var(--accent) 65%, transparent);
+        padding-left: 0.75rem;
+      }
+
+      /* Citação final em repouso */
+      .closer {
+        margin-top: 1.35rem;
+        padding-top: 1rem;
+        border-top: 1px dashed rgba(214, 177, 122, 0.25);
+      }
+
+      /* Responsividade e conforto de leitura */
+      @media (min-width: 768px) {
+        .page {
+          padding: 3rem;
+        }
+        article {
+          line-height: 1.75;
+        }
+      }
+
+      /* Acessibilidade de foco e seleção */
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+      ::selection {
+        background: rgba(214, 177, 122, 0.18);
+        color: var(--ink);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <main>
+      <section class="page" aria-label="Mensagem">
+        <header>
+          <span class="kicker">presença</span>
+          <h1 class="title">Sentir antes que o silêncio apague</h1>
+        </header>
+
+        <article>
+          <p>
+            <span class="line whisper"
+              >Tem sentimento que é como vento encostando na pele:</span
+            >
+            <span class="line soft"
+              >não pede nada, só passa… mas quem sente sabe.</span
+            >
+          </p>
+
+          <p>
+            <span class="line"
+              >Às vezes eu penso que algumas coisas existem só porque acontecem
+              no tempo certo;</span
+            >
+            <span class="line whisper"
+              >noutras, penso que existem porque não tiveram medo de
+              existir.</span
+            >
+          </p>
+
+          <p class="hold">
+            <span class="line">Tem coisa que se guarda, e vive quieta,</span>
+            <span class="line soft"
+              >mas também tem coisa que, se guardar demais,</span
+            >
+            <span class="line whisper"
+              >acaba adormecendo antes de aprender a nascer.</span
+            >
+          </p>
+
+          <p>
+            <span class="line soft">Não digo isso por mim.</span>
+            <span class="line"
+              >Digo porque certas presenças têm um jeito de ficar,</span
+            >
+            <span class="line whisper">mesmo quando nada foi dito.</span>
+          </p>
+
+          <p class="closer">
+            <span class="line whisper">E talvez seja só isso:</span>
+            <span class="line"
+              >algumas coisas merecem ser sentidas antes que o silêncio termine
+              de apagá-las.</span
+            >
+          </p>
+        </article>
+      </section>
+    </main>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

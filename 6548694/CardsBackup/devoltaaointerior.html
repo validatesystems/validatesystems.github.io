@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Estrada de volta pra dentro</title>
+
+    <style>
+      :root {
+        --bg-light1: #f5f7ff;
+        --bg-light2: #e8f3ff;
+        --bg-dark1: #050814;
+        --bg-dark2: #0f172a;
+
+        --card-light: rgba(255, 255, 255, 0.85);
+        --card-dark: rgba(15, 23, 42, 0.9);
+
+        --fg-light: #111827;
+        --fg-dark: #e5e7eb;
+
+        --muted-light: #6b7280;
+        --muted-dark: #9ca3af;
+
+        --accent: #7c3aed;
+        --accent-soft: rgba(124, 58, 237, 0.18);
+
+        --glass: blur(14px);
+        --transition: 0.35s ease;
+      }
+
+      html[data-theme="light"] {
+        --bg1: var(--bg-light1);
+        --bg2: var(--bg-light2);
+        --card: var(--card-light);
+        --fg: var(--fg-light);
+        --muted: var(--muted-light);
+      }
+
+      html[data-theme="dark"] {
+        --bg1: var(--bg-dark1);
+        --bg2: var(--bg-dark2);
+        --card: var(--card-dark);
+        --fg: var(--fg-dark);
+        --muted: var(--muted-dark);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
+          sans-serif;
+        background: radial-gradient(
+            circle at 15% 15%,
+            rgba(96, 165, 250, 0.16),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 85% 85%,
+            rgba(124, 58, 237, 0.18),
+            transparent 60%
+          ),
+          linear-gradient(145deg, var(--bg1), var(--bg2));
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 26px 18px;
+        color: var(--fg);
+        transition: background var(--transition), color var(--transition);
+      }
+
+      .toggle-theme {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        background: var(--card);
+        border: 1px solid var(--accent-soft);
+        padding: 7px 11px;
+        border-radius: 999px;
+        cursor: pointer;
+        backdrop-filter: var(--glass);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.9rem;
+        transition: var(--transition);
+      }
+
+      .toggle-theme span {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .wrapper {
+        max-width: 520px;
+        width: 100%;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 26px;
+        padding: 24px 22px 22px;
+        box-shadow: 0 16px 48px rgba(15, 23, 42, 0.28);
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        backdrop-filter: var(--glass);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(124, 58, 237, 0.2),
+          transparent 70%
+        );
+        top: -60px;
+        right: -40px;
+        opacity: 0.45;
+        pointer-events: none;
+      }
+
+      .label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.04);
+        border: 1px solid var(--accent-soft);
+        font-size: 0.7rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .chip span.emoji {
+        font-size: 0.9rem;
+      }
+
+      .small-tag {
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
+
+      h1 {
+        margin: 8px 0 16px;
+        font-size: 1.4rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .msg {
+        font-size: 1.04rem;
+        line-height: 1.7;
+        margin: 0 0 14px;
+        text-align: justify;
+        position: relative;
+        z-index: 1;
+      }
+
+      .msg:last-of-type {
+        margin-bottom: 18px;
+      }
+
+      .cta-box {
+        margin-top: 14px;
+        padding: 10px 11px;
+        border-radius: 14px;
+        background: rgba(15, 23, 42, 0.04);
+        border: 1px dashed rgba(148, 163, 184, 0.6);
+        font-size: 0.9rem;
+        color: var(--muted);
+        position: relative;
+        z-index: 1;
+      }
+
+      .cta-box strong {
+        color: var(--fg);
+      }
+
+      .cta-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(124, 58, 237, 0.4);
+        font-size: 0.86rem;
+        text-decoration: none;
+        color: var(--fg);
+        background: rgba(124, 58, 237, 0.06);
+      }
+
+      .cta-link span.icon {
+        font-size: 1rem;
+      }
+
+      .footer {
+        margin-top: 12px;
+        font-size: 0.78rem;
+        color: var(--muted);
+        text-align: right;
+        position: relative;
+        z-index: 1;
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 20px 16px 18px;
+          border-radius: 22px;
+        }
+
+        h1 {
+          font-size: 1.25rem;
+        }
+
+        .msg {
+          font-size: 0.98rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <button class="toggle-theme" id="themeToggle">🌓 <span>tema</span></button>
+
+    <div class="wrapper">
+      <div class="card">
+        <div class="label-row">
+          <div class="chip">
+            <span class="emoji">🛣️</span>
+            <span>estrada para o interior</span>
+          </div>
+          <span class="small-tag">hoje, visita às origens</span>
+        </div>
+
+        <h1>Entre a cidade e o colo da mãe</h1>
+
+        <p class="msg">
+          Cléia, hoje você saiu da rotina de sempre e foi ver a sua mãe. Outra
+          cidade, outro ritmo, outro ar. Fazia tempo que esse caminho não era
+          feito, mas ele nunca deixou de existir dentro de você.
+        </p>
+
+        <p class="msg">
+          É curioso pensar como, por mais que a vida puxe para o lado da pressa,
+          tem um pedaço seu que só descansa de verdade quando volta para onde as
+          coisas começaram a fazer sentido. Nem sempre é sobre o lugar em si, às
+          vezes é sobre quem espera você chegando.
+        </p>
+
+        <p class="msg">
+          Imagino o contraste: de um lado, a correria da cidade, notificações,
+          prazos, responsabilidades. Do outro, cheiro conhecido, conversa que
+          não precisa de roteiro, olhar que te conhece antes da frase terminar.
+        </p>
+
+        <p class="msg">
+          Em algum momento, enquanto você estava aí, me veio na cabeça que eu já
+          tínha falado, em outra página, sobre essa ponte entre cidade e
+          interior, entre barulho e silêncio, entre estrada e quintal. Hoje, ao
+          ver você fazendo esse trajeto de verdade, te recomendaria visitar essa
+          página novamente.
+        </p>
+
+        <p class="msg">
+          Se em algum instante você quiser revisitar essa conversa antiga sobre
+          cidade e interior, deixei o caminho fácil. Talvez faça sentido olhar
+          de novo, agora que você acabou de viver isso com o coração mais
+          presente.
+        </p>
+
+        <div class="cta-box">
+          <div>
+            <strong>Se bater curiosidade</strong>, tem uma página guardada que
+            fala justamente dessa dança entre o urbano e o interior que habita
+            em você.
+          </div>
+          <a class="cta-link" href="./index(cidade e interior).html">
+            <span class="icon">🌆🌾</span>
+            <span>Rever a estrada entre cidade e interior</span>
+          </a>
+        </div>
+
+        <div class="footer">Com carinho e saudade ._.. ...</div>
+      </div>
+    </div>
+
+    <script>
+      const root = document.documentElement;
+      const toggle = document.getElementById("themeToggle");
+
+      toggle.addEventListener("click", () => {
+        const current = root.getAttribute("data-theme") || "light";
+        const next = current === "light" ? "dark" : "light";
+        root.setAttribute("data-theme", next);
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

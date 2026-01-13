@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Entre o cheiro e a ideia</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&family=Nunito:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg1: #0f0c1d;
+        --bg2: #1a1633;
+        --accent: #f5c27a;
+        --text: #f2f2f2;
+        --muted: #b9b6c8;
+      }
+
+      .light {
+        --bg1: #fff7f0;
+        --bg2: #ffe9db;
+        --accent: #c27a3f;
+        --text: #2a2a2a;
+        --muted: #6b6b6b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, var(--bg2), var(--bg1));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Nunito", sans-serif;
+        color: var(--text);
+        transition: background 0.6s ease, color 0.4s ease;
+      }
+
+      .card {
+        max-width: 520px;
+        padding: 40px 32px;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 18px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        animation: fadeIn 1.4s ease;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+      }
+
+      .card:hover {
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        font-style: italic;
+        color: var(--accent);
+        margin-bottom: 24px;
+      }
+
+      p {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: var(--text);
+        margin-bottom: 18px;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+
+      p.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      p.muted {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .signature {
+        margin-top: 32px;
+        text-align: right;
+        font-style: italic;
+        color: var(--accent);
+        opacity: 0;
+        transition: opacity 1s ease;
+      }
+
+      .signature.show {
+        opacity: 0.9;
+      }
+
+      .controls {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      button {
+        border: none;
+        padding: 8px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        background: var(--accent);
+        color: #2a2a2a;
+        transition: transform 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card" id="card">
+      <h1>Entre o cheiro e a ideia</h1>
+
+      <p>
+        Hoje eu vi algo que me lembrou você. Não foi um rosto, nem uma cena. Foi
+        um cheiro.
+      </p>
+      <p>
+        Pedi para sentir só por curiosidade. Mas curiosidade também é uma forma
+        de desejo.
+      </p>
+      <p>
+        Tem coisas que não provocam o corpo de imediato. Elas começam na
+        imaginação. E quando a imaginação entende, o resto acompanha.
+      </p>
+      <p class="muted">
+        Talvez não seja sobre o perfume. Talvez seja sobre a pele que ele
+        escolhe.
+      </p>
+
+      <div class="signature">Viajo quando penso nisso...</div>
+
+      <div class="controls">
+        <button id="replay">Ver de novo</button>
+        <button id="toggleTheme">Tema</button>
+      </div>
+    </div>
+
+    <script>
+      const lines = document.querySelectorAll("p");
+      const signature = document.querySelector(".signature");
+      const replayBtn = document.getElementById("replay");
+      const themeBtn = document.getElementById("toggleTheme");
+      const card = document.getElementById("card");
+
+      function showMessage() {
+        lines.forEach((l) => l.classList.remove("show"));
+        signature.classList.remove("show");
+        setTimeout(() => {
+          lines.forEach((line, i) => {
+            setTimeout(() => line.classList.add("show"), i * 1200);
+          });
+          setTimeout(
+            () => signature.classList.add("show"),
+            lines.length * 1200 + 500
+          );
+        }, 300);
+      }
+
+      replayBtn.addEventListener("click", showMessage);
+
+      themeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("light");
+      });
+
+      // efeito leve de movimento com o mouse
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(800px) rotateX(${
+          y * 4
+        }deg) rotateY(${x * 4}deg)`;
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "";
+      });
+
+      // iniciar animação ao carregar
+      window.addEventListener("DOMContentLoaded", showMessage);
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

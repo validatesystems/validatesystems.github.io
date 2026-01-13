@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Bom dia! 17/11/2025</title>
+    <style>
+      :root {
+        --bg1: #fff9ec;
+        --ink: #1e1b16;
+        --muted: #5f6368;
+        --accent: #f59e0b;
+        --accent-2: #22d3ee;
+        --card: rgba(255, 255, 255, 0.78);
+        --ring: 0 0 0 1.5px rgba(245, 158, 11, 0.25);
+        --glass: blur(10px);
+        --shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+      }
+
+      [data-theme="dark"] {
+        --bg1: #101520;
+        --bg2: #162032;
+        --ink: #eef2ff;
+        --muted: #a5b4fc;
+        --accent: #fbbf24;
+        --accent-2: #22d3ee;
+        --card: rgba(255, 255, 255, 0.06);
+        --ring: 0 0 0 1.5px rgba(245, 158, 11, 0.4);
+        --shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+      }
+
+      body {
+        margin: 0;
+        height: 100%;
+        display: grid;
+        place-items: center;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu;
+        color: var(--ink);
+        background: linear-gradient(180deg, var(--bg2), var(--bg1));
+        overflow: auto;
+      }
+
+      .card {
+        max-width: min(700px, 92vw);
+        padding: clamp(40px, 3.8vw, 40px);
+        /* padding: clamp(22px, 3.8vw, 40px); */
+        border-radius: 20px;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        backdrop-filter: var(--glass);
+        outline: var(--ring);
+        margin: clamp(20px, 5vw, 40px);
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--muted);
+        font-weight: 600;
+        justify-content: flex-end;
+      }
+      .header .emoji {
+        font-size: 1.4rem;
+      }
+
+      h1 {
+        margin: 0.4rem 0 1rem;
+        font-size: clamp(1.3rem, 1.5rem + 1vw, 2rem);
+      }
+
+      .lines {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .line {
+        opacity: 0;
+        transform: translateY(8px);
+        margin: 1rem 0;
+        line-height: 1.6;
+        text-align: justify;
+      }
+      .line.show {
+        animation: fadeUp 0.5s forwards;
+      }
+      @keyframes fadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .cta {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        margin-top: 1.2rem;
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        border-radius: 14px;
+        padding: 0.8rem 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: white;
+      }
+      .btn-ghost {
+        /* background: transparent; */
+        background: var(--ink);
+        color: var(--ink);
+        outline: var(--ring);
+      }
+
+      .footer-note {
+        margin-top: 0.75rem;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="header">
+        <button id="toggleTheme" class="btn btn-ghost">🌓</button>
+      </div>
+      <h1>Bom dia, Cléia!</h1>
+
+      <ul class="lines">
+        <li class="line">
+          Às vezes quando o dia inicia, meio disperso, meio apressado, basta um
+          pensamento simples pra mudar tudo: você.
+        </li>
+        <li class="line">
+          E, de repente, tudo ganha uma luz mais calma, energia, como se o tempo
+          abrisse espaço para uma respiração mais gostosa.
+        </li>
+        <li class="line">
+          Não é sobre grandes acontecimentos, é sobre a presença discreta que
+          transforma. Sobre o jeito leve que você tem de iluminar o que toca sem
+          esforço algum. Sobre essa clareza que você carrega, mesmo quando o
+          mundo parece pesado demais.
+        </li>
+        <li class="line">
+          Se eu pudesse escolher o clima do seu dia agora, seria aquele que
+          abraça sem ocupar espaço, que te põe no colo sem pedir nada em troca,
+          que lembra você da força silenciosa que tem.
+        </li>
+        <li class="line">
+          Queria só te deixar isso aqui: o mundo fica um pouco mais bonito
+          quando passa por você. E eu também.
+        </li>
+      </ul>
+
+      <!-- <div class="cta">
+        <button id="rerun" class="btn btn-primary">↻ LER DE NOVO</button>
+      </div> -->
+
+      <div class="footer-note">
+        PS: Você sempre me pergunta como eu vejo essas coisas em você. A
+        resposta é simples: basta "olhar" pra você.
+      </div>
+      <div class="footer-note">Feito com 💜 especialmente para você.</div>
+      <div class="footer-note">._.. ...</div>
+    </main>
+
+    <script>
+      const stored = localStorage.getItem("theme");
+      if (stored) document.documentElement.setAttribute("data-theme", stored);
+      document.getElementById("toggleTheme").addEventListener("click", () => {
+        const cur =
+          document.documentElement.getAttribute("data-theme") || "light";
+        const next = cur === "light" ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+      });
+
+      const lines = Array.from(document.querySelectorAll(".line"));
+      const rerunBtn = document.getElementById("rerun");
+      function clearLines() {
+        lines.forEach((l) => {
+          l.classList.remove("show");
+        });
+      }
+      function runSequence() {
+        clearLines();
+        let delay = 0;
+        const step = 260;
+        lines.forEach((l) => {
+          l.style.animationDelay = delay / 1000 + "s";
+          void l.offsetWidth;
+          l.classList.add("show");
+          delay += step + Math.min(300, l.textContent.length * 2.8);
+        });
+      }
+      //   rerunBtn.addEventListener("click", runSequence);
+      setTimeout(runSequence, 400);
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

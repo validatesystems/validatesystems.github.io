@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Bom dia de domingo</title>
+    <style>
+      :root {
+        /* Paleta: escuro suave de domingo cedo */
+        --bg1: #1f2937; /* azul grafite suave */
+        --bg2: #2d3a4a; /* azul de madrugada virando manhã */
+        --bg3: #3b4252; /* cinza-azulado frio */
+
+        --fg: #f1f5f9; /* quase branco */
+        --muted: #cbd5e1; /* cinza claro azulado */
+
+        --accent: #fbbf24; /* dourado amanhecido */
+        --accent-soft: rgba(251, 191, 36, 0.13);
+
+        --accent-2: #a78bfa; /* lilás suave (toque de calma) */
+        --card: rgba(255, 255, 255, 0.07);
+        --shadow: 0 18px 38px rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: system-ui, sans-serif;
+        color: var(--fg);
+        background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .shell {
+        width: 100%;
+        max-width: 720px;
+        padding: 2px;
+        border-radius: 28px;
+        background: linear-gradient(
+          135deg,
+          rgba(251, 191, 36, 0.35),
+          rgba(167, 139, 250, 0.15),
+          rgba(255, 255, 255, 0.07)
+        );
+        box-shadow: var(--shadow);
+      }
+
+      .card {
+        position: relative;
+        padding: 24px;
+        border-radius: 26px;
+        background: var(--card);
+        backdrop-filter: blur(18px);
+        overflow: hidden;
+      }
+
+      .aura {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.4;
+        background: radial-gradient(
+            circle at top right,
+            rgba(251, 191, 36, 0.12),
+            transparent 70%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(167, 139, 250, 0.15),
+            transparent 65%
+          );
+      }
+
+      .content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--muted);
+        font-size: 0.82rem;
+        margin-bottom: 14px;
+      }
+
+      .chip span.emoji {
+        font-size: 1.1rem;
+      }
+
+      h1 {
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .subtitle {
+        font-size: 0.96rem;
+        color: var(--muted);
+        margin-bottom: 18px;
+      }
+
+      .message {
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .message p + p {
+        margin-top: 12px;
+      }
+
+      .closing {
+        margin-top: 18px;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+
+      .closing strong {
+        color: var(--fg);
+      }
+
+      .btn-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 24px;
+      }
+
+      button {
+        border: none;
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-size: 0.96rem;
+        cursor: pointer;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        color: #0f172a;
+        box-shadow: 0 10px 24px rgba(251, 191, 36, 0.3);
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 32px rgba(251, 191, 36, 0.35);
+      }
+
+      button:active {
+        transform: translateY(0);
+        box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="shell">
+      <div class="card">
+        <div class="aura"></div>
+        <div class="content">
+          <div class="chip">
+            <span class="emoji">🌘</span>
+            <span>Domingo cedo</span>
+          </div>
+
+          <h1>Bom dia, Cléia</h1>
+          <p class="subtitle">
+            O dia ainda está quieto, quase escuro... mas você combina até com
+            esse começo.
+          </p>
+
+          <div class="message">
+            <p>
+              Hoje eu queria só te desejar um domingo que comece com calma,
+              daquele jeito que a alma acorda antes da pressa.
+            </p>
+            <p>
+              Você tem essa presença bonita, mesmo em silêncio. E por isso, esta
+              poderia ser a única mensagem do dia. Não quero roubar seu
+              descanso, nem disputar espaço com o que te faz bem.
+            </p>
+            <p>
+              Mas se você chegou até aqui, então eu não vou te deixar sair de
+              mãos vazias. Tem algo esperando você.
+            </p>
+          </div>
+
+          <div class="btn-row">
+            <button id="btn">🌟 Continuar</button>
+          </div>
+
+          <p class="closing">Respira devagar. O dia está só começando.</p>
+          <p class="closing">Dica: O comentário é especial.</p>
+        </div>
+        <footer>._.. ...</footer>
+      </div>
+    </div>
+
+    <script>
+      const btn = document.getElementById("btn");
+      btn.addEventListener("click", () => {
+        window.location.href = "https://www.youtube.com/watch?v=OtQktWvfqzE";
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

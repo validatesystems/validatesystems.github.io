@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bom Dia, Cléia</title>
+
+    <!-- Fontes elegantes -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        font-family: "Montserrat", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #ffe4cc 0%,
+          #ffb9a8 50%,
+          #ff9c8b 100%
+        );
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        overflow: hidden;
+      }
+
+      .container {
+        animation: fadeIn 1.8s ease-out;
+        padding: 0 22px;
+        max-width: 690px;
+      }
+
+      h1 {
+        font-family: "Great Vibes", cursive;
+        font-size: 4rem;
+        color: #ffffff;
+        margin-bottom: 18px;
+        letter-spacing: 1px;
+        text-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+        animation: glow 3.6s ease-in-out infinite alternate;
+      }
+
+      .msg {
+        font-size: 1.28rem;
+        font-weight: 300;
+        color: #2e2e2e;
+        line-height: 1.7;
+        text-wrap: balance;
+      }
+
+      .signature {
+        margin-top: 32px;
+        font-size: 0.9rem;
+        color: #3e3e3e;
+        opacity: 0.75;
+        min-height: 24px;
+      }
+
+      /* Botão elegante */
+      .btn {
+        display: inline-block;
+        margin-top: 32px;
+        padding: 12px 32px;
+        background: #ff6f61;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s;
+        box-shadow: 0 6px 18px rgba(255, 119, 110, 0.45);
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        transform: scale(1.08);
+        background: #e85c50;
+        box-shadow: 0 8px 20px rgba(230, 100, 90, 0.55);
+      }
+
+      /* Modal */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        animation: fadeIn 0.4s ease-out;
+      }
+
+      .modal {
+        background: #ffffffea;
+        border-radius: 18px;
+        max-width: 500px;
+        padding: 28px 26px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        animation: modalIn 0.35s ease-out;
+        text-align: center;
+      }
+
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .modal p {
+        font-size: 1.18rem;
+        color: #333;
+        font-weight: 300;
+        line-height: 1.7;
+        text-wrap: balance;
+      }
+
+      .close-btn {
+        margin-top: 22px;
+        padding: 10px 26px;
+        border-radius: 24px;
+        border: none;
+        background: #ff6f61;
+        color: #fff;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: 0.3s ease;
+      }
+
+      .close-btn:hover {
+        background: #e85c50;
+        transform: scale(1.05);
+      }
+
+      /* Animações */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 10px #fff, 0 0 20px #ff6f61;
+        }
+        to {
+          text-shadow: 0 0 18px #fff, 0 0 45px #ff6f61;
+        }
+      }
+
+      /* Responsividade */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 3.4rem;
+        }
+        .msg {
+          font-size: 1.18rem;
+        }
+        .modal p {
+          font-size: 1.05rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 2.6rem;
+        }
+        .msg {
+          font-size: 1.05rem;
+        }
+        .modal {
+          padding: 22px 18px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Bom dia, Cléia</h1>
+
+      <p class="msg">
+        Hoje é mais uma quarta-feira como as outras não é?
+        <br /><br />
+        Claro que não. Espero que seu dia seja daqueles cansativos, mas que ao
+        final você se sinta satisfeita por tudo o que deu conta.
+      </p>
+
+      <button class="btn" id="openModal">Surpresa</button>
+
+      <p class="signature">._.. ...</p>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <p>
+          Às vezes o dia parece igual aos outros, mas sempre guarda alguma coisa
+          bonita para quem sabe observar os detalhes.
+          <br /><br />
+          E, se ninguém te disser hoje: cuidado com o Sol, ele tem inveja do teu
+          brilho.
+        </p>
+
+        <button class="close-btn" id="closeModal">Fechar</button>
+      </div>
+    </div>
+
+    <script>
+      const modalOverlay = document.getElementById("modalOverlay");
+      const openModal = document.getElementById("openModal");
+      const closeModal = document.getElementById("closeModal");
+
+      openModal.addEventListener("click", () => {
+        modalOverlay.style.display = "flex";
+      });
+
+      closeModal.addEventListener("click", () => {
+        modalOverlay.style.display = "none";
+      });
+
+      // Fechar ao clicar fora do modal
+      modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) {
+          modalOverlay.style.display = "none";
+        }
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

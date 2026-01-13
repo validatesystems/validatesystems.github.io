@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Um bilhete para você</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* Paleta fácil de ajustar */
+        --bg: #fff9f4;
+        --envelope: #e06b6b;
+        --envelope-dark: #c65656;
+        --flap: #d86262;
+        --note: #fffefa;
+        --note-lines: #f2eee7;
+        --accent: #8a2d2d;
+        --text: #2a1f1f;
+        --heart: #ff4d6d;
+        --shadow: rgba(0, 0, 0, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto,
+          Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      }
+
+      .page {
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 1.25rem;
+      }
+
+      .wrap {
+        width: min(540px, 92vw);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+      }
+
+      .title {
+        text-align: center;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+      }
+
+      .subtitle {
+        text-align: center;
+        max-width: 50ch;
+        color: #5b4c4c;
+        font-weight: 600;
+      }
+
+      /* Envelope container */
+      .envelope-scene {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        position: relative;
+        display: grid;
+        place-items: center;
+        perspective: 1000px;
+        user-select: none;
+      }
+
+      .envelope {
+        width: min(480px, 92vw);
+        aspect-ratio: 4 / 3;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        cursor: pointer;
+      }
+
+      .envelope:focus-visible {
+        outline: 3px solid #00000022;
+        outline-offset: 6px;
+        border-radius: 8px;
+      }
+
+      /* Corpo do envelope */
+      .body {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          var(--envelope) 0%,
+          var(--envelope-dark) 100%
+        );
+        border-radius: 12px;
+        box-shadow: 0 12px 28px var(--shadow);
+        overflow: hidden;
+      }
+
+      /* Aba superior (flap) */
+      .flap {
+        position: absolute;
+        inset: 0;
+        transform-origin: top center;
+        background: linear-gradient(
+          180deg,
+          var(--flap) 0%,
+          var(--envelope-dark) 100%
+        );
+        clip-path: polygon(0 0, 100% 0, 50% 55%);
+        transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        z-index: 4;
+      }
+
+      /* Vinco inferior para parecer envelope */
+      .bottom-fold {
+        position: absolute;
+        inset: 0;
+        clip-path: polygon(0 100%, 100% 100%, 50% 45%);
+        background: linear-gradient(
+          180deg,
+          var(--envelope-dark) 0%,
+          var(--envelope) 100%
+        );
+        z-index: 2;
+      }
+
+      /* Laterais (triângulos) */
+      .left-fold,
+      .right-fold {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        filter: brightness(0.95);
+      }
+      .left-fold {
+        clip-path: polygon(0 0, 40% 50%, 0 100%);
+        background: var(--envelope);
+      }
+      .right-fold {
+        clip-path: polygon(100% 0, 60% 50%, 100% 100%);
+        background: var(--envelope);
+      }
+
+      /* Coração lacre */
+      .seal {
+        position: absolute;
+        left: 50%;
+        top: 40%;
+        transform: translate(-50%, -50%);
+        width: 58px;
+        height: 58px;
+        background: var(--heart);
+        border-radius: 50%;
+        box-shadow: 0 6px 12px var(--shadow), inset 0 0 0 4px #ffffff88;
+        display: grid;
+        place-items: center;
+        z-index: 5;
+
+        /* NOVO */
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+      }
+
+      .seal::before {
+        content: "._.. ...";
+        font-size: 13px;
+        color: #fff;
+        transform: translateY(-1px);
+        filter: drop-shadow(0 1px 0 #ff5c7a);
+      }
+
+      /* Bilhete escondido inicialmente */
+      .note {
+        position: absolute;
+        left: 6%;
+        right: 6%;
+        bottom: 10%;
+        height: 58%;
+        background: var(--note);
+        border-radius: 10px;
+        box-shadow: 0 12px 24px var(--shadow);
+        padding: clamp(16px, 3.2vw, 24px);
+
+        /* NOVO: começa oculto, mas já dentro do envelope */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10%); /* levemente mais baixo, ainda dentro */
+
+        transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.5s ease;
+        z-index: 3;
+      }
+
+      /* Estado aberto: bilhete aparece e sobe um pouquinho */
+      .envelope.open .note {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-18%); /* sobe para "sair" do envelope */
+      }
+
+      /* Detalhe de linhas do bilhete */
+      .note::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 0 14%,
+          var(--note-lines) 14% 16%,
+          transparent 16% 30%,
+          var(--note-lines) 30% 32%,
+          transparent 32% 46%,
+          var(--note-lines) 46% 48%,
+          transparent 48% 62%,
+          var(--note-lines) 62% 64%,
+          transparent 64% 78%,
+          var(--note-lines) 78% 80%,
+          transparent 80% 100%
+        );
+        border-radius: 10px;
+        pointer-events: none;
+        opacity: 0.45;
+      }
+
+      .note-content {
+        position: relative;
+        z-index: 1;
+        max-height: 100%;
+        overflow-y: auto; /* se faltar espaço, permite rolar dentro do bilhete */
+      }
+      /* Títulos e textos do bilhete responsivos */
+      .note h2 {
+        margin: 0 0 0.35rem;
+        font-weight: 800;
+        color: var(--accent);
+        letter-spacing: 0.4px;
+        font-size: clamp(1.15rem, 3.8vw, 1.6rem);
+      }
+
+      .note p {
+        margin: 0.25rem 0 0;
+        font-size: clamp(0.95rem, 3.4vw, 1.1rem);
+        line-height: 1.5;
+        word-wrap: break-word;
+      }
+
+      /* Estado aberto */
+      .envelope.open .flap {
+        transform: rotateX(168deg);
+        box-shadow: 0 -6px 18px var(--shadow);
+      }
+
+      /* Quando o envelope abre, o selo desaparece */
+      .envelope.open .seal {
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-50%, -50%) scale(0.85);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+      }
+
+      /* Hover leve em telas maiores */
+      @media (hover: hover) {
+        .envelope:hover {
+          transform: translateY(-2px);
+        }
+        .envelope:hover .seal {
+          transform: translate(-50%, -50%) scale(1.04);
+        }
+      }
+
+      /* Responsividade extra em telas pequenas */
+      @media (max-width: 380px) {
+        .note {
+          left: 5%;
+          right: 5%;
+          bottom: 8%;
+          height: 60%;
+        }
+        .seal {
+          width: 52px;
+          height: 52px;
+        }
+      }
+
+      /* Rodapé */
+      .foot {
+        text-align: center;
+        font-size: 0.95rem;
+        color: #6a5a5a;
+      }
+      .hint {
+        display: inline-block;
+        padding: 0.4rem 0.7rem;
+        background: #ffffff80;
+        border-radius: 8px;
+        box-shadow: 0 6px 16px var(--shadow);
+        backdrop-filter: blur(4px);
+        border: 1px solid #ffffffcc;
+        font-weight: 600;
+      }
+
+      /* Botão reabrir */
+      .actions {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 0.25rem;
+        justify-content: center;
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        border-radius: 10px;
+        padding: 0.6rem 0.9rem;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(90deg, var(--accent), var(--envelope-dark));
+        cursor: pointer;
+        box-shadow: 0 8px 16px var(--shadow);
+        transition: transform 0.15s ease, filter 0.15s ease;
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn.secondary {
+        background: #ffffff;
+        color: var(--accent);
+        border: 2px solid #e8d8d8;
+      }
+
+      /* Acessibilidade: esconder texto de apoio visual */
+      .sr-only {
+        position: absolute !important;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        clip: rect(1px, 1px, 1px, 1px);
+        white-space: nowrap;
+        border: 0;
+        padding: 0;
+        margin: -1px;
+      }
+      @media (max-width: 360px) {
+        .note {
+          padding: 12px 14px;
+        }
+        .note h2 {
+          font-size: 1rem;
+        }
+        .note p {
+          font-size: 0.9rem;
+          line-height: 1.4;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <div class="wrap">
+        <h1 class="title">Para você, Cléia</h1>
+        <p class="subtitle">
+          Clique no envelope para abrir o bilhete. Eu guardei cada palavra com
+          carinho.
+        </p>
+
+        <section class="envelope-scene">
+          <div
+            class="envelope"
+            id="envelope"
+            role="button"
+            tabindex="0"
+            aria-label="Abrir bilhete"
+          >
+            <div class="body"></div>
+            <div class="flap" aria-hidden="true"></div>
+            <div class="left-fold" aria-hidden="true"></div>
+            <div class="right-fold" aria-hidden="true"></div>
+            <div class="bottom-fold" aria-hidden="true"></div>
+            <div class="seal" aria-hidden="true"></div>
+
+            <article class="note" aria-live="polite">
+              <div class="note-content">
+                <h2>Um bom dia especial</h2>
+                <p>
+                  Cléia, obrigado por existir. Nas coisas simples: um sorriso,
+                  um olhar, um “bom dia”, você faz o mundo ficar mais leve. É
+                  bom cruzar caminhos com pessoas que te mostram beleza em
+                  coisas simples da vida.
+                </p>
+                <p style="margin-top: 0.5rem">Com carinho, ._.. ...</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <div class="foot">
+          <span class="hint">Dica: toque novamente para fechar</span>
+          <div class="actions">
+            <button class="btn" id="toggleBtn">Abrir/fechar</button>
+            <button class="btn secondary" id="revealBtn">
+              Revelar mensagem
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const envelope = document.getElementById("envelope");
+      const toggleBtn = document.getElementById("toggleBtn");
+      const revealBtn = document.getElementById("revealBtn");
+
+      function toggleOpen() {
+        envelope.classList.toggle("open");
+      }
+
+      envelope.addEventListener("click", toggleOpen);
+      toggleBtn.addEventListener("click", toggleOpen);
+      revealBtn.addEventListener("click", () => envelope.classList.add("open"));
+
+      envelope.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleOpen();
+        }
+        if (e.key === "Escape") {
+          envelope.classList.remove("open");
+        }
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

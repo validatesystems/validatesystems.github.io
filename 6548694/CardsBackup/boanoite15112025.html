@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="dark light" />
+    <title>Boa noite de sábado</title>
+    <style>
+      :root {
+        --bg1: #020617; /* fundo bem escuro */
+        --bg2: #0b1220; /* azul noite */
+        --bg3: #1e293b; /* azul grafite */
+        --fg: #f9fafb; /* quase branco */
+        --muted: #cbd5f5; /* cinza azulado suave */
+        --accent: #a78bfa; /* lilás calmo */
+        --accent-soft: rgba(167, 139, 250, 0.16);
+        --card: rgba(15, 23, 42, 0.9);
+        --ring: 0 0 0 1px rgba(148, 163, 235, 0.4);
+        --shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--fg);
+        background: radial-gradient(
+            circle at top,
+            rgba(56, 189, 248, 0.16),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at bottom,
+            rgba(56, 78, 255, 0.18),
+            transparent 65%
+          ),
+          linear-gradient(160deg, var(--bg1), var(--bg2) 50%, var(--bg3));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .shell {
+        width: 100%;
+        max-width: 720px;
+        padding: 1px;
+        border-radius: 28px;
+        background: linear-gradient(
+          135deg,
+          rgba(167, 139, 250, 0.65),
+          rgba(59, 130, 246, 0.25),
+          rgba(15, 23, 42, 0.7)
+        );
+        box-shadow: var(--shadow);
+      }
+
+      .card {
+        position: relative;
+        padding: 24px 22px 26px;
+        border-radius: 26px;
+        background: var(--card);
+        backdrop-filter: blur(18px);
+        overflow: hidden;
+      }
+
+      .aura {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.55;
+        background: radial-gradient(
+            circle at top left,
+            rgba(248, 250, 252, 0.06),
+            transparent 70%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(59, 130, 246, 0.18),
+            transparent 70%
+          );
+        mix-blend-mode: screen;
+      }
+
+      .stars {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.4;
+        background-image: radial-gradient(
+          circle,
+          rgba(248, 250, 252, 0.6) 1px,
+          transparent 0
+        );
+        background-size: 3px 3px;
+        mask-image: radial-gradient(
+          circle at top,
+          black 0,
+          black 50%,
+          transparent 80%
+        );
+      }
+
+      .content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--muted);
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+      }
+
+      .chip span.emoji {
+        font-size: 1.1rem;
+      }
+
+      h1 {
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        margin-bottom: 10px;
+        letter-spacing: 0.02em;
+      }
+
+      .subtitle {
+        font-size: 0.95rem;
+        color: var(--muted);
+        margin-bottom: 18px;
+      }
+
+      .message {
+        font-size: 0.98rem;
+        line-height: 1.7;
+        margin-bottom: 16px;
+      }
+
+      .message p + p {
+        margin-top: 10px;
+      }
+
+      .closing {
+        margin-top: 10px;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+
+      .closing strong {
+        color: var(--fg);
+      }
+
+      .signature {
+        margin-top: 18px;
+        font-size: 0.9rem;
+        color: var(--muted);
+        opacity: 0.9;
+      }
+
+      .signature span {
+        display: inline-block;
+        transform-origin: left center;
+        animation: appear 0.8s ease-out forwards;
+        opacity: 0;
+      }
+
+      .signature span:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .signature span:nth-child(2) {
+        animation-delay: 0.35s;
+      }
+      .signature span:nth-child(3) {
+        animation-delay: 0.7s;
+      }
+
+      @keyframes appear {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .btn-row {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      .btn-ghost {
+        border-radius: 999px;
+        padding: 9px 16px;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        transition: transform 0.1s ease, opacity 0.15s ease;
+      }
+
+      .btn-ghost:hover {
+        opacity: 0.85;
+        transform: translateY(-1px);
+      }
+
+      @media (min-width: 640px) {
+        .card {
+          padding: 26px 26px 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <section class="card">
+        <div class="aura"></div>
+        <div class="stars"></div>
+
+        <div class="content">
+          <div class="chip">
+            <span class="emoji">🌙</span>
+            <span>Sábado à noite</span>
+          </div>
+
+          <h1>Boa noite, Cléia</h1>
+
+          <p class="subtitle">
+            Hoje, sábado, uma noite que poderia ser só mais uma. Mas, quando eu
+            penso em você, ela muda de jeito.
+          </p>
+
+          <div class="message">
+  <p>
+    Hoje, sábado, uma noite que poderia passar despercebida como qualquer outra.
+    Mas, quando penso em você, ela muda de temperatura. Fica mais calma, mais
+    lenta, mais bonita de um jeito simples.
+  </p>
+
+  <p>
+    Você tem esse efeito raro de transformar até o fim do dia em algo que faz
+    sentido. Mesmo cansada, mesmo com tanta coisa para segurar, mesmo com essa
+    sua forma serena de esconder o que sente para não pesar no mundo de ninguém,
+    você ainda ilumina o que toca.
+  </p>
+
+  <p>
+    E eu fico imaginando que, se pudesse escolher a sua noite de hoje, seria uma
+    em que o silêncio te abraça um pouco, em que tudo desacelera, em que o
+    coração encontra espaço para respirar sem pressa.
+  </p>
+
+  <p>
+    Uma noite em que você não precise ser forte para ninguém, nem administrar o
+    que não cabe agora. Só ser. No seu tempo. No seu ritmo.
+  </p>
+
+  <p>
+    Que este sábado termine traquilo para você, mesmo que o dia tenha sido longo.
+    Que a mente se aquiete, que o corpo descanse e que a alma encontre um canto
+    seguro para repousar por alguns instantes.
+  </p>
+</div>
+
+<p class="closing">
+  Boa noite. De verdade. Que esta noite seja, pelo menos um pouco, do jeito que
+  você merece.
+</p>
+
+<div class="signature">
+  <span>De longe, mas torcendo</span>
+  <span> por uma noite de sábado mais gentil</span>
+  <span> com você.</span>
+</div>
+
+<div class="btn-row">Feito com ❤️</div>
+<div class="btn-row">._.. ...</div>
+
+      </section>
+    </div>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

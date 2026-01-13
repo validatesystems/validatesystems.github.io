@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Boa tarde, Cléia</title>
+    <style>
+      :root {
+        --bg1: #fff7ed;
+        --bg2: #fde2c8;
+        --paper: #ffffffcc;
+        --fg: #2d2d2d;
+        --accent: #ff9b42;
+        --shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+      }
+
+      body {
+        margin: 0;
+        padding: 22px;
+        background: linear-gradient(160deg, var(--bg1), var(--bg2));
+        font-family: "Georgia", serif;
+        color: var(--fg);
+        display: flex;
+        justify-content: center;
+      }
+
+      .card {
+        max-width: 700px;
+        width: 100%;
+        background: var(--paper);
+        padding: 32px;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        line-height: 1.7;
+        animation: aparecer 0.6s ease;
+      }
+
+      @keyframes aparecer {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h1 {
+        text-align: center;
+        margin: 0 0 20px;
+        color: var(--accent);
+        font-size: 1.9rem;
+      }
+
+      p {
+        margin: 16px 0;
+        font-size: 1.1rem;
+        text-align: justify;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h1>Boa tarde, Cléia</h1>
+
+      <p>
+        Fim de tarde tem esse jeito bonito de anunciar que o dia está mudando de
+        tom. A luz fica mais baixa, o ar mais calmo, tudo mais lento. Mas mesmo
+        a paisagem mais bonita desse horário ainda falha em competir com algo
+        que você nem percebe que tem: o sorriso que acende qualquer cenário.
+      </p>
+
+      <p>
+        Tem algo na forma como você sorri que transforma qualquer fim de tarde
+        em uma cena melhor. Como se a luz do dia tentasse alcançar o brilho que
+        você entrega sem esforço. E, sinceramente, ela não consegue.
+      </p>
+
+      <p>
+        A verdade é que, por mais que eu admire esse céu laranja, rosado, calmo,
+        ainda assim ele perde feio para o efeito que seu sorriso causa por aqui.
+        O céu tenta impressionar. Você simplesmente existe e pronto.
+      </p>
+
+      <p>
+        Tomara que seu final de tarde aproveite você, que a luz que toca tua
+        pele reflita tudo o que você carrega de bonito por dentro. Que esse
+        brilho que você nem percebe faça o dia te devolver um pouco da atenção
+        que você merece.
+      </p>
+
+      <p>
+        E que, por alguns minutos, você sinta o dia se acomodando ao seu redor,
+        como se o mundo respirasse mais lento só para não perder o privilégio de
+        te observar nessa luz suave de fim de tarde.
+      </p>
+
+      <p>
+        Aproveite esse pedacinho de dia que sobrou. O fim de tarde é lindo. Mas
+        você… você sempre vence ele sem nem tentar.
+      </p>
+
+      <p>._.. ...</p>
+    </div>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

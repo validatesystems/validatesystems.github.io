@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boa Noite Especial</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: url("https://i.pinimg.com/736x/2a/52/a3/2a52a39806e84a502db951cf9e0488d5.jpg")
+          no-repeat center center fixed;
+        background-size: cover;
+        font-family: "Poppins", sans-serif;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-direction: column;
+        padding: 20px;
+        box-sizing: border-box;
+        animation: fadeIn 3s ease-in-out;
+        overflow: auto;
+      }
+
+      h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        text-shadow: 0 0 15px #ffd700;
+        animation: glow 2s infinite alternate;
+      }
+
+      p {
+        font-size: 1.4em;
+        max-width: 800px;
+        line-height: 1.8;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 20px 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      }
+
+      .stars {
+        font-size: 2em;
+        margin-top: 30px;
+        animation: twinkle 2s infinite alternate;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 10px #ffd700;
+        }
+        to {
+          text-shadow: 0 0 25px #ffdd55;
+        }
+      }
+
+      @keyframes twinkle {
+        from {
+          opacity: 0.5;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Responsividade */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2.2em;
+        }
+        p {
+          font-size: 1.1em;
+          padding: 15px 20px;
+        }
+        .stars {
+          font-size: 1.5em;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.8em;
+        }
+        p {
+          font-size: 1em;
+          line-height: 1.5;
+        }
+        .stars {
+          font-size: 1.2em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cléia, boa noite</h1>
+    <p>
+      Espero que seu dia tenha lhe deixado cansada de tantos momentos
+      descontraídos. Que a noite traga calma ao seu coração e sonhos tão doces
+      quanto o seu sorriso.<br />
+      Imagine um abraço silencioso que envolve sua alma e diz sem palavras:<br />
+      <strong>"estou aqui"</strong>.
+    </p>
+
+    <!-- <div class="stars">✨✨✨</div> -->
+    <p style="margin-top: 20px; font-size: 1em; opacity: 0.8">
+      Com carinho ._.. ...
+    </p>
+
+    <div class="stars">✨✨✨</div>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

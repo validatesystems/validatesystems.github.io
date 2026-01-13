@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Bom dia, Cléia</title>
+
+    <style>
+      :root {
+        --bg1: #f6faff;
+        --bg2: #e8f3ff;
+        --sun: rgba(255, 223, 137, 0.75);
+
+        --fg-light: #1a1a22;
+        --fg-dark: #f1f5f9;
+
+        --card-light: rgba(255, 255, 255, 0.82);
+        --card-dark: rgba(20, 20, 30, 0.78);
+
+        --muted-light: #6c7380;
+        --muted-dark: #b0b7c7;
+
+        --glass: blur(16px);
+        --transition: 0.35s ease;
+      }
+
+      html[data-theme="light"] {
+        --bg: linear-gradient(160deg, var(--bg1), var(--bg2));
+        --card: var(--card-light);
+        --fg: var(--fg-light);
+        --muted: var(--muted-light);
+      }
+
+      html[data-theme="dark"] {
+        --bg: linear-gradient(160deg, #0b1220, #05060d);
+        --card: var(--card-dark);
+        --fg: var(--fg-dark);
+        --muted: var(--muted-dark);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 22px;
+        min-height: 100vh;
+        background: var(--bg);
+        font-family: "Inter", system-ui, sans-serif;
+        color: var(--fg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background var(--transition), color var(--transition);
+        position: relative;
+        overflow: auto;
+      }
+
+      /* Efeito de sol suave */
+      .sun-glow {
+        position: absolute;
+        top: -140px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 380px;
+        height: 380px;
+        background: radial-gradient(circle, var(--sun), transparent 70%);
+        filter: blur(40px);
+        opacity: 0.58;
+        pointer-events: none;
+      }
+
+      .toggle-theme {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        background: var(--card);
+        border-radius: 999px;
+        border: 1px solid rgba(124, 58, 237, 0.25);
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--fg);
+        backdrop-filter: var(--glass);
+        transition: var(--transition);
+        z-index: 50;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 480px;
+        background: var(--card);
+        border-radius: 24px;
+        padding: 28px 24px;
+        backdrop-filter: var(--glass);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+        animation: fadeIn 1s ease forwards;
+        opacity: 0;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      h1 {
+        font-size: 1.7rem;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+
+      p {
+        font-size: 1.08rem;
+        line-height: 1.7;
+        margin-bottom: 16px;
+        text-align: justify;
+      }
+
+      .signature {
+        margin-top: 18px;
+        text-align: right;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="sun-glow"></div>
+
+    <button class="toggle-theme" id="themeToggle">🌓 tema</button>
+
+    <div class="container">
+      <h1>Bom dia, Cléia</h1>
+
+      <p>
+        Estou passando por aqui novamente para você saber que continuo te
+        dedicando pensamentos bons logo cedo.
+      </p>
+      <p>
+        Só pra te lembrar, essas páginas só existem por sua causa, você já
+        deveria saber disso.
+      </p>
+      <p>
+        Então, nesta manhã de novembro em que começo com alguém especial em
+        mente, desejo que seu dia seja leve, que seu sorrizo seja a sua
+        principal linguagem.
+      </p>
+
+      <p>
+        Aliás, já falei isso antes, mas quando você sorri, você brilha mais. Não
+        é exagero meu, simplesmente é verdade.
+      </p>
+
+      <p>Seu brilho é encantador e contagiante.</p>
+
+      <p>
+        Ontem você comentou que não é uma boa pessoa, quando eu disse que sua
+        mãe é. "Quem não é uma boa pessoa é a filha dela", você disse.
+      </p>
+
+      <p>
+        Se você disse isso de forma sincera, preciso te dizer que talvez você
+        esteja sendo dura demais consigo mesma.
+      </p>
+
+      <p>Porque, do lugar de onde eu te vejo, você é exatamente o contrário.</p>
+
+      <p>
+        Você trata as pessoas bem, tem uma energia leve, não vive reclamando,
+        não faz drama, não faz fofoca, é responsável, dedicada… e tem uma
+        gentileza que aparece até quando você não percebe.
+      </p>
+
+      <p>Já percebi que és uma mãe chata. Muito bem, tem que ser mesmo.</p>
+
+      <p>
+        Então, talvez o que você chama de “não ser uma boa pessoa” seja só um
+        excesso de cobrança, uma visão injusta sobre você mesma, ou alguém levou
+        você a achar isso de si própria.
+      </p>
+
+      <p>
+        Pessoas realmente boas costumam achar que não são suficientes. E você
+        tem mais bondade no jeito de existir do que imagina.
+      </p>
+
+      <p>
+        Você não é perfeita. Ninguém é. Mas isso não te torna uma pessoa ruim.
+      </p>
+
+      <p>
+        Acredito que por ser tão boa, você acaba esquecendo de si mesma às
+        vezes. Investir demais para provar o contrário a faz esquecer de quem
+        você é de verdade.
+      </p>
+
+      <p>
+        Consigo ver que você tem defeitos, como todo mundo. Estranho seria se
+        não tivesse. Mas não consigo ignorar seu brilho.
+      </p>
+
+      <p>
+        De verdade, espero que quem conviva com você consiga enxergar o que eu
+        vejo.
+      </p>
+      <p>
+        Se eu pudesse te emprestar meu olhos, entenderia o que estou afirmando.
+      </p>
+
+      <p>Você é bem melhor do que pensa.</p>
+
+      <p>Bom dia, com todo carinho e 💜.</p>
+
+      <p class="signature">._.. ...</p>
+    </div>
+
+    <script>
+      const toggle = document.getElementById("themeToggle");
+      const root = document.documentElement;
+
+      toggle.addEventListener("click", () => {
+        const current = root.getAttribute("data-theme") || "light";
+        const next = current === "light" ? "dark" : "light";
+        root.setAttribute("data-theme", next);
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>
