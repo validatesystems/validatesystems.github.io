@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Carta narrada pelo silêncio</title>
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <style>
+      :root {
+        --bg1: #f8efff;
+        --bg2: #e7f3ff;
+        --bg3: #ffe9f1;
+        --fg: #17172a;
+        --muted: #6b6b83;
+        --accent: #7c3aed;
+        --accent-2: #06b6d4;
+        --card: rgba(255, 255, 255, 0.86);
+        --glass: blur(10px);
+        --blur-amt: 10px;
+        --r: 120px; /* raio da lanterna */
+      }
+      .eletrico {
+        --bg1: #0b1020;
+        --bg2: #141a39;
+        --bg3: #2a1847;
+        --fg: #eef0ff;
+        --muted: #aab0ff;
+        --accent: #22d3ee;
+        --accent-2: #a78bfa;
+        --card: rgba(20, 20, 40, 0.92);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, "Noto Sans";
+        color: var(--fg);
+        background: linear-gradient(
+          -45deg,
+          var(--bg1),
+          var(--bg2),
+          var(--bg3),
+          var(--bg2)
+        );
+        background-size: 400% 400%;
+        animation: bgShift 18s ease infinite;
+        -webkit-tap-highlight-color: transparent;
+      }
+      @keyframes bgShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .page {
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: clamp(16px, 4vw, 28px);
+      }
+      .card {
+        width: min(760px, 92vw);
+        background: var(--card);
+        -webkit-backdrop-filter: var(--glass);
+        backdrop-filter: var(--glass);
+        border-radius: 22px;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+        padding: clamp(18px, 3.6vw, 26px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .title {
+        margin: 0 0 10px;
+        font-size: clamp(22px, 5vw, 32px);
+        font-weight: 900;
+        line-height: 1.1;
+        text-wrap: balance;
+      }
+      .title::after {
+        content: "";
+        display: block;
+        width: 64px;
+        height: 4px;
+        border-radius: 999px;
+        margin-top: 8px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      }
+      .subtitle {
+        margin: 0 0 12px;
+        font-size: clamp(14px, 2.6vw, 16px);
+        color: var(--muted);
+      }
+
+      /* ----- Área de leitura com lanterna ----- */
+      .reader {
+        position: relative;
+        /* permite rolar na vertical e ainda enviar eventos de toque */
+        touch-action: pan-y;
+      }
+      /* camada de base (desfocada) */
+      .content {
+        filter: blur(var(--blur-amt));
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .content p {
+        margin: 0 0 0.9em;
+        line-height: 1.7;
+        font-size: clamp(15px, 3.2vw, 18px);
+      }
+
+      /* camada revelada (nítida), clonada via JS e mascarada por radial-gradient */
+      #reveal {
+        position: absolute;
+        inset: 0;
+        pointer-events: none; /* deixa os toques passarem para a base */
+        /* máscara: só o círculo deixa ver a camada nítida */
+        -webkit-mask: radial-gradient(
+          circle var(--r) at var(--cx, -9999px) var(--cy, -9999px),
+          #000 0,
+          #000 60%,
+          transparent 61%
+        );
+        mask: radial-gradient(
+          circle var(--r) at var(--cx, -9999px) var(--cy, -9999px),
+          #000 0,
+          #000 60%,
+          transparent 61%
+        );
+        /* ajuda a manter a animação suave em iOS */
+        will-change: transform, -webkit-mask, mask;
+        transform: translateZ(0);
+      }
+
+      /* Quando acessibilidade está ON (mostrar tudo), removemos o blur da base e escondemos a máscara */
+      .show-all .content {
+        filter: none;
+      }
+      .show-all #reveal {
+        display: none;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 12px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-weight: 700;
+        cursor: pointer;
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        transition: transform 0.08s ease, filter 0.2s ease;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .btn:active {
+        transform: translateY(0) scale(0.98);
+      }
+      .btn.ghost {
+        background: rgba(255, 255, 255, 0.75);
+        color: var(--fg);
+      }
+
+      .toolbar {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        gap: 8px;
+        z-index: 2;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        body {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar">
+      <button class="btn ghost" id="toggleTheme" type="button">
+        Alternar tema
+      </button>
+      <button
+        class="btn ghost"
+        id="toggleAll"
+        type="button"
+        title="Acessibilidade: mostrar/ocultar tudo"
+      >
+        Mostrar texto
+      </button>
+    </div>
+
+    <main class="page">
+      <article class="card" aria-live="polite">
+        <h1 class="title">Sabe, falar não é tão simples…</h1>
+        <p class="subtitle">
+          Uma carta narrada pelo silêncio — passe o dedo para revelar
+        </p>
+
+        <!-- Reader: base desfocada + camada nítida (clonada) -->
+        <div class="reader" id="reader">
+          <div class="content" id="content">
+            <p>
+              <strong
+                >Sabe, falar não é tão simples como pensar em você.</strong
+              >
+            </p>
+            <p>
+              Eu sou o silêncio — esse lugar onde seu nome chega primeiro. Aqui,
+              não preciso de vírgulas nem de coragem: basta existir, e você
+              acontece inteira.
+            </p>
+            <p>
+              Os dias tentam falar de você: o sol ensaia seu riso; a chuva
+              repete seus passos; e a noite… a noite insiste em lembrar. Mas
+              nenhum deles acerta a sua medida.
+            </p>
+            <p>
+              O tempo, meu velho amigo, dobra minutos para me ajudar: alonga as
+              horas, encurta a distância, como se pudesse explicar por que
+              certas presenças ficam mesmo quando estão distantes fisicamente.
+            </p>
+            <p>
+              A saudade — essa falante incorrigível — vive tentando traduzir
+              você. Só que a voz dela embarga, tropeça, e ainda assim não
+              desiste.
+            </p>
+            <p>
+              É que algumas pessoas não são assunto; são atmosfera. E eu, o
+              silêncio, aprendi que você soa melhor quando não te pronuncio.
+            </p>
+            <p>
+              Então fico aqui, guardião do que não cabe em frase. Pensar em você
+              é música sem som. Chamar seu nome... é desafinar a melodia
+              perfeita..
+            </p>
+          </div>
+          <!-- camada nítida será clonada dentro deste div -->
+          <div id="reveal" aria-hidden="true"></div>
+        </div>
+
+        <div class="actions">
+          <button
+            id="openComment"
+            class="btn-comment"
+            aria-label="Abrir comentário"
+          >
+            💬 Comentar
+          </button>
+
+          <button class="btn" id="copyBtn" type="button">Copiar</button>
+          <button class="btn" id="okBtn" type="button">Sair ✨</button>
+        </div>
+      </article>
+      <footer>Developed with 💜 by ._.. ...</footer>
+    </main>
+
+    <script>
+      (function () {
+        const $ = (s) => document.querySelector(s);
+        const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+        const body = document.body;
+        const reader = $("#reader");
+        const content = $("#content");
+        const reveal = $("#reveal");
+        const btnTheme = $("#toggleTheme");
+        const btnToggleAll = $("#toggleAll");
+        const btnCopy = $("#copyBtn");
+        const btnOk = $("#okBtn");
+
+        /* ===== Tema ===== */
+        const THEME_KEY = "theme.mode";
+        function applyTheme(mode) {
+          body.classList.toggle("eletrico", mode === "eletrico");
+          try {
+            localStorage.setItem(THEME_KEY, mode);
+          } catch {}
+        }
+        applyTheme(localStorage.getItem(THEME_KEY) || "acustico");
+        btnTheme?.addEventListener("click", () => {
+          const on = body.classList.contains("eletrico");
+          applyTheme(on ? "acustico" : "eletrico");
+        });
+
+        /* ===== Clona conteúdo nítido dentro do #reveal ===== */
+        function cloneClearLayer() {
+          reveal.innerHTML = ""; // limpa
+          const clone = content.cloneNode(true);
+          clone.removeAttribute("id");
+          clone.style.filter = "none"; // sem blur na camada de cima
+          reveal.appendChild(clone);
+        }
+        cloneClearLayer();
+
+        /* ===== Lanterna de leitura ===== */
+        let pointerActive = false;
+
+        function setMaskPosition(clientX, clientY) {
+          const rect = reader.getBoundingClientRect();
+          // limita às bordas do reader
+          const x =
+            Math.max(rect.left, Math.min(clientX, rect.right)) - rect.left;
+          const y =
+            Math.max(rect.top, Math.min(clientY, rect.bottom)) - rect.top;
+          // define variáveis CSS em px relativas ao #reveal
+          reveal.style.setProperty("--cx", x + "px");
+          reveal.style.setProperty("--cy", y + "px");
+        }
+
+        // --- Pointer Events (desktop, Android modernos, iOS 13+) ---
+        reader.addEventListener("pointermove", (ev) => {
+          if (ev.pointerType === "mouse" || pointerActive) {
+            setMaskPosition(ev.clientX, ev.clientY);
+          }
+        });
+
+        reader.addEventListener("pointerdown", (ev) => {
+          pointerActive = true;
+          reader.setPointerCapture?.(ev.pointerId);
+          setMaskPosition(ev.clientX, ev.clientY);
+        });
+
+        function hideMask() {
+          reveal.style.setProperty("--cx", "-9999px");
+          reveal.style.setProperty("--cy", "-9999px");
+        }
+
+        function endPointer() {
+          if (!pointerActive) return;
+          pointerActive = false;
+          hideMask();
+          // Não dependemos de pointerId aqui (robusto p/ iOS)
+          try {
+            // soltar captura se houver
+            // (não temos o id neste escopo, então ignoramos)
+          } catch {}
+        }
+
+        reader.addEventListener("pointerup", endPointer);
+        reader.addEventListener("pointercancel", endPointer);
+        reader.addEventListener("pointerleave", (ev) => {
+          if (ev.pointerType === "mouse" && !pointerActive) {
+            hideMask();
+          }
+        });
+
+        // --- Fallback Touch (iOS e navegadores que priorizam TouchEvents) ---
+        function touchToClient(ev) {
+          const t = ev.touches[0] || ev.changedTouches?.[0];
+          if (!t) return null;
+          return { x: t.clientX, y: t.clientY };
+        }
+
+        reader.addEventListener(
+          "touchstart",
+          (ev) => {
+            const p = touchToClient(ev);
+            if (!p) return;
+            pointerActive = true;
+            setMaskPosition(p.x, p.y);
+          },
+          { passive: true }
+        );
+
+        reader.addEventListener(
+          "touchmove",
+          (ev) => {
+            if (!pointerActive) return;
+            const p = touchToClient(ev);
+            if (!p) return;
+            setMaskPosition(p.x, p.y);
+          },
+          { passive: true }
+        );
+
+        reader.addEventListener(
+          "touchend",
+          () => {
+            endPointer();
+          },
+          { passive: true }
+        );
+
+        reader.addEventListener(
+          "touchcancel",
+          () => {
+            endPointer();
+          },
+          { passive: true }
+        );
+
+        // Redimensionamento mantém alinhamento
+        window.addEventListener("resize", () => {
+          hideMask();
+          // Recria a camada (caso quebre fluxo/linhas em layouts diferentes)
+          cloneClearLayer();
+        });
+
+        /* ===== Acessibilidade: mostrar/ocultar tudo ===== */
+        let showAll = false;
+        function setShowAll(state) {
+          showAll = state;
+          body.classList.toggle("show-all", showAll);
+          btnToggleAll.textContent = showAll
+            ? "Ocultar efeito"
+            : "Mostrar texto";
+        }
+        btnToggleAll?.addEventListener("click", () => setShowAll(!showAll));
+
+        /* ===== Botões ===== */
+        btnCopy?.addEventListener("click", async () => {
+          const text = $$("#content p")
+            .map((p) => p.innerText)
+            .join("\n\n");
+          try {
+            if (navigator.clipboard?.writeText)
+              await navigator.clipboard.writeText(text);
+            else {
+              const ta = document.createElement("textarea");
+              ta.value = text;
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand("copy");
+              ta.remove();
+            }
+            const original = btnCopy.textContent;
+            btnCopy.textContent = "Copiado ✅";
+            setTimeout(() => (btnCopy.textContent = original), 1800);
+          } catch {
+            alert("Não foi possível copiar. Selecione o texto manualmente. 🙏");
+          }
+        });
+
+        /* ===== OK -> redireciona para a página inicial ===== */
+        btnOk?.addEventListener("click", () => {
+          window.location.href =
+            "https://validatesystems.github.io/6548694/index.html";
+        });
+      })();
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

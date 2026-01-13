@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Domingos com Você! ✨</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        text-align: center;
+        background: linear-gradient(135deg, #a8dadc 0%, #457b9d 100%);
+        color: #f1faee;
+        overflow: hidden;
+      }
+
+      #container {
+        padding: 30px;
+        margin: 20px;
+        border-radius: 25px;
+        background-color: rgba(29, 53, 87, 0.85);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        max-width: 90%;
+        transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+      }
+
+      #container:active {
+        transform: scale(1.05);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      h1 {
+        font-size: 1.8em;
+        margin-bottom: 5px;
+        color: #e63946;
+      }
+
+      h2 {
+        font-size: 1em;
+        margin-top: 0;
+        font-weight: 300;
+      }
+
+      #mensagem {
+        font-size: 1.5em;
+        margin: 20px 0;
+        font-weight: 500;
+        min-height: 100px;
+      }
+
+      #contador {
+        font-size: 0.95em;
+        color: #f1faee;
+        margin-top: 10px;
+        opacity: 0.85;
+      }
+
+      #instrucao {
+        font-size: 0.9em;
+        color: #a8dadc;
+        margin-top: 15px;
+        animation: pulse 2s infinite;
+      }
+
+      #assinatura {
+        margin-top: 30px;
+        font-style: italic;
+        font-size: 1.1em;
+        color: #f1faee;
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 0.7;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.7;
+        }
+      }
+
+      .particle {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background-color: #ffc300;
+        border-radius: 50%;
+        opacity: 0;
+        pointer-events: none;
+        animation: fadeInOut 2s ease-out forwards;
+      }
+
+      @keyframes fadeInOut {
+        0% {
+          transform: scale(0);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.5);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(0);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h1>Domingos com Você!</h1>
+      <h2>
+        Por ser uma pessoa <strong>muito especial</strong> (e hoje ser domingo).
+      </h2>
+
+      <p id="mensagem">
+        Toque aqui para receber a sua dose de otimismo de domingo!
+      </p>
+
+      <p id="contador"></p>
+
+      <p id="instrucao">
+        (Toque/Clique a qualquer momento para uma nova mensagem)
+      </p>
+
+      <p id="assinatura">Com todo meu carinho.</p>
+      <p id="assinatura">._.. ...</p>
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
+    </div>
+
+    <script>
+      const mensagens = [
+        "✨ Seu sorriso tem a audácia de transformar qualquer domingo comum em feriado nacional de bom humor.",
+        "☕ Domingo é recarga oficial: de energia, de paciência e do café que te transforma em gente de novo.",
+        "☀️ Nem todo desafio é fácil, mas com seu jeito, até o caos se rende e dá risada junto.",
+        "💖 O mundo fica mais interessante quando você aparece — como se o universo desse um sorrisinho cúmplice só pra você.",
+        "🌱 Resistir é sua arte: sobreviver à rotina e ainda arrumar tempo pra fazer piada com ela.",
+        "🌟 Domingo com você é tipo conversa boa: começa leve, acaba com risada e deixa saudade.",
+        "🌈 Sua magia é essa mistura de resiliência, sensatez e brilho, que faz até o caos pedir pra tirar uma selfie contigo.",
+        "🤗 Enviando um abraço digital, mas do tipo que vem com uma risada e um 'e eu ainda tento ser uma pessoa séria!' embutido.",
+        "⚓ Que o domingo te mantenha ancorada naquilo que te faz bem e longe de qualquer dúvida.",
+        "⏳ Aproveita o agora, do jeitinho Cléia: com café na mão, humor no bolso e uma resposta pronta pra vida.",
+        "Se eu fosse o universo, tornaria todos os dias domingos pra garantir que todo mundo tivesse tempo de rir como você.” ✨",
+      ];
+
+      let indiceAtual = 0;
+      const total = mensagens.length;
+
+      const container = document.getElementById("container");
+      const mensagem = document.getElementById("mensagem");
+      const contador = document.getElementById("contador");
+      const instrucao = document.getElementById("instrucao");
+
+      function atualizarContador() {
+        contador.textContent = `Mensagem ${indiceAtual + 1} de ${total}`;
+      }
+
+      function gerarParticulas(x, y) {
+        const numParticulas = 8;
+        for (let i = 0; i < numParticulas; i++) {
+          const particle = document.createElement("div");
+          particle.className = "particle";
+          const startX = x + (Math.random() - 0.5) * 10;
+          const startY = y + (Math.random() - 0.5) * 10;
+          particle.style.left = `${startX}px`;
+          particle.style.top = `${startY}px`;
+          document.body.appendChild(particle);
+          setTimeout(() => particle.remove(), 2000);
+        }
+      }
+
+      function exibirMensagem(event) {
+        mensagem.innerHTML = `<span style="opacity:0; animation: fadeIn 0.8s forwards;">${mensagens[indiceAtual]}</span>`;
+        atualizarContador();
+        instrucao.textContent =
+          indiceAtual < total - 1
+            ? "Toque para a próxima mensagem."
+            : "Última mensagem! Toque para recomeçar.";
+
+        const rect = container.getBoundingClientRect();
+        let touchX =
+          event.clientX ||
+          (event.touches ? event.touches[0].clientX : window.innerWidth / 2);
+        let touchY =
+          event.clientY ||
+          (event.touches ? event.touches[0].clientY : window.innerHeight / 2);
+        gerarParticulas(touchX, touchY);
+
+        indiceAtual = (indiceAtual + 1) % total;
+      }
+
+      const styleSheet = document.styleSheets[0];
+      styleSheet.insertRule(
+        `@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }`,
+        styleSheet.cssRules.length
+      );
+
+      container.addEventListener("click", exibirMensagem);
+      container.addEventListener("touchstart", exibirMensagem);
+
+      window.onload = () => {
+        mensagem.innerHTML =
+          "Toque aqui para receber a sua dose de otimismo de domingo!";
+        atualizarContador();
+      };
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Presença</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet" />
+
+    <style>
+      :root {
+        --bg: #f6f7fb;
+        --bg2: #ffffff;
+        --card: rgba(255, 255, 255, 0.86);
+        --text: #0f172a;
+        --muted: rgba(15, 23, 42, 0.62);
+        --border: rgba(15, 23, 42, 0.12);
+        --shadow: 0 18px 60px rgba(2, 6, 23, 0.1);
+        --ring: rgba(59, 130, 246, 0.35);
+
+        --accent: #2563eb;
+        --ok: #16a34a;
+        --warn: #f59e0b;
+
+        --radius: 18px;
+      }
+
+      [data-theme="dark"] {
+        --bg: #070a14;
+        --bg2: #0b1022;
+        --card: rgba(17, 25, 46, 0.78);
+        --text: #eef2ff;
+        --muted: rgba(238, 242, 255, 0.68);
+        --border: rgba(148, 163, 184, 0.22);
+        --shadow: 0 18px 60px rgba(0, 0, 0, 0.5);
+        --ring: rgba(147, 197, 253, 0.32);
+
+        --accent: #60a5fa;
+        --ok: #22c55e;
+        --warn: #fbbf24;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: "DM Sans", system-ui, -apple-system, Segoe UI, Roboto,
+          Arial, sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            1200px 700px at 10% 10%,
+            rgba(37, 99, 235, 0.14),
+            transparent 55%
+          ),
+          radial-gradient(
+            900px 520px at 90% 20%,
+            rgba(245, 158, 11, 0.1),
+            transparent 60%
+          ),
+          linear-gradient(180deg, var(--bg), var(--bg2));
+      }
+
+      .wrap {
+        min-height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 22px 14px;
+      }
+
+      .card {
+        width: min(980px, 100%);
+        background: var(--card);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        border-radius: var(--radius);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+      }
+
+      .topbar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .title {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        margin: 4px 0 0;
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-weight: 400;
+      }
+
+      .left {
+        min-width: 0;
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .btn {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.45);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 10px 12px;
+        font-weight: 600;
+        font-size: 0.92rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: transform 0.12s ease, background 0.12s ease,
+          border-color 0.12s ease;
+      }
+
+      [data-theme="dark"] .btn {
+        background: rgba(15, 23, 42, 0.36);
+      }
+
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 4px var(--ring);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.42);
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text);
+        user-select: none;
+        white-space: nowrap;
+      }
+
+      [data-theme="dark"] .pill {
+        background: rgba(15, 23, 42, 0.32);
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--warn);
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+        transition: background 0.18s ease;
+      }
+
+      .dot.playing {
+        background: var(--ok);
+        animation: pulse 1.25s infinite ease-in-out;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+        }
+        50% {
+          box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.14);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+        }
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .img-box {
+        border-radius: calc(var(--radius) - 6px);
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.35);
+        overflow: hidden;
+      }
+
+      [data-theme="dark"] .img-box {
+        background: rgba(2, 6, 23, 0.2);
+      }
+
+      .img-box img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .signature {
+        padding: 18px 16px 20px;
+        border-top: 1px solid var(--border);
+      }
+
+      .signature-line {
+        height: 1px;
+        background: var(--border);
+        width: min(420px, 100%);
+      }
+
+      .hint {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      @media (max-width: 520px) {
+        .topbar {
+          padding: 14px 12px;
+        }
+        .content {
+          padding: 12px;
+        }
+        .title {
+          font-size: 1rem;
+        }
+        .actions {
+          gap: 8px;
+        }
+        .btn,
+        .pill {
+          padding: 9px 11px;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <main class="card" role="main">
+        <header class="topbar">
+          <div class="left">
+            <h1 class="title" id="imgTitle">Presença</h1>
+            <p class="subtitle">Tem presença que fica aqui dentro.</p>
+          </div>
+
+          <div class="actions">
+            <div class="pill" id="audioStatus" aria-live="polite">
+              <span class="dot" id="audioDot" aria-hidden="true"></span>
+              <span id="audioText">Áudio: iniciando</span>
+            </div>
+
+            <button
+              class="btn"
+              id="btnMute"
+              type="button"
+              aria-pressed="false"
+              title="Ativar ou desativar áudio">
+              <span aria-hidden="true">🔊</span>
+              <span id="btnMuteText">Ouvir</span>
+            </button>
+
+            <button
+              class="btn"
+              id="btnTheme"
+              type="button"
+              title="Alternar tema">
+              <span aria-hidden="true">🌓</span>
+              <span id="btnThemeText">Tema</span>
+            </button>
+          </div>
+        </header>
+
+        <section class="content">
+          <div class="img-box" role="group" aria-labelledby="imgTitle">
+            <img
+              src="./img/presenca_20260108/presenca_20260108.jpg"
+              alt="Imagem exibida"
+              loading="eager" />
+          </div>
+        </section>
+
+        <footer class="signature">
+          <div class="signature-line" aria-hidden="true"></div>
+          <p class="hint">._.. ...</p>
+        </footer>
+      </main>
+    </div>
+
+    <!-- Áudio -->
+    <audio id="bgAudio" preload="auto" playsinline>
+      <source
+        src="./audio/presenca_20260108/presenca_20260108.mp3"
+        type="audio/mpeg" />
+      Seu navegador não suporta áudio.
+    </audio>
+
+    <script>
+      (function () {
+        "use strict";
+
+        const els = {
+          root: document.documentElement,
+          audio: document.getElementById("bgAudio"),
+          audioDot: document.getElementById("audioDot"),
+          audioText: document.getElementById("audioText"),
+          audioStatus: document.getElementById("audioStatus"),
+          btnMute: document.getElementById("btnMute"),
+          btnMuteText: document.getElementById("btnMuteText"),
+          btnTheme: document.getElementById("btnTheme"),
+          btnThemeText: document.getElementById("btnThemeText"),
+        };
+
+        const THEME_KEY = "imgAudio.theme.v1";
+
+        const VOLUME_DESKTOP = 0.4; // ajuste aqui
+        const VOLUME_MOBILE = 0.24; // ajuste aqui
+
+        function isMobileDevice() {
+          try {
+            if (window.matchMedia) {
+              const coarse = window.matchMedia("(pointer: coarse)").matches;
+              const noHover = window.matchMedia("(hover: none)").matches;
+              if (coarse && noHover) return true;
+            }
+          } catch {}
+
+          return window.innerWidth <= 520;
+        }
+
+        function getTargetVolume() {
+          return isMobileDevice() ? VOLUME_MOBILE : VOLUME_DESKTOP;
+        }
+
+        function prefersDarkNow() {
+          try {
+            return (
+              window.matchMedia &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches
+            );
+          } catch {
+            return false;
+          }
+        }
+
+        function applyTheme(theme) {
+          els.root.setAttribute("data-theme", theme);
+          try {
+            localStorage.setItem(THEME_KEY, theme);
+          } catch {}
+        }
+
+        function initTheme() {
+          let saved = null;
+          try {
+            saved = localStorage.getItem(THEME_KEY);
+          } catch {}
+          if (saved === "light" || saved === "dark") applyTheme(saved);
+          else applyTheme(prefersDarkNow() ? "dark" : "light");
+        }
+
+        function setStatus(state) {
+          const map = {
+            playing: "Áudio: em execução",
+            paused: "Áudio: pausado",
+            muted: "Áudio: mudo",
+            blocked: "Áudio: toque para iniciar",
+            loading: "Áudio: iniciando",
+          };
+
+          els.audioText.textContent = map[state] || "Áudio: status";
+          els.audioDot.classList.toggle("playing", state === "playing");
+
+          if (
+            state === "muted" ||
+            state === "paused" ||
+            state === "blocked" ||
+            state === "loading"
+          ) {
+            els.audioDot.style.background = "var(--warn)";
+          } else {
+            els.audioDot.style.background = "";
+          }
+        }
+
+        function updateMuteButton() {
+          const isMuted = els.audio.muted === true;
+          els.btnMute.setAttribute("aria-pressed", String(isMuted));
+          els.btnMuteText.textContent = isMuted ? "Mudo" : "Ouvir";
+          els.btnMute.querySelector("span[aria-hidden='true']").textContent =
+            isMuted ? "🔇" : "🔊";
+          setStatus(
+            isMuted ? "muted" : els.audio.paused ? "paused" : "playing"
+          );
+        }
+
+        async function tryAutoplay() {
+          setStatus("loading");
+
+          const targetVol = getTargetVolume();
+
+          els.audio.muted = false;
+          els.audio.volume = 0;
+
+          try {
+            await els.audio.play();
+            fadeInAudio(targetVol);
+            setStatus("playing");
+          } catch (err) {
+            setStatus("blocked");
+          } finally {
+            updateMuteButton();
+          }
+        }
+
+        function bindAudioEvents() {
+          els.audio.addEventListener("play", () => {
+            if (!els.audio.muted) setStatus("playing");
+          });
+
+          els.audio.addEventListener("pause", () => {
+            if (els.audio.muted) setStatus("muted");
+            else setStatus("paused");
+          });
+
+          els.audio.addEventListener("ended", () => {
+            if (els.audio.muted) setStatus("muted");
+            else setStatus("paused");
+          });
+
+          els.audio.addEventListener("volumechange", () => {
+            updateMuteButton();
+          });
+
+          const resume = async () => {
+            if (!els.audio.paused) return;
+            if (els.audio.muted) return;
+
+            const targetVol = getTargetVolume();
+            els.audio.volume = 0;
+
+            try {
+              await els.audio.play();
+              fadeInAudio(targetVol);
+              setStatus("playing");
+            } catch {
+              setStatus("blocked");
+            } finally {
+              updateMuteButton();
+            }
+          };
+
+          window.addEventListener("pointerdown", resume, { passive: true });
+          window.addEventListener("keydown", (e) => {
+            const k = String(e.key || "").toLowerCase();
+            if (k === "enter" || k === " " || k === "spacebar") resume();
+          });
+        }
+
+        function fadeInAudio(target, step = 0.02, interval = 120) {
+          const t = typeof target === "number" ? target : getTargetVolume();
+
+          els.audio.volume = 0;
+          let v = 0;
+
+          const fade = setInterval(() => {
+            v += step;
+            if (v >= t) {
+              els.audio.volume = t;
+              clearInterval(fade);
+            } else {
+              els.audio.volume = v;
+            }
+          }, interval);
+        }
+
+        function bindUI() {
+          els.btnMute.addEventListener("click", async () => {
+            const goingMuted = !els.audio.muted;
+
+            els.audio.muted = goingMuted;
+
+            if (!goingMuted) {
+              try {
+                await els.audio.play();
+                setStatus("playing");
+              } catch {
+                setStatus("blocked");
+              }
+            } else {
+              try {
+                els.audio.pause();
+              } catch {}
+              setStatus("muted");
+            }
+
+            updateMuteButton();
+          });
+
+          els.btnTheme.addEventListener("click", () => {
+            const current =
+              els.root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+            applyTheme(current === "dark" ? "light" : "dark");
+          });
+        }
+
+        initTheme();
+        bindAudioEvents();
+        bindUI();
+        updateMuteButton();
+        tryAutoplay();
+      })();
+    </script>
+
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

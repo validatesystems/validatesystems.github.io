@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recado</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Homemade+Apple&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "DM Sans", sans-serif;
+        background: linear-gradient(160deg, #0f172a, #1e293b 60%, #334155);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 22px;
+        overflow: auto;
+        color: #e2e8f0;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(12px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 2.4rem 2rem;
+        width: 100%;
+        max-width: 460px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+        animation: fadeIn 1.4s ease;
+      }
+
+      h1 {
+        font-family: "Homemade Apple", cursive;
+        font-size: 1.9rem;
+        color: #ffffff;
+        margin-bottom: 1rem;
+        opacity: 0.92;
+        letter-spacing: 0.5px;
+      }
+
+      p {
+        font-size: 1.12rem;
+        line-height: 1.6;
+        color: #cbd5e1;
+        margin-top: 0.8rem;
+        text-wrap: balance;
+      }
+
+      .footnote {
+        margin-top: 1.8rem;
+        font-size: 0.85rem;
+        color: #94a3b8;
+      }
+
+      .signature-block {
+        margin-top: 2.4rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        padding-top: 1.2rem;
+        font-family: "Homemade Apple", cursive;
+        font-size: 1.15rem;
+        color: #ffffffc7;
+        opacity: 0.85;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(
+            2px 2px at 20% 20%,
+            rgba(255, 255, 255, 0.18),
+            transparent
+          ),
+          radial-gradient(
+            2px 2px at 70% 60%,
+            rgba(255, 255, 255, 0.12),
+            transparent
+          ),
+          radial-gradient(
+            2px 2px at 40% 80%,
+            rgba(255, 255, 255, 0.14),
+            transparent
+          ),
+          radial-gradient(
+            2px 2px at 85% 30%,
+            rgba(255, 255, 255, 0.16),
+            transparent
+          );
+        animation: float 12s ease-in-out infinite alternate;
+        opacity: 0.35;
+      }
+
+      @keyframes float {
+        from {
+          transform: translateY(0px);
+        }
+        to {
+          transform: translateY(-18px);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="particles"></div>
+
+    <div class="card">
+      <h1>Um recado pra você, Cléia</h1>
+
+      <p>
+        Só queria te deixar algo simples, mas verdadeiro:<br /><br />
+        <strong>Às vezes tento colocar em palavras como te vejo.</strong
+        ><br /><br />
+
+        E, por mais que eu tente ser objetivo, sempre escapa um pouco desse
+        sentimento tranquilo que você acaba despertando em mim.<br /><br />
+
+        Não é aquela paixão barulhenta que atropela tudo. É algo mais sereno…
+        desses que chegam devagar, ocupam um espaço discreto, mas constante, e
+        ficam ali, fazendo o silêncio parecer uma boa companhia.<br /><br />
+
+        Tem algo no teu jeito que me puxa pra perto, mesmo quando a gente finge
+        que está só conversando sobre o dia.<br /><br />
+
+        Este é mais um pensamento que levo até você.
+      </p>
+
+      <p class="footnote">
+        Às vezes, gostar é isso: reconhecer alguém no meio do caos e sentir que
+        aquela pessoa te faz respirar melhor no processo.
+      </p>
+
+      <div class="signature-block">._.. ...</div>
+    </div>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

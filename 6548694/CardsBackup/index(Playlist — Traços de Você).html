@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Playlist — Traços de Você</title>
+    <style>
+      :root {
+        --bg1: #0f1222;
+        --bg2: #1a1f3a;
+        --ink: #e9edff;
+        --muted: #aab2d6;
+        --card: rgba(255, 255, 255, 0.06);
+        --ring: 0 0 0 2px rgba(124, 58, 237, 0.35);
+        --accent: #7c3aed;
+        --accent-2: #06b6d4;
+        --glass: blur(10px);
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg1: #f8efff;
+          --bg2: #e7f3ff;
+          --ink: #17172a;
+          --muted: #6b6b83;
+          --card: rgba(255, 255, 255, 0.78);
+          --ring: 0 0 0 2px rgba(124, 58, 237, 0.25);
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Ubuntu, Cantarell, Noto Sans, Arial;
+        color: var(--ink);
+        background: linear-gradient(160deg, var(--bg1), var(--bg2));
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        min-height: 100dvh;
+      }
+      header {
+        padding: clamp(16px, 3vw, 28px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .brand {
+        display: grid;
+        gap: 4px;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(20px, 4vw, 32px);
+      }
+      .brand p {
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(12px, 2vw, 14px);
+      }
+      .bar {
+        padding: 0 clamp(12px, 2vw, 20px) clamp(10px, 2vw, 16px);
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      button,
+      .btn {
+        appearance: none;
+        border: 0;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--accent) 18%, #fff),
+          color-mix(in srgb, var(--accent-2) 18%, #fff)
+        );
+        color: var(--ink);
+        box-shadow: 0 10px 28px
+          color-mix(in srgb, var(--accent) 20%, transparent);
+        cursor: pointer;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      button:hover,
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      button:focus-visible,
+      .btn:focus-visible {
+        outline: var(--ring);
+      }
+      .ghost {
+        background: transparent;
+        box-shadow: inset 0 0 0 1.5px
+          color-mix(in srgb, var(--ink) 18%, transparent);
+        font-weight: 600;
+      }
+      .ghost:hover {
+        background: color-mix(in srgb, var(--ink) 10%, transparent);
+      }
+      .tray {
+        padding: clamp(10px, 2vw, 16px);
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .field {
+        position: relative;
+      }
+      input[type="search"] {
+        border: 0;
+        background: var(--card);
+        color: var(--ink);
+        padding: 12px 14px;
+        border-radius: 12px;
+        min-width: min(360px, 70vw);
+        box-shadow: inset 0 0 0 1.5px
+          color-mix(in srgb, var(--ink) 15%, transparent);
+      }
+
+      main {
+        padding: clamp(10px, 2vw, 24px);
+      }
+      .grid {
+        --min: 280px;
+        display: grid;
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(min(100%, var(--min)), 1fr)
+        );
+        gap: clamp(12px, 2vw, 16px);
+      }
+
+      .card {
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border-radius: 16px;
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+        box-shadow: 0 20px 35px -18px rgba(0, 0, 0, 0.35);
+      }
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .title {
+        font-weight: 800;
+        font-size: 16px;
+      }
+      .artist {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .badge {
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .excerpt {
+        font-size: clamp(14px, 1.8vw, 16px);
+        line-height: 1.55;
+      }
+      .controls {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .like[aria-pressed="true"] {
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, #ff4d88 35%, #fff),
+          color-mix(in srgb, #ff8fb3 20%, #fff)
+        );
+      }
+      .mini {
+        padding: 8px 10px;
+        font-weight: 700;
+      }
+
+      footer {
+        padding: 12px 16px 24px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      dialog {
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border: 0;
+        border-radius: 16px;
+        padding: 18px;
+        color: var(--ink);
+        width: min(520px, 92vw);
+      }
+      dialog::backdrop {
+        background: #0006;
+      }
+      form .row {
+        display: grid;
+        gap: 8px;
+        margin: 10px 0;
+      }
+      input[type="text"],
+      textarea {
+        background: var(--card);
+        color: var(--ink);
+        border: 0;
+        padding: 10px 12px;
+        border-radius: 10px;
+        box-shadow: inset 0 0 0 1.5px
+          color-mix(in srgb, var(--ink) 15%, transparent);
+      }
+      textarea {
+        min-height: 88px;
+        resize: vertical;
+      }
+
+      .embed {
+        border: 0;
+        width: 100%;
+        height: 152px;
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .note {
+        color: var(--muted);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <h1>Playlist — Traços de Você</h1>
+        <p>
+          Trechos curtinhos que lembram você. Com botão pra abrir a playlist no
+          Spotify.
+        </p>
+      </div>
+      <div class="bar">
+        <a class="btn" id="openApp" href="#" rel="noopener noreferrer"
+          >🎧 Abrir no Spotify (app)</a
+        >
+        <a class="btn ghost" id="openWeb" target="_blank" rel="noopener"
+          >🌐 Abrir no navegador</a
+        >
+      </div>
+    </header>
+
+    <!-- <section class="tray">
+      <button class="ghost mini" id="shuffleBtn">🔀 Embaralhar</button>
+      <button class="ghost mini" id="syncBtn">
+        🔄 Sincronizar (colar JSON)
+      </button>
+      <div class="field">
+        <input
+          type="search"
+          id="search"
+          placeholder="Buscar por música, artista ou tag..."
+        />
+      </div>
+    </section> -->
+
+    <main>
+      <p class="note" id="hint"></p>
+      <div class="grid" id="grid"></div>
+      <iframe
+        class="embed"
+        id="spotifyEmbed"
+        loading="lazy"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      ></iframe>
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
+    </main>
+
+    <footer>Developed with 💜 by ._.. ...</footer>
+
+    <dialog id="editor">
+      <form method="dialog" id="editorForm">
+        <h3>Editar trecho</h3>
+        <div class="row">
+          <label
+            >Título da música <input type="text" id="fTitle" required
+          /></label>
+        </div>
+        <div class="row">
+          <label>Artista <input type="text" id="fArtist" required /></label>
+        </div>
+        <div class="row">
+          <label
+            >Tags (separadas por vírgula)
+            <input type="text" id="fTags" placeholder="otimismo, ironia"
+          /></label>
+        </div>
+        <div class="row">
+          <label
+            >Trecho (até 10 palavras)
+            <input
+              type="text"
+              id="fExcerpt"
+              placeholder="Ex.: 'sou luz no caos'"
+          /></label>
+        </div>
+        <div
+          class="row"
+          style="display: flex; gap: 8px; justify-content: flex-end"
+        >
+          <button class="ghost" value="cancel">Cancelar</button>
+          <button class="btn mini" value="default">Salvar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script>
+      // ===== Config baseada no link da playlist =====
+      const PLAYLIST_URL =
+        "https://open.spotify.com/playlist/1zb2zuXu6dqhsl5ieyXIxa?si=785060fdfefa4b00";
+      const PLAYLIST_ID = "1zb2zuXu6dqhsl5ieyXIxa"; // extraído do link
+
+      // Links (app deep link e web)
+      const openApp = document.getElementById("openApp");
+      const openWeb = document.getElementById("openWeb");
+      openApp.href = `spotify:playlist:${PLAYLIST_ID}`; // tenta abrir direto no app
+      openWeb.href = PLAYLIST_URL; // fallback no navegador
+
+      // Embed da playlist
+      const embed = document.getElementById("spotifyEmbed");
+      embed.src = `https://open.spotify.com/embed/playlist/${PLAYLIST_ID}?utm_source=generator`;
+
+      // ===== Armazenamento =====
+      const KEY = "playlistTraits.v2";
+      const $ = (q, el = document) => el.querySelector(q);
+      const $$ = (q, el = document) => Array.from(el.querySelectorAll(q));
+
+      function loadData() {
+        try {
+          return JSON.parse(localStorage.getItem(KEY)) ?? null;
+        } catch {
+          return null;
+        }
+      }
+      function saveData(data) {
+        localStorage.setItem(KEY, JSON.stringify(data));
+      }
+
+      // ===== Estado =====
+      const hint = document.getElementById("hint");
+      const state = loadData() ?? { items: [] };
+
+      // ===== UI & Render =====
+      const grid = document.getElementById("grid");
+      const search = document.getElementById("search");
+
+      function createCard(item, idx) {
+        const art = document.createElement("article");
+        art.className = "card";
+        art.innerHTML = `
+          <div class="card-header">
+            <div>
+              <div class="title">${item.title}</div>
+              <div class="artist">${item.artist} ${
+          item.tags?.length
+            ? `· <span class=\"badge\">${item.tags
+                .slice(0, 3)
+                .join(", ")}</span>`
+            : ""
+        }</div>
+            </div>
+            <button class="ghost mini like" aria-pressed="${!!item.liked}" data-act="like">❤</button>
+          </div>
+          <div class="excerpt" data-role="text">${
+            item.excerpt || "— adicione um trecho (até 10 palavras) —"
+          }</div>
+          <div class="controls">
+            <button class="ghost mini" data-act="copy">📋 Copiar</button>
+            <button class="ghost mini" data-act="edit">✏️ Editar</button>
+          </div>
+        `;
+
+        art.addEventListener("click", (ev) => {
+          const b = ev.target.closest("button");
+          if (!b) return;
+          const act = b.dataset.act;
+          if (act === "copy") {
+            navigator.clipboard
+              .writeText(
+                art.querySelector('[data-role="text"]').textContent.trim()
+              )
+              .then(() => {
+                const prev = b.textContent;
+                b.textContent = "✔ Copiado";
+                setTimeout(() => (b.textContent = prev), 1000);
+              });
+          } else if (act === "like") {
+            item.liked = !item.liked;
+            b.setAttribute("aria-pressed", item.liked);
+            saveData(state);
+          } else if (act === "edit") {
+            openEditor(item, idx);
+          }
+        });
+        return art;
+      }
+
+      // function render() {
+      //   const q = (search.value || "").toLowerCase();
+      //   const items = state.items.filter((it) => {
+      //     const hay = `${it.title} ${it.artist} ${(it.tags || []).join(" ")} ${
+      //       it.excerpt || ""
+      //     }`.toLowerCase();
+      //     return hay.includes(q);
+      //   });
+      //   grid.innerHTML = "";
+      //   items.forEach((it, i) => grid.appendChild(createCard(it, i)));
+      //   hint.innerHTML = state.items.length
+      //     ? `Total de faixas: <strong>${state.items.length}</strong> (filtrando ${items.length})`
+      //     : `Cole os dados da playlist em JSON usando <strong>🔄 Sincronizar</strong>.`;
+      // }
+
+      function shuffle() {
+        state.items.sort(() => Math.random() - 0.5);
+        render();
+        saveData(state);
+      }
+
+      // ===== Editor (apenas para editar trecho/tags) =====
+      const dialog = document.getElementById("editor");
+      const form = document.getElementById("editorForm");
+      const fTitle = document.getElementById("fTitle");
+      const fArtist = document.getElementById("fArtist");
+      const fTags = document.getElementById("fTags");
+      const fExcerpt = document.getElementById("fExcerpt");
+      let editingIndex = null;
+
+      function openEditor(item = null, idx = null) {
+        editingIndex = idx;
+        fTitle.value = item?.title || "";
+        fArtist.value = item?.artist || "";
+        fTags.value = (item?.tags || []).join(", ");
+        fExcerpt.value = item?.excerpt || "";
+        dialog.showModal();
+      }
+
+      form.addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        const obj = {
+          title: fTitle.value.trim(),
+          artist: fArtist.value.trim(),
+          tags: fTags.value
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
+          excerpt: fExcerpt.value.trim(),
+        };
+        if (editingIndex != null) {
+          state.items[editingIndex] = { ...state.items[editingIndex], ...obj };
+        }
+        saveData(state);
+        dialog.close();
+        render();
+      });
+
+      dialog.addEventListener("close", () => {
+        editingIndex = null;
+        form.reset();
+      });
+
+      // ===== Sincronização por JSON no clipboard =====
+      // Aceita formatos:
+      // 1) [{"title":"...","artist":"..."}, ...]
+      // 2) linhas tipo "Titulo — Artista" (com - ou —)
+      async function syncFromClipboard() {
+        try {
+          const txt = await navigator.clipboard.readText();
+          let data;
+          try {
+            data = JSON.parse(txt);
+          } catch {
+            data = txt
+              .split(/\n+/)
+              .map((l) => l.trim())
+              .filter(Boolean)
+              .map((l) => {
+                const m = l.split(/\s+[—-]\s+/);
+                return { title: m[0] || l, artist: m[1] || "" };
+              });
+          }
+
+          const norm = normalizeImported(data);
+          if (!norm.length) throw new Error("Nenhuma faixa reconhecida.");
+
+          // mantém trechos já existentes quando titulo+artista coincidem
+          const map = new Map(
+            state.items.map((it) => [
+              `${it.title}||${it.artist}`.toLowerCase(),
+              it,
+            ])
+          );
+          state.items = norm.map((n) => {
+            const k = `${n.title}||${n.artist}`.toLowerCase();
+            const old = map.get(k);
+            return old
+              ? { ...n, excerpt: old.excerpt, tags: old.tags, liked: old.liked }
+              : n;
+          });
+          saveData(state);
+          render();
+          alert(`Sincronizado: ${state.items.length} faixas.`);
+        } catch (err) {
+          alert("Falha ao sincronizar: " + err.message);
+        }
+      }
+
+      function normalizeImported(arr) {
+        if (!Array.isArray(arr)) return [];
+        return arr
+          .map((x) => {
+            if (typeof x === "string") return { title: x, artist: "" };
+            const title = x.title || x.name || "";
+            const artist =
+              x.artist || x.artists?.join(", ") || x.artistName || "";
+            const tags = x.tags || [];
+            return {
+              title: String(title).trim(),
+              artist: String(artist).trim(),
+              tags,
+            };
+          })
+          .filter((o) => o.title);
+      }
+
+      // ===== Events =====
+      document
+        .getElementById("syncBtn")
+        .addEventListener("click", syncFromClipboard);
+      document.getElementById("shuffleBtn").addEventListener("click", shuffle);
+      search.addEventListener("input", render);
+
+      // ===== Init =====
+      render();
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

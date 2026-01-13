@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Olha quem voltou 💖</title>
+    <style>
+      :root {
+        --bg1: #ffe8f3;
+        --bg2: #e0f4ff;
+        --bg3: #fff6d9;
+        --bg4: #e9ddff;
+        --text: #1f2933;
+        --muted: #6b7280;
+        --card: rgba(255, 255, 255, 0.88);
+        --accent1: #fb6f92;
+        --accent2: #ffb347;
+        --accent3: #7c3aed;
+        --accent4: #22c55e;
+        --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.16);
+        --radius-xl: 26px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: auto;
+        position: relative;
+        background: radial-gradient(
+            circle at 0% 0%,
+            var(--bg1),
+            transparent 55%
+          ),
+          radial-gradient(circle at 100% 0%, var(--bg2), transparent 55%),
+          radial-gradient(circle at 0% 100%, var(--bg3), transparent 55%),
+          radial-gradient(circle at 100% 100%, var(--bg4), transparent 55%);
+        animation: bgFloat 18s linear infinite alternate;
+        padding: 16px;
+      }
+
+      @keyframes bgFloat {
+        0% {
+          background-position: 0 0, 100% 0, 0 100%, 100% 100%;
+        }
+        50% {
+          background-position: 10% -4%, 90% 6%, -8% 90%, 104% 96%;
+        }
+        100% {
+          background-position: -4% 4%, 104% -6%, 6% 104%, 96% 92%;
+        }
+      }
+
+      .halo {
+        position: absolute;
+        inset: 10%;
+        filter: blur(40px);
+        opacity: 0.9;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        background: radial-gradient(
+            circle at 20% 20%,
+            rgba(251, 111, 146, 0.6),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 80% 25%,
+            rgba(56, 189, 248, 0.5),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 12% 82%,
+            rgba(244, 114, 182, 0.5),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 90% 80%,
+            rgba(34, 197, 94, 0.5),
+            transparent 60%
+          );
+      }
+
+      .frame {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        min-height: 60vh;
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        gap: 18px;
+        padding: 18px;
+        border-radius: 32px;
+        background: radial-gradient(circle at 0 0, #ffffffee, #ffffffda)
+          padding-box;
+        border: 2px solid transparent;
+        background-clip: padding-box, border-box;
+        background-image: radial-gradient(circle at 0 0, #ffffffee, #ffffffda),
+          conic-gradient(
+            from 160deg,
+            rgba(251, 113, 133, 0.95),
+            rgba(244, 114, 182, 0.95),
+            rgba(129, 140, 248, 0.9),
+            rgba(45, 212, 191, 0.9),
+            rgba(251, 113, 133, 0.95)
+          );
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+      }
+
+      @media (max-width: 768px) {
+        .frame {
+          grid-template-columns: minmax(0, 1fr);
+          min-height: auto;
+        }
+      }
+
+      .side-art {
+        position: relative;
+        border-radius: 26px;
+        overflow: hidden;
+        background: radial-gradient(circle at 0 0, #fdf2ff, #dbeafe);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        isolation: isolate;
+      }
+
+      .bubble-heart {
+        position: absolute;
+        width: 210%;
+        max-width: 600px;
+        aspect-ratio: 1 / 1;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 20%, #ffffff, transparent 55%),
+          radial-gradient(circle at 75% 80%, #ffe4f3, #fecaca);
+        opacity: 0.8;
+        transform: translateY(4%);
+        filter: blur(1px);
+      }
+
+      .gif-stack {
+        position: relative;
+        display: grid;
+        place-items: center;
+        gap: 14px;
+        z-index: 1;
+      }
+
+      .gif-ring {
+        width: 220px;
+        height: 220px;
+        max-width: 60vw;
+        border-radius: 999px;
+        padding: 10px;
+        background: conic-gradient(
+          from 200deg,
+          #fb7185,
+          #f97316,
+          #eab308,
+          #22c55e,
+          #22d3ee,
+          #a855f7,
+          #fb7185
+        );
+        display: grid;
+        place-items: center;
+        animation: spinSoft 18s linear infinite;
+      }
+
+      .gif-ring-inner {
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        background: radial-gradient(circle at 30% 0, #ffffff, #ffe4f1);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      .gif-ring-inner img {
+        width: 120%;
+        height: 120%;
+        object-fit: cover;
+        image-rendering: -webkit-optimize-contrast;
+      }
+
+      .gif-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .gif-chip {
+        width: 82px;
+        height: 82px;
+        border-radius: 24px;
+        padding: 6px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 12px 25px rgba(15, 23, 42, 0.12);
+        display: grid;
+        place-items: center;
+      }
+
+      .gif-chip img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .floating-emoji {
+        position: absolute;
+        font-size: 26px;
+        opacity: 0.7;
+        animation: emojiFloat 12s linear infinite;
+        pointer-events: none;
+      }
+
+      .floating-emoji:nth-child(1) {
+        top: 10%;
+        left: 10%;
+        animation-duration: 11s;
+      }
+      .floating-emoji:nth-child(2) {
+        top: 18%;
+        right: 12%;
+        animation-duration: 13s;
+      }
+      .floating-emoji:nth-child(3) {
+        bottom: 12%;
+        left: 6%;
+        animation-duration: 15s;
+      }
+      .floating-emoji:nth-child(4) {
+        bottom: 8%;
+        right: 10%;
+        animation-duration: 17s;
+      }
+
+      @keyframes emojiFloat {
+        0% {
+          transform: translateY(0px);
+          opacity: 0.4;
+        }
+        25% {
+          transform: translateY(-10px) translateX(3px);
+          opacity: 0.9;
+        }
+        50% {
+          transform: translateY(-4px) translateX(-3px);
+          opacity: 0.7;
+        }
+        75% {
+          transform: translateY(-14px) translateX(2px);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(0px);
+          opacity: 0.4;
+        }
+      }
+
+      @keyframes spinSoft {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .content {
+        position: relative;
+        border-radius: 26px;
+        padding: 20px 18px;
+        background: radial-gradient(circle at 10% 0, #ffffff, #fff6fb);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        overflow: hidden;
+      }
+
+      .pill-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .pill {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(248, 250, 252, 0.9);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+      }
+
+      h1 {
+        font-size: clamp(1.7rem, 1.8rem + 0.3vw, 2rem);
+        line-height: 1.2;
+        letter-spacing: 0.03em;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      h1 span.highlight {
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: linear-gradient(
+          120deg,
+          rgba(251, 113, 133, 0.18),
+          rgba(129, 140, 248, 0.18)
+        );
+      }
+
+      .tagline {
+        font-size: 0.95rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .message {
+        margin-top: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-size: 0.98rem;
+        line-height: 1.75;
+      }
+
+      .message p {
+        text-indent: 0;
+      }
+
+      .message p span.emoji-inline {
+        margin: 0 2px;
+      }
+
+      .footer-note {
+        margin-top: 6px;
+        font-size: 0.86rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        opacity: 0.85;
+      }
+
+      .tap-hint {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.86);
+        color: #f9fafb;
+        font-size: 0.78rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 12px 25px rgba(15, 23, 42, 0.5);
+        backdrop-filter: blur(10px);
+        cursor: default;
+        z-index: 4;
+      }
+
+      .tap-hint span {
+        font-size: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .content {
+          padding: 16px 14px 18px;
+        }
+
+        .tap-hint {
+          left: 50%;
+          right: auto;
+          bottom: 12px;
+          transform: translateX(-50%);
+          font-size: 0.75rem;
+        }
+      }
+
+      /* POP-UP EMOJIS E GIFS */
+      .burst-item {
+        position: fixed;
+        pointer-events: none;
+        will-change: transform, opacity;
+        z-index: 20;
+      }
+
+      .burst-emoji {
+        font-size: 30px;
+        filter: drop-shadow(0 6px 12px rgba(15, 23, 42, 0.45));
+      }
+
+      .burst-gif {
+        width: 110px;
+        height: 110px;
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.35);
+      }
+
+      .burst-gif img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      @keyframes burstFloat {
+        0% {
+          transform: translate(-50%, -50%) scale(0.3);
+          opacity: 0;
+        }
+        15% {
+          transform: translate(-50%, -60%) scale(1);
+          opacity: 1;
+        }
+        60% {
+          transform: translate(-50%, -85%) scale(1.02);
+          opacity: 0.96;
+        }
+        100% {
+          transform: translate(-50%, -110%) scale(0.9);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="halo" aria-hidden="true"></div>
+
+    <!-- Emojis flutuando ao fundo -->
+    <div class="floating-emoji">💖</div>
+    <div class="floating-emoji">✨</div>
+    <div class="floating-emoji">💕</div>
+    <div class="floating-emoji">🌈</div>
+
+    <main class="frame">
+      <section class="side-art" aria-hidden="true">
+        <div class="bubble-heart"></div>
+        <div class="gif-stack">
+          <div class="gif-ring">
+            <div class="gif-ring-inner">
+              <!-- GIF principal do anel -->
+              <img
+                src="https://media1.tenor.com/m/8bxmkCa7mTUAAAAd/%D9%82%D9%85%D8%B1.gif"
+                alt="Coração fofo em movimento"
+              />
+            </div>
+          </div>
+
+          <div class="gif-row">
+            <div class="gif-chip">
+              <img
+                src="https://media1.tenor.com/m/68ggIeBw7jQAAAAd/catjam-cat.gif"
+                alt="Corações flutuando"
+              />
+            </div>
+            <div class="gif-chip">
+              <img
+                src="https://media1.tenor.com/m/0rH9UD6zb48AAAAd/mermaid-jalpari.gif"
+                alt="Coração sorridente"
+              />
+            </div>
+            <div class="gif-chip">
+              <img
+                src="https://media.tenor.com/nCT58R_4zWsAAAAj/benjammins-nataci%C3%B3n.gif"
+                alt="Brilhos fofos"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content">
+        <div class="pill-row">
+          <span class="pill">
+            <span>💌</span>
+            <span>Card extra não planejado</span>
+          </span>
+          <!-- <span class="pill">
+            <span>💗</span>
+            <span>Responsabilidade afetiva: sua</span>
+          </span> -->
+        </div>
+
+        <header>
+          <h1>
+            Cléia? Oi de novo,
+            <span class="highlight">olha quem voltou 🫶</span>
+          </h1>
+          <p class="tagline">
+            <span>💫</span>
+            <span>
+              Eu disse que não teria mais cards hoje. Mas aí você entrou aqui de
+              novo.
+            </span>
+          </p>
+        </header>
+
+        <article class="message">
+          <p>
+            Eu realmente tinha dito que não faria mais nenhum card hoje. Falei
+            sério. Prometi para mim mesmo que ia parar, respirar, fechar o
+            editor e te deixar viver seu dia em paz
+            <span class="emoji-inline">😌</span>.
+          </p>
+
+          <p>
+            Mas aí… você apareceu aqui de novo
+            <span class="emoji-inline">👀💖</span>.
+          </p>
+
+          <p>
+            E se você voltou, então não sou eu quem está quebrando promessa
+            nenhuma. Quem voltou foi você. Portanto, tecnicamente, a
+            responsabilidade é toda sua
+            <span class="emoji-inline">kkkkk 😂</span>.
+          </p>
+
+          <p>
+            Brincadeiras à parte, fico feliz que você tenha vindo. Tem algo de
+            bonito nesse gesto simples de voltar a um lugar esperando encontrar
+            algo novo. Como se, de alguma forma, você confiasse que aqui sempre
+            vai ter um pedacinho de carinho reservado para você
+            <span class="emoji-inline">🩷✨</span>.
+          </p>
+
+          <p>E tem mesmo. Sempre tem.</p>
+
+          <p>
+            Então, já que você abriu a porta outra vez, deixa eu te dizer uma
+            coisa: você tem um jeito de iluminar até o que eu não planejei. Até
+            quando eu digo que acabou por hoje, você aparece e vira
+            possibilidade. E isso é raro. E bonito. E totalmente sua culpa
+            também
+            <span class="emoji-inline">💫💕</span>.
+          </p>
+
+          <p>
+            Pronto, agora temos outro card. Mas este é por sua causa
+            <span class="emoji-inline">🤍</span>.
+          </p>
+        </article>
+
+        <div class="footer-note">
+          <span>🌸</span>
+          <span>
+            Obs.: se você voltar de novo, eu finjo que continuo achando que não
+            é culpa minha.
+          </span>
+        </div>
+
+        <!-- <div class="tap-hint">
+          <span>💗</span>
+          <span>Toque ou clique na tela para espalhar mais carinho</span>
+        </div> -->
+      </section>
+    </main>
+
+    <script>
+      // Emojis carinhosos para o efeito
+      const EMOJIS = [
+        "💖",
+        "🩷",
+        "💕",
+        "💫",
+        "✨",
+        "🌈",
+        "💓",
+        "🤍",
+        "😊",
+        "🥹",
+        "🫶",
+      ];
+
+      // GIFs usados nas explosões
+      const GIFS = [
+        "https://media1.tenor.com/m/GVThOcNcL2oAAAAC/wnowlin-heart-hands.gif",
+        "https://media1.tenor.com/m/68ggIeBw7jQAAAAd/catjam-cat.gif",
+        "https://media1.tenor.com/m/yyCcRNYxbbEAAAAd/ogwlz-monkey.gif",
+        "https://media1.tenor.com/m/aQutvvck4h8AAAAd/love-i-love-you.gif",
+      ];
+
+      function createBurst(x, y) {
+        const isGif = Math.random() < 0.45; // mistura emojis e gifs
+
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("burst-item");
+        wrapper.style.left = x + "px";
+        wrapper.style.top = y + "px";
+        wrapper.style.animation = "burstFloat 2.8s ease-out forwards";
+
+        if (isGif) {
+          const imgBox = document.createElement("div");
+          imgBox.classList.add("burst-gif");
+
+          const img = document.createElement("img");
+          img.decoding = "async";
+          img.loading = "lazy";
+          img.src = GIFS[Math.floor(Math.random() * GIFS.length)];
+          img.alt = "Gif carinhoso";
+
+          imgBox.appendChild(img);
+          wrapper.appendChild(imgBox);
+        } else {
+          const span = document.createElement("span");
+          span.classList.add("burst-emoji");
+          span.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+          wrapper.appendChild(span);
+        }
+
+        document.body.appendChild(wrapper);
+
+        setTimeout(() => {
+          wrapper.remove();
+        }, 2900);
+      }
+
+      function handleBurstEvent(evt) {
+        // Evita que o toque no "hint" crie um burst exatamente em cima
+        if (evt.target.closest(".tap-hint")) return;
+
+        let x, y;
+
+        if (evt.touches && evt.touches.length > 0) {
+          x = evt.touches[0].clientX;
+          y = evt.touches[0].clientY;
+        } else {
+          x = evt.clientX;
+          y = evt.clientY;
+        }
+
+        createBurst(x, y);
+      }
+
+      window.addEventListener("click", handleBurstEvent);
+      window.addEventListener("touchstart", handleBurstEvent, {
+        passive: true,
+      });
+
+      // Efeito inicial: um pequeno burst no centro
+      window.addEventListener("load", () => {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        setTimeout(() => createBurst(centerX, centerY + 40), 500);
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

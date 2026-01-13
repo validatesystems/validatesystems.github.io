@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Reel (https://www.instagram.com/p/DS0hx1XiYxQ/)</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap"
+    />
+
+    <style>
+      :root {
+        --bg1: #050816;
+        --bg2: #0b1020;
+        --card: rgba(15, 23, 42, 0.96);
+        --border-soft: rgba(148, 163, 184, 0.4);
+        --text-main: #e5e7eb;
+        --text-soft: #9ca3af;
+        --accent: #f97316;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        color: var(--text-main);
+        background: radial-gradient(
+            circle at 10% 0%,
+            #111827 0,
+            transparent 55%
+          ),
+          radial-gradient(circle at 90% 100%, #020617 0, transparent 55%),
+          linear-gradient(135deg, var(--bg1), var(--bg2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        position: relative;
+        overflow-x: auto;
+      }
+
+      /* granulação suave */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: url("https://www.transparenttextures.com/patterns/noisy.png");
+        opacity: 0.2;
+        mix-blend-mode: soft-light;
+        z-index: 0;
+      }
+
+      .shell {
+        position: relative;
+        z-index: 2;
+        max-width: 520px;
+        width: 100%;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 24px;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        padding: 26px 20px 20px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9),
+          0 0 0 1px rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        animation: fadecard 0.7s ease-out;
+      }
+
+      @keyframes fadecard {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .chip {
+        display: inline-flex;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        color: var(--text-soft);
+        border: 1px solid rgba(148, 163, 184, 0.55);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+
+      h1 {
+        font-size: 1.15rem;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: var(--text-soft);
+        margin-bottom: 18px;
+      }
+
+      .intro {
+        font-size: 0.98rem;
+        line-height: 1.7;
+        color: var(--text-main);
+        opacity: 0.95;
+        margin-bottom: 20px;
+        text-wrap: balance;
+      }
+
+      .cta {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+        margin-bottom: 18px;
+      }
+
+      .hint {
+        font-size: 0.8rem;
+        color: var(--text-soft);
+        opacity: 0.9;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 20px;
+        background: rgba(248, 250, 252, 0.06);
+        color: #f9fafb;
+        font-size: 0.85rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        cursor: pointer;
+        border: 1px solid rgba(248, 250, 252, 0.2);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.18s ease, transform 0.18s ease,
+          box-shadow 0.18s ease;
+      }
+
+      .btn-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 10px rgba(248, 113, 22, 0.8);
+      }
+
+      .btn:hover {
+        background: rgba(248, 250, 252, 0.12);
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.8);
+        transform: translateY(-1px);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.9);
+      }
+
+      .reels-box {
+        margin-top: 10px;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(148, 163, 184, 0.55);
+        background: #020617;
+        display: none;
+        animation: reveal 0.5s ease-out forwards;
+      }
+
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .reels-inner {
+        padding: 10px;
+      }
+
+      /* wrapper para controlar largura máxima e centralizar o iframe */
+      .ig-wrapper {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+      }
+
+      /* garante que o iframe respeite o container */
+      .ig-wrapper iframe {
+        width: 100%;
+        display: block;
+      }
+
+      /* em telas pequenas, alivia o layout */
+      @media (max-width: 480px) {
+        .card {
+          padding: 22px 12px 16px;
+          border-radius: 20px;
+        }
+
+        .reels-inner {
+          padding: 6px;
+        }
+
+        .ig-wrapper {
+          max-width: 100%;
+        }
+      }
+
+      .note {
+        margin-top: 10px;
+        font-size: 0.78rem;
+        color: var(--text-soft);
+        opacity: 0.85;
+      }
+
+      .signature {
+        margin-top: 18px;
+        text-align: right;
+        font-size: 0.75rem;
+        color: var(--text-soft);
+        opacity: 0.9;
+      }
+
+      /* botão de fallback abaixo do player */
+      .open-ig {
+        margin-top: 10px;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="shell">
+      <div class="card">
+        <div class="chip">reel</div>
+
+        <h1>As vezes, do nada, algo aperta.</h1>
+        <p class="subtitle">
+          Esse reel representa esses momentos. Veja quando quiser.
+        </p>
+
+        <p class="intro">
+          Não sei você, mas às vezes eu sinto que tem algo dentro de mim que
+          precisa sair. Uma emoção, uma vontade, um desejo... algo que aperta e
+          transborda.
+        </p>
+
+        <div class="cta">
+          <button class="btn" id="openReels" type="button">
+            <span class="btn-dot"></span>
+            ver o reel
+          </button>
+          <span class="hint">ele só aparece quando você quiser ver.</span>
+        </div>
+
+        <div class="reels-box" id="reelsBox">
+          <div class="reels-inner">
+            <div class="ig-wrapper">
+              <iframe
+                id="igFrame"
+                src="https://www.instagram.com/p/DS0hx1XiYxQ/embed/"
+                height="560"
+                frameborder="0"
+                scrolling="no"
+                allowfullscreen
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                style="
+                  border: 0;
+                  border-radius: 16px;
+                  overflow: hidden;
+                  background: #020617;
+                "
+              ></iframe>
+
+              <a
+                class="btn open-ig"
+                href="https://www.instagram.com/p/DS0hx1XiYxQ/"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="btn-dot"></span>
+                abrir no Instagram
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <p class="note">
+          Se o vídeo não carregar de primeira, tente tocar na área ou atualizar
+          a página.
+        </p>
+
+        <p class="signature">._.. ...</p>
+      </div>
+    </div>
+
+    <script>
+      const openBtn = document.getElementById("openReels");
+      const box = document.getElementById("reelsBox");
+
+      openBtn.addEventListener("click", () => {
+        box.style.display = "block";
+        setTimeout(() => {
+          box.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 150);
+      });
+    </script>
+
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

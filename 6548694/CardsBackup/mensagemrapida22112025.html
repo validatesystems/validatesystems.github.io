@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Luz que te encontra</title>
+
+    <!-- Fonte suave + toque manuscrito -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Homemade+Apple&display=swap"
+    />
+
+    <style>
+      :root {
+        --outer-sky: #ffb347;
+        --outer-heat: #ff5f6d;
+        --home-wall: #f5f0e8;
+        --home-shadow: #d3c2aa;
+        --text-main: #1f2933;
+        --accent: #f97316;
+        --accent-soft: rgba(249, 115, 22, 0.16);
+        --glass-bg: rgba(255, 255, 255, 0.82);
+        --glass-border: rgba(255, 255, 255, 0.9);
+        --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--text-main);
+        background: radial-gradient(circle at top, #fff7ed 0, #020617 100%);
+        overflow: auto;
+        text-align: justify;
+      }
+
+      .page {
+        position: relative;
+        width: 100%;
+        max-width: 1100px;
+        margin: auto;
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        place-items: stretch;
+      }
+
+      @media (min-width: 800px) {
+        .page {
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+        }
+      }
+
+      /* Metade "lá fora" - Sol queimando */
+      .side-outer {
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(
+          circle at top,
+          #ffe8c7 0,
+          #f97316 25%,
+          #7f1d1d 100%
+        );
+      }
+
+      .outer-overlay {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at 10% 0,
+            rgba(255, 255, 255, 0.18) 0,
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 90% 20%,
+            rgba(255, 255, 255, 0.12) 0,
+            transparent 60%
+          ),
+          repeating-linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.05) 0 6px,
+            rgba(0, 0, 0, 0.05) 6px 12px
+          );
+        mix-blend-mode: soft-light;
+        pointer-events: none;
+      }
+
+      .sun-orbit {
+        position: absolute;
+        top: -120px;
+        right: -120px;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(
+          circle,
+          #fff7ed 0,
+          #fed7aa 35%,
+          #f97316 70%,
+          transparent 72%
+        );
+        filter: blur(1px);
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.6),
+          0 0 120px rgba(248, 250, 252, 0.8);
+        border-radius: 50%;
+        animation: pulse-sun 12s ease-in-out infinite;
+      }
+
+      .heat-waves {
+        position: relative;
+        bottom: -40px;
+        left: -10%;
+        width: 120%;
+        height: 160px;
+        background: radial-gradient(
+          circle at 50% 0,
+          rgba(255, 255, 255, 0.08) 0,
+          transparent 60%
+        );
+        filter: blur(6px);
+        opacity: 0.9;
+        animation: heatMove 6s ease-in-out infinite alternate;
+      }
+
+      .outer-text {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        right: 24px;
+        color: #fef9c3;
+        font-size: 0.9rem;
+        opacity: 0.9;
+        text-shadow: 0 2px 8px rgba(15, 23, 42, 0.85);
+        max-width: 280px;
+      }
+
+      .outer-text span.label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        opacity: 0.9;
+      }
+
+      .outer-text span.dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 999px;
+        background: #facc15;
+      }
+
+      .outer-text p {
+        margin-top: 0.4rem;
+        line-height: 1.4;
+      }
+
+      /* Metade "casa da mãe" */
+      .side-home {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+          145deg,
+          #f5f0e8 0,
+          #e7f1e9 40%,
+          #c7ddcf 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 16px 28px;
+      }
+
+      @media (min-width: 800px) {
+        .side-home {
+          padding: 32px;
+        }
+      }
+
+      .room-frame {
+        position: relative;
+        width: 100%;
+        max-width: 520px;
+        /* aspect-ratio: 4 / 5; */
+        border-radius: 30px;
+        background: linear-gradient(
+          160deg,
+          #f9f5ee 0,
+          #f2ebdf 45%,
+          #e0d0b9 100%
+        );
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25),
+          0 0 0 1px rgba(148, 119, 82, 0.28);
+        padding: 24px 22px 26px;
+        overflow: hidden;
+      }
+
+      .room-top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+        font-size: 0.8rem;
+        color: #6b5a46;
+        opacity: 0.9;
+      }
+
+      .room-top-bar .dots {
+        display: flex;
+        gap: 6px;
+      }
+
+      .dot-window {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 30%, #fff, #eab308);
+        opacity: 0.8;
+      }
+
+      .room-top-bar span.right {
+        font-family: "Homemade Apple", cursive;
+        font-size: 0.78rem;
+        opacity: 0.8;
+      }
+
+      .window {
+        position: absolute;
+        top: 22px;
+        right: 22px;
+        width: 46%;
+        height: 46%;
+        border-radius: 18px;
+        background: linear-gradient(
+          145deg,
+          #fefce8 0,
+          #fee2b3 40%,
+          #f97316 90%
+        );
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.85),
+          0 14px 30px rgba(148, 77, 37, 0.35);
+        overflow: hidden;
+      }
+
+      .window-frame {
+        position: absolute;
+        inset: 10px;
+        border-radius: 14px;
+        background: radial-gradient(
+          circle at 50% 0,
+          #fef9c3 0,
+          #fb923c 45%,
+          #ea580c 100%
+        );
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      .light-beam {
+        position: absolute;
+        bottom: -35%;
+        left: -15%;
+        width: 200%;
+        height: 80%;
+        background: conic-gradient(
+          from 210deg,
+          rgba(254, 249, 195, 0),
+          rgba(254, 249, 195, 0),
+          rgba(254, 249, 195, 0.45),
+          rgba(254, 240, 138, 0.8),
+          rgba(249, 250, 229, 0)
+        );
+        filter: blur(8px);
+        transform: rotate(-4deg);
+        opacity: 0.95;
+        mix-blend-mode: screen;
+        animation: beamFlow 11s ease-in-out infinite alternate;
+      }
+
+      .shelf {
+        position: absolute;
+        bottom: 18%;
+        left: 12%;
+        width: 32%;
+        height: 9px;
+        background: linear-gradient(90deg, #c4a47a, #b68b57);
+        border-radius: 999px;
+        box-shadow: 0 4px 7px rgba(148, 77, 37, 0.45),
+          0 0 0 1px rgba(120, 65, 30, 0.4);
+      }
+
+      .plant {
+        position: absolute;
+        bottom: 18%;
+        left: 17%;
+        width: 46px;
+        height: 58px;
+      }
+
+      .plant-pot {
+        position: absolute;
+        bottom: 0;
+        left: 10px;
+        width: 26px;
+        height: 16px;
+        border-radius: 6px 6px 10px 10px;
+        background: linear-gradient(180deg, #92400e, #451a03);
+        box-shadow: 0 4px 6px rgba(15, 23, 42, 0.4),
+          0 0 0 1px rgba(148, 77, 37, 0.6);
+      }
+
+      .plant-leaf {
+        position: absolute;
+        bottom: 10px;
+        left: 2px;
+        width: 40px;
+        height: 36px;
+        background: radial-gradient(
+          circle at 50% 100%,
+          #bbf7d0 0,
+          #22c55e 40%,
+          #15803d 100%
+        );
+        border-radius: 80% 60% 60% 80%;
+        transform-origin: bottom center;
+        animation: leafSway 7s ease-in-out infinite alternate;
+      }
+
+      .plant-leaf::after {
+        content: "";
+        position: absolute;
+        inset: 30% 36%;
+        border-radius: inherit;
+        background: radial-gradient(
+          circle at 50% 0,
+          rgba(255, 255, 255, 0.4),
+          transparent 60%
+        );
+        opacity: 0.6;
+      }
+
+      /* Card da mensagem */
+      .message-card {
+        position: relative;
+        width: min(100%, 360px);
+        margin-top: 22%;
+        background: var(--glass-bg);
+        border-radius: 22px;
+        padding: 18px 18px 16px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+      }
+
+      @media (min-width: 800px) {
+        .message-card {
+          margin-top: 30%;
+          width: min(100%, 390px);
+        }
+      }
+
+      .message-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.09em;
+        color: #9a7b4b;
+        background: rgba(250, 204, 21, 0.12);
+        padding: 4px 10px;
+        border-radius: 999px;
+        margin-bottom: 8px;
+      }
+
+      .message-tag span.sun-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 30%, #fefce8, #facc15);
+      }
+
+      .message-body {
+        font-size: 0.96rem;
+        line-height: 1.6;
+        color: var(--text-main);
+      }
+
+      .message-body p + p {
+        margin-top: 0.7rem;
+      }
+
+      .message-body strong {
+        font-weight: 600;
+      }
+
+      .message-footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 0.8rem;
+        color: #6b7280;
+      }
+
+      .message-footer span {
+        font-family: "Homemade Apple", cursive;
+        font-size: 0.78rem;
+      }
+
+      .tiny-note {
+        position: absolute;
+        bottom: 9px;
+        left: 18px;
+        font-size: 0.65rem;
+        color: #9ca3af;
+        opacity: 0.9;
+      }
+
+      .tiny-note::before {
+        content: "☀";
+        margin-right: 4px;
+        font-size: 0.7rem;
+      }
+
+      /* Botão para alternar foco visual entre "lá fora" e "aqui dentro" */
+      .focus-toggle {
+        position: absolute;
+        top: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.75rem;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+        background: rgba(248, 250, 252, 0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        cursor: pointer;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.22);
+      }
+
+      .focus-toggle span.icon {
+        font-size: 0.9rem;
+      }
+
+      body.focus-home .side-outer {
+        filter: grayscale(0.3) brightness(0.75) contrast(0.9);
+        transform: scale(1.02);
+        transition: all 0.9s ease;
+      }
+
+      body.focus-home .side-home {
+        filter: brightness(1.02) saturation(1.05);
+        transition: all 0.9s ease;
+      }
+
+      /* Animações */
+      @keyframes pulse-sun {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.08);
+          opacity: 0.92;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes heatMove {
+        from {
+          transform: translateY(0) skewX(-4deg);
+          opacity: 0.9;
+        }
+        to {
+          transform: translateY(-18px) skewX(-8deg);
+          opacity: 0.6;
+        }
+      }
+
+      @keyframes beamFlow {
+        from {
+          transform: rotate(-6deg) translateX(0);
+          opacity: 0.85;
+        }
+        to {
+          transform: rotate(-2deg) translateX(12px);
+          opacity: 1;
+        }
+      }
+
+      @keyframes leafSway {
+        from {
+          transform: rotate(-3deg);
+        }
+        to {
+          transform: rotate(4deg);
+        }
+      }
+    </style>
+  </head>
+  <body class="focus-home">
+    <!-- <button class="focus-toggle" id="focusToggle" type="button">
+      <span class="icon">☀️</span>
+      <span>Alternar foco: lá fora / casa da mãe</span>
+    </button> -->
+
+    <main class="page" aria-label="Cena de dois mundos de luz">
+      <!-- Lado de fora: Sol queimando no caos -->
+      <section class="side-outer" aria-hidden="true">
+        <div class="sun-orbit"></div>
+        <div class="heat-waves"></div>
+        <div class="outer-overlay"></div>
+
+        <div class="outer-text">
+          <span class="label">
+            <span class="dot"></span>
+            lá fora o sol está queimando
+          </span>
+          <p>
+            Trânsito, prazos, notificações que não param. A mesma luz que corre
+            com você, também faz pausa quando te encontra em outro lugar.
+          </p>
+        </div>
+      </section>
+
+      <!-- Dentro de casa: frestas, tempo mais lento -->
+      <section class="side-home">
+        <div class="room-frame">
+          <div class="room-top-bar">
+            <div class="dots">
+              <div class="dot-window"></div>
+              <div class="dot-window"></div>
+              <div class="dot-window"></div>
+            </div>
+            <span class="right">um canto só seu</span>
+          </div>
+
+          <div class="window" aria-hidden="true">
+            <div class="window-frame">
+              <div class="light-beam"></div>
+            </div>
+          </div>
+
+          <div class="shelf"></div>
+          <div class="plant">
+            <div class="plant-pot"></div>
+            <div class="plant-leaf"></div>
+          </div>
+
+          <article class="message-card" aria-label="Mensagem para Cléia">
+            <div class="message-tag">
+              <span class="sun-dot"></span>
+              <span>entre o caos e o descanso</span>
+            </div>
+
+            <div class="message-body">
+              <p>
+                Cléia, já reparou que a luz do Sol que te queima a pele no caos
+                do dia a dia, é a mesma que entra pelas frestas das paredes e
+                das telhas da casa da sua mãe?
+              </p>
+
+              <p>
+                É como se ela te dissesse, baixinho, que ainda existe um lugar
+                onde o tempo desacelera, onde o corpo desarma e onde a alma se
+                reorganiza.
+              </p>
+
+              <p>Fica por aí o quanto puder, aqui o Sol tá queimando! 🤣</p>
+            </div>
+
+            <div class="message-footer">
+              <span>entre frestas e saudades controladas</span>
+            </div>
+            <div class="message-footer">
+              <span>Com carinho e uma gota de saudade, ._.. ...</span>
+            </div>
+
+            <div class="tiny-note">
+              mesma luz, jeitos diferentes de tocar você
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        const toggle = document.getElementById("focusToggle");
+        const body = document.body;
+
+        toggle.addEventListener("click", function () {
+          body.classList.toggle("focus-home");
+        });
+      })();
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

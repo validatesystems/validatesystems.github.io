@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0f1222" />
+    <title>Entre corridas e pausas</title>
+    <style>
+      :root {
+        /* Paleta emocional */
+        --bg1: #0f1222; /* noite calma */
+        --bg2: #1a2040; /* transição */
+        --bg3: #2a2560; /* aurora base */
+        --glow1: #a7c8ff; /* azul frio */
+        --glow2: #ffd8a6; /* dourado suave */
+        --ink: #f6f7ff;
+        --muted: #b9c1e3;
+        --ring: 0 0 0 1.5px rgba(167, 200, 255, 0.25);
+        --radius: 20px;
+
+        /* tempos / respiração */
+        --t-fast: 220ms;
+        --t: 700ms;
+        --breath: 6.5s; /* ciclo completo (psicológico) */
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg1);
+        color: var(--ink);
+      }
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial;
+        overflow: hidden;
+      }
+
+      /* Aurora de fundo (camadas) */
+      .sky {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+        background: radial-gradient(
+            1200px 700px at 10% 15%,
+            rgba(167, 200, 255, 0.16),
+            transparent 60%
+          ),
+          radial-gradient(
+            1000px 600px at 85% 20%,
+            rgba(255, 216, 166, 0.12),
+            transparent 60%
+          ),
+          linear-gradient(160deg, var(--bg1), var(--bg2));
+      }
+
+      /* faixa de aurora em movimento (mist) */
+      .aurora {
+        position: absolute;
+        inset: -20% -20% -20% -20%;
+        background: conic-gradient(
+          from 200deg at 50% 50%,
+          rgba(167, 200, 255, 0) 0%,
+          rgba(167, 200, 255, 0.25) 15%,
+          rgba(255, 216, 166, 0.18) 35%,
+          rgba(167, 200, 255, 0.22) 55%,
+          rgba(167, 200, 255, 0) 75%,
+          rgba(255, 216, 166, 0) 100%
+        );
+        filter: blur(40px) saturate(1.15);
+        animation: drift 24s linear infinite;
+        opacity: 0.85;
+      }
+      @keyframes drift {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Partículas leves (respiram) */
+      canvas#mist {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        mix-blend-mode: screen;
+      }
+
+      /* Conteúdo */
+      .wrap {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        height: 100%;
+        padding: 24px;
+      }
+
+      .card {
+        width: auto;
+        background: color-mix(in srgb, #ffffff 8%, transparent);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35),
+          inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
+        padding: clamp(22px, 4vw, 40px);
+        position: relative;
+        overflow: hidden;
+        transform: translateZ(0);
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        pointer-events: none;
+        background: linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0.08),
+          transparent 30%,
+          rgba(255, 255, 255, 0.08) 70%,
+          transparent
+        );
+        mask: linear-gradient(#000, #000) padding-box,
+          linear-gradient(#000, #000);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+      }
+
+      h1 {
+        margin: 0 0 6px 0;
+        font-size: clamp(24px, 4.8vw, 36px);
+        letter-spacing: 0.2px;
+      }
+      .sub {
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(14px, 2.6vw, 16px);
+      }
+
+      .msg {
+        margin-top: 18px;
+        font-size: clamp(18px, 3.4vw, 22px);
+        line-height: 1.5;
+      }
+      .msg .soft {
+        color: var(--glow2);
+      }
+
+      /* Respiração do cartão */
+      .breath {
+        animation: inhale var(--breath) ease-in-out infinite;
+      }
+      @keyframes inhale {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.012);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Linhas surgem no ritmo da respiração */
+      .line {
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity var(--t), transform var(--t);
+      }
+      .line.show {
+        opacity: 1;
+        transform: none;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 20px;
+        align-items: center;
+      }
+
+      .btn {
+        appearance: none;
+        border: 0;
+        cursor: pointer;
+        padding: 12px 16px;
+        border-radius: 14px;
+        font-weight: 600;
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--glow1) 45%, #fff 0%) 0%,
+          color-mix(in srgb, var(--glow1) 18%, #000 0%) 100%
+        );
+        color: #0e1322;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+        transition: transform var(--t-fast), filter var(--t-fast);
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.05);
+      }
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .ghost {
+        background: transparent;
+        color: var(--ink);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: none;
+      }
+
+      .switch {
+        --h: 32px;
+        --w: 56px;
+        width: var(--w);
+        height: var(--h);
+        border-radius: 999px;
+        position: relative;
+        isolation: isolate;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      .switch[data-on="true"] {
+        background: color-mix(in srgb, var(--glow2) 45%, transparent);
+      }
+      .knob {
+        position: absolute;
+        left: 3px;
+        top: 3px;
+        width: calc(var(--h) - 6px);
+        height: calc(var(--h) - 6px);
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        transition: left var(--t) ease;
+      }
+      .switch[data-on="true"] .knob {
+        left: calc(var(--w) - var(--h) + 3px);
+      }
+      .switch span {
+        font-size: 12px;
+        color: var(--muted);
+        padding-left: calc(var(--w) + 10px);
+        user-select: none;
+      }
+
+      .tag {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 12px;
+        color: var(--muted);
+        border: 1px dashed rgba(255, 255, 255, 0.18);
+        padding: 6px 10px;
+        border-radius: 999px;
+        margin-top: 16px;
+        user-select: none;
+      }
+
+      /* Acessibilidade: reduz movimentação */
+      @media (prefers-reduced-motion: reduce) {
+        .aurora,
+        .breath {
+          animation: none !important;
+        }
+        .line {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sky" aria-hidden="true">
+      <div class="aurora"></div>
+      <canvas id="mist"></canvas>
+    </div>
+
+    <div class="wrap">
+      <article class="card breath" aria-live="polite">
+        <header>
+          <h1>Entre corridas e pausas</h1>
+          <!-- <p class="sub">Página-sussurro: sentir primeiro, entender depois.</p> -->
+        </header>
+
+        <section class="msg" id="msg">
+          <p class="line" style="transition-delay: 140ms">
+            O dia é sempre corrido,
+          </p>
+          <p class="line" style="transition-delay: 340ms">
+            mas minha vontade é de correr...
+          </p>
+          <p class="line" style="transition-delay: 540ms">
+            pra perto de <span class="soft">quem me desacelera</span>.
+          </p>
+        </section>
+
+        <div class="controls">
+          <button id="reveal" class="btn" aria-label="Respirar e revelar">
+            Revelar mensagem
+          </button>
+          <button
+            id="replay"
+            class="btn ghost"
+            aria-label="Rever a mensagem"
+            hidden
+          >
+            Rever
+          </button>
+
+          <!-- <div
+            id="soundSwitch"
+            class="switch"
+            role="switch"
+            aria-checked="false"
+            tabindex="0"
+            data-on="false"
+          >
+            <div class="knob" aria-hidden="true"></div>
+            <span>som</span>
+          </div> -->
+        </div>
+
+        <div class="tag" aria-hidden="true">._.. ...</div>
+
+        <audio id="amb" preload="auto">
+          <source src="assets/wind-quiet.mp3" type="audio/mpeg" />
+        </audio>
+      </article>
+    </div>
+
+    <script>
+      // ======== Partículas leves (névoa/poeira brilhante) ========
+      const cvs = document.getElementById("mist");
+      const ctx = cvs.getContext("2d");
+      let particles = [];
+
+      function resize() {
+        const dpr = Math.max(1, window.devicePixelRatio || 1);
+        cvs.width = Math.floor(innerWidth * dpr);
+        cvs.height = Math.floor(innerHeight * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        particles = Array.from({ length: 140 }, () => ({
+          x: Math.random() * innerWidth,
+          y: Math.random() * innerHeight,
+          r: Math.random() * 1.4 + 0.4,
+          a: Math.random() * Math.PI * 2,
+          s: Math.random() * 0.35 + 0.15,
+          o: Math.random() * 0.5 + 0.35,
+        }));
+      }
+      addEventListener("resize", resize, { passive: true });
+      resize();
+
+      function loop() {
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        particles.forEach((p) => {
+          p.a += 0.002 + p.s * 0.002;
+          p.x += Math.cos(p.a) * p.s;
+          p.y += Math.sin(p.a * 0.7) * p.s * 0.6;
+          if (p.x < -5) p.x = innerWidth + 5;
+          if (p.x > innerWidth + 5) p.x = -5;
+          if (p.y < -5) p.y = innerHeight + 5;
+          if (p.y > innerHeight + 5) p.y = -5;
+          ctx.globalAlpha = p.o * 0.9;
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 8);
+          grad.addColorStop(0, "rgba(255,255,255,0.75)");
+          grad.addColorStop(1, "rgba(255,255,255,0)");
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        requestAnimationFrame(loop);
+      }
+      loop();
+
+      // ======== Interação emocional ========
+      const body = document.body;
+      const lines = Array.from(document.querySelectorAll(".line"));
+      const revealBtn = document.getElementById("reveal");
+      const replayBtn = document.getElementById("replay");
+      const soundSwitch = document.getElementById("soundSwitch");
+      const amb = document.getElementById("amb");
+      let soundOn = false;
+      let revealed = false;
+
+      function reveal() {
+        if (revealed) return;
+        lines.forEach((el, i) =>
+          setTimeout(() => el.classList.add("show"), 80 + i * 350)
+        );
+        if (soundOn)
+          try {
+            amb.currentTime = 0;
+            amb.volume = 0.5;
+            amb.play();
+          } catch {}
+        revealBtn.hidden = true;
+        revealBtn.textContent = "Respirar mais";
+        replayBtn.hidden = true;
+        revealed = true;
+      }
+
+      function replay() {
+        lines.forEach((el) => el.classList.remove("show"));
+        setTimeout(() => {
+          revealed = false;
+          reveal();
+        }, 220);
+      }
+
+      revealBtn.addEventListener("click", reveal);
+      replayBtn.addEventListener("click", replay);
+
+      function toggleSound() {
+        soundOn = !soundOn;
+        soundSwitch.dataset.on = String(soundOn);
+        soundSwitch.setAttribute("aria-checked", String(soundOn));
+        if (!soundOn) {
+          amb.pause();
+        } else if (revealed) {
+          try {
+            amb.currentTime = 0;
+            amb.play();
+          } catch {}
+        }
+      }
+      soundSwitch.addEventListener("click", toggleSound);
+      soundSwitch.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleSound();
+        }
+      });
+
+      // Acessibilidade: Enter/Barra inicia
+      addEventListener("keydown", (e) => {
+        if ((e.key === "Enter" || e.key === " ") && !revealed) reveal();
+      });
+
+      // Modo baixa movimentação
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced) {
+        document.querySelector(".aurora").style.animation = "none";
+        document.querySelector(".card").classList.remove("breath");
+      }
+
+      // Inatividade → revelar sozinho (gentil)
+      let idle;
+      const IDLE = 7000; // 7s
+      function resetIdle() {
+        clearTimeout(idle);
+        idle = setTimeout(() => {
+          if (!revealed) reveal();
+        }, IDLE);
+      }
+      ["mousemove", "pointerdown", "keydown", "touchstart", "scroll"].forEach(
+        (ev) => addEventListener(ev, resetIdle, { passive: true })
+      );
+      resetIdle();
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Lembrete silencioso</title>
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&family=Homemade+Apple&display=swap"
+    />
+
+    <style>
+      :root {
+        --bg: #f8f6f1;
+        --paper: #ffffffee;
+        --ink: #1a1a1a;
+        --muted: #6b6b6b;
+        --accent: #efb432;
+        --shadow: 0 18px 35px rgba(0, 0, 0, 0.16);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #fefcf9, #f5efe3, #ece5d8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+        font-family: "Nunito", sans-serif;
+        text-align: justify;
+      }
+
+      .note {
+        width: 100%;
+        max-width: 580px;
+        background: var(--paper);
+        padding: 32px 28px;
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        position: relative;
+        animation: fadeIn 1.5s ease forwards;
+      }
+
+      .note::before {
+        content: "";
+        position: absolute;
+        top: -16px;
+        left: 32px;
+        width: 70px;
+        height: 26px;
+        background: #fef3c7;
+        border-radius: 6px;
+        transform: rotate(-4deg);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      }
+
+      .note-title {
+        font-family: "Homemade Apple", cursive;
+        font-size: 1.1rem;
+        color: var(--accent);
+        margin-bottom: 18px;
+        opacity: 0.9;
+      }
+
+      .text p {
+        font-size: 1rem;
+        line-height: 1.62;
+        color: var(--ink);
+        margin-bottom: 14px;
+      }
+
+      .text p:last-child {
+        margin-bottom: 0;
+      }
+
+      .footer {
+        margin-top: 18px;
+        font-size: 0.82rem;
+        color: var(--muted);
+        text-align: right;
+        font-family: "Homemade Apple", cursive;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="note">
+      <div class="note-title">Um lembrete, só pra você.</div>
+
+      <div class="text">
+        <p>
+          Cléia… às vezes eu penso que você talvez nem imagine, mas esses cards
+          só existem porque você existe. São a forma mais segura que encontrei
+          de permanecer perto, mesmo estando longe.
+        </p>
+
+        <p>
+          Não pra invadir nada, não pra ultrapassar nenhum limite, porque eu
+          respeito tudo o que é seu, inclusive sua vida, sua casa, seu mundo.
+        </p>
+
+        <p>
+          Te falar aqui é como confiar minhas palavras ao vento, elas seguem,
+          mesmo que você não veja.
+        </p>
+
+        <p>
+          É só que… guardar tudo isso em silêncio, como se fosse descartável,
+          seria injusto com o que sinto. Então escrevo. Escrevo e deixo aqui,
+          como quem deixa um bilhete dobrado dentro de um livro que talvez
+          alguém abra, ou não.
+        </p>
+
+        <p>
+          Às vezes me pergunto se você acessa. Talvez sim, talvez não. Mas é
+          melhor que permaneça assim mesmo: eu escrevo, você vê se quiser,
+          nenhum comentário necessário.
+        </p>
+
+        <p>
+          O que importa é que isso existe. E existe porque você existe. O tempo
+          cuida do resto. Ele sempre cuida.
+        </p>
+        <p>Não se preocupe, em algum momento isso vai acabar!</p>
+      </div>
+
+      <div class="footer">em silêncio, mas presente</div>
+      <div class="footer">Com 💜 ._.. ...</div>
+    </div>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

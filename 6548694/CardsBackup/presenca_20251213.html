@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Presença</title>
+
+    <!-- Tipografia suave e elegante -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg-1: #0f172a; /* azul profundo */
+        --bg-2: #1e293b; /* azul ardósia */
+        --glow: rgba(148, 163, 184, 0.15);
+        --text: #e5e7eb;
+        --accent: #94a3b8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        color: var(--text);
+        background: radial-gradient(
+          120vw 120vh at 80% 10%,
+          var(--bg-2),
+          var(--bg-1)
+        );
+        font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .page {
+        min-height: 100%;
+        display: grid;
+        place-items: center;
+        padding: 10vh 6vw;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 720px;
+        padding: clamp(20px, 6vw, 48px);
+        border-radius: 24px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.05),
+          rgba(255, 255, 255, 0.02)
+        );
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.45),
+          inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        position: relative;
+        overflow: hidden;
+        animation: fadeIn 900ms ease-out both;
+      }
+
+      .card::before,
+      .card::after {
+        content: "";
+        position: absolute;
+        inset: -40%;
+        border-radius: 50%;
+        background: radial-gradient(closest-side, var(--glow), transparent 70%);
+        animation: breathe 12s ease-in-out infinite;
+        pointer-events: none;
+      }
+      .card::after {
+        animation-delay: 6s;
+        transform: translateX(12%) translateY(-6%);
+        filter: blur(8px);
+      }
+
+      h1 {
+        margin: 0 0 1em;
+        font-family: "EB Garamond", serif;
+        font-size: clamp(22px, 5.5vw, 32px);
+        line-height: 1.4;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        color: var(--text);
+        text-wrap: balance;
+      }
+
+      p {
+        margin: 0 0 1.2em;
+        font-size: clamp(15px, 4.2vw, 18px);
+        line-height: 1.6;
+        color: var(--accent);
+      }
+
+      .signature {
+        margin-top: 2.5em;
+        text-align: right;
+        font-family: "EB Garamond", serif;
+        font-size: clamp(16px, 4vw, 20px);
+        color: var(--text);
+        opacity: 0.8;
+      }
+
+      .signature::before {
+        content: "";
+        display: block;
+        width: 60%;
+        height: 1px;
+        margin: 0 0 0.6em auto;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent),
+          transparent
+        );
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .card,
+        .card::before,
+        .card::after {
+          animation: none;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes breathe {
+        0%,
+        100% {
+          transform: translateX(-6%) translateY(4%) scale(1);
+          opacity: 0.55;
+        }
+        50% {
+          transform: translateX(6%) translateY(-4%) scale(1.06);
+          opacity: 0.85;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page" aria-label="Mensagem principal">
+      <section class="card">
+        <h1>Ei menina.</h1>
+        <p>
+          Nem todo silêncio é ausência, sabia?<br />
+          Às vezes, é só a forma que a presença encontra para existir sem
+          barulho.
+        </p>
+
+        <p>
+          Há sentimentos que permanecem no que a gente sente.<br />
+          Bonitos, tranquilos, sem exigir nada.
+        </p>
+
+        <p>
+          O que mora aqui é simples e inesperado.<br />
+          Mesmo sem poder ser vivido, vive em mim.<br />
+          Faz companhia daquelas que aquecem, não pesam, não cobram.<br />
+          Te fazem rir até em momentos difíceis.<br />
+        </p>
+
+        <p>
+          Se um dia puder ser vivido, será bonito.<br />
+          Se não puder, tudo bem também.<br />
+          Porque segue genuíno, guardado com cuidado e respeitando o espaço de
+          cada um.
+        </p>
+
+        <!-- Espaço para assinatura -->
+        <div class="signature">._.. ...</div>
+      </section>
+    </main>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

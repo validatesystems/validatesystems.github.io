@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Cléia — 12 Motivos para Ser Professora (Sexta x12)</title>
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694",
+      };
+    </script>
+    <meta name="color-scheme" content="light dark" />
+    <style>
+      :root {
+        --bg1: #fff7e6;
+        --bg2: #ffe0f7;
+        --text: #1a1a1a;
+        --muted: #6b6b6b;
+        --accent: #ffb703;
+        --pm: #8b5cf6;
+        --am: #10b981;
+        --card: rgba(255, 255, 255, 0.84);
+        --glass: blur(12px);
+        --ring: 0 0 0 2px rgba(0, 0, 0, 0.08);
+        --shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+        --radius: 18px;
+        --safe-top: env(safe-area-inset-top, 16px);
+        --safe-bottom: env(safe-area-inset-bottom, 16px);
+      }
+
+      /* ====== BASE ====== */
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto,
+          sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            1200px 800px at 20% 10%,
+            var(--bg1),
+            transparent
+          ),
+          radial-gradient(1000px 600px at 80% 90%, var(--bg2), transparent),
+          linear-gradient(160deg, #fafafa, #f2f2f2);
+        min-height: 100svh; /* usa svh em navegadores novos, melhora em mobile */
+        display: grid;
+        place-items: center;
+        overflow: auto; /* mantém rolagem – só bloqueamos quando painel abre */
+      }
+
+      .noise {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        mix-blend-mode: soft-light;
+        animation: drift 30s linear infinite alternate;
+      }
+      .noise::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.03"/></svg>');
+      }
+      @keyframes drift {
+        to {
+          transform: translate3d(10px, -10px, 0) scale(1.02);
+        }
+      }
+
+      .wrap {
+        width: min(960px, 100vw);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 12px;
+        padding: calc(var(--safe-top) + 8px) 10px calc(var(--safe-bottom) + 8px);
+      }
+
+      /* ====== APPBAR ====== */
+      header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
+        backdrop-filter: var(--glass);
+      }
+      .title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .title h1 {
+        font-size: clamp(1.1rem, 3.8vw, 1.8rem);
+        margin: 0;
+        color: var(--accent);
+      }
+      .title small {
+        color: var(--muted);
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* barra de ações rolável em telas estreitas */
+      .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+        padding: 2px 0;
+        scrollbar-width: none;
+      }
+      .actions::-webkit-scrollbar {
+        display: none;
+      }
+
+      .btn {
+        -webkit-tap-highlight-color: transparent;
+        appearance: none;
+        border: 0;
+        background: var(--accent);
+        color: #fff;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+        box-shadow: var(--shadow);
+        border-radius: 999px;
+        padding: 10px 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s ease, filter 0.2s ease;
+        white-space: nowrap;
+        font-size: clamp(0.9rem, 3.3vw, 1rem);
+      }
+      .btn:hover {
+        filter: brightness(1.05) saturate(1.05);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn-comment {
+        all: unset;
+        cursor: pointer;
+        font-size: clamp(1.2rem, 4.5vw, 1.4rem);
+      }
+
+      /* ====== GRID / RELÓGIO ====== */
+      .grid {
+        position: relative;
+        display: grid;
+        place-items: center;
+        padding: 8px;
+        min-height: min(64svh, 620px);
+      }
+      .clock {
+        position: relative;
+        width: min(88vw, 520px);
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle at 50% 50%,
+            rgba(255, 255, 255, 0.8),
+            rgba(255, 255, 255, 0.35) 60%,
+            transparent 61%
+          ),
+          conic-gradient(from -90deg, var(--am) 0 50%, var(--pm) 50% 100%);
+        box-shadow: var(--shadow);
+        display: grid;
+        place-items: center;
+        isolation: isolate;
+      }
+
+      .portal {
+        position: absolute;
+        width: clamp(52px, 14vw, 84px);
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.92),
+          rgba(255, 255, 255, 0.72)
+        );
+        box-shadow: var(--ring), 0 8px 20px rgba(0, 0, 0, 0.12);
+        backdrop-filter: var(--glass);
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.25s ease, filter 0.25s ease,
+          box-shadow 0.25s ease;
+        outline: none;
+        touch-action: manipulation; /* melhora tempo de resposta mobile */
+      }
+      .portal:active {
+        transform: scale(0.97);
+      }
+      .portal[data-state="done"] {
+        filter: saturate(1.15) contrast(1.05);
+      }
+      .portal .num {
+        font-weight: 900;
+        font-size: clamp(16px, 4.8vw, 24px);
+        color: var(--accent);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+      }
+      .portal .tag {
+        font-size: clamp(0.68rem, 3vw, 0.72rem);
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .center {
+        position: absolute;
+        inset: 22% 22%;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 10px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.92),
+          rgba(255, 255, 255, 0.72)
+        );
+        box-shadow: var(--ring), var(--shadow);
+      }
+      .center h2 {
+        margin: 6px 0 0;
+        font-size: clamp(1rem, 3.8vw, 1.4rem);
+      }
+      .meter {
+        --p: 0;
+        position: relative;
+        width: 82%;
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+        margin-top: 8px;
+      }
+      .meter::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        width: calc(var(--p) * 1%);
+        background: linear-gradient(90deg, var(--am), var(--pm));
+        transition: width 0.6s cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+
+      /* ====== PAINEL (bottom sheet) ====== */
+      .panel {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 20;
+        translate: 0 100%;
+        transition: translate 0.5s cubic-bezier(0.2, 0.9, 0.2, 1);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.96),
+          rgba(255, 255, 255, 0.9)
+        );
+        backdrop-filter: var(--glass);
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.16);
+        padding: 16px 18px calc(18px + var(--safe-bottom));
+        max-height: 80svh; /* cabe em celulares baixos */
+        overflow: auto; /* rolagem interna do conteúdo */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+      .panel.show {
+        translate: 0 0;
+      }
+      .panel h3 {
+        margin: 6px 0;
+        font-size: clamp(1.05rem, 4vw, 1.4rem);
+        color: var(--accent);
+      }
+      .panel p {
+        margin: 8px 0 0;
+        color: var(--text);
+        line-height: 1.6;
+        font-size: clamp(0.95rem, 3.6vw, 1.05rem);
+      }
+      .panel .row {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+        flex-wrap: wrap;
+      }
+      .chip {
+        border: 0;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-weight: 700;
+        background: var(--card);
+        color: var(--text);
+        box-shadow: var(--ring), var(--shadow);
+        cursor: pointer;
+        font-size: clamp(0.9rem, 3.4vw, 1rem);
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* ====== FOOTER ====== */
+      footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 2px;
+        flex-wrap: wrap;
+      }
+      .note {
+        color: var(--muted);
+        font-size: clamp(0.9rem, 3.4vw, 1rem);
+      }
+
+      .confetti {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 40;
+      }
+      .confetti i {
+        position: absolute;
+        width: 8px;
+        height: 14px;
+        opacity: 0.95;
+        border-radius: 2px;
+        animation: fall linear forwards;
+      }
+      @keyframes fall {
+        to {
+          transform: translateY(110vh) rotate(540deg);
+          opacity: 0.9;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      /* ====== AJUSTES FINOS PARA TELAS MUITO ESTREITAS ====== */
+      @media (max-width: 420px) {
+        .wrap {
+          gap: 10px;
+        }
+        header {
+          grid-template-columns: 1fr;
+        }
+        .clock {
+          width: min(94vw, 460px);
+        }
+        .center {
+          inset: 24% 24%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+
+    <div class="wrap">
+      <header>
+        <div class="title">
+          <div aria-hidden="true">📚</div>
+          <div>
+            <h1>12 Motivos para Ser Professora</h1>
+            <small
+              >sexta-feira com 12 aulas: 6×manhã & 6×tarde — e sorriso na 12ª
+              🙂</small
+            >
+          </div>
+        </div>
+
+        <!-- barra de ações com rolagem horizontal no mobile -->
+        <div class="actions" role="toolbar" aria-label="Ações">
+          <button id="toggleSound" class="btn" aria-pressed="false">
+            🔊 Som
+          </button>
+          <button id="reset" class="btn">♻️ Recomeçar</button>
+          <button
+            id="openComment"
+            class="btn-comment"
+            aria-label="Abrir comentário"
+          >
+            💬 Comentar
+          </button>
+        </div>
+      </header>
+
+      <main class="grid">
+        <section class="clock" aria-label="Relógio de 12 aulas">
+          <div class="center" id="center" tabindex="0" role="status">
+            <div>⚡ Energia pedagógica</div>
+            <div class="meter" id="meter" style="--p: 0"></div>
+            <h2 id="centerLabel">Toque um portal para começar</h2>
+            <small class="note"
+              >Dica: para aproveitar melhor a experiência, vá abrindo cada aula
+              conforme for concluindo a aula de verdade.</small
+            >
+          </div>
+        </section>
+
+        <section class="panel" id="panel" aria-live="polite" aria-hidden="true">
+          <h3 id="panelTitle">Motivo #1</h3>
+          <p id="panelText">…</p>
+          <div class="row">
+            <button class="chip" id="prev">◀︎ Anterior</button>
+            <button class="chip" id="next">Próximo ▶︎</button>
+            <button class="chip" id="close">Fechar</button>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <div class="note">
+          💛 Dedicado à Cléia — transforma a sexta feira das bruxas num
+          verdadeiro caos.
+        </div>
+        <button class="btn" id="friday">🧪 Modo Sexta</button>
+      </footer>
+    </div>
+
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+    <script>
+      /* ===================== Dados & Estado ===================== */
+      const motivos = [
+        {
+          t: "#1 — Aquecer a manhã",
+          m: "Porque o seu bom dia é Wi-Fi emocional: conecta a sala toda.",
+          tag: "manhã",
+        },
+        {
+          t: "#2 — Afinar a voz",
+          m: "Porque a sua voz tem equalizador interno: firme no conteúdo, macia intervalo e grave durante a chamada!.",
+          tag: "manhã",
+        },
+        {
+          t: "#3 — Orquestrar caos",
+          m: "Porque a sexta é um laboratório de paciência. Mistura todos os elementos da tabela periódica e sai explodindo tudo.",
+          tag: "manhã",
+        },
+        {
+          t: "#4 — Ensinar a pensar",
+          m: "Pensar, na primeira aula, 'o quê que eu tô fazendo aqui?' — e, na 12ª, 'como é que eu vivi sem isso?'.",
+          tag: "manhã",
+        },
+        {
+          t: "#5 — Humor que salva",
+          m: "Porque até a seriedade respeita o timing das suas piadas.",
+          tag: "manhã",
+        },
+        {
+          t: "#6 — Pequenas vitórias",
+          m: "Cada aula é um degrau. Pensou em pegar uma escada rolante? Esquece, respire fundo e procure subir sorrindo até a 12ª.",
+          tag: "manhã",
+        },
+        {
+          t: "#7 — Recarregar tarde",
+          m: "Porque o segundo turno pede técnica… a técnica de pensar que poderia estar numa praia flutuando nas águas.",
+          tag: "tarde",
+        },
+        {
+          t: "#8 — Fermentar ideias",
+          m: "Mostre para seus alunos o quanto a ideia de ser professora pode ser contagiante... Mas não fale a verdade! rsrsrsrs",
+          tag: "tarde",
+        },
+        {
+          t: "#9 — Ver gente",
+          m: "Porque cada aluno é um planeta... que você quer explodir com um meteoro de conhecimento. (vai nessa! rsrsrsr)",
+          tag: "tarde",
+        },
+        {
+          t: "#10 — Didática ninja",
+          m: "Porque explica difícil em língua de abraço. (dica: aproveite para xingar a 11ª aula em inglês)",
+          tag: "tarde",
+        },
+        {
+          t: "#11 — Rotina que ilumina",
+          m: "Porque repetição não é tédio quando os boletos são pagos com sorrisos.",
+          tag: "tarde",
+        },
+        {
+          t: "#12 — Sorrir na 12ª",
+          m: "Porque no fim da sexta você prova: vocação é maré, e você segue firme, surfando cansaços.",
+          tag: "tarde",
+        },
+      ];
+
+      const parsedDone = (() => {
+        try {
+          const v = JSON.parse(localStorage.getItem("x.cl.done") || "[]");
+          if (!Array.isArray(v)) return [];
+          const nums = v
+            .map((n) => parseInt(n, 10))
+            .filter((n) => Number.isFinite(n) && n >= 0 && n < 12);
+          return Array.from(new Set(nums));
+        } catch {
+          return [];
+        }
+      })();
+
+      const S = {
+        i: parseInt(localStorage.getItem("x.cl.clockIndex") || "0", 10) || 0,
+        done: parsedDone,
+        sound: localStorage.getItem("x.cl.sound") === "1",
+        celebrated: localStorage.getItem("x.cl.celebrated") === "1",
+      };
+
+      const $ = (s, r = document) => r.querySelector(s);
+      const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+      function save() {
+        localStorage.setItem("x.cl.clockIndex", String(S.i));
+        localStorage.setItem(
+          "x.cl.done",
+          JSON.stringify(Array.from(new Set(S.done)))
+        );
+        localStorage.setItem("x.cl.sound", S.sound ? "1" : "0");
+        localStorage.setItem("x.cl.celebrated", S.celebrated ? "1" : "0");
+      }
+
+      function hsl(h, s = 80, l = 55) {
+        return `hsl(${h}deg ${s}% ${l}%)`;
+      }
+      function beep(type = "sine", dur = 0.09, freq = 480) {
+        if (!S.sound) return;
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.type = type;
+          o.frequency.value = freq;
+          o.connect(g);
+          g.connect(ctx.destination);
+          g.gain.setValueAtTime(0.001, ctx.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.01);
+          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
+          o.start();
+          o.stop(ctx.currentTime + dur + 0.01);
+        } catch {}
+      }
+
+      /* Monta portais (1–12) */
+      const clock = $(".clock");
+      const portals = [];
+      motivos.forEach((mot, idx) => {
+        const angle = (idx / 12) * Math.PI * 2 - Math.PI / 2;
+        const R = 38;
+        const x = 50 + Math.cos(angle) * R;
+        const y = 50 + Math.sin(angle) * R;
+        const p = document.createElement("button");
+        p.className = "portal";
+        p.setAttribute("data-idx", idx);
+        p.style.left = `${x}%`;
+        p.style.top = `${y}%`;
+        p.style.transform = "translate(-50%,-50%)";
+        p.style.background =
+          mot.tag === "manhã"
+            ? "linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.7)), radial-gradient(80% 80% at 50% 20%, rgba(16,185,129,.25), transparent)"
+            : "linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.7)), radial-gradient(80% 80% at 50% 20%, rgba(139,92,246,.25), transparent)";
+        p.innerHTML = `<div class="num">${idx + 1}</div><div class="tag">${
+          mot.tag
+        }</div>`;
+        if (S.done.includes(idx)) p.dataset.state = "done";
+        p.addEventListener("click", () => openPanel(idx));
+        p.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openPanel(idx);
+          }
+        });
+        portals.push(p);
+        clock.appendChild(p);
+      });
+
+      /* Painel */
+      const panel = $("#panel"),
+        panelTitle = $("#panelTitle"),
+        panelText = $("#panelText"),
+        centerLabel = $("#centerLabel"),
+        meter = $("#meter");
+
+      function setMeter() {
+        const pct = Math.round((S.done.length / 12) * 100);
+        meter.style.setProperty("--p", pct);
+        centerLabel.textContent =
+          pct === 100 ? "Sexta vencida! 🎉" : `Progresso: ${pct}%`;
+      }
+      setMeter();
+
+      function maybeCelebrate() {
+        if (S.done.length >= 12 && !S.celebrated) {
+          S.celebrated = true;
+          save();
+          setTimeout(celebrate, 50);
+        }
+      }
+
+      function openPanel(idx) {
+        S.i = idx;
+        save();
+        const mot = motivos[idx];
+        panelTitle.textContent = mot.t;
+        panelText.textContent = mot.m;
+        panel.classList.add("show");
+        panel.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden"; // trava fundo só quando aberto
+
+        if (!S.done.includes(idx)) {
+          S.done.push(idx);
+          S.done = Array.from(
+            new Set(
+              S.done
+                .map((n) => parseInt(n, 10))
+                .filter((n) => Number.isFinite(n) && n >= 0 && n < 12)
+            )
+          );
+          portals[idx].dataset.state = "done";
+          save();
+          setMeter();
+          pulseCenter();
+        }
+        maybeCelebrate();
+        beep("triangle", 0.08, 520 + idx * 6);
+      }
+
+      function closePanel() {
+        panel.classList.remove("show");
+        panel.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = ""; // libera rolagem novamente
+        beep("sine", 0.06, 260);
+      }
+      $("#close").addEventListener("click", closePanel);
+      $("#prev").addEventListener("click", () => navigate(-1));
+      $("#next").addEventListener("click", () => navigate(1));
+
+      function navigate(dir) {
+        S.i = (S.i + dir + 12) % 12;
+        save();
+        openPanel(S.i);
+      }
+
+      // Swipe no painel
+      let touchX = null;
+      panel.addEventListener("touchstart", (e) => {
+        touchX = e.changedTouches[0].clientX;
+      });
+      panel.addEventListener("touchend", (e) => {
+        const dx = e.changedTouches[0].clientX - touchX;
+        if (Math.abs(dx) > 40) navigate(dx < 0 ? 1 : -1);
+        touchX = null;
+      });
+
+      // Teclado
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closePanel();
+        if (e.key === "ArrowRight") navigate(1);
+        if (e.key === "ArrowLeft") navigate(-1);
+      });
+
+      function pulseCenter() {
+        const c = $("#center");
+        c.animate(
+          [
+            { transform: "scale(1)" },
+            { transform: "scale(1.035)" },
+            { transform: "scale(1)" },
+          ],
+          { duration: 380, easing: "cubic-bezier(.2,.9,.2,1)" }
+        );
+      }
+
+      function celebrate() {
+        const box = $("#confetti");
+        box.innerHTML = "";
+        const N = 80;
+        for (let i = 0; i < N; i++) {
+          const p = document.createElement("i");
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.top = -(Math.random() * 20) + "vh";
+          p.style.background = hsl((i * 9 + Math.random() * 45) % 360, 90, 55);
+          p.style.transform = `translateY(-10vh) rotate(${
+            Math.random() * 180
+          }deg)`;
+          p.style.animationDuration = 1.8 + Math.random() * 1.4 + "s";
+          box.appendChild(p);
+        }
+        beep("square", 0.09, 660);
+        setTimeout(() => beep("square", 0.09, 880), 90);
+        setTimeout(() => beep("square", 0.09, 990), 180);
+        panelTitle.textContent = "Sexta vencida!";
+        panelText.textContent =
+          "12 motivos concluídos. Sua didática dobra esquinas cansadas e chega sorrindo na última aula. Parabéns, professora!";
+        panel.classList.add("show");
+        panel.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      const toggleSoundBtn = $("#toggleSound");
+      toggleSoundBtn.addEventListener("click", (e) => {
+        S.sound = !S.sound;
+        save();
+        e.currentTarget.setAttribute(
+          "aria-pressed",
+          S.sound ? "true" : "false"
+        );
+        e.currentTarget.textContent = S.sound
+          ? "🔈 Som ligado"
+          : "🔇 Som desligado";
+        beep("sine", 0.04, 420);
+      });
+      if (S.sound) {
+        toggleSoundBtn.textContent = "🔈 Som ligado";
+        toggleSoundBtn.setAttribute("aria-pressed", "true");
+      }
+
+      $("#reset").addEventListener("click", () => {
+        if (confirm("Recomeçar a experiência? Isso limpa o progresso.")) {
+          S.done = [];
+          S.i = 0;
+          S.celebrated = false;
+          save();
+          const box = document.getElementById("confetti");
+          if (box) box.innerHTML = "";
+          $$(".portal").forEach((p) => p.removeAttribute("data-state"));
+          setMeter();
+          closePanel();
+        }
+      });
+
+      if (S.done.length >= 12 && !S.celebrated) {
+        setTimeout(maybeCelebrate, 120);
+      }
+
+      // Easter egg: segure o centro por 2s
+      let pressTimer = null;
+      const center = document.getElementById("center");
+      function startHold() {
+        pressTimer = setTimeout(() => {
+          alert(
+            "Passe livre para pular a aula?\n\nBrincadeirinha 😄\nRespira e pega carona no motivo seguinte."
+          );
+          navigate(1);
+        }, 2000);
+      }
+      function endHold() {
+        clearTimeout(pressTimer);
+      }
+      center.addEventListener("mousedown", startHold);
+      center.addEventListener("touchstart", startHold, { passive: true });
+      center.addEventListener("mouseup", endHold);
+      center.addEventListener("mouseleave", endHold);
+      center.addEventListener("touchend", endHold);
+
+      // Modo Sexta
+      document.getElementById("friday").addEventListener("click", () => {
+        const body = document.body;
+        body.animate(
+          [
+            { filter: "saturate(1)" },
+            { filter: "saturate(1.3) hue-rotate(10deg)" },
+            { filter: "saturate(1)" },
+          ],
+          { duration: 900, easing: "cubic-bezier(.2,.9,.2,1)" }
+        );
+        beep("sawtooth", 0.08, 540);
+        const nextIdx =
+          [...Array(12).keys()].find((i) => !S.done.includes(i)) ?? 0;
+        openPanel(nextIdx);
+      });
+
+      setTimeout(() => {
+        center.focus?.();
+      }, 300);
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

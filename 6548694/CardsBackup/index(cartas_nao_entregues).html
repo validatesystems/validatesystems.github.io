@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cartas que o Tempo Não Entregou</title>
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <style>
+      :root {
+        --bg: #f4f1ec;
+        --text: #2d2a26;
+        --accent: #b48a60;
+        --paper: #fffdf9;
+        --shadow: rgba(0, 0, 0, 0.15);
+        --seal: #b44a4a;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1b1a18;
+          --text: #f2f0ec;
+          --paper: #2b2a27;
+          --shadow: rgba(0, 0, 0, 0.5);
+          --seal: #e07070;
+        }
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Cormorant Garamond", serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      h1 {
+        margin-top: 50px;
+        font-size: 2.5em;
+        letter-spacing: 1px;
+        text-align: center;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        width: 90%;
+        max-width: 1000px;
+        margin: 40px auto;
+      }
+
+      .envelope {
+        background: var(--paper);
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 8px 20px var(--shadow);
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+      }
+
+      .envelope:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 25px var(--shadow);
+      }
+
+      .seal {
+        width: 18px;
+        height: 18px;
+        background: var(--seal);
+        border-radius: 50%;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.4);
+      }
+
+      .letter-text {
+        display: none;
+        margin-top: 10px;
+        font-size: 1.1em;
+        line-height: 1.5;
+        white-space: pre-line;
+      }
+
+      .open .letter-text {
+        display: block;
+        animation: fadeIn 0.6s ease;
+      }
+
+      .open::after {
+        content: "📬";
+        position: absolute;
+        top: -15px;
+        right: 15px;
+        font-size: 1.4em;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      footer {
+        margin: 40px 0;
+        font-style: italic;
+        font-size: 0.9em;
+        opacity: 0.7;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1>Cartas que o Tempo Não Entregou 🕊️</h1>
+
+    <div class="container">
+      <div class="envelope">
+        <div class="seal"></div>
+        <h2>O Encontro — De um tempo qualquer</h2>
+        <p class="letter-text">
+          Cléia, há encontros que não pedem licença, apenas acontecem. O seu foi
+          assim: um impacto silencioso que fez o tempo desacelerar por um
+          instante. Eu te vi e, sem entender, senti como se já soubesse quem
+          você era. Desde então, parte de mim nunca mais se comportou do mesmo
+          jeito. E não é exagero, é reconhecimento. Há pessoas que o tempo não
+          apresenta, apenas devolve.
+        </p>
+      </div>
+
+      <div class="envelope">
+        <div class="seal"></div>
+        <h2>O Cotidiano — dias que disfarçam sentimento</h2>
+        <p class="letter-text">
+          Os dias com você têm uma calma disfarçada. Conversas simples, olhares
+          rápidos, risadas entre assuntos sérios e cada detalhe dizendo o que o
+          silêncio insiste em esconder. Talvez a rotina nunca entenda, mas há
+          algo bonito em conviver com alguém que faz o tempo parecer mais leve
+          só por estar ali.
+        </p>
+      </div>
+
+      <div class="envelope">
+        <div class="seal"></div>
+        <h2>O Silêncio — o espaço entre o que foi dito</h2>
+        <p class="letter-text">
+          Há coisas que nunca foram ditas, mas existiram entre um olhar e outro.
+          Eu aprendi que o silêncio também fala e, às vezes, é nele que o
+          sentimento mais se revela. Não como ausência, mas como presença que
+          sabe o seu limite. O que não se disse, mesmo assim, existe.
+        </p>
+      </div>
+
+      <div class="envelope">
+        <div class="seal"></div>
+        <h2>O Sempre — o que permanece, mesmo sem nome</h2>
+        <p class="letter-text">
+          Algumas conexões simplesmente existem — não pedem promessa, nem
+          justificativa. Você se tornou parte das coisas que continuam mesmo
+          quando o dia termina: uma presença leve, que inspira sem precisar
+          dizer. Há sentimentos que não precisam acabar, só aprender a ficar em
+          silêncio.
+        </p>
+      </div>
+    </div>
+    <button id="openComment" class="btn-comment" aria-label="Abrir comentário">
+      💬 Comentar
+    </button>
+
+    <footer>
+      Essas cartas não foram perdidas. Apenas encontraram o tempo certo para
+      serem lidas. 🌙
+    </footer>
+
+    <script>
+      document.querySelectorAll(".envelope").forEach((env) => {
+        env.addEventListener("click", () => {
+          env.classList.toggle("open");
+        });
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Sereia: Voz do Mar 🧜‍♀️</title>
+    <style>
+      :root {
+        --bg1: #001e2f;
+        --bg2: #00354f;
+        --wave: #00bcd4;
+        --text: #e0f7fa;
+        --accent: #80deea;
+        --glow: rgba(0, 188, 212, 0.4);
+        --card-bg: rgba(255, 255, 255, 0.08);
+        --card-bd: rgba(255, 255, 255, 0.15);
+      }
+
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        color: var(--text);
+        background: linear-gradient(180deg, var(--bg1), var(--bg2));
+        overflow-x: hidden;
+      }
+
+      header {
+        text-align: center;
+        padding: 2rem 1rem 1rem;
+      }
+
+      header h1 {
+        font-size: 2.2rem;
+        color: var(--accent);
+        text-shadow: 0 0 12px var(--glow);
+      }
+
+      header p {
+        font-size: 1rem;
+        opacity: 0.8;
+      }
+
+      #curiosidades {
+        max-width: 650px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-bd);
+        border-radius: 12px;
+        padding: 1.2rem;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .card:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-4px);
+      }
+
+      .card h3 {
+        margin: 0 0 0.4rem;
+        color: var(--accent);
+      }
+
+      .card p {
+        display: none;
+        line-height: 1.5;
+      }
+
+      .card.active p {
+        display: block;
+        animation: fadeIn 0.8s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      footer {
+        text-align: center;
+        font-size: 0.9rem;
+        padding: 2rem 0;
+        opacity: 0.7;
+      }
+
+      /* Ondas animadas */
+      .wave {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 200%;
+        height: 150px;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="320"><path fill="%2300bcd4" fill-opacity="0.25" d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,197.3C672,181,768,139,864,144C960,149,1056,203,1152,218.7C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+        animation: moveWave 10s linear infinite;
+        opacity: 0.4;
+        z-index: -1;
+      }
+      @keyframes moveWave {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* Brilhos sutis */
+      .sparkle {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .sparkle span {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--accent);
+        opacity: 0.8;
+        border-radius: 50%;
+        animation: sparkle 6s linear infinite;
+      }
+      @keyframes sparkle {
+        from {
+          transform: translateY(0) scale(0.8);
+          opacity: 0.7;
+        }
+        50% {
+          opacity: 1;
+        }
+        to {
+          transform: translateY(100vh) scale(1.2);
+          opacity: 0;
+        }
+      }
+
+      /* ===== Garrafa destacada ===== */
+      .bottle-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(128, 222, 234, 0.25),
+          rgba(0, 0, 0, 0.3)
+        );
+        border: 1.5px solid rgba(128, 222, 234, 0.8);
+        box-shadow: 0 0 25px rgba(128, 222, 234, 0.55),
+          0 0 45px rgba(0, 188, 212, 0.3);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        transform: scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.6s ease;
+      }
+      .bottle-btn.reveal {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1);
+        animation: pulseGlow 2.6s ease-in-out infinite;
+      }
+      @keyframes pulseGlow {
+        0% {
+          box-shadow: 0 0 15px rgba(128, 222, 234, 0.5),
+            0 0 30px rgba(0, 188, 212, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 35px rgba(128, 222, 234, 0.8),
+            0 0 70px rgba(0, 188, 212, 0.4);
+        }
+        100% {
+          box-shadow: 0 0 15px rgba(128, 222, 234, 0.5),
+            0 0 30px rgba(0, 188, 212, 0.2);
+        }
+      }
+      .bottle-btn svg {
+        width: 32px;
+        height: 32px;
+        filter: drop-shadow(0 0 10px rgba(128, 222, 234, 0.8));
+        animation: floatBottle 3.5s ease-in-out infinite;
+      }
+      @keyframes floatBottle {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-5deg);
+        }
+        50% {
+          transform: translateY(-5px) rotate(5deg);
+        }
+      }
+
+      .hint {
+        position: fixed;
+        right: 100px;
+        bottom: 34px;
+        font-size: 0.9rem;
+        color: var(--accent);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(6px);
+        transition: all 0.6s ease;
+      }
+      .hint.reveal {
+        opacity: 0.8;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      /* ===== Modal ===== */
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        place-items: center;
+        background: rgba(0, 15, 25, 0.55);
+        backdrop-filter: blur(6px);
+        z-index: 50;
+      }
+      .modal.open {
+        display: grid;
+      }
+
+      .modal-card {
+        width: min(680px, 90vw);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.12),
+          rgba(255, 255, 255, 0.06)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 16px;
+        padding: 18px 18px 12px;
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+      }
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+      .modal-title {
+        font-weight: 600;
+        color: var(--accent);
+        text-shadow: 0 0 10px var(--glow);
+      }
+      .ghost-btn {
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        padding: 8px 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .ghost-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+      }
+      .msg {
+        white-space: pre-wrap;
+        line-height: 1.6;
+        font-size: 1.03rem;
+        opacity: 0.95;
+        padding: 6px 2px 12px;
+      }
+      .type-caret {
+        display: inline-block;
+        width: 10px;
+        height: 1.1em;
+        vertical-align: bottom;
+        background: currentColor;
+        opacity: 0.7;
+        margin-left: 2px;
+        animation: caretBlink 1s steps(1, end) infinite;
+      }
+      @keyframes caretBlink {
+        0%,
+        49% {
+          opacity: 0;
+        }
+        50%,
+        100% {
+          opacity: 0.7;
+        }
+      }
+      /* Aviso de áudio */
+      .audio-hint {
+        position: fixed;
+        left: 50%;
+        bottom: 90px;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.35);
+        color: var(--accent);
+        font-size: 0.95rem;
+        padding: 8px 14px;
+        border-radius: 12px;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 0 10px rgba(128, 222, 234, 0.9);
+        opacity: 0;
+        animation: fadeInHint 1.5s ease forwards 1.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .audio-hint svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        filter: drop-shadow(0 0 4px rgba(128, 222, 234, 0.7));
+      }
+
+      @keyframes fadeInHint {
+        from {
+          opacity: 0;
+          transform: translate(-50%, 10px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+      /* Não bloquear cliques e manter acima das ondas, abaixo do modal */
+      .audio-hint {
+        z-index: 40; /* modal está em 50 */
+        pointer-events: none; /* cliques "atravessam" para os cards */
+        max-width: 92vw;
+        text-align: center;
+      }
+
+      /* Enquanto o aviso existir, cria folga no conteúdo/rodapé */
+      .has-audio-hint #curiosidades {
+        padding-bottom: 110px;
+      }
+      .has-audio-hint footer {
+        padding-bottom: 120px;
+      }
+
+      @media (max-width: 480px) {
+        .has-audio-hint #curiosidades {
+          padding-bottom: 88px;
+        }
+        .has-audio-hint footer {
+          padding-bottom: 100px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sparkle"></div>
+    <div class="wave"></div>
+
+    <header>
+      <h1>🧜‍♀️ Sereia: Voz do Mar</h1>
+      <p>Cada maré traz uma história... e cada sereia, um mistério.</p>
+      <button
+        id="openComment"
+        class="btn-comment"
+        aria-label="Abrir comentário"
+      >
+        💬 Comentar
+      </button>
+    </header>
+
+    <section id="curiosidades">
+      <div class="card">
+        <h3>🧜‍♀️ Origem das lendas</h3>
+        <p>
+          As primeiras histórias sobre sereias surgiram há mais de 3.000 anos.
+          Pescadores antigos acreditavam que criaturas com metade do corpo de
+          mulher e metade de peixe cantavam para guiá-los, ou para enganá-los.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🌊 O canto das sereias</h3>
+        <p>
+          O famoso “canto das sereias” pode ter origem nos sons misteriosos
+          emitidos por mamíferos marinhos, como os peixes-boi e baleias. Mas há
+          quem diga que certas vozes humanas nascem do mesmo sal do mar...
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🐚 Simbolismo</h3>
+        <p>
+          As sereias simbolizam liberdade, mistério e intuição, seres que
+          conhecem tanto as profundezas quanto a superfície. Representam pessoas
+          que escutam o que o mar e o silêncio dizem.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>✨ Curiosidade científica</h3>
+        <p>
+          O termo “sirenídeo” existe na biologia e nomeia uma ordem de mamíferos
+          aquáticos (como o peixe-boi). Seu nome vem das antigas “sereias, uma
+          bela mistura entre mito e ciência.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>💙 Voz e magia</h3>
+        <p>
+          Dizem que as sereias não apenas cantam, elas traduzem emoções do mar.
+          Cada nota é uma corrente, cada pausa é uma onda. E talvez, só talvez,
+          quem escuta com o coração entende o que elas dizem.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🌅 Inspiração para artistas</h3>
+        <p>
+          Pintores e escritores do Renascimento viam as sereias como metáforas
+          da beleza perigosa e irresistível. Até hoje, inspiram músicas, filmes
+          e poemas sobre o encanto que nasce do mistério.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🔱 Sereias e deuses do mar</h3>
+        <p>
+          Na mitologia grega, acreditava-se que as sereias eram filhas do rio
+          Aqueloo com as musas, por isso herdaram tanto o dom da voz quanto a
+          ligação com as águas profundas.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🌾 Lendas brasileiras</h3>
+        <p>
+          No folclore do Brasil, a Iara é uma sereia amazônica de cabelos longos
+          e olhos hipnotizantes. Ela vive nos rios e encanta os que se aproximam
+          com seu canto suave, um eco das águas do Norte.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🌠 Sereias modernas</h3>
+        <p>
+          Em culturas atuais, as sereias deixaram de ser criaturas de medo e se
+          tornaram símbolos de força feminina, independência e autoconhecimento,
+          como quem navega as próprias marés da vida.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🌌 O mito dentro de nós</h3>
+        <p>
+          Talvez as sereias nunca tenham desaparecido, apenas aprenderam a andar
+          em terra firme. Em cada pessoa que vive com sensibilidade e coragem,
+          há um pouco da alma do oceano e do mistério das profundezas.
+        </p>
+      </div>
+    </section>
+    <div class="audio-hint">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        fill="none"
+        stroke="#80deea"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <!-- Arco do fone -->
+        <path d="M3 12a9 9 0 0 1 18 0" />
+        <!-- Almofadas laterais -->
+        <path
+          d="M3 12v6a2 2 0 0 0 2 2h1.5a1.5 1.5 0 0 0 1.5-1.5V12a1.5 1.5 0 0 0-1.5-1.5H5a2 2 0 0 0-2 2z"
+        />
+        <path
+          d="M21 12v6a2 2 0 0 1-2 2h-1.5a1.5 1.5 0 0 1-1.5-1.5V12a1.5 1.5 0 0 1 1.5-1.5H19a2 2 0 0 1 2 2z"
+        />
+      </svg>
+
+      Use fones de ouvido para uma melhor experiência!
+    </div>
+
+    <footer>Feito com carinho para Cléia 🧜‍♀️</footer>
+
+    <!-- Garrafa destacada -->
+    <button
+      class="bottle-btn"
+      id="bottleBtn"
+      aria-label="Mensagem na garrafa"
+      title="Pressione e segure para abrir"
+    >
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M14 2h-4l.5 3h3L14 2Z" stroke="#80deea" stroke-width="1.5" />
+        <path
+          d="M8.5 7.5c0-1.1.9-2 2-2h3c1.1 0 2 .9 2 2v9.2c0 .6-.24 1.18-.66 1.6L12 22l-2.84-3.7a2.26 2.26 0 0 1-.66-1.6V7.5Z"
+          stroke="#80deea"
+          stroke-width="1.5"
+        />
+        <path
+          d="M10 9h4m-4 3h4m-4 3h3"
+          stroke="#80deea"
+          stroke-width="1.2"
+          opacity=".85"
+        />
+      </svg>
+    </button>
+    <!-- <div class="hint">Clique na garrafa e espere a mensagem ser carregada</div> -->
+
+    <!-- Modal -->
+    <div class="modal" id="msgModal" aria-hidden="true">
+      <div
+        class="modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="msgTitle"
+      >
+        <div class="modal-header">
+          <div class="modal-title" id="msgTitle">Mensagem na Garrafa</div>
+          <button class="ghost-btn" id="closeBtn">Fechar</button>
+        </div>
+        <div class="msg" id="typedMsg"></div>
+      </div>
+    </div>
+
+    <script>
+      // ===== Áudio da sereia (loop até sair da página) =====
+      let oceanSound;
+
+      function startOceanSound() {
+        if (!oceanSound) {
+          oceanSound = new Audio("./assets/mermaid.mp3"); // ajuste o caminho se necessário
+          oceanSound.loop = true;
+          oceanSound.preload = "auto";
+          oceanSound.volume = 0.6; // volume confortável
+        }
+        if (oceanSound.paused) {
+          oceanSound.play().catch((err) => {
+            console.info("Audio bloqueado pelo navegador (autoplay):", err);
+          });
+        }
+      }
+
+      // ===== Mensagem personalizada =====
+      const PRIVATE_MESSAGE = `Cléia,
+
+talvez eu tenha me tornado especialista em decifrar marés desde que te conheci.
+Sei que o oceano tem dias de calmaria e dias de onda alta e eu respeito cada um deles.
+Quero que esta página te lembre de respirar, sorrir e lembrar que a tua força
+é daquelas que transformam tempestade em canção.
+
+Se o mundo ficar barulhento demais, lembra:
+teu riso é brilho, tua voz organiza o caos, e tua coragem é maré que não se rende.
+
+._.. ...`;
+
+      // ===== Brilhos =====
+      const sparkleContainer = document.querySelector(".sparkle");
+      for (let i = 0; i < 20; i++) {
+        const s = document.createElement("span");
+        s.style.left = Math.random() * 100 + "%";
+        s.style.animationDelay = Math.random() * 6 + "s";
+        s.style.animationDuration = 4 + Math.random() * 4 + "s";
+        sparkleContainer.appendChild(s);
+      }
+
+      // ===== Interação dos cards + liberação da garrafa =====
+      const cards = document.querySelectorAll(".card");
+      const bottleBtn = document.getElementById("bottleBtn");
+      const hint = document.querySelector(".hint");
+      const openedOnce = new Set();
+
+      cards.forEach((card, idx) => {
+        card.dataset.cid = String(idx);
+        card.addEventListener("click", () => {
+          card.classList.toggle("active");
+          if (card.classList.contains("active")) {
+            openedOnce.add(card.dataset.cid);
+            checkAllOpened();
+          }
+          // Dispara o áudio uma única vez (primeiro clique em qualquer card)
+          startOceanSound();
+        });
+      });
+
+      function checkAllOpened() {
+        if (openedOnce.size === cards.length) {
+          bottleBtn.classList.add("reveal");
+          if (hint) hint.classList.add("reveal");
+          try {
+            bottleBtn.animate(
+              [
+                { transform: "scale(1)" },
+                { transform: "scale(1.08)" },
+                { transform: "scale(1)" },
+              ],
+              { duration: 600, easing: "ease-out" }
+            );
+          } catch (_) {}
+        }
+      }
+
+      // ===== Modal: press & hold para abrir =====
+      const modal = document.getElementById("msgModal");
+      const closeBtn = document.getElementById("closeBtn");
+      // Botão FECHAR do modal
+      closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeModal();
+      });
+
+      // (opcional) acessibilidade: fechar com Enter/Espaço
+      closeBtn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          closeModal();
+        }
+      });
+
+      const typedMsgEl = document.getElementById("typedMsg");
+
+      let holdTimer = null;
+      let typed = false;
+
+      const openModal = () => {
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden", "false");
+        typedMsgEl.textContent = PRIVATE_MESSAGE; // render imediato
+      };
+
+      const closeModal = () => {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+      };
+
+      const startHold = (e) => {
+        if (!bottleBtn.classList.contains("reveal")) return; // ainda não liberado
+        e.preventDefault();
+        if (holdTimer) clearTimeout(holdTimer);
+        holdTimer = setTimeout(() => {
+          openModal();
+          holdTimer = null;
+        }, 1);
+      };
+      const cancelHold = () => {
+        if (holdTimer) {
+          clearTimeout(holdTimer);
+          holdTimer = null;
+        }
+      };
+
+      bottleBtn.addEventListener("mousedown", startHold);
+      bottleBtn.addEventListener("touchstart", startHold, { passive: false });
+      ["mouseup", "mouseleave", "touchend", "touchcancel"].forEach((ev) =>
+        bottleBtn.addEventListener(ev, cancelHold)
+      );
+
+      // Atalho: M (só depois de liberar)
+      window.addEventListener("keydown", (e) => {
+        if (
+          (e.key === "m" || e.key === "M") &&
+          bottleBtn.classList.contains("reveal") &&
+          !modal.classList.contains("open")
+        ) {
+          openModal();
+        }
+        if (e.key === "Escape" && modal.classList.contains("open"))
+          closeModal();
+      });
+
+      // Fecha clicando fora
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // ===== Efeito de digitação =====
+      function typeWriter(text, el, speed = 16) {
+        el.textContent = "";
+        const frag = document.createDocumentFragment();
+        let i = 0;
+        const caret = document.createElement("span");
+        caret.className = "type-caret";
+        const tick = () => {
+          if (i < text.length) {
+            frag.append(text[i]);
+            i++;
+            el.innerHTML = "";
+            el.append(frag, caret);
+            setTimeout(tick, speed);
+          } else {
+            typed = true;
+            el.textContent = text; // fixa sem caret
+          }
+        };
+        tick();
+      }
+      // Parar o áudio quando o usuário sair da página
+      window.addEventListener("pagehide", () => {
+        if (oceanSound) {
+          oceanSound.pause();
+          oceanSound.currentTime = 0;
+        }
+      });
+      window.addEventListener("beforeunload", () => {
+        if (oceanSound) {
+          oceanSound.pause();
+          oceanSound.currentTime = 0;
+        }
+      });
+      // Evitar sobreposição visual: adiciona folga enquanto o aviso estiver visível
+      document.addEventListener("DOMContentLoaded", () => {
+        const audioHint = document.querySelector(".audio-hint");
+        if (!audioHint) return;
+
+        document.body.classList.add("has-audio-hint");
+
+        const dismissHint = () => {
+          if (!audioHint) return;
+          audioHint.style.display = "none";
+          document.body.classList.remove("has-audio-hint");
+          window.removeEventListener("scroll", onScroll, { passive: true });
+        };
+
+        const onScroll = () => {
+          if (window.scrollY > 0) dismissHint();
+        };
+
+        // Esconde após 8s, ao rolar a página ou no 1º clique em qualquer card
+        const autoHide = setTimeout(dismissHint, 8000000);
+        // window.addEventListener("scroll", onScroll, { passive: true });
+
+        document.querySelectorAll(".card").forEach((c) => {
+          c.addEventListener(
+            "click",
+            () => {
+              clearTimeout(autoHide);
+              // dismissHint();
+            },
+            { once: true }
+          );
+        });
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

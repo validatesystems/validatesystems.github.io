@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>🎭 A Tragédia do Sábado Perdido — para Cléia</title>
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <style>
+      :root {
+        --stage-bg: #0c1020;
+        --velvet: #7d1433;
+        --gold: #ffdd70;
+        --ink: #f5f7ff;
+        --muted: #b6bfd3;
+        --accent: #58d1ff;
+        --danger: #ff7a7a;
+        --card: rgba(255, 255, 255, 0.06);
+        --glass: blur(10px);
+        --shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        --radius: 18px;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui;
+        color: var(--ink);
+        background: radial-gradient(
+          1200px 600px at 50% 70%,
+          #1a2040 0%,
+          var(--stage-bg) 60%,
+          #070a16 100%
+        );
+        overflow-x: hidden;
+        transition: filter 0.8s ease, background 1s ease;
+      }
+      body.dramatic {
+        filter: contrast(1.2) saturate(1.4) hue-rotate(-10deg);
+        background: radial-gradient(
+          1200px 600px at 50% 70%,
+          #3b0000 0%,
+          #1a0a0f 60%,
+          #000000 100%
+        );
+      }
+      body.dramatic::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          600px 400px at 50% 60%,
+          rgba(255, 0, 0, 0.2),
+          transparent 80%
+        );
+        animation: pulseLight 3s infinite ease-in-out;
+        pointer-events: none;
+        z-index: 0;
+      }
+      @keyframes pulseLight {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+      .theatre {
+        position: relative;
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+      .curtain {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 52vw;
+        background: linear-gradient(90deg, #5f0f27, var(--velvet));
+        box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.3);
+        z-index: 10;
+        transition: transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+      .curtain.left {
+        left: 0;
+        transform: translateX(0);
+      }
+      .curtain.right {
+        right: 0;
+        transform: translateX(0);
+      }
+      .curtain.open.left {
+        transform: translateX(-100%);
+      }
+      .curtain.open.right {
+        transform: translateX(100%);
+      }
+      .trim {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--gold) 0 16px,
+          #e9c250 16px 18px
+        );
+      }
+      .spotlight {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+            500px 300px at 50% 60%,
+            rgba(255, 255, 255, 0.22),
+            transparent 60%
+          ),
+          radial-gradient(
+            1200px 700px at 50% 80%,
+            rgba(255, 255, 255, 0.06),
+            transparent 70%
+          );
+        pointer-events: none;
+        z-index: 1;
+      }
+      .scene {
+        position: relative;
+        z-index: 2;
+        width: min(960px, 100%);
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .header {
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .title {
+        font-size: clamp(26px, 5vw, 44px);
+        font-weight: 900;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: clamp(13px, 2.6vw, 16px);
+      }
+      .act {
+        display: none;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        padding: 20px;
+      }
+      .act.show {
+        display: grid;
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .line {
+        display: grid;
+        grid-template-columns: 70px 1fr;
+        gap: 10px;
+        align-items: start;
+      }
+      .role {
+        font-weight: 700;
+        color: var(--gold);
+        text-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+      }
+      .speech {
+        line-height: 1.5;
+        font-size: clamp(14px, 2.6vw, 16px);
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+        padding: 20px;
+        border-top: 1px dashed rgba(255, 255, 255, 0.14);
+      }
+      .btn {
+        appearance: none;
+        border: none;
+        cursor: pointer;
+        padding: 12px 16px;
+        border-radius: 14px;
+        font-weight: 800;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+      }
+      .primary {
+        background: var(--accent);
+        color: #001018;
+      }
+      .danger {
+        background: var(--danger);
+        color: #1a0404;
+      }
+      #commentModal {
+        position: static;
+        margin: 0 20px 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="curtain left"><div class="trim"></div></div>
+    <div class="curtain right"><div class="trim"></div></div>
+    <div class="spotlight"></div>
+
+    <main class="theatre">
+      <section class="scene">
+        <header class="header">
+          <div class="title">🎭 A Tragédia do Sábado Perdido</div>
+          <div class="subtitle">
+            Uma peça em 3 atos, estrelando: <strong>Cléia</strong>,
+            <em>o Sábado</em> e <em>As Tarefas</em>. Ironia leve, café forte.
+          </div>
+        </header>
+
+        <div id="act1" class="act">
+          <h2>ATO I — A Ilusão do Descanso</h2>
+          <div class="line">
+            <div class="role">SÁBADO</div>
+            <div class="speech">
+              Hoje prometo silêncio, passarinhos e um café que não esfria.
+            </div>
+          </div>
+          <div class="line">
+            <div class="role">CLÉIA</div>
+            <div class="speech">
+              Perfeito. Vou praticar o esporte olímpico de não abrir e-mail e
+              nem o WhatsApp hoje.
+            </div>
+          </div>
+          <div class="line">
+            <div class="role">TAREFAS</div>
+            <div class="speech">
+              Oiê! Só um lembrete rápido: lançamento de notas, PEI, e aquela
+              planilha que brota duplicada.
+            </div>
+          </div>
+        </div>
+
+        <div id="act2" class="act">
+          <h2>ATO II — O Sequestro do Sábado</h2>
+          <div class="line">
+            <div class="role">CLÉIA</div>
+            <div class="speech">
+              Ok, abro só o plano de aula… e fecho em 10 minutos. Prometo,
+              juradinho de escoteira.
+            </div>
+          </div>
+          <div class="line">
+            <div class="role">SÁBADO</div>
+            <div class="speech">
+              Ah, não precisa fazer isso! Fica mais um pouquinho comigo. Vai pra
+              escola ajudar a preparar a semana!
+            </div>
+          </div>
+          <div class="line">
+            <div class="role">TAREFAS</div>
+            <div class="speech">
+              Parabéns! Você desbloqueou a fase secreta: Para o trabalho não
+              existe descanso! Quer descansar mesmo? Hahaha, boa sorte com isso…
+            </div>
+          </div>
+        </div>
+
+        <div id="act3" class="act">
+          <h2>ATO III — A Catarse</h2>
+          <div class="line">
+            <div class="role">CLÉIA</div>
+            <div class="speech">
+              Mesmo sequestrado, meu sábado tem plateia: os colegas de trabalho
+              no grupo do WhatsApp. E olha que eu nem abri o e-mail ainda!
+            </div>
+          </div>
+          <div class="line">
+            <div class="role">SÁBADO</div>
+            <div class="speech">
+              Eu duro só 24h, mas voltarei, e quando voltar não garanto praia e
+              nem descanso, isso é função do domingo (mas já estou conversando
+              com ele. rsrsrrsrs).
+            </div>
+          </div>
+          <div class="line">
+            <div class="role">TAREFAS</div>
+            <div class="speech">
+              Eu sou como a Hydra de Lerna: corto uma, surgem duas. Mas
+              reconheço sua coragem. Até a próxima batalha, guerreira do sábado!
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn primary" id="nextAct">Iniciar Ato I</button>
+          <button class="btn danger" id="drama">Ativar drama 😵‍💫</button>
+        </div>
+        <div id="commentModal">
+          <button
+            id="openComment"
+            class="btn-comment"
+            aria-label="Abrir comentário"
+          >
+            💬 Comentar
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        const left = document.querySelector(".curtain.left");
+        const right = document.querySelector(".curtain.right");
+        const nextBtn = document.getElementById("nextAct");
+        const dramaBtn = document.getElementById("drama");
+        const acts = ["act1", "act2", "act3"];
+        let current = -1;
+        let opened = false;
+
+        function openCurtains() {
+          left.classList.add("open");
+          right.classList.add("open");
+          opened = true;
+        }
+
+        function revealAct(i) {
+          const act = document.getElementById(acts[i]);
+          if (act) {
+            act.classList.add("show");
+            act.scrollIntoView({ behavior: "smooth" });
+          }
+        }
+
+        nextBtn.addEventListener("click", () => {
+          // Se por algum motivo visual as cortinas já estiverem abertas no DOM, sincroniza o estado
+          if (
+            left.classList.contains("open") &&
+            right.classList.contains("open")
+          ) {
+            opened = true;
+          }
+
+          if (!opened) {
+            // Abre e já prepara o botão para iniciar o Ato I no próximo clique
+            openCurtains();
+            opened = true;
+            nextBtn.textContent = "Iniciar Ato I";
+            return;
+          }
+
+          // Avança os atos mantendo os anteriores visíveis
+          current++;
+          if (current < acts.length) {
+            revealAct(current);
+            nextBtn.textContent =
+              current === 0
+                ? "Iniciar Ato II"
+                : current === 1
+                ? "Iniciar Ato III"
+                : "Finalizar espetáculo";
+          } else {
+            // Reinicia: fecha cortinas, esconde atos e volta o botão
+            left.classList.remove("open");
+            right.classList.remove("open");
+            opened = false;
+            current = -1;
+            nextBtn.textContent = "Assistir de novo";
+            acts.forEach((id) =>
+              document.getElementById(id).classList.remove("show")
+            );
+          }
+        });
+
+        dramaBtn.addEventListener("click", () => {
+          document.body.classList.toggle("dramatic");
+          dramaBtn.textContent = document.body.classList.contains("dramatic")
+            ? "Desativar drama 😅"
+            : "Ativar drama 😵‍💫";
+        });
+
+        window.addEventListener("load", () => {
+          // Garante que o estado e o texto do botão fiquem corretos já na abertura automática
+          openCurtains();
+          opened = true;
+          nextBtn.textContent = "Iniciar Ato I";
+        });
+      })();
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

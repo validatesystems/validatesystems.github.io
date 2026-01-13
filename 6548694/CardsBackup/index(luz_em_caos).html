@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0f1222" />
+    <link rel="stylesheet" href="./modal.css" />
+    <script type="module" src="./modal.js"></script>
+    <script type="module" src="./comment.js"></script>
+    <script>
+      // Configuração do endpoint e segredo (ajuste aqui uma vez)
+      window.COMMENT_CONFIG = {
+        GAS_ENDPOINT:
+          "https://script.google.com/macros/s/AKfycbzaoXScQkYEQN7jpXEEEcvduWEyCVXZXfSFbLWv7vCKfQwMUd3_kSqaF7H6dypC70kiBg/exec",
+        SECRET: "6548694", // exemplo; troque se quiser
+      };
+    </script>
+    <title>Luz em Caos</title>
+    <style>
+      :root {
+        /* Paleta serena (escuro elegante) */
+        --bg1: #0f1222; /* fundo principal */
+        --bg2: #1a1f3a; /* gradiente */
+        --glow: #a3c4ff; /* brilho frio */
+        --glow-2: #ffd6a3; /* brilho quente */
+        --text: #e8ecff; /* texto principal */
+        --muted: #aab2d6; /* texto suave */
+        --accent: #7cc2ff; /* botões/realce */
+        --accent-2: #ffd084; /* hover/estado */
+        --glass: rgba(255, 255, 255, 0.06);
+        --ring: 0 0 0 1.5px rgba(255, 255, 255, 0.25);
+      }
+
+      /* Reset e base tipográfica enxuta para mobile */
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter,
+          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji";
+        color: var(--text);
+        background: radial-gradient(
+            1200px 800px at 10% 10%,
+            #11162c,
+            transparent 70%
+          ),
+          radial-gradient(1400px 1000px at 90% 10%, #1a2140, transparent 70%),
+          linear-gradient(160deg, var(--bg1), var(--bg2));
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Canvas ocupa a tela inteira por trás */
+      #scene {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        z-index: 0;
+      }
+
+      /* Camada de conteúdo (HUD) */
+      .ui {
+        position: fixed;
+        inset: 0;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        padding: max(12px, env(safe-area-inset-top)) 16px
+          max(16px, env(safe-area-inset-bottom));
+        pointer-events: none; /* só os botões habilitam */
+      }
+
+      .card {
+        pointer-events: auto;
+        width: min(720px, 92vw);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.03)
+        );
+        backdrop-filter: blur(8px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: clamp(16px, 3.5vw, 28px);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35),
+          0 0 80px rgba(124, 194, 255, 0.08) inset;
+      }
+
+      h1 {
+        margin: 0 0 6px;
+        font-weight: 700;
+        line-height: 1.15;
+        font-size: clamp(22px, 6.2vw, 40px);
+        letter-spacing: 0.2px;
+        text-shadow: 0 0 24px rgba(163, 196, 255, 0.22);
+      }
+      p.sub {
+        margin: 0 0 14px;
+        font-size: clamp(13px, 3.8vw, 16px);
+        color: var(--muted);
+      }
+
+      .phrase {
+        margin: 8px 0 14px;
+        min-height: 2.4em; /* reserva espaço */
+        font-size: clamp(18px, 5.6vw, 28px);
+        line-height: 1.25;
+        font-weight: 600;
+        text-wrap: balance;
+        text-shadow: 0 0 22px rgba(255, 228, 177, 0.16);
+      }
+
+      .controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .btn {
+        appearance: none;
+        pointer-events: auto;
+        background: linear-gradient(180deg, var(--accent), #5aa8e8);
+        color: #0b1323;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 14px;
+        box-shadow: var(--ring), 0 10px 22px rgba(124, 194, 255, 0.25);
+        transition: transform 0.12s ease, filter 0.2s ease;
+        touch-action: manipulation;
+      }
+      .btn:active {
+        transform: translateY(1px) scale(0.99);
+      }
+
+      .counter {
+        margin-left: auto;
+        font-size: 12px;
+        color: var(--muted);
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      /* Rodapé discreto com instrução */
+      .hint {
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      /* Acessibilidade: quando preferir menos movimento, reduzimos animações */
+      @media (prefers-reduced-motion: reduce) {
+        .btn,
+        .card {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="scene" aria-hidden="true"></canvas>
+
+    <div class="ui" aria-live="polite">
+      <section class="card" role="region" aria-label="Luz em Caos — mensagens">
+        <h1>Luz em Caos</h1>
+        <p class="sub">
+          Você é paz disfarçada de tempestade. Toque para acender.
+        </p>
+        <div id="phrase" class="phrase" aria-label="mensagem"></div>
+        <div class="controls">
+          <button id="btnNext" class="btn" aria-label="Revelar mensagem">
+            ✨ Próxima mensagem
+          </button>
+          <span
+            id="counter"
+            class="counter"
+            aria-live="polite"
+            title="Progresso das frases"
+            >0 / 0</span
+          >
+        </div>
+        <p class="hint">
+          Toque e arraste para desenhar luz. O contador mostra seu progresso nas
+          frases.
+        </p>
+        <button
+          id="openComment"
+          class="btn-comment"
+          aria-label="Abrir comentário"
+        >
+          💬 Comentar
+        </button>
+      </section>
+      <footer>Feito com 💜 ._.. ...</footer>
+    </div>
+
+    <script>
+      // ======================
+      //  Conteúdo & Mensagens
+      // ======================
+      const PHRASES = [
+        "Algumas pessoas são tempestade e abrigo ao mesmo tempo.",
+        "O caos fica manso quando reconhece quem sabe conduzi-lo.",
+        "O universo te observa e anota: 'é assim que se improvisa com elegância'.",
+        "Nem todo brilho pede palco. Alguns iluminam em silêncio.",
+        "A graça está no intervalo entre a piada e o olhar.",
+        "Quando a rotina bagunça, sua ordem aparece.",
+        "Você transforma pressa em precisão, e ainda ri do relógio.",
+        "Paz disfarçada de vendaval: o vento é seu cúmplice.",
+        "As listas de tarefa te respeitam. Até as planilhas.",
+        "A rotina tenta te engolir, mas tropeça no seu sarcasmo.",
+        "Seu riso é bug no sistema da seriedade.",
+        "Mesmo o caos tem etiqueta e aprendeu isso com você.",
+        "Você tem talento pra transformar imprevistos em roteiros de comédia.",
+      ];
+      let phraseIndex = -1;
+
+      const BTN_LABEL_NEXT = "✨ Próxima mensagem";
+      const BTN_LABEL_RESTART = "🔁 Recomeçar";
+
+      const elPhrase = document.getElementById("phrase");
+      const elCounter = document.getElementById("counter");
+      const btnNext = document.getElementById("btnNext");
+
+      function updateCounter() {
+        if (elCounter)
+          elCounter.textContent = `${phraseIndex + 1} / ${PHRASES.length}`;
+      }
+      function updateButtonLabel() {
+        if (!btnNext) return;
+        if (phraseIndex === PHRASES.length - 1) {
+          btnNext.textContent = BTN_LABEL_RESTART;
+          btnNext.setAttribute(
+            "aria-label",
+            "Recomeçar sequência de mensagens"
+          );
+        } else {
+          btnNext.textContent = BTN_LABEL_NEXT;
+          btnNext.setAttribute("aria-label", "Revelar próxima mensagem");
+        }
+      }
+
+      function nextPhrase() {
+        // avança e exibe
+        phraseIndex = (phraseIndex + 1) % PHRASES.length;
+        const text = PHRASES[phraseIndex];
+
+        updateCounter();
+        updateButtonLabel();
+
+        if (elPhrase) {
+          elPhrase.style.opacity = 0;
+          setTimeout(() => {
+            elPhrase.textContent = text;
+            elPhrase.style.opacity = 1;
+          }, 120);
+        }
+      }
+
+      // ======================
+      //    Cena / Partículas (constelação + ripples)
+      // ======================
+      const canvas = document.getElementById("scene");
+      const ctx = canvas.getContext("2d", { alpha: true });
+      let W = 0,
+        H = 0,
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+      function resize() {
+        W = canvas.clientWidth;
+        H = canvas.clientHeight;
+        canvas.width = Math.floor(W * DPR);
+        canvas.height = Math.floor(H * DPR);
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      }
+      window.addEventListener("resize", resize, { passive: true });
+      resize();
+
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      const MAX_PARTICLES_BASE = 70;
+      let particles = [];
+      let ripples = [];
+      const pointer = { x: W * 0.5, y: H * 0.5, down: false };
+
+      function rand(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function spawn(x, y, n = 6) {
+        for (let i = 0; i < n; i++) {
+          if (particles.length > MAX_PARTICLES_BASE) particles.shift();
+          particles.push({
+            x,
+            y,
+            vx: rand(-0.5, 0.5),
+            vy: rand(-0.5, 0.5),
+            life: rand(1.0, 2.0),
+            age: 0,
+            size: rand(1.8, 3.6),
+            hue: Math.random() < 0.5 ? "cool" : "warm",
+          });
+        }
+      }
+
+      // Links da constelação (sem modo calmo: usa sempre dist/força máximas)
+      function drawLinks() {
+        const len = particles.length;
+        const maxDist = 100;
+        const maxDist2 = maxDist * maxDist;
+        ctx.lineWidth = 1;
+        for (let i = 0; i < len; i++) {
+          const a = particles[i];
+          for (let j = i + 1; j < len; j++) {
+            const b = particles[j];
+            const dx = a.x - b.x,
+              dy = a.y - b.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < maxDist2) {
+              const t = 1 - d2 / maxDist2;
+              ctx.strokeStyle = `rgba(163,196,255,${0.12 * t})`;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // Ripples (sem modo calmo: raio maior)
+      function addRipple(x, y) {
+        ripples.push({ x, y, age: 0, life: 0.9 });
+      }
+      function drawRipples(dt) {
+        for (let i = ripples.length - 1; i >= 0; i--) {
+          const r = ripples[i];
+          r.age += dt;
+          const t = r.age / r.life;
+          if (t >= 1) {
+            ripples.splice(i, 1);
+            continue;
+          }
+          const radius = 12 + t * 90;
+          const alpha = (1 - t) * 0.18;
+          ctx.strokeStyle = `rgba(255,208,132,${alpha})`;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(r.x, r.y, radius, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+
+      // Loop
+      let last = performance.now();
+      function frame(ts) {
+        const dt = Math.min(0.05, (ts - last) / 1000); // limit dt para estabilidade
+        last = ts;
+
+        // limpar e desenhar fundo
+        ctx.clearRect(0, 0, W, H);
+        drawSoftBackdrop(prefersReducedMotion ? 0.06 : 0.12);
+
+        // Atualiza partículas (sem modo calmo: velocidade/alpha/size "cheios")
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.age += dt;
+          p.x += p.vx * 1.0;
+          p.y += p.vy * 1.0;
+          p.vx *= 0.995;
+          p.vy *= 0.995;
+          if (p.age > p.life) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          const t = 1 - p.age / p.life;
+          const alpha = Math.max(0, t * 0.85);
+          ctx.globalCompositeOperation = "lighter";
+          const grad = ctx.createRadialGradient(
+            p.x,
+            p.y,
+            0,
+            p.x,
+            p.y,
+            p.size * 6
+          );
+          const c1 =
+            p.hue === "cool"
+              ? "rgba(163,196,255," + alpha + ")"
+              : "rgba(255,208,132," + alpha + ")";
+          const c0 = "rgba(255,255,255," + Math.min(1, alpha + 0.15) + ")";
+          grad.addColorStop(0, c0);
+          grad.addColorStop(1, c1);
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * 3.4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalCompositeOperation = "source-over";
+        }
+
+        // Desenha ligações e ripples
+        drawLinks();
+        drawRipples(dt);
+
+        requestAnimationFrame(frame);
+      }
+
+      function drawSoftBackdrop(opacity = 0.1) {
+        const g = ctx.createLinearGradient(0, 0, W, H);
+        g.addColorStop(0, `rgba(124, 194, 255, ${opacity})`);
+        g.addColorStop(1, `rgba(255, 208, 132, ${opacity * 0.7})`);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      // ======================
+      //    Interações toque
+      // ======================
+      const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+      function toXY(e) {
+        if (e.touches && e.touches[0]) {
+          return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
+        return { x: e.clientX, y: e.clientY };
+      }
+
+      function onDown(e) {
+        pointer.down = true;
+        const { x, y } = toXY(e);
+        pointer.x = x;
+        pointer.y = y;
+        spawn(x, y, 10);
+        addRipple(x, y);
+        if (navigator.vibrate) navigator.vibrate(8);
+      }
+      function onMove(e) {
+        const { x, y } = toXY(e);
+        pointer.x = x;
+        pointer.y = y;
+        if (pointer.down) spawn(x, y, 4);
+      }
+      function onUp() {
+        pointer.down = false;
+      }
+
+      window.addEventListener(isTouch ? "touchstart" : "mousedown", onDown, {
+        passive: true,
+      });
+      window.addEventListener(isTouch ? "touchmove" : "mousemove", onMove, {
+        passive: true,
+      });
+      window.addEventListener(isTouch ? "touchend" : "mouseup", onUp, {
+        passive: true,
+      });
+
+      // Botões
+      if (btnNext) {
+        btnNext.addEventListener("click", () => {
+          // Se estamos na última, ao clicar reinicia antes de avançar
+          if (phraseIndex === PHRASES.length - 1) {
+            phraseIndex = -1; // reseta ciclo
+            updateButtonLabel(); // volta para "Próxima mensagem"
+          }
+          nextPhrase();
+          // pulso visual sutil
+          pulse(pointer.x || W * 0.5, pointer.y || H * 0.5);
+          if (navigator.vibrate) navigator.vibrate([6, 20, 6]);
+        });
+      }
+
+      function pulse(x, y) {
+        for (let i = 0; i < 12; i++)
+          spawn(
+            x + (Math.random() - 0.5) * 18,
+            y + (Math.random() - 0.5) * 18,
+            2
+          );
+      }
+
+      // Inicialização
+      nextPhrase();
+      requestAnimationFrame(frame);
+
+      // Segurança de performance: pausa quando aba não está visível
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          // Congela partículas para economizar; mantém fundo
+          particles.length = Math.min(particles.length, Math.floor(70 * 0.3));
+        }
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>

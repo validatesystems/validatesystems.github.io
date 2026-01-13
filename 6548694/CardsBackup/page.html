@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cards dedicados</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./img/ico.png" />
+    <link rel="apple-touch-icon" href="./img/ico.png" />
+
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="./styles.css?v=20260111" />
+
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Evitar cache no navegador -->
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <meta name="color-scheme" content="light dark" />
+  </head>
+
+  <body>
+    <!-- ===== Modal de Notificações ===== -->
+    <div
+      id="notifBackdrop"
+      class="notif-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="notifTitle"
+      aria-hidden="true"
+    >
+      <div class="notif-modal" role="document">
+        <header class="notif-header">
+          <h2 id="notifTitle" class="notif-title">Notificações</h2>
+          <div class="notif-actions">
+            <button
+              id="notifClose"
+              class="notif-close"
+              type="button"
+              title="Fechar"
+            >
+              Fechar
+            </button>
+          </div>
+        </header>
+        <div
+          id="notifList"
+          class="notif-list"
+          tabindex="0"
+          aria-live="polite"
+          aria-busy="false"
+        >
+          <p class="notif-empty">Carregando…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Modal de Sentimentos (render interno) ===== -->
+    <div
+      id="moodModal"
+      class="notif-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+    >
+      <div class="notif-modal" role="document">
+        <header class="notif-header">
+          <h2 class="notif-title">Como você está se sentindo?</h2>
+          <div class="notif-actions">
+            <button id="moodClose" class="notif-close" type="button">
+              Fechar
+            </button>
+          </div>
+        </header>
+
+        <!-- Conteúdo é todo desenhado via JS -->
+        <div id="moodList" class="notif-list"></div>
+      </div>
+    </div>
+
+    <!-- ===== Página principal ===== -->
+    <main class="page" id="appRoot">
+      <!-- Topo -->
+      <header class="topbar" aria-label="cabeçalho">
+        <div class="brand">
+          <img src="./img/ico.png" alt="" class="logo" />
+          <div class="brand-text">
+            <h1 class="title">Cards para você🧜🏻</h1>
+            <p class="subtitle">Escolha um card</p>
+
+            <!-- <div class="stats" aria-label="resumo">
+              <div class="stat">
+                <span class="stat-label">Disponíveis</span>
+                <span class="stat-value" id="statAvailable">0</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Não lidos</span>
+                <span class="stat-value" id="statUnread">0</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Hoje</span>
+                <span class="stat-value" id="statToday">0</span>
+              </div>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="actions">
+          <!-- Botão de notificações (abre modal) -->
+          <!-- <button
+            id="notifBtn"
+            class="notif-btn"
+            type="button"
+            title="Notificações"
+          >
+            <span class="notif-icon-wrap">
+              <span class="bell" aria-hidden="true">🔔</span>
+              <span id="notifBadge" class="notif-badge" aria-hidden="true"
+                >!</span
+              >
+            </span>
+          </button> -->
+
+          <!-- Botão de tema -->
+          <button
+            id="toggleTheme"
+            class="icon-btn"
+            type="button"
+            title="Alternar tema"
+          >
+            <span class="theme-icon" aria-hidden="true">🌤️</span>
+          </button>
+        </div>
+      </header>
+
+      <nav class="toolbar segmented" aria-label="filtros">
+        <button type="button" class="btn ghost" id="filterUnread">
+          <i class="fa-solid fa-eye-slash"></i>
+          <span class="filter-label">Não lidos</span>
+          <span class="filter-count" id="countUnread"></span>
+        </button>
+
+        <button type="button" class="btn secondary" id="filterToday">
+          <i class="fa-solid fa-calendar-day"></i>
+          <span class="filter-label">Hoje</span>
+          <span class="filter-count" id="countToday"></span>
+        </button>
+
+        <button type="button" class="btn ghost" id="filterAll">
+          <i class="fa-solid fa-layer-group"></i>
+          <span class="filter-label">Todos</span>
+          <span class="filter-count" id="countAll"></span>
+        </button>
+      </nav>
+
+      <section class="controls" aria-label="controles">
+        <label class="search" aria-label="buscar">
+          <span class="search-icon" aria-hidden="true">🔎</span>
+          <input
+            id="searchCards"
+            class="search-input"
+            type="search"
+            inputmode="search"
+            autocomplete="off"
+            placeholder="Buscar por título, subtítulo ou descrição"
+          />
+        </label>
+
+        <label class="sort" aria-label="ordenar">
+          <span class="sort-label">Ordenar</span>
+          <select id="sortCards" class="sort-select">
+            <option value="new" selected>Mais recentes</option>
+            <option value="old">Mais antigos</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="grid" id="grid" aria-label="lista de páginas"></section>
+
+      <footer>Developed with 💜 by ._.. ...</footer>
+    </main>
+
+    <!-- Scripts principais -->
+    <script src="./js/main.js?v=20260111"></script>
+
+    <!-- Módulo responsável por carregar os cards e disparar "cards:ready" -->
+    <script type="module" src="./js/cards-module.js?v=20260111"></script>
+  </body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Uma página... só porque você voltou</title>
+    <style>
+      :root {
+        --bg: #f2f7ff;
+        --fg: #1a1a1a;
+        --card: #ffffffdd;
+        --accent: #7c3aed;
+        --muted: #6b6b83;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: var(--bg);
+        font-family: "Inter", sans-serif;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Bolhas flutuando */
+      .bubble {
+        position: absolute;
+        bottom: -100px;
+        width: 20px;
+        height: 20px;
+        background: var(--accent);
+        border-radius: 50%;
+        opacity: 0.25;
+        animation: floatUp 8s infinite ease-in;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          transform: translateY(-130vh) scale(1.6);
+          opacity: 0;
+        }
+      }
+
+      /* Card principal */
+      .card {
+        width: 85%;
+        max-width: 420px;
+        padding: 24px;
+        background: var(--card);
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(8px);
+        text-align: center;
+        color: var(--fg);
+        cursor: pointer;
+        transition: transform 0.6s ease;
+        transform-style: preserve-3d;
+        position: relative;
+      }
+
+      .card:hover {
+        transform: scale(1.03);
+      }
+
+      .card.flip {
+        transform: rotateY(180deg);
+      }
+
+      .message {
+        font-size: 1.15rem;
+        line-height: 1.5;
+        /* transition: opacity 0.3s; */
+      }
+
+      .front {
+        transform: rotateY(0deg);
+      }
+
+      .back {
+        display: none;
+        font-size: 1.1rem;
+        transform: rotateY(180deg);
+      }
+
+      .card.flip .front {
+        display: none;
+      }
+
+      .card.flip .back {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Bolhas -->
+    <script>
+      for (let i = 0; i < 25; i++) {
+        const b = document.createElement("div");
+        b.className = "bubble";
+        b.style.left = Math.random() * 100 + "vw";
+        b.style.width = b.style.height = 12 + Math.random() * 26 + "px";
+        b.style.animationDelay = Math.random() * 5 + "s";
+        document.body.appendChild(b);
+      }
+    </script>
+
+    <!-- Card central -->
+    <div class="card" id="card">
+      <div class="message front">
+        Cléia, você é igual atualização surpresa:<br />
+        aparece, mexe em tudo e no fim… melhora meu dia.
+      </div>
+
+      <div class="message back">
+        E não adianta negar, viu?<br />
+        Você tem esse bug de ser especial sem esforço nenhum.
+      </div>
+    </div>
+
+    <script>
+      const card = document.getElementById("card");
+      card.addEventListener("click", () => {
+        card.classList.toggle("flip");
+      });
+    </script>
+    <script src="./js/card-telemetry.js"></script>
+  </body>
+</html>
