@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jardim da Calma — para Cléia</title>
+    <meta name="color-scheme" content="light dark" />
+    <style>
+      /* =====================
+         ESTILO GERAL & TEMA
+         ===================== */
+      :root {
+        --bg1: #f5fbff; /* céu suave */
+        --bg2: #fbfff5; /* luz de manhã */
+        --bg3: #fff7fb; /* rosa nuvem */
+        --fg: #21323f; /* texto */
+        --muted: #6b7280; /* texto secundário */
+        --accent: #16a34a; /* verde calmo */
+        --accent-2: #60a5fa; /* azul flor */
+        --card: rgba(255, 255, 255, 0.75);
+        --glass: blur(12px);
+        --ring: 0 0 0 2px rgba(22, 163, 74, 0.25);
+        --shadow: 0 10px 30px rgba(31, 41, 55, 0.12);
+        --particle: rgba(99, 102, 241, 0.12);
+        --max-grow-ms: 1000 * 60 * 45; /* 45 minutos até tamanho máximo */
+        --min-scale: 0.6; /* escala inicial das flores */
+        --max-scale: 1.6; /* escala final das flores */
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg1: #0f172a;
+          --bg2: #111827;
+          --bg3: #0b1220;
+          --fg: #e5e7eb;
+          --muted: #9ca3af;
+          --card: rgba(17, 24, 39, 0.5);
+          --particle: rgba(99, 102, 241, 0.18);
+          --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        color: var(--fg);
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+          Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji",
+          "Segoe UI Emoji";
+        background: radial-gradient(
+            1200px 600px at 20% 10%,
+            var(--bg3),
+            transparent 60%
+          ),
+          radial-gradient(900px 700px at 100% 0%, var(--bg2), transparent 55%),
+          radial-gradient(1200px 900px at 50% 100%, var(--bg1), transparent 60%),
+          linear-gradient(180deg, var(--bg1), var(--bg2));
+        overflow: hidden;
+      }
+
+      /* Partículas de ar calmo (ornamental) */
+      .ambient {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .dot {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--particle);
+        filter: blur(1px);
+        animation: float 18s linear infinite;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0) translateX(0) scale(1);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-120vh) translateX(20vw) scale(1.2);
+          opacity: 0;
+        }
+      }
+
+      /* Cabeçalho translucente */
+      header {
+        position: fixed;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        z-index: 10;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 0.3px;
+        font-weight: 700;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        font-size: 12px;
+      }
+      .stats {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      /* Dicas flutuantes no rodapé */
+      .hint {
+        position: fixed;
+        left: 50%;
+        bottom: 16px;
+        transform: translateX(-50%);
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        font-size: 13px;
+        padding: 8px 12px;
+        color: var(--muted);
+        z-index: 10;
+      }
+
+      /* Área do jardim (SVG de tela cheia) */
+      #gardenWrap {
+        position: fixed;
+        inset: 0;
+      }
+      svg#garden {
+        width: 100vw;
+        height: 100vh;
+      }
+
+      /* UI de ações */
+      .controls {
+        position: fixed;
+        right: 12px;
+        bottom: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 12;
+      }
+      .btn {
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: var(--shadow);
+        color: var(--fg);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: transform 0.08s ease;
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      /* Cartão de frase (toast) */
+      .toast {
+        position: fixed;
+        left: 50%;
+        top: 64px;
+        transform: translateX(-50%) translateY(-10px);
+        max-width: 92vw;
+        width: 680px;
+        padding: 12px 16px;
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        font-size: 15px;
+        line-height: 1.4;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 15;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      /* Balão da flor (aparece perto do clique) */
+      .bubble {
+        position: absolute;
+        transform: translate(-50%, -100%);
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        padding: 8px 10px;
+        border-radius: 10px;
+        font-size: 12px;
+        color: var(--fg);
+        box-shadow: var(--shadow);
+        opacity: 0;
+        animation: bubbleIn 0.4s ease forwards,
+          bubbleOut 0.4s ease 3.6s forwards;
+        pointer-events: none;
+        z-index: 9;
+      }
+      @keyframes bubbleIn {
+        from {
+          transform: translate(-50%, -80%) scale(0.96);
+          opacity: 0;
+        }
+        to {
+          transform: translate(-50%, -100%) scale(1);
+          opacity: 1;
+        }
+      }
+      @keyframes bubbleOut {
+        to {
+          transform: translate(-50%, -120%) scale(0.98);
+          opacity: 0;
+        }
+      }
+
+      /* Estados vazios */
+      .emptyTip {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        pointer-events: none;
+        z-index: 0;
+        color: var(--muted);
+        font-size: 14px;
+        text-align: center;
+        padding: 0 18px;
+      }
+
+      /* Acessibilidade: botão de plantar via teclado */
+      .kbdPlant {
+        position: fixed;
+        left: 12px;
+        bottom: 12px;
+        z-index: 12;
+      }
+
+      /* ===================================
+         "Componentes" de FLORES (SVG styles)
+         =================================== */
+      .flower {
+        transform-origin: center;
+        filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
+        animation: sway 5s ease-in-out infinite;
+      }
+      @keyframes sway {
+        0%,
+        100% {
+          transform: rotate(-1deg);
+        }
+        50% {
+          transform: rotate(1deg);
+        }
+      }
+      .stem {
+        stroke: #16a34a;
+        stroke-width: 2.2;
+        fill: none;
+        opacity: 0.9;
+      }
+      .leaf {
+        fill: #28a745;
+        opacity: 0.85;
+      }
+
+      /* Petalas recebem cor via style="--p: #hex" e usam var(--p) */
+      .petal {
+        fill: var(--p);
+        opacity: 0.9;
+      }
+      .center {
+        fill: #ffeb99;
+        stroke: rgba(0, 0, 0, 0.08);
+        stroke-width: 0.8;
+      }
+
+      /* Foco para navegação por teclado */
+      .btn:focus-visible {
+        outline: var(--ring);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true" id="ambient"></div>
+
+    <header>
+      <h1>🌿 Jardim da Calma</h1>
+      <span class="pill" id="pillMode" title="Cada clique planta uma flor"
+        >🌱 clique para plantar</span
+      >
+      <div class="stats">
+        <span id="statCount">0 flores</span>•
+        <span id="statTime">0 min cultivando</span>
+      </div>
+    </header>
+
+    <div id="gardenWrap">
+      <!-- SVG em tela cheia; as flores serão adicionadas dentro do <g id="layer"> -->
+      <svg
+        id="garden"
+        viewBox="0 0 1000 1000"
+        role="img"
+        aria-label="Jardim virtual, clique para plantar flores"
+      >
+        <defs>
+          <!-- Gradiente para o solo sutil -->
+          <linearGradient id="soil" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="transparent" />
+            <stop offset="100%" stop-color="rgba(34,197,94,.08)" />
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="1000" height="1000" fill="url(#soil)" />
+        <g id="layer"></g>
+      </svg>
+    </div>
+
+    <div class="emptyTip" id="emptyTip">
+      Clique em qualquer lugar e plante sua primeira flor 🌸
+    </div>
+
+    <div class="controls" aria-label="Controles do jardim">
+      <button class="btn" id="btnPhrase" title="Gerar frase sem plantar">
+        ✨ Gerar reflexão
+      </button>
+      <button class="btn" id="btnPause" title="Pausar/cotar vento (animações)">
+        💤 Pausar vento
+      </button>
+      <button
+        class="btn"
+        id="btnReset"
+        title="Apagar todo o jardim (irreversível)"
+      >
+        ♻️ Recomeçar
+      </button>
+      <button class="btn" id="btnExport" title="Exportar seu jardim em JSON">
+        💾 Exportar
+      </button>
+      <input type="file" id="fileImport" accept="application/json" hidden />
+      <button
+        class="btn"
+        id="btnImport"
+        title="Importar jardim a partir de JSON"
+      >
+        📥 Importar
+      </button>
+    </div>
+
+    <div class="kbdPlant">
+      <button
+        class="btn"
+        id="btnPlantKbd"
+        title="Plantar uma flor ao centro (atalho de teclado)"
+      >
+        🌼 Plantar (Enter)
+      </button>
+    </div>
+
+    <div class="hint">
+      Dica: segure o clique para apreciar o crescer. Libere para plantar outra
+      🌱
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      /* ============================
+         ESTADO & PERSISTÊNCIA (v1)
+         ============================ */
+      const STORAGE_KEY = "calmGarden.v1";
+      const state = {
+        flowers: [], // {id, x, y, type, color, createdAt, growthMs}
+        phrases: [], // histórico de frases mostradas
+        startedAt: Date.now(),
+        paused: false,
+        lastTick: Date.now(),
+        sessionElapsedMs: 0,
+      };
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.flowers))
+            state.flowers = parsed.flowers;
+          if (parsed && Array.isArray(parsed.phrases))
+            state.phrases = parsed.phrases;
+        } catch (e) {
+          console.warn("Falha ao carregar jardim:", e);
+        }
+      }
+
+      function saveState() {
+        try {
+          const payload = { flowers: state.flowers, phrases: state.phrases };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        } catch (e) {
+          console.warn("Falha ao salvar jardim:", e);
+        }
+      }
+
+      window.addEventListener("beforeunload", saveState);
+
+      /* ============================
+         FRASES: afeto & reflexão
+         ============================ */
+      const PHRASES = [
+        "Respira: até o silêncio rega.",
+        "Gentileza é adubo de amanhã.",
+        "Sua calma cabe no meu minuto.",
+        "Hoje, florescer é suficiente.",
+        "O tempo não cobra pressa do jardim.",
+        "A luz chega devagar — e é linda assim.",
+        "Seu riso faz vento bom nas folhas.",
+        "O mundo melhora quando você desacelera.",
+        "Regue-se com paciência.",
+        "Há beleza nas pausas.",
+        "Flores nascem do que a gente cuida.",
+        "Tudo que cresce, cresce aos poucos.",
+        "Seu jeito organiza primaveras.",
+        "Nem todo cuidado precisa fazer barulho.",
+        "Às vezes, a resposta é apenas ficar.",
+      ];
+
+      function randomPhrase() {
+        const text = PHRASES[Math.floor(Math.random() * PHRASES.length)];
+        // guardar no histórico
+        state.phrases.push({ text, at: new Date().toISOString() });
+        if (state.phrases.length > 100) state.phrases.shift();
+        saveState();
+        return text;
+      }
+
+      /* ============================
+         SVG & FLORES
+         ============================ */
+      const svg = document.getElementById("garden");
+      const layer = document.getElementById("layer");
+      const toast = document.getElementById("toast");
+
+      // Converte coordenadas de clique (px) para o viewBox (0-1000)
+      function clientToSvg(x, y) {
+        const pt = svg.createSVGPoint();
+        pt.x = x;
+        pt.y = y;
+        const m = svg.getScreenCTM().inverse();
+        const sp = pt.matrixTransform(m);
+        return { x: sp.x, y: sp.y };
+      }
+
+      function clamp(n, min, max) {
+        return Math.max(min, Math.min(max, n));
+      }
+
+      // Modelos de flores (3 tipos simples) — retornam um <g>
+      function flowerModel(type, color) {
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute("class", "flower");
+        g.style.setProperty("--p", color);
+
+        // Haste
+        const stem = document.createElementNS(svg.namespaceURI, "path");
+        stem.setAttribute("class", "stem");
+        stem.setAttribute("d", "M0 0 C -6 16, 6 32, 0 48");
+        g.appendChild(stem);
+
+        // Folhas
+        const leafL = document.createElementNS(svg.namespaceURI, "path");
+        leafL.setAttribute("class", "leaf");
+        leafL.setAttribute(
+          "d",
+          "M-6 20 C -24 12, -18 4, -6 12 C 2 18, -2 20, -6 20 Z"
+        );
+        const leafR = document.createElementNS(svg.namespaceURI, "path");
+        leafR.setAttribute("class", "leaf");
+        leafR.setAttribute(
+          "d",
+          "M6 28 C 24 20, 18 12, 6 20 C -2 26, 2 28, 6 28 Z"
+        );
+        g.appendChild(leafL);
+        g.appendChild(leafR);
+
+        // Pétalas + miolo variando por tipo
+        if (type === 0) {
+          for (let i = 0; i < 6; i++) {
+            const petal = document.createElementNS(svg.namespaceURI, "ellipse");
+            petal.setAttribute("class", "petal");
+            petal.setAttribute("cx", 0);
+            petal.setAttribute("cy", -4);
+            petal.setAttribute("rx", 6);
+            petal.setAttribute("ry", 10);
+            petal.setAttribute(
+              "transform",
+              `rotate(${i * 60}) translate(0,-10)`
+            );
+            g.appendChild(petal);
+          }
+        } else if (type === 1) {
+          for (let i = 0; i < 8; i++) {
+            const petal = document.createElementNS(svg.namespaceURI, "path");
+            petal.setAttribute("class", "petal");
+            petal.setAttribute(
+              "d",
+              "M0,-10 C 6,-6 6,6 0,10 C -6,6 -6,-6 0,-10 Z"
+            );
+            petal.setAttribute(
+              "transform",
+              `rotate(${i * 45}) translate(0,-10)`
+            );
+            g.appendChild(petal);
+          }
+        } else {
+          for (let i = 0; i < 5; i++) {
+            const petal = document.createElementNS(svg.namespaceURI, "ellipse");
+            petal.setAttribute("class", "petal");
+            petal.setAttribute("cx", 0);
+            petal.setAttribute("cy", -6);
+            petal.setAttribute("rx", 8);
+            petal.setAttribute("ry", 12);
+            petal.setAttribute(
+              "transform",
+              `rotate(${i * 72}) translate(0,-12)`
+            );
+            g.appendChild(petal);
+          }
+        }
+        const center = document.createElementNS(svg.namespaceURI, "circle");
+        center.setAttribute("class", "center");
+        center.setAttribute("cx", 0);
+        center.setAttribute("cy", -12);
+        center.setAttribute("r", 5.2);
+        g.appendChild(center);
+
+        return g;
+      }
+
+      // Cores agradáveis (pastéis) — iremos variar leve saturação
+      const COLORS = [
+        "#60a5fa",
+        "#fb7185",
+        "#34d399",
+        "#f59e0b",
+        "#a78bfa",
+        "#f472b6",
+        "#22c55e",
+      ];
+
+      // Planta e registra
+      function plantAt(x, y, phraseText = null) {
+        const type = Math.floor(Math.random() * 3);
+        const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        const id = "f_" + Math.random().toString(36).slice(2, 9);
+        const flower = {
+          id,
+          x: clamp(x, 60, 940),
+          y: clamp(y, 80, 980),
+          type,
+          color,
+          createdAt: Date.now(),
+          growthMs: 0,
+        };
+        state.flowers.push(flower);
+        renderFlower(flower);
+        saveState();
+
+        const text = phraseText || randomPhrase();
+        showBubbleAt(x, y, text);
+        showToast(text);
+        updateStats();
+      }
+
+      function renderAll() {
+        layer.innerHTML = "";
+        state.flowers.forEach(renderFlower);
+        updateStats();
+      }
+
+      function renderFlower(flower) {
+        const g = flowerModel(flower.type, flower.color);
+        g.setAttribute("data-id", flower.id);
+        // posiciona; escala aplicada a cada tick
+        g.setAttribute(
+          "transform",
+          `translate(${flower.x}, ${flower.y}) scale(${scaleFor(flower)})`
+        );
+        layer.appendChild(g);
+      }
+
+      function scaleFor(flower) {
+        const min =
+          parseFloat(
+            getComputedStyle(document.documentElement).getPropertyValue(
+              "--min-scale"
+            )
+          ) || 0.6;
+        const max =
+          parseFloat(
+            getComputedStyle(document.documentElement).getPropertyValue(
+              "--max-scale"
+            )
+          ) || 1.6;
+        const cap = 45 * 60 * 1000; // 45 min
+        const t = Math.min(flower.growthMs, cap);
+        const ratio = t / cap;
+        return (min + (max - min) * ratio).toFixed(3);
+      }
+
+      // Animação de crescimento por tempo de permanência
+      function tick() {
+        const now = Date.now();
+        const dt = now - state.lastTick;
+        state.lastTick = now;
+        if (!state.paused) {
+          // Incrementa crescimento de todas as flores
+          for (const f of state.flowers) {
+            f.growthMs = Math.min(f.growthMs + dt, 45 * 60 * 1000);
+          }
+          // Re-renderiza escalas (sem recriar nós)
+          for (const node of layer.children) {
+            const id = node.getAttribute("data-id");
+            const f = state.flowers.find((ff) => ff.id === id);
+            if (!f) continue;
+            node.setAttribute(
+              "transform",
+              `translate(${f.x}, ${f.y}) scale(${scaleFor(f)})`
+            );
+          }
+          state.sessionElapsedMs += dt;
+        }
+        updateStats();
+        requestAnimationFrame(tick);
+      }
+
+      /* ============================
+         UI: toasts, bolhas e stats
+         ============================ */
+      function showToast(text) {
+        toast.textContent = text;
+        toast.classList.add("show");
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(
+          () => toast.classList.remove("show"),
+          3800
+        );
+      }
+
+      function showBubbleAt(x, y, text) {
+        const div = document.createElement("div");
+        div.className = "bubble";
+        div.textContent = text;
+        // converter coords do SVG para viewport
+        const bbox = svg.getBoundingClientRect();
+        const p = svg.createSVGPoint();
+        p.x = x;
+        p.y = y;
+        const ctm = svg.getScreenCTM();
+        const screen = p.matrixTransform(ctm);
+        div.style.left = screen.x + "px";
+        div.style.top = screen.y + "px";
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 4400);
+      }
+
+      function updateStats() {
+        const statCount = document.getElementById("statCount");
+        const statTime = document.getElementById("statTime");
+        const n = state.flowers.length;
+        statCount.textContent = n + (n === 1 ? " flor" : " flores");
+        const mins = Math.floor(state.sessionElapsedMs / 60000);
+        statTime.textContent =
+          mins + (mins === 1 ? " min cultivando" : " min cultivando");
+        document.getElementById("emptyTip").style.display = n ? "none" : "grid";
+      }
+
+      /* ============================
+         INTERAÇÃO & ACESSIBILIDADE
+         ============================ */
+      svg.addEventListener("click", (e) => {
+        // Evita plantar ao clicar sobre os botões (fora do SVG)
+        if (e.target.closest && e.target.closest(".btn")) return;
+        const p = clientToSvg(e.clientX, e.clientY);
+        plantAt(p.x, p.y);
+      });
+
+      // Botão que gera frase sem plantar (para quem só quer contemplar)
+      document.getElementById("btnPhrase").addEventListener("click", () => {
+        const text = randomPhrase();
+        showToast(text);
+      });
+
+      // Pausar animações (vento)
+      const btnPause = document.getElementById("btnPause");
+      btnPause.addEventListener("click", () => {
+        state.paused = !state.paused;
+        btnPause.textContent = state.paused
+          ? "🌬️ Retomar vento"
+          : "😴 Pausar vento";
+        // Congela/descongela animação via CSS (opcional)
+        svg.style.animationPlayState = state.paused ? "paused" : "running";
+        for (const node of layer.children)
+          node.style.animationPlayState = state.paused ? "paused" : "running";
+      });
+
+      // Recomeçar
+      document.getElementById("btnReset").addEventListener("click", () => {
+        if (!confirm("Tem certeza? Isso apagará todo o jardim.")) return;
+        state.flowers = [];
+        saveState();
+        renderAll();
+        showToast("Novo começo. O terreno foi limpo.");
+      });
+
+      // Exportar/Importar
+      document.getElementById("btnExport").addEventListener("click", () => {
+        const blob = new Blob(
+          [localStorage.getItem(STORAGE_KEY) || '{"flowers":[],"phrases":[]}'],
+          { type: "application/json" }
+        );
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "jardim_da_calma.json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+      const fileInput = document.getElementById("fileImport");
+      document
+        .getElementById("btnImport")
+        .addEventListener("click", () => fileInput.click());
+      fileInput.addEventListener("change", async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const text = await file.text();
+        try {
+          const data = JSON.parse(text);
+          if (!Array.isArray(data.flowers)) throw new Error("Formato inválido");
+          localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({
+              flowers: data.flowers,
+              phrases: data.phrases || [],
+            })
+          );
+          loadState();
+          renderAll();
+          showToast("Jardim importado com sucesso.");
+        } catch (err) {
+          alert("Não foi possível importar: " + err.message);
+        }
+        fileInput.value = "";
+      });
+
+      // Acessibilidade: Enter planta no centro
+      document.getElementById("btnPlantKbd").addEventListener("click", () => {
+        plantAt(500, 780);
+      });
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") plantAt(500, 780);
+      });
+
+      /* ============================
+         PARTÍCULAS AMBIENTES
+         ============================ */
+      (function buildAmbient() {
+        const amb = document.getElementById("ambient");
+        const N = 28;
+        for (let i = 0; i < N; i++) {
+          const d = document.createElement("div");
+          d.className = "dot";
+          const size = 4 + Math.random() * 10;
+          d.style.width = size + "px";
+          d.style.height = size + "px";
+          d.style.left = Math.random() * 100 + "vw";
+          d.style.bottom = -10 - Math.random() * 40 + "px";
+          d.style.animationDuration = 14 + Math.random() * 10 + "s";
+          d.style.animationDelay = Math.random() * 10 + "s";
+          amb.appendChild(d);
+        }
+      })();
+
+      /* ============================
+         INICIALIZAÇÃO
+         ============================ */
+      loadState();
+      renderAll();
+      state.lastTick = Date.now();
+      requestAnimationFrame(tick);
+
+      // Plantio guiado inicial (opcional)
+      if (!state.flowers.length) {
+        setTimeout(
+          () =>
+            showToast(
+              "Bem-vinda ao Jardim da Calma. Clique para plantar uma flor 🌷"
+            ),
+          600
+        );
+      }
+
+      // Clique para plantar na posição
+      svg.addEventListener("pointerdown", (e) => {
+        // Suporte a toque em mobile
+        if (e.pointerType === "touch") {
+          const p = clientToSvg(e.clientX, e.clientY);
+          plantAt(p.x, p.y);
+        }
+      });
+    </script>
+  </body>
+</html>

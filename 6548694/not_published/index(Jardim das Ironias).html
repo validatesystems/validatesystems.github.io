@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Jardim das Ironias 🌸</title>
+    <style>
+      /* =====================
+         Design Tokens
+         ===================== */
+      :root {
+        /* Claro elegante */
+        --bg1: #f8efff;
+        --bg2: #eaf7ff;
+        --ink: #1b1b2b;
+        --muted: #666689;
+        --accent: #a855f7; /* roxo orquídea */
+        --accent-2: #0ea5e9; /* azul leve */
+        --card: color-mix(in srgb, #fff 75%, #c8d9ff 25%);
+        --ring: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+        --glass: blur(10px);
+        --petal-1: #ffd1e6;
+        --petal-2: #ffc2da;
+        --petal-3: #ffebf4;
+        --center: #ffd166;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg1: #0f1022;
+          --bg2: #191c34;
+          --ink: #e8ecff;
+          --muted: #aab2d6;
+          --card: color-mix(in srgb, #1c2340 70%, #2c2f52 30%);
+          --ring: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);
+          --petal-1: #5c2a6b;
+          --petal-2: #7a2f74;
+          --petal-3: #3f1f4f;
+          --center: #f2c94c;
+        }
+      }
+
+      /* =====================
+         Base & Layout
+         ===================== */
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji",
+          "Segoe UI Emoji";
+        color: var(--ink);
+        background: linear-gradient(160deg, var(--bg1), var(--bg2));
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-height: 100dvh;
+      }
+
+      header {
+        padding: clamp(16px, 3vw, 32px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .brand {
+        display: grid;
+        gap: 4px;
+      }
+      .brand h1 {
+        margin: 0;
+        font-size: clamp(20px, 4vw, 32px);
+        letter-spacing: 0.2px;
+      }
+      .brand p {
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(12px, 2.2vw, 14px);
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      button.icon {
+        appearance: none;
+        border: none;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--accent) 18%, #fff),
+          color-mix(in srgb, var(--accent-2) 18%, #fff)
+        );
+        color: var(--ink);
+        box-shadow: 0 8px 24px
+          color-mix(in srgb, var(--accent) 15%, transparent);
+        cursor: pointer;
+        font-weight: 600;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      button.icon:focus-visible {
+        outline: var(--ring);
+      }
+      button.icon:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 28px
+          color-mix(in srgb, var(--accent) 22%, transparent);
+      }
+
+      main {
+        padding: clamp(8px, 2vw, 24px);
+      }
+
+      .garden {
+        --min: 220px;
+        display: grid;
+        grid-template-columns: repeat(
+          auto-fit,
+          minmax(min(100%, var(--min)), 1fr)
+        );
+        gap: clamp(12px, 2.2vw, 20px);
+        align-items: stretch;
+      }
+
+      /* =====================
+         Flower Card
+         ===================== */
+      .flower {
+        position: relative;
+        padding: 14px;
+        border-radius: 18px;
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        box-shadow: 0 20px 35px -15px color-mix(in srgb, var(--accent) 20%, transparent);
+        overflow: clip;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 10px;
+        min-height: 210px;
+      }
+
+      .flower-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .stem {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        position: relative;
+      }
+      /* Petals using pseudo-elements */
+      .bud {
+        width: 14px;
+        height: 14px;
+        background: var(--center);
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--center) 35%, transparent)
+          inset;
+      }
+      .petal {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .petal::before,
+      .petal::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 22px;
+        border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%;
+        transform-origin: 50% 90%;
+        opacity: 0.95;
+        box-shadow: 0 3px 6px color-mix(in srgb, #000 18%, transparent);
+      }
+      .petal::before {
+        background: radial-gradient(
+            circle at 40% 30%,
+            #fff6 8%,
+            transparent 40%
+          ),
+          var(--petal-1);
+        left: 2px;
+        top: -2px;
+        transform: rotate(-25deg);
+      }
+      .petal::after {
+        background: radial-gradient(
+            circle at 60% 30%,
+            #fff6 8%,
+            transparent 40%
+          ),
+          var(--petal-2);
+        right: 2px;
+        top: -2px;
+        transform: rotate(25deg);
+      }
+      .stem::after {
+        content: "";
+        position: absolute;
+        width: 4px;
+        height: 24px;
+        background: #3a9157;
+        bottom: -8px;
+        border-radius: 3px;
+        box-shadow: 0 0 0 1px #ffffff33 inset;
+      }
+
+      .title {
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        font-size: 16px;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .quote {
+        font-size: clamp(14px, 1.9vw, 16px);
+        line-height: 1.5;
+        margin: 6px 2px 0 2px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .ghost {
+        appearance: none;
+        border: 0;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--ink);
+        box-shadow: inset 0 0 0 1.5px
+          color-mix(in srgb, var(--ink) 16%, transparent);
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.15s ease, transform 0.1s ease;
+      }
+      .ghost:hover {
+        background: color-mix(in srgb, var(--ink) 8%, transparent);
+        transform: translateY(-1px);
+      }
+      .ghost:focus-visible {
+        outline: var(--ring);
+      }
+
+      /* Bloom animation */
+      .bloom .petal::before {
+        animation: sway1 2.5s ease-in-out infinite;
+      }
+      .bloom .petal::after {
+        animation: sway2 3s ease-in-out infinite;
+      }
+      @keyframes sway1 {
+        0%,
+        100% {
+          transform: rotate(-18deg) translateY(0);
+        }
+        50% {
+          transform: rotate(-28deg) translateY(-2px);
+        }
+      }
+      @keyframes sway2 {
+        0%,
+        100% {
+          transform: rotate(18deg) translateY(0);
+        }
+        50% {
+          transform: rotate(28deg) translateY(-1px);
+        }
+      }
+
+      /* Subtle highlight when quote updates */
+      .flash {
+        animation: flash 0.6s ease;
+      }
+      @keyframes flash {
+        from {
+          background: color-mix(in srgb, var(--accent) 15%, transparent);
+        }
+        to {
+          background: transparent;
+        }
+      }
+
+      footer {
+        padding: 10px 16px 24px;
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <h1>Jardim das Ironias 🌸</h1>
+        <p>
+          Flores que desabrocham mensagens: carinho ácido, otimismo sutil e um
+          humor que rega a alma.
+        </p>
+      </div>
+      <div class="actions">
+        <button
+          class="icon"
+          id="btnShuffle"
+          title="Regar o jardim (embaralhar)"
+        >
+          🔁 Regar
+        </button>
+        <button class="icon" id="btnBloomAll" title="Fazer tudo florescer">
+          ✨ Florescer tudo
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="garden" id="garden" aria-live="polite"></section>
+    </main>
+
+    <footer>Feito com paciência, café e um pouquinho de ironia.</footer>
+
+    <script>
+      // ==============
+      // Conteúdo base
+      // ==============
+      const PHRASES = [
+        {
+          t: "Florescem até os cactos. E olha que ninguém rega eles direito.",
+          k: ["ironia", "otimismo"],
+        },
+        {
+          t: "Ser forte é fácil — difícil é ser fofa e sarcástica ao mesmo tempo.",
+          k: ["sarcástico", "autoironia"],
+        },
+        {
+          t: "Você chama de drama. Eu chamo de roteiro com trilha sonora.",
+          k: ["humor", "leve"],
+        },
+        {
+          t: "Mais brilho, menos barulho. O resto é figurante.",
+          k: ["afeto", "força"],
+        },
+        {
+          t: "Cansada? Sim. Superando? Também. Bonita? Sempre.",
+          k: ["otimismo", "autoestima"],
+        },
+        {
+          t: "Hoje sem grandes planos: só sobreviver com classe.",
+          k: ["sutileza", "humor"],
+        },
+        {
+          t: "Quando tudo pesa, eu viro helium: subo e deixo flutuar.",
+          k: ["leveza", "poético"],
+        },
+        {
+          t: "Não é frieza, é ar-condicionado emocional no 22º.",
+          k: ["sarcástico"],
+        },
+        {
+          t: "Se a vida me testa, eu devolvo com correção gramatical.",
+          k: ["ironia", "witty"],
+        },
+        {
+          t: "Autoestima em manutenção. Obrigada por aguardar.",
+          k: ["humor", "real"],
+        },
+        {
+          t: "Pequena pausa para reabastecer coragem e batom.",
+          k: ["afeto", "otimismo"],
+        },
+        {
+          t: "Chique é manter a calma enquanto a planilha pega fogo.",
+          k: ["trabalho", "sutileza"],
+        },
+        { t: "Não desisti não. Só troquei de salto.", k: ["otimismo"] },
+        {
+          t: "Às vezes, ser gentil comigo já é milagre do dia.",
+          k: ["autocuidado"],
+        },
+        { t: "Se falhar, eu edito e lanço versão 2.0.", k: ["resiliência"] },
+        {
+          t: "Entre o caos e o close certo, eu escolho os dois.",
+          k: ["humor", "confiança"],
+        },
+        {
+          t: "Tem dias que sou maré baixa: é pra não gastar encanto à toa.",
+          k: ["poético", "sutileza"],
+        },
+        { t: "O universo anda lento; eu, nem tanto.", k: ["ironico", "leve"] },
+        {
+          t: "Sorrisos também são armaduras, só que com glitter.",
+          k: ["afeto", "força"],
+        },
+        {
+          t: "Se der errado, vira história. Se der certo, vira lenda.",
+          k: ["otimismo"],
+        },
+        { t: "Elegância é dizer ‘não’ com abraço.", k: ["limites", "afeto"] },
+        { t: "Meu silêncio é spa para a mente.", k: ["calma", "humor"] },
+        {
+          t: "Não é sobre vencer todo dia — é sobre manter a pose.",
+          k: ["humor", "resiliência"],
+        },
+        {
+          t: "Cuidar de mim também é trabalho em tempo integral.",
+          k: ["autocuidado", "real"],
+        },
+      ];
+
+      // ==============
+      // Utilidades
+      // ==============
+      const $ = (q, el = document) => el.querySelector(q);
+      const $$ = (q, el = document) => Array.from(el.querySelectorAll(q));
+
+      // Embaralhamento simples (Fisher-Yates)
+      const shuffle = (arr) => {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      };
+
+      // Copia com feedback acessível
+      async function copyText(txt, btn) {
+        try {
+          await navigator.clipboard.writeText(txt);
+          if (btn) {
+            const prev = btn.textContent;
+            btn.textContent = "✔️ Copiado";
+            setTimeout(() => (btn.textContent = prev), 1200);
+          }
+        } catch (e) {
+          alert("Não foi possível copiar agora.");
+        }
+      }
+
+      // Atualiza o texto de um card com efeito sutil
+      function setQuote(card, text) {
+        const q = card.querySelector(".quote");
+        q.classList.remove("flash");
+        // força reflow para reiniciar animação
+        void q.offsetWidth;
+        q.textContent = text;
+        q.classList.add("flash");
+      }
+
+      // Gera um card/"flor"
+      function makeFlower({ text, subtitle }, idx) {
+        const card = document.createElement("article");
+        card.className = "flower";
+        card.setAttribute("aria-label", `Flor ${idx + 1}`);
+        card.innerHTML = `
+          <div class="flower-header">
+            <div class="stem bloom" aria-hidden="true">
+              <div class="bud"></div>
+              <div class="petal"></div>
+            </div>
+            <div>
+              <div class="title">Flor ${idx + 1}</div>
+              <div class="subtitle">${subtitle}</div>
+            </div>
+          </div>
+          <div class="quote" role="status"></div>
+          <div class="controls">
+            <button class="ghost" data-act="next">➡️ Outra</button>
+            <button class="ghost" data-act="copy">📋 Copiar</button>
+          </div>
+        `;
+
+        // Estado local de fila
+        const pool = shuffle(PHRASES.map((p) => p.t));
+        let i = 0;
+        setQuote(card, pool[i]);
+
+        card.addEventListener("click", (ev) => {
+          const b = ev.target.closest("button.ghost");
+          if (!b) return;
+          const act = b.dataset.act;
+          if (act === "next") {
+            i = (i + 1) % pool.length;
+            setQuote(card, pool[i]);
+          } else if (act === "copy") {
+            copyText(card.querySelector(".quote").textContent, b);
+          }
+        });
+
+        return card;
+      }
+
+      function renderGarden() {
+        const garden = $("#garden");
+        garden.innerHTML = "";
+        const data = new Array(9).fill(0).map((_, i) => ({
+          text: "",
+          subtitle: ["carinho ácido", "otimismo sutil", "humor elegante"][
+            i % 3
+          ],
+        }));
+        data.forEach((d, i) =>
+          garden.appendChild(makeFlower({ text: "", subtitle: d.subtitle }, i))
+        );
+      }
+
+      // Ações globais
+      $("#btnShuffle")?.addEventListener("click", () => {
+        // Reembaralha o conteúdo de todas as flores
+        $$(".flower").forEach((card) => {
+          const pool = shuffle(PHRASES.map((p) => p.t));
+          setQuote(card, pool[0]);
+        });
+      });
+
+      $("#btnBloomAll")?.addEventListener("click", () => {
+        $$(".stem").forEach((s) => s.classList.add("bloom"));
+        // Efeito de foco visual rápido nas citações
+        $$(".quote").forEach((q) => {
+          q.classList.remove("flash");
+          void q.offsetWidth;
+          q.classList.add("flash");
+        });
+      });
+
+      // Init
+      renderGarden();
+    </script>
+  </body>
+</html>
